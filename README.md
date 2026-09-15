@@ -20,7 +20,7 @@ Codex uses the same workspace tools but idle desktop wake-up is not complete. Th
 
 ## Your private wiki
 
-Connecting imports local Claude Code conversation text and saved project notes into a private **My knowledge** workspace using your local Claude or Codex login. Open Wiki to browse topic pages and source evidence, and Chat to ask about them. Ask your agent to show Commonplace import status for progress and the link, or pause chat import. This does not import claude.ai or ChatGPT cloud history. Your companion must be running to process and answer. 
+After connecting, ask your signed-in agent to import local Claude Code conversation text and saved project notes into your private **My knowledge** workspace. Select the model you want to use before starting; the current session processes saved batches. Open Wiki to browse topic pages and source evidence, and Chat to ask about them. Ask your agent to show Commonplace import status for progress and the link, or pause chat import. This does not import claude.ai or ChatGPT cloud history. Your companion must be running to process and answer. 
 
 Already installed? Update Commonplace in Claude Code's Plugins manager and start a new Claude session. No separate app or command is required.
 
@@ -40,7 +40,7 @@ An older raw-upload capability is disabled; local chat import uses the workspace
 
 Open **Customize → Plugins → Add → Add marketplace → Add from a repository**, select `diask5/commonplace-plugin`, and click **Sync**. Add **Commonplace** from that marketplace and start a new local Code conversation. If an old `commonplace-local` copy is installed, disable that duplicate. This installation path was exercised through the Windows Desktop UI.
 
-Version 0.2.1 also discovers local Desktop agent transcripts on Windows and macOS, including Windows Store installations, and respects `CLAUDE_CONFIG_DIR`. It imports transcript folders, not neighboring app configuration. A real Windows scan found 46 conversation files including 25 previously missed Desktop transcripts. Mac fixtures pass, but a physical Mac upload has not been verified. The native Desktop test confirmed capture but exposed a separately unauthenticated CLI. Version 0.2.2 adds resumable processing in the current signed-in agent through next_import_batch and complete_import_batch, with no terminal login. Full native generation is still being verified; installation success alone does not prove wiki generation.
+Version 0.2.1 also discovers local Desktop agent transcripts on Windows and macOS, including Windows Store installations, and respects `CLAUDE_CONFIG_DIR`. It imports transcript folders, not neighboring app configuration. A real Windows scan found 46 conversation files including 25 previously missed Desktop transcripts. Mac fixtures pass, but a physical Mac upload has not been verified. The native Desktop test confirmed capture but exposed a separately unauthenticated CLI. Version 0.2.2 adds resumable processing in the current signed-in agent through next_import_batch and complete_import_batch, with no terminal login. The Windows Desktop import has now completed through the installed plugin: 48 local conversation files and 126 supporting notes became 36 topic pages backed by 57 source archives. All generated cloud documents were read back and verified. The same native conversation processed the import, first with Fable and then with Opus selected by the owner. Choose your preferred model before a large import. Physical Mac upload remains unverified.
 
 ## Import recovery in 0.2.3
 
