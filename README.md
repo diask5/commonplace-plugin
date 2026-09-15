@@ -29,3 +29,9 @@ The existing 128-document workspace limit is reported without truncating local w
 ## Package
 
 [Download the plugin](https://github.com/diask5/commonplace-plugin/releases) or use the native marketplace installer above. The release includes the bundled Node.js runtime and its license. The catalog pins the archive's SHA-256 digest. It contains no owner chats, credentials, invitations or workspace database.
+
+## If Claude says chat uploads are disabled
+
+Update Commonplace in Claude Code's Plugins manager and start a new Claude Code chat. Say **“Import my local Claude Code chats into my Commonplace wiki and show the import status.”** The current plugin exposes `chat_import_status` and `import_chat_history`. If those tools are absent, the session has not loaded the current importer.
+
+An older raw-upload capability is disabled; local chat import uses the workspace API instead. The cloud can show pages from another connected device even while this device has not imported anything. Check the device name on its import-status page. Hosted claude.ai and ChatGPT history are not imported.
