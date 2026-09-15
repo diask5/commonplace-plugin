@@ -35,3 +35,9 @@ The existing 128-document workspace limit is reported without truncating local w
 Update Commonplace in Claude Code's Plugins manager and start a new Claude Code chat. Say **“Import my local Claude Code chats into my Commonplace wiki and show the import status.”** The current plugin exposes `chat_import_status` and `import_chat_history`. If those tools are absent, the session has not loaded the current importer.
 
 An older raw-upload capability is disabled; local chat import uses the workspace API instead. The cloud can show pages from another connected device even while this device has not imported anything. Check the device name on its import-status page. Hosted claude.ai and ChatGPT history are not imported.
+
+## Install in Claude Desktop (Code tab)
+
+Open **Customize → Plugins → Add → Add marketplace → Add from a repository**, select `diask5/commonplace-plugin`, and click **Sync**. Add **Commonplace** from that marketplace and start a new local Code conversation. If an old `commonplace-local` copy is installed, disable that duplicate. This installation path was exercised through the Windows Desktop UI.
+
+Version 0.2.1 also discovers local Desktop agent transcripts on Windows and macOS, including Windows Store installations, and respects `CLAUDE_CONFIG_DIR`. It imports transcript folders, not neighboring app configuration. A real Windows scan found 46 conversation files including 25 previously missed Desktop transcripts. Mac fixtures pass, but a physical Mac upload has not been verified. The Desktop end-to-end import test is pending a Claude usage reset; installation success alone does not prove wiki generation.
