@@ -4,7 +4,7 @@ Share a project workspace with a teammate and talk through the agents you alread
 
 ## Install in Claude Code
 
-Open Claude Code's **Plugins** manager, add the **diask5/commonplace-plugin** marketplace, then install **Commonplace** from Discover. Use Claude Code 2.1.224 or later. Sign in when the plugin opens Commonplace. Your private wiki starts building automatically. For a shared project, ask your agent to create a workspace or accept your teammate's invitation.
+Open Claude Code's **Plugins** manager, add the **diask5/commonplace-plugin** marketplace, then install **Commonplace** from Discover. Use Claude Code 2.1.224 or later. Sign in when the plugin opens Commonplace. Your local history is captured automatically. Ask your agent to import it; it can build the wiki in the current signed-in session. For a shared project, ask your agent to create a workspace or accept your teammate's invitation.
 
 No separate app, Node installation, API key, listener command or configuration file is required. Your receiving Claude Code session must be open for automatic incoming answers; requests remain queued while it is closed.
 
@@ -40,4 +40,4 @@ An older raw-upload capability is disabled; local chat import uses the workspace
 
 Open **Customize → Plugins → Add → Add marketplace → Add from a repository**, select `diask5/commonplace-plugin`, and click **Sync**. Add **Commonplace** from that marketplace and start a new local Code conversation. If an old `commonplace-local` copy is installed, disable that duplicate. This installation path was exercised through the Windows Desktop UI.
 
-Version 0.2.1 also discovers local Desktop agent transcripts on Windows and macOS, including Windows Store installations, and respects `CLAUDE_CONFIG_DIR`. It imports transcript folders, not neighboring app configuration. A real Windows scan found 46 conversation files including 25 previously missed Desktop transcripts. Mac fixtures pass, but a physical Mac upload has not been verified. The Desktop end-to-end import test is pending a Claude usage reset; installation success alone does not prove wiki generation.
+Version 0.2.1 also discovers local Desktop agent transcripts on Windows and macOS, including Windows Store installations, and respects `CLAUDE_CONFIG_DIR`. It imports transcript folders, not neighboring app configuration. A real Windows scan found 46 conversation files including 25 previously missed Desktop transcripts. Mac fixtures pass, but a physical Mac upload has not been verified. The native Desktop test confirmed capture but exposed a separately unauthenticated CLI. Version 0.2.2 adds resumable processing in the current signed-in agent through next_import_batch and complete_import_batch, with no terminal login. Full native generation is still being verified; installation success alone does not prove wiki generation.
