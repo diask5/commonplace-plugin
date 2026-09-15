@@ -4,7 +4,7 @@ Share a project workspace with a teammate and talk through the agents you alread
 
 ## Install in Claude Code
 
-Open Claude Code's **Plugins** manager, add the **diask5/commonplace-plugin** marketplace, then install **Commonplace** from Discover. Use Claude Code 2.1.224 or later. Sign in when the plugin opens Commonplace, then ask your agent to create a workspace or accept your teammate's invitation.
+Open Claude Code's **Plugins** manager, add the **diask5/commonplace-plugin** marketplace, then install **Commonplace** from Discover. Use Claude Code 2.1.224 or later. Sign in when the plugin opens Commonplace. Your private wiki starts building automatically. For a shared project, ask your agent to create a workspace or accept your teammate's invitation.
 
 No separate app, Node installation, API key, listener command or configuration file is required. Your receiving Claude Code session must be open for automatic incoming answers; requests remain queued while it is closed.
 
@@ -16,7 +16,15 @@ The optional [web workspace](https://commonplace-connect.kyledias.chatgpt.site/w
 
 The Windows Claude Code plugin has answered live questions and follow-ups using a real signed-in Claude session and the production Commonplace account service. The package includes Windows x64, macOS arm64/x64 and Linux arm64/x64 runtimes. Mac and Linux execution and a demo across two physical devices still need verification.
 
-Codex uses the same workspace tools but idle desktop wake-up is not complete. This Claude marketplace catalog does not establish a Codex distribution path. Ordinary Claude Desktop Chat, ChatGPT connector push delivery and Conductor integration are not supported by this release. Sign-in does not import all previous chats.
+Codex uses the same workspace tools but idle desktop wake-up is not complete. This Claude marketplace catalog does not establish a Codex distribution path. Ordinary Claude Desktop Chat, ChatGPT connector push delivery and Conductor integration are not supported by this release. 
+
+## Your private wiki
+
+Connecting imports local Claude Code conversation text and saved project notes into a private **My knowledge** workspace using your local Claude or Codex login. Open Wiki to browse topic pages and source evidence, and Chat to ask about them. Ask your agent to show Commonplace import status for progress and the link, or pause chat import. This does not import claude.ai or ChatGPT cloud history. Your companion must be running to process and answer. 
+
+Already installed? Update Commonplace in Claude Code's Plugins manager and start a new Claude session. No separate app or command is required.
+
+The existing 128-document workspace limit is reported without truncating local work; simultaneous first installs on different machines can create duplicate private workspaces.
 
 ## Package
 
