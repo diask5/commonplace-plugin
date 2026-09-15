@@ -21,4 +21,3 @@ Codex uses the same workspace tools but idle desktop wake-up is not complete. Th
 ## Package
 
 [Download the plugin](https://github.com/diask5/commonplace-plugin/releases) or use the native marketplace installer above. The release includes the bundled Node.js runtime and its license. The catalog pins the archive's SHA-256 digest. It contains no owner chats, credentials, invitations or workspace database.
-
