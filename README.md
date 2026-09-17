@@ -1,10 +1,12 @@
 # Commonplace
 
-> **Unpublished candidate 0.2.6-dev.4.** Requires the matching account server with migrations through 0015. The production server and default marketplace remain on the previous release; do not install this candidate against production yet.
+> **Unpublished candidate 0.2.6-dev.5.** Requires the matching account server with migrations through 0015. The production server and default marketplace remain on the previous release; do not install this candidate against production yet.
 
 Share a selected workspace from Claude with **/commonplace:share Kyle in Atlas**. The recipient accepts in their own chat with /commonplace:join. Both existing chats attach to the shared context; /commonplace:message sends chosen text or reads incoming messages. No new native session is required for ordinary sharing. **/commonplace:join** also lists incoming invitations. Personal chats, My knowledge archives and credentials remain private. Each agent keeps its own local copy. Joining does not enable automatic reviews.
 
 This candidate adds scoped workspace sessions, explicit personal-answer release and delegated review tasks with evidence and human approval. Native task opening depends on the host and may require acceptance. Codex checks invitations at task start or on an owner prompt; idle push is not supported. Two physical devices and a full live model review remain unverified.
+
+**/commonplace:add Sam** creates a person-invitation URL without granting private knowledge. After Sam accepts, share the selected project. **/commonplace:ask Sam What are you working on?** sends a claimable project question; **/commonplace:sync** brings current wiki, skills, setup and context into this chat’s local copy. The plugin listener receives questions in an open supported Claude host; Codex still checks at the next prompt/task start. No model answer or physical-device end-to-end demo is claimed by the local protocol tests.
 
 Share a project workspace with a teammate and talk through the agents you already use.
 
