@@ -49,3 +49,7 @@ A malformed wiki outline or topic response can be corrected without losing compl
 ## Clearer request errors in 0.2.4
 
 Rejected account API calls now identify the failing action and include recognized validation guidance instead of only HTTP 400. Unknown server content and OAuth credentials are never echoed. Update Commonplace in the Plugins manager and start a new conversation to load the update. This improves diagnostics; it does not establish that every reported remote-device error is fixed.
+
+## Wiki write validation in 0.2.5
+
+The learn_wiki tool now declares the account service limits and validates each field before upload: summaries 280 characters, page bodies 24,000, and individual source excerpts 3,000. A rejected draft names the field and limit so the agent can revise it; content is never silently truncated. Wiki revision conflicts and source-count limits now retain their recognized server guidance. Update the plugin and start a new Code conversation to load the new tool definition.
