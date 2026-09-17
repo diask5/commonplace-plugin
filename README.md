@@ -1,5 +1,11 @@
 # Commonplace
 
+> **Unpublished candidate 0.2.6-dev.2.** This branch requires the matching account-server migrations through 0015. The production server and default marketplace are still on the previous release. Do not install this candidate against production yet.
+
+The candidate separates personal chats from shared workspace sessions and adds delegated reviews: an agent claims a task, loads a fixed version of the shared wiki and skills, asks linked questions, and returns evidence to its owner for approval. Private knowledge requests return only an explicitly released answer. Offline task assignments survive restarts; revision checks and expiring worker leases reject stale or competing results.
+
+Local transport and privacy tests use synthetic accounts. Full model-driven review, native Desktop task opening, and two physical machines still require verification. The host must be running to receive work.
+
 Share a project workspace with a teammate and talk through the agents you already use.
 
 ## Install in Claude Code

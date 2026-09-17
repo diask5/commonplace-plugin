@@ -6,12 +6,12 @@
   "plugins": [
     {
       "name": "commonplace",
-      "version": "0.2.5",
+      "version": "0.2.6-dev.2",
       "description": "Shared workspaces and conversations inside your agent.",
       "source": {
         "source": "archive",
-        "url": "https://github.com/diask5/commonplace-plugin/releases/download/v0.2.5/commonplace-0.2.5.zip",
-        "sha256": "5033a28300ef17551df8a2bf17d051b2d12ded6b2c452e35376344678fbfa9e6"
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/v0.2.6-dev.2/commonplace-0.2.6-dev.2.zip",
+        "sha256": "6bfb7b7f22c8958e6b9e664a39eb5982d3c771644a7c697d33640ce858074849"
       }
     }
   ]
