@@ -45,3 +45,7 @@ Version 0.2.1 also discovers local Desktop agent transcripts on Windows and macO
 ## Import recovery in 0.2.3
 
 A malformed wiki outline or topic response can be corrected without losing completed batches. Resume also recovers interrupted checkpoint writes, and an unchanged or empty scan does not prevent later chats being discovered. Account changes stop the pending resume. The full local suite passes 210 checks; physical Mac upload is still unverified. The plugin uses the model selected in your agent: choose your preferred model before a large import.
+
+## Clearer request errors in 0.2.4
+
+Rejected account API calls now identify the failing action and include recognized validation guidance instead of only HTTP 400. Unknown server content and OAuth credentials are never echoed. Update Commonplace in the Plugins manager and start a new conversation to load the update. This improves diagnostics; it does not establish that every reported remote-device error is fixed.
