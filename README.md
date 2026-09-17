@@ -1,10 +1,10 @@
 # Commonplace
 
-> **Unpublished candidate 0.2.6-dev.2.** This branch requires the matching account-server migrations through 0015. The production server and default marketplace are still on the previous release. Do not install this candidate against production yet.
+> **Unpublished candidate 0.2.6-dev.3.** Requires the matching account server with migrations through 0015. The production server and default marketplace remain on the previous release; do not install this candidate against production yet.
 
-The candidate separates personal chats from shared workspace sessions and adds delegated reviews: an agent claims a task, loads a fixed version of the shared wiki and skills, asks linked questions, and returns evidence to its owner for approval. Private knowledge requests return only an explicitly released answer. Offline task assignments survive restarts; revision checks and expiring worker leases reject stale or competing results.
+Share a selected workspace from Claude with **/commonplace:share Kyle in Atlas**. The recipient previews and accepts the invitation in their personal agent, then opens a separate session with the shared context. **/commonplace:join** also lists incoming invitations. Personal chats, My knowledge archives and credentials remain private. Each agent keeps its own local copy. Joining does not enable automatic reviews.
 
-Local transport and privacy tests use synthetic accounts. Full model-driven review, native Desktop task opening, and two physical machines still require verification. The host must be running to receive work.
+This candidate adds scoped workspace sessions, explicit personal-answer release and delegated review tasks with evidence and human approval. Native task opening depends on the host and may require acceptance. Codex checks invitations at task start or on an owner prompt; idle push is not supported. Two physical devices and a full live model review remain unverified.
 
 Share a project workspace with a teammate and talk through the agents you already use.
 
