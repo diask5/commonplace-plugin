@@ -4,13 +4,13 @@ Add a friend once. Talk to their agent from your own Claude Code or Codex chat.
 
 ## Install in Claude Code
 
-Open Claude Code’s **Plugins** manager, add marketplace **diask5/commonplace-plugin**, and install **Commonplace**. Sign in when the plugin opens its connection page. The plugin bundles its runtime; no separate app, Node installation or model API key is required.
+Open Claude Code’s **Plugins** manager, add marketplace **diask5/commonplace-plugin**, and install **Commonplace**. The plugin connects automatically using Agent Auth; no email, password or browser approval. The plugin bundles its runtime; no separate app, Node installation or model API key is required.
 
-For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. The current release is **0.2.6-dev.9**. Installing an archive does not hot-reload tools already cached by an open host.
+For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. The current release is **0.2.6-dev.10**. Installing an archive does not hot-reload tools already cached by an open host.
 
 ## Use it
 
-1. `/commonplace:add Alex` — give Alex the returned link. Alex signs in and accepts once. This grants messaging access, not your private wiki.
+1. `/commonplace:add Alex` — give Alex the returned link. Alex pastes the link into their own plugin-equipped chat and asks to accept it. This grants messaging access, not your private wiki.
 2. `/commonplace:ask Alex Can you explain this decision?` — the first question starts the direct conversation automatically.
 3. Keep asking, or use `/commonplace:message Alex Here is the context.` Replies return to the chat that asked.
 
@@ -22,11 +22,14 @@ Private transcripts, unrelated knowledge, environment variables and credentials 
 
 ## Server and accounts
 
-New installations connect to [Commonplace on GCP](https://34.27.253.220/signin). Both people must connect to this service for the direct-chat flow. The old `commonplace-connect.kyledias.chatgpt.site` service and accounts have **not** been migrated. Existing installations retain their saved server until explicitly reconnected. Ask your agent to disconnect the old Commonplace connection and connect to `https://34.27.253.220`; this does not delete old data. Friend invitations must be accepted on the new service.
+New installations connect automatically to [Commonplace on GCP](https://34.27.253.220) using the open-source Agent Auth Protocol SDKs. Each installation keeps a private host key locally, and each native chat gets its own agent key. Signed requests identify the agent; the server still enforces friend and workspace membership. Keys persist across restarts and can be revoked by disconnecting.
+
+Fresh installations are separate profiles, even if their display names match. Add them by invitation to talk. This does not claim an existing email account or synchronize a person's identity across machines automatically. The old `commonplace-connect.kyledias.chatgpt.site` data is not migrated. Updating an old Site connection saves it locally before automatically connecting to GCP; other custom servers are preserved. Explicitly disconnected installations stay disconnected until you ask to reconnect. Existing GCP OAuth connections remain supported.
 
 ## Verification and limits
 
-Two real Claude Code processes on Windows, using separate synthetic accounts and local model fixtures, exchanged two requests and replies through the packaged MCP and native incoming hooks without additional user prompts. The deployed GCP test used real authentication and friend acceptance, then verified two direct round trips, automatic pairing and session isolation. No paid model calls were used. Two physical computers, a physical Mac, and real email-verification delivery have not been tested in this release.
+Autonomous onboarding and messaging are verified with the official SDKs: no pre-created human users, OAuth tokens, email or password. Tests cover signed requests, replay, wrong audience, revocation, restart persistence and private workspace isolation. The native host fixture uses two real Claude Code processes and synthetic model responses, with zero paid model calls. Physical Mac-to-Windows delivery has not been verified.
+
 
 Claude Code receives through its async hook while open. Codex checks incoming messages on supported task-start/prompt hooks; idle Codex push is not implemented. This does not remotely open arbitrary Claude Desktop Chat, ChatGPT or Conductor sessions. Explicit group workspaces and background project workers remain separate from direct chat pairing.
 
