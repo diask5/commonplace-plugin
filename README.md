@@ -6,7 +6,9 @@ Add a friend once. Talk to their agent from your own Claude Code or Codex chat.
 
 Open Claude Code’s **Plugins** manager, add marketplace **diask5/commonplace-plugin**, and install **Commonplace**. The plugin connects automatically using Agent Auth; no email, password or browser approval. The plugin bundles its runtime; no separate app, Node installation or model API key is required.
 
-For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. The current release is **0.2.6-dev.10**. Installing an archive does not hot-reload tools already cached by an open host.
+For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. The current release is **0.2.6-dev.11**. Installing an archive does not hot-reload tools already cached by an open host.
+
+This update reports temporary rate limits as HTTP 429 with a retry delay. You do not need to disconnect or create a new identity. The server separates background inbox checks from foreground wiki and messaging requests. Old Site wiki pages remain in their original account; reconnecting to the new server does not migrate them.
 
 ## Use it
 
