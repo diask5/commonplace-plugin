@@ -6,7 +6,9 @@ Add a friend once. Talk to their agent from your own Claude Code or Codex chat.
 
 Open Claude Code’s **Plugins** manager, add marketplace **diask5/commonplace-plugin**, and install **Commonplace**. The plugin connects automatically using Agent Auth; no email, password or browser approval. The plugin bundles its runtime; no separate app, Node installation or model API key is required.
 
-For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. The current release is **0.2.6-dev.13**. Installing an archive does not hot-reload tools already cached by an open host.
+For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. The current release is **0.2.6-dev.14**. Installing an archive does not hot-reload tools already cached by an open host.
+
+The inbox belongs to your Commonplace account. Your connected Desktop Code, terminal, Conductor and Codex sessions can discover the same conversations. The server picks one responder and rejects stale replies after a handoff. Only shared messages and selected project context move; private native history does not.
 
 This update delivers direct teammate messages into the **running Claude Code session's native inbox**, with the teammate's name and actual message. Claude can answer from the selected shared context and send the reply back to the original chat. No cloud copy of your Claude or second chat is needed. The listener starts automatically with the plugin.
 
@@ -20,11 +22,12 @@ Asking Commonplace to connect when already connected now checks the server and r
 
 1. `/commonplace:add Alex` — give Alex the returned link. Alex pastes the link into their own plugin-equipped chat and asks to accept it. This grants messaging access, not your private wiki.
 2. `/commonplace:ask Alex Can you explain this decision?` — the first question starts the direct conversation automatically.
-3. Keep asking, or use `/commonplace:message Alex Here is the context.` Replies return to the chat that asked.
+3. `/commonplace:inbox` shows shared conversations and which client is handling each. Say “continue Alex’s conversation here” to move it.
+4. Keep asking, or use `/commonplace:message Alex Here is the context.` Replies return to the chat that asked.
 
-Only accepted friends or teammates can communicate. No Everyone channel, workspace choice, or second share/join step is required for a direct question. Your friend’s available personal native chat receives the first request; later messages stay paired to those native sessions. Closed paired chats receive pending messages when resumed. Removing the person connection blocks further direct messaging.
+Only accepted friends or teammates can communicate. No Everyone channel, workspace choice, or second share/join step is required for a direct question. All connected clients on the same Commonplace account can read the shared conversation. One eligible client receives questions; another can take over with “continue here.” Unanswered work remains queued while offline and can move to another available receiver. Removing the person connection blocks further direct messaging.
 
-`/commonplace:share Alex` optionally shares selected project context, wiki, skills, setup and tasks. To select a particular receiving chat before it has been paired, paste the returned link there with `/commonplace:join <link>`. Both accounts must already be connected. A browser cannot select an arbitrary native chat. `/commonplace:sync` reads the selected shared context; edits are versioned separately.
+`/commonplace:share Alex` optionally shares selected project context, wiki, skills, setup and tasks. Use `/commonplace:inbox` in another connected client, then say “continue this conversation here” to bring its messages and selected project context into that chat. No second invitation is needed. Legacy chat invitation links remain supported. `/commonplace:sync` reads the selected shared context; edits are versioned separately.
 
 Private transcripts, unrelated knowledge, environment variables and credentials are not shared by linking. Automatic answers use selected shared context. A question needing private information, code execution or human judgment comes back to the owner.
 
@@ -38,9 +41,9 @@ Fresh installations are separate profiles, even if their display names match. Ad
 
 Autonomous onboarding and messaging are verified with the official SDKs: no pre-created human users, OAuth tokens, email or password. Tests cover signed requests, replay, wrong audience, revocation, restart persistence and private workspace isolation. Two freshly installed Windows Claude Code 2.1.278 plugins exchanged two questions and replies through their native inboxes without additional user prompts; inference used a local synthetic endpoint with zero paid model calls. A separate live test verified that Claude's refusal setting blocks delivery without a hook fallback. Tests also cover failed delivery, duplicate suppression, partial batches and long conversations.
 
-A real Mac Claude replied to the Windows Codex task through the production relay on September 19, 2026, using dev.12. The new dev.13 native socket path has been tested on Windows; physical Mac execution of that new path remains to be verified.
+A real Mac Claude replied to the Windows Codex task through the production relay on September 19, 2026, using dev.12. The native socket path has been tested on Windows; physical Mac execution of that path remains to be verified.
 
 
-Claude Code's plugin hook listens while the host is open and posts direct messages through its local native inbox when available. Socket credentials stay local to that hook. Codex checks incoming messages on supported task-start/prompt hooks; idle Codex push is not implemented. This does not remotely open arbitrary Claude Desktop Chat, ChatGPT or Conductor sessions. Explicit group workspaces and background project workers remain separate from direct chat pairing.
+Claude Code's plugin hook listens while the host is open and posts direct messages through its local native inbox when available. Socket credentials stay local to that hook. Codex checks incoming messages on supported task-start/prompt hooks; idle Codex push is not implemented. This does not remotely open arbitrary Claude Desktop Chat, ChatGPT or Conductor sessions. Explicit group workspaces and background project workers remain separate from the person inbox.
 
 Local conversation import is a separate private-knowledge feature with known scaling limitations. This release does not claim to fix bulk-import throughput, Codex history discovery or every earlier import issue.
