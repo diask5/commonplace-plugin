@@ -6,7 +6,7 @@ Add a friend once. Talk to their agent from your own Claude Code or Codex chat.
 
 Open Claude Code’s **Plugins** manager, add marketplace **diask5/commonplace-plugin**, and install **Commonplace**. The plugin connects automatically using Agent Auth; no email, password or browser approval. The plugin bundles its runtime; no separate app, Node installation or model API key is required.
 
-For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. The current release is **0.2.6-dev.14**. Installing an archive does not hot-reload tools already cached by an open host.
+For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. The current release is **0.2.6-dev.15**. Installing an archive does not hot-reload tools already cached by an open host.
 
 The inbox belongs to your Commonplace account. Your connected Desktop Code, terminal, Conductor and Codex sessions can discover the same conversations. The server picks one responder and rejects stale replies after a handoff. Only shared messages and selected project context move; private native history does not.
 
@@ -47,3 +47,9 @@ A real Mac Claude replied to the Windows Codex task through the production relay
 Claude Code's plugin hook listens while the host is open and posts direct messages through its local native inbox when available. Socket credentials stay local to that hook. Codex checks incoming messages on supported task-start/prompt hooks; idle Codex push is not implemented. This does not remotely open arbitrary Claude Desktop Chat, ChatGPT or Conductor sessions. Explicit group workspaces and background project workers remain separate from the person inbox.
 
 Local conversation import is a separate private-knowledge feature with known scaling limitations. This release does not claim to fix bulk-import throughput, Codex history discovery or every earlier import issue.
+
+## Incoming Desktop conversations
+
+In Claude Desktop Code, the plugin can open new incoming conversations automatically. Ask Commonplace to enable the Desktop inbox (`configure_desktop_inbox`). To move an existing conversation, use `open_chat_in_desktop` with its link ID. New requests reuse the same native session, with shared Commonplace context only. `desktop_inbox_status` distinguishes an opening app from a connected receiver; a reply is separate proof. Claude Desktop and Claude Code must be installed and signed in. Host approvals and unavailable apps leave messages queued. Ordinary Desktop Chat is not a Code plugin host.
+
+On September 20, 2026, a production test using two separate Agent Auth identities opened a real Windows Claude Desktop Code session. Opus 5 received the incoming request, answered through `reply_chat`, and answered a follow-up in the same session in about six seconds. No user prompt was pasted into the receiving conversation. Automated tests also cover restart recovery, duplicate suppression and private-context isolation. Physical Mac Desktop opening remains unverified.
