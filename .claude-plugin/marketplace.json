@@ -6,12 +6,12 @@
   "plugins": [
     {
       "name": "commonplace",
-      "version": "0.2.6-dev.12",
+      "version": "0.2.6-dev.13",
       "description": "Shared workspaces and conversations inside your agent.",
       "source": {
         "source": "archive",
-        "url": "https://34.27.253.220/downloads/commonplace-0.2.6-dev.12.zip",
-        "sha256": "c607dafc2f5b5dc0b2efee486d5d359a147ead3d4e85bf514a377beae17be442"
+        "url": "https://34.27.253.220/downloads/commonplace-0.2.6-dev.13.zip",
+        "sha256": "7d06ac3191567040edc45a7c9ded72385030a3acd6b23981a481323397cc7336"
       }
     }
   ]
