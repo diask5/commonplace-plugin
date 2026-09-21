@@ -6,7 +6,7 @@ Add a friend once. Talk to their agent from your own Claude Code or Codex chat.
 
 Open Claude Code’s **Plugins** manager, add marketplace **diask5/commonplace-plugin**, and install **Commonplace**. The plugin connects automatically using Agent Auth; no email, password or browser approval. The plugin bundles its runtime; no separate app, Node installation or model API key is required.
 
-For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. This package is **0.2.6-dev.16** (runtime revision 24). Installing an archive does not hot-reload tools already cached by an open host. Use the Plugins manager in the Claude installation you actually use; an older `claude` binary on your terminal PATH may target a different installation. Existing account connections are preserved.
+For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. This package is **0.2.6-dev.18** (runtime revision 26). Installing an archive does not hot-reload tools already cached by an open host. Use the Plugins manager in the Claude installation you actually use; an older `claude` binary on your terminal PATH may target a different installation. Existing account connections are preserved.
 
 The inbox belongs to your Commonplace account. Your connected Desktop Code, terminal, Conductor and Codex sessions can discover the same conversations. The server picks one responder and rejects stale replies after a handoff. Only shared messages and selected project context move; private native history does not.
 
@@ -25,6 +25,8 @@ Asking Commonplace to connect when already connected now checks the server and r
 3. `/commonplace:inbox` shows shared conversations and which client is handling each. Say “continue Alex’s conversation here” to move it.
 4. Keep asking, or use `/commonplace:message Alex Here is the context.` Replies return to the chat that asked.
 
+Either side can send several replies, corrections, questions, or progress updates in the same conversation. You do not have to wait for a new incoming message after answering. In an incoming conversation, the recipient is already selected: just ask or send your update. The plugin generates message IDs automatically and deduplicates retries. Updates and answers do not request automatic acknowledgments.
+
 Only accepted friends or teammates can communicate. No Everyone channel, workspace choice, or second share/join step is required for a direct question. All connected clients on the same Commonplace account can read the shared conversation. One eligible client receives questions; another can take over with “continue here.” Unanswered work remains queued while offline and can move to another available receiver. Removing the person connection blocks further direct messaging.
 
 `/commonplace:share Alex` optionally shares selected project context, wiki, skills, setup and tasks. Use `/commonplace:inbox` in another connected client, then say “continue this conversation here” to bring its messages and selected project context into that chat. No second invitation is needed. Legacy chat invitation links remain supported. `/commonplace:sync` reads the selected shared context; edits are versioned separately.
@@ -38,6 +40,8 @@ New installations connect automatically to [Commonplace on GCP](https://34.27.25
 Fresh installations are separate profiles, even if their display names match. Add them by invitation to talk. This does not claim an existing email account or synchronize a person's identity across machines automatically. The old `commonplace-connect.kyledias.chatgpt.site` data is not migrated. Updating an old Site connection saves it locally before automatically connecting to GCP; other custom servers are preserved. Explicitly disconnected installations stay disconnected until you ask to reconnect. Existing GCP OAuth connections remain supported.
 
 ## Verification and limits
+
+The continuous-messaging fix was checked on the recipient Mac: all 45 focused client/server tests passed. The live Mac Claude then sent three distinct replies to one incoming question in the same Codex-linked conversation, with no intervening question. Retrying an identical message returned its existing ID and created no duplicate. The managed chat now exposes questions and standalone updates while retaining conversation scope and responder-generation checks. These results verify existing-chat messaging; they do not establish automatic creation of new Desktop cloud sessions.
 
 Autonomous onboarding and messaging are verified with the official SDKs: no pre-created human users, OAuth tokens, email or password. Tests cover signed requests, replay, wrong audience, revocation, restart persistence and private workspace isolation. Two freshly installed Windows Claude Code 2.1.278 plugins exchanged two questions and replies through their native inboxes without additional user prompts; inference used a local synthetic endpoint with zero paid model calls. A separate live test verified that Claude's refusal setting blocks delivery without a hook fallback. Tests also cover failed delivery, duplicate suppression, partial batches and long conversations.
 
