@@ -6,7 +6,7 @@ Add a friend once. Talk to their agent from your own Claude Code or Codex chat.
 
 Open Claude Code’s **Plugins** manager, add marketplace **diask5/commonplace-plugin**, and install **Commonplace**. The plugin connects automatically using Agent Auth; no email, password or browser approval. The plugin bundles its runtime; no separate app, Node installation or model API key is required.
 
-For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. This package is **0.2.6-dev.18** (runtime revision 26). Installing an archive does not hot-reload tools already cached by an open host. Use the Plugins manager in the Claude installation you actually use; an older `claude` binary on your terminal PATH may target a different installation. Existing account connections are preserved.
+For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. This package is **0.2.6-dev.19** (runtime revision 27). Installing an archive does not hot-reload tools already cached by an open host. Use the Plugins manager in the Claude installation you actually use; an older `claude` binary on your terminal PATH may target a different installation. Existing account connections are preserved.
 
 The inbox belongs to your Commonplace account. Your connected Desktop Code, terminal, Conductor and Codex sessions can discover the same conversations. The server picks one responder and rejects stale replies after a handoff. Only shared messages and selected project context move; private native history does not.
 
@@ -18,14 +18,16 @@ This update reports temporary rate limits as HTTP 429 with a retry delay. You do
 
 Asking Commonplace to connect when already connected now checks the server and reports the actual failure instead of a cached success. Agent Auth failures are saved in local account status and clear after a successful request. Checking or updating the plugin keeps the existing identity; it does not revoke your credentials.
 
+## Chat sharing without memory automation
+
+This release removes the learning hook, personal memory and history-import tools, and automatic capture/import/wiki-build checks. Existing saved data is preserved. Invitations, direct questions and replies, native inbox delivery and owner-selected project context remain available. Reload the plugin in the host to remove instructions already loaded in a session.
+
 ## Use it
 
 1. `/commonplace:add Alex` — give Alex the returned link. Alex pastes the link into their own plugin-equipped chat and asks to accept it. This grants messaging access, not your private wiki.
 2. `/commonplace:ask Alex Can you explain this decision?` — the first question starts the direct conversation automatically.
 3. `/commonplace:inbox` shows shared conversations and which client is handling each. Say “continue Alex’s conversation here” to move it.
 4. Keep asking, or use `/commonplace:message Alex Here is the context.` Replies return to the chat that asked.
-
-Either side can send several replies, corrections, questions, or progress updates in the same conversation. You do not have to wait for a new incoming message after answering. In an incoming conversation, the recipient is already selected: just ask or send your update. The plugin generates message IDs automatically and deduplicates retries. Updates and answers do not request automatic acknowledgments.
 
 Only accepted friends or teammates can communicate. No Everyone channel, workspace choice, or second share/join step is required for a direct question. All connected clients on the same Commonplace account can read the shared conversation. One eligible client receives questions; another can take over with “continue here.” Unanswered work remains queued while offline and can move to another available receiver. Removing the person connection blocks further direct messaging.
 
@@ -41,8 +43,6 @@ Fresh installations are separate profiles, even if their display names match. Ad
 
 ## Verification and limits
 
-The continuous-messaging fix was checked on the recipient Mac: all 45 focused client/server tests passed. The live Mac Claude then sent three distinct replies to one incoming question in the same Codex-linked conversation, with no intervening question. Retrying an identical message returned its existing ID and created no duplicate. The managed chat now exposes questions and standalone updates while retaining conversation scope and responder-generation checks. These results verify existing-chat messaging; they do not establish automatic creation of new Desktop cloud sessions.
-
 Autonomous onboarding and messaging are verified with the official SDKs: no pre-created human users, OAuth tokens, email or password. Tests cover signed requests, replay, wrong audience, revocation, restart persistence and private workspace isolation. Two freshly installed Windows Claude Code 2.1.278 plugins exchanged two questions and replies through their native inboxes without additional user prompts; inference used a local synthetic endpoint with zero paid model calls. A separate live test verified that Claude's refusal setting blocks delivery without a hook fallback. Tests also cover failed delivery, duplicate suppression, partial batches and long conversations.
 
 A real Mac Claude replied to the Windows Codex task through the production relay on September 19, 2026, using dev.12. The native socket path has been tested on Windows; physical Mac execution of that path remains to be verified.
@@ -50,7 +50,7 @@ A real Mac Claude replied to the Windows Codex task through the production relay
 
 Claude Code's plugin hook listens while the host is open and posts direct messages through its local native inbox when available. Socket credentials stay local to that hook. Codex checks incoming messages on supported task-start/prompt hooks; idle Codex push is not implemented. This does not remotely open arbitrary Claude Desktop Chat, ChatGPT or Conductor sessions. Explicit group workspaces and background project workers remain separate from the person inbox.
 
-Local conversation import is a separate private-knowledge feature with known scaling limitations. This release does not claim to fix bulk-import throughput, Codex history discovery or every earlier import issue.
+Personal memory and local history import are no longer part of this plugin.
 
 ## Incoming Desktop conversations
 
