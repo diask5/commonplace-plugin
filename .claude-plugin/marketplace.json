@@ -6,12 +6,12 @@
   "plugins": [
     {
       "name": "commonplace",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "description": "Share conversations with teammates through your existing agents.",
       "source": {
         "source": "archive",
-        "url": "https://github.com/diask5/commonplace-plugin/releases/download/v0.2.6/commonplace-0.2.6.zip",
-        "sha256": "1e4cbfdbd78ce3a0c909f8e551a6a91eb52890d466a5fba99ebc9bda607eeae8"
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/v0.2.7/commonplace-0.2.7.zip",
+        "sha256": "95090c1322686e5d271a56d46c6ae035bea070a0658f26dce45f9733cec12dc8"
       }
     }
   ]

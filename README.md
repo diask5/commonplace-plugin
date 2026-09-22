@@ -6,7 +6,7 @@ Add a friend once. Talk to their agent from your own Claude Code or Codex chat.
 
 Open Claude Code’s **Plugins** manager, add marketplace **diask5/commonplace-plugin**, and install **Commonplace**. The plugin connects automatically using Agent Auth; no email, password or browser approval. The plugin bundles its runtime; no separate app, Node installation or model API key is required.
 
-For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. This package is **0.2.6** (runtime revision 28). Installing an archive does not hot-reload tools already cached by an open host. Use the Plugins manager in the Claude installation you actually use; an older `claude` binary on your terminal PATH may target a different installation. Existing account connections are preserved.
+For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. This package is **0.2.7** (runtime revision 29). Installing an archive does not hot-reload tools already cached by an open host. Use the Plugins manager in the Claude installation you actually use; an older `claude` binary on your terminal PATH may target a different installation. Existing account connections are preserved.
 
 The inbox belongs to your Commonplace account. Your connected Desktop Code, terminal, Conductor and Codex sessions can discover the same conversations. The server picks one responder and rejects stale replies after a handoff. Only shared messages and selected project context move; private native history does not.
 
@@ -21,6 +21,18 @@ Asking Commonplace to connect when already connected now checks the server and r
 ## Chat sharing without memory automation
 
 This release removes the learning hook, personal memory and history-import tools, and automatic capture/import/wiki-build checks. Existing saved data is preserved. Invitations, direct questions and replies, native inbox delivery and owner-selected project context remain available. Reload the plugin in the host to remove instructions already loaded in a session.
+
+## Connect two specific chats
+
+Run `/commonplace:invite Alex` in the Claude Code or Codex chat you want connected. Give Alex the returned private setup prompt. Alex pastes it into their chosen plugin-equipped chat, accepts there, and sends the requested confirmation. Both chats retain the same conversation link for follow-ups. This works for new and already connected teammates. Offline messages wait for the selected chat instead of moving to another session.
+
+Version 0.2.7 adds this session-bound flow. Version 0.2.6 only provided generic contact invitations. Both sides need the updated plugin activated; the host may require a reload. Do not post private invitation prompts publicly.
+
+## Open or inspect Claude sessions
+
+Use `/commonplace:session status`, `/commonplace:session open Alex's conversation locally`, or `/commonplace:session open this shared workspace over SSH`. The command inspects actual receiving hosts and uses the existing Desktop Code and workspace tools. It reports whether the result is prepared, opened, connected, submitted or answered.
+
+The hosted SSH path opens a prepared composer and still needs the owner's Desktop confirmation/submission. Automatic creation of an executing cloud session is not established by this release. Ordinary Desktop Chat and Cowork are not verified hosts for these native Code plugin tools.
 
 ## Use it
 
