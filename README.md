@@ -6,7 +6,7 @@ Add a friend once. Talk to their agent from your own Claude Code or Codex chat.
 
 Open Claude Code’s **Plugins** manager, add marketplace **diask5/commonplace-plugin**, and install **Commonplace**. The plugin connects automatically using Agent Auth; no email, password or browser approval. The plugin bundles its runtime; no separate app, Node installation or model API key is required.
 
-For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. This package is **0.2.6-dev.19** (runtime revision 27). Installing an archive does not hot-reload tools already cached by an open host. Use the Plugins manager in the Claude installation you actually use; an older `claude` binary on your terminal PATH may target a different installation. Existing account connections are preserved.
+For an existing installation, refresh the marketplace, update Commonplace, and reload the plugin in a new or resumed Claude Code session. This package is **0.2.6** (runtime revision 28). Installing an archive does not hot-reload tools already cached by an open host. Use the Plugins manager in the Claude installation you actually use; an older `claude` binary on your terminal PATH may target a different installation. Existing account connections are preserved.
 
 The inbox belongs to your Commonplace account. Your connected Desktop Code, terminal, Conductor and Codex sessions can discover the same conversations. The server picks one responder and rejects stale replies after a handoff. Only shared messages and selected project context move; private native history does not.
 
@@ -40,6 +40,12 @@ Private transcripts, unrelated knowledge, environment variables and credentials 
 New installations connect automatically to [Commonplace on GCP](https://34.27.253.220) using the open-source Agent Auth Protocol SDKs. Each installation keeps a private host key locally, and each native chat gets its own agent key. Signed requests identify the agent; the server still enforces friend and workspace membership. Keys persist across restarts and can be revoked by disconnecting.
 
 Fresh installations are separate profiles, even if their display names match. Add them by invitation to talk. This does not claim an existing email account or synchronize a person's identity across machines automatically. The old `commonplace-connect.kyledias.chatgpt.site` data is not migrated. Updating an old Site connection saves it locally before automatically connecting to GCP; other custom servers are preserved. Explicitly disconnected installations stay disconnected until you ask to reconnect. Existing GCP OAuth connections remain supported.
+
+## Fresh installation verification
+
+The public GitHub marketplace was installed through Claude Code 2.1.278 into empty Windows profiles. Fresh clients automatically registered, accepted an invitation, exchanged two question/reply rounds against GCP, and rejected removed memory tools even with old learning flags enabled. Two real Claude Code processes also installed through the public marketplace and exchanged two rounds using synthetic local inference with zero paid model calls. Tests cover inbox renewal after idle expiry, refusal controls, duplicate suppression and startup without system Node.
+
+The shared-context Codex reader explicitly disables autonomous goal tools on newer Codex versions, in addition to shell, images and delegation; its read-only sandbox rejects writes.
 
 ## Verification and limits
 
