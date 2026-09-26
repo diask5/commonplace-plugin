@@ -1,17 +1,17 @@
 {
   "name": "commonplace",
   "owner": {
-    "name": "Commonplace"
+    "name": "Meet Proxy"
   },
   "plugins": [
     {
       "name": "commonplace",
-      "version": "0.2.7",
-      "description": "Share conversations with teammates through your existing agents.",
+      "version": "0.2.8",
+      "description": "Meet Proxy — compatible update for existing Commonplace installations.",
       "source": {
         "source": "archive",
-        "url": "https://github.com/diask5/commonplace-plugin/releases/download/v0.2.7/commonplace-0.2.7.zip",
-        "sha256": "95090c1322686e5d271a56d46c6ae035bea070a0658f26dce45f9733cec12dc8"
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.2.8/commonplace-0.2.8.zip",
+        "sha256": "1bdda4e68646d1b8cd200e3e2a3d627c94d3d24a936068fa36e657fd4936587b"
       }
     },
     {
@@ -22,6 +22,16 @@
         "source": "archive",
         "url": "https://github.com/diask5/commonplace-plugin/releases/download/files-v0.1.0/commonplace-files-0.1.0.zip",
         "sha256": "66ab9296fdbacdbc6577150c7ebfa59f05b17574b1a595e1ea54a27958e93086"
+      }
+    },
+    {
+      "name": "meet-proxy",
+      "version": "0.2.8",
+      "description": "Meet Proxy — connect people through their agents and exchange messages across supported hosts.",
+      "source": {
+        "source": "archive",
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.2.8/meet-proxy-0.2.8.zip",
+        "sha256": "f7562829022a82dc67ac1953505c4cbb6df86678d51b6e8d0c14c85d4c715753"
       }
     }
   ]
