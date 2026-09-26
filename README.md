@@ -2,6 +2,8 @@
 
 Connect people through their existing agents. Add a teammate once, exchange questions and replies, and share only the context you choose.
 
+See the [observed results and remaining Conductor check](MEET-PROXY-VERIFICATION.md).
+
 ## Install or update
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager. New installations use **meet-proxy**. If you already have **commonplace**, update that existing plugin: version **0.2.8** is the compatible Meet Proxy release. Enable only one alias. Existing accounts, invitations and connections are preserved. Start or resume the intended chat after updating.
