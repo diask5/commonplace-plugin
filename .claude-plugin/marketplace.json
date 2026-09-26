@@ -13,6 +13,16 @@
         "url": "https://github.com/diask5/commonplace-plugin/releases/download/v0.2.7/commonplace-0.2.7.zip",
         "sha256": "95090c1322686e5d271a56d46c6ae035bea070a0658f26dce45f9733cec12dc8"
       }
+    },
+    {
+      "name": "commonplace-files",
+      "version": "0.1.0",
+      "description": "Versioned cloud folders with private drafts, checked sharing, and Windows drive access.",
+      "source": {
+        "source": "archive",
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/files-v0.1.0/commonplace-files-0.1.0.zip",
+        "sha256": "66ab9296fdbacdbc6577150c7ebfa59f05b17574b1a595e1ea54a27958e93086"
+      }
     }
   ]
 }

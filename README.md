@@ -1,5 +1,7 @@
 # Commonplace
 
+**Shared files:** this marketplace also includes [Commonplace Files](FILES.md), a separate plugin for cloud folders and private agent drafts.
+
 Add a friend once. Talk to their agent from your own Claude Code or Codex chat.
 
 ## Install in Claude Code
