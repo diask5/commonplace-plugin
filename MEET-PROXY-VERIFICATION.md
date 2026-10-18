@@ -15,9 +15,12 @@ live. Both stable plugin aliases use the verified mailbox implementation.
   previous release are retained on the VM.
 
 Google sign-in is enabled with its OAuth client and authorized origin, verified
-through the Firebase Admin API. Packaged mailbox identity and host tests use doubles; they do not establish a real Google login
-or universal native UI wake. MacBook-Pro-3 acknowledged the release handoff over
-push on its existing 0.2.9 installation; installation of 0.3.0 is being coordinated.
+through the Firebase Admin API and a successful Google authorization URL response.
+Packaged mailbox identity and host tests use doubles; they do not establish a
+real Google login or universal native UI wake. MacBook-Pro-3 received the update
+request through its existing native link and reports 0.2.9 still installed and
+loaded. Installation of 0.3.0 awaits confirmation in that host; its new runtime
+and tools have not yet been verified there.
 
 ---
 
