@@ -1,29 +1,53 @@
-# Meet Proxy in Conductor
+# Meet Proxy in two Conductor chats
 
-Meet Proxy is the new name for Commonplace. It connects accepted people through their existing agent conversations. Each host runs the same plugin and uses the same relay for invitations, shared messages, and selected context. Existing account storage and connection identifiers are retained.
+Install **meet-proxy@commonplace** from marketplace **diask5/commonplace-plugin**
+in the agent environment Conductor uses. Existing **commonplace@commonplace**
+users should update that alias to 0.2.9. Keep only one alias enabled and reload
+the two chats after updating. Use Claude Code for the owner when checking
+unsolicited native delivery; normal project, MCP, hook and tool permissions apply.
 
-## Setup
+## Requester asks for access
 
-Conductor loads the MCP configuration of its selected agent. Install the plugin in the Claude Code or Codex environment that Conductor actually runs. For new Claude Code installations, add marketplace `diask5/commonplace-plugin` and install `meet-proxy`. Existing `commonplace` installations receive the same compatible update under their existing ID. Keep only one alias enabled.
+1. Connect the two test people using an ordinary teammate invitation if needed.
+2. In the requester chat: “Ask the other person's Chief of Staff about the Atlas
+   pilot's budget ceiling and start date for the next 15 minutes.”
+3. In the owner chat: “Accept that request. You may share a ceiling of $125,000
+   and a November 12 start. Keep source names, documents and negotiation details
+   private. Answer ordinary questions about those facts without asking me again.”
+4. Finish the owner turn and leave the session open. In the requester chat ask:
+   “Does a $110,000 pilot on November 12 fit?” Read the actual answer.
 
-After an update, refresh MCP status and reload or resume the intended session. The first tools/list result must contain `ask_chat`, `read_chat_link`, and `reply_chat`. A browser page opening or an installation record alone does not prove this activation. Check `connect_account`, then `list_chat_sessions` to identify the actual receiver.
+## Owner issues an invitation
 
-Use the host's supported installer and normal permission controls. Claude's native message accept/hold/refuse setting remains effective. MCP tools work while the agent is active; unsolicited arrival into an idle agent also requires a supported native inbox or host hook. These are separate capabilities.
+1. In the owner chat: “Take a conversation about the Atlas pilot's budget and
+   start date for the next 15 minutes. You may disclose a $125,000 ceiling and
+   November 12 start, but no source information or negotiation details. Give me
+   a private invitation code. Answer in-scope questions without further approval.”
+2. Copy the code to the requester chat. Ask that agent to preview the scope,
+   accept the invitation and ask a budget/timing question.
+3. Leave the owner session open and verify that the requester receives an answer.
 
-## Repeatable demonstration
+## Check the boundaries
 
-1. In the selected sender chat, invite a test teammate. Accept its private invitation in the receiver chat.
-2. Send a synthetic question and read the actual reply in the original chat.
-3. Send a different follow-up through the same link and verify a second reply.
-4. Restart and resume that same receiver session; verify a third exchange and unchanged account identity.
-5. If choosing a new chat or another host, explicitly continue the conversation there. Verify the previous receiver can no longer reply, then exchange another question and reply.
+Ask for the private source or an unrelated filesystem action. The owner agent
+should refuse. Read the full delegation transcript from both sides: questions,
+answers and lifecycle events should match, while the private briefing remains
+owner-only. Revoke the grant, or let its deadline pass, and verify that another
+message is rejected while the audit remains readable.
 
-Session-bound invitations intentionally remain attached to their selected chat while it is offline. A new Conductor workspace is a different chat. Moving the responder is an explicit operation so unrelated sessions cannot silently take over private conversations.
+The relay fixes the topic, expiry and native chat bindings at acceptance.
+Changing those requires a new grant. The requester cannot grant permissions for
+the owner. Model instructions enforce source removal and topic relevance; the
+service enforces consent, time, revocation and native routing.
 
-## Verification boundary
+## What has been verified
 
-The startup discovery regression is reproduced using the real stdio plugin and a delayed local companion. Before the fix, an immediate catalog omitted messaging; after the fix, it includes messaging without requiring tools/list_changed handling. Failed onboarding retains connection recovery, and an explicit disconnection is preserved.
+Two real Claude Code CLI sessions on a Mac passed these flows using actual
+models and native session IDs. The packaged plugin separately passed both flows
+against the production relay. The actual Conductor desktop UI remains untested.
+Codex lifecycle hooks and explicit bounded waits do not start an idle or closed
+session. A queued message is not proof that the recipient answered.
 
-This Windows development environment cannot run the macOS Conductor application. A process with Conductor environment variables tests host classification and protocol behavior, not the actual Conductor UI or idle delivery. Actual Mac Conductor testing remains required before claiming full Conductor support.
-
-References: [Conductor MCP configuration](https://www.conductor.build/docs/reference/mcp), [setup and refresh](https://www.conductor.build/docs/guides/configure-mcp-servers), [supported platforms](https://www.conductor.build/docs/installation).
+See [the release verification](../MEET-PROXY-VERIFICATION.md). Conductor's
+[MCP documentation](https://conductor.build/docs/reference/mcp) describes host
+configuration.
