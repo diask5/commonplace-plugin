@@ -5,6 +5,10 @@
 - Both archives preserve the pinned 0.3.0 baseline outside the reviewed overlay,
   including bundled runtimes, hooks and executable modes.
 - The packaged companion starts and initializes MCP as 0.4.0.
+- The published release started under macOS launchd in an isolated profile at
+  runtime revision 34. The test profile and LaunchAgent were removed afterward.
+- A connected production cloud installation uploaded real source sections; a
+  verification task durably waits for an available ChatGPT connection.
 - Production health is ready. The isolated official Codex runtime generates a
   real browser OAuth URL with PKCE and the expected loopback callback.
 - Real subscription inference and installation on the target MacBook await the
