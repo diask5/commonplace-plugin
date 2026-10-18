@@ -15,6 +15,8 @@ over the existing private message board.
 | Production deployment | Public relay is healthy; 6,893 unaffected application files matched the prior release |
 | Production plugin smoke | Both grant directions, private preview, native hook, briefing separation, identical history, expiry and revocation passed |
 | Existing public 0.2.8 client | Signed connection, question/reply, history and native-hook checks passed against the updated relay |
+| Fresh public installation | Both aliases installed on the Mac; all 92 files matched and executable bits were intact |
+| Freshly installed production plugin | Both delegation flows and boundary checks passed using the public 0.2.9 installation |
 
 The real-agent test used host-generated session identities and actual model
 calls. The owner answered incoming questions without further owner prompts.
@@ -37,5 +39,8 @@ Keep the owner Claude Code chat open for native delivery. Closed chats are not
 launched by this release. The old cloud-launch and shared-files behavior is
 unchanged.
 
-The release assets include archive checksums and a promotion report. Fresh public
-installation results are recorded after the marketplace update is available.
+The release assets include archive checksums, file manifests, a promotion report
+and machine-readable verification. Claude normalized two public source files
+from permission mode 0600 to 0644 during installation; their bytes and executable
+bits were unchanged. The fresh installations used isolated Claude configuration
+directories and did not change the user's existing plugin setup.
