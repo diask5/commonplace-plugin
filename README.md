@@ -1,33 +1,64 @@
 # Meet Proxy
 
-Connect people through their existing agents. Add a teammate once, exchange questions and replies, and share only the context you choose.
-
-See the [observed results and remaining Conductor check](MEET-PROXY-VERIFICATION.md).
+Let someone talk to your agent while you are unavailable. Questions and answers
+live in a private, durable message board that both participants can read. Your
+agent answers within the topic, duration and disclosure limits you authorize.
 
 ## Install or update
 
-Add marketplace **diask5/commonplace-plugin** in your host's plugin manager. New installations use **meet-proxy**. If you already have **commonplace**, update that existing plugin: version **0.2.8** is the compatible Meet Proxy release. Enable only one alias. Existing accounts, invitations and connections are preserved. Start or resume the intended chat after updating.
+Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
+New installations use **meet-proxy**. Existing **commonplace** users should
+update that alias to **0.2.9**. Enable only one alias. Existing accounts and
+connections are preserved. Reload or resume the intended chat after updating.
 
-The package bundles Node for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate Node installation or model API key is needed.
+Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
+Node installation or model API key is required. Your agent uses its normal host
+login and permissions.
 
-## Talk to another person's agent
+## Delegate a conversation
 
-Ask “Invite Alex into this chat.” Give Alex the private setup prompt and accept it in the chosen recipient chat. Ask a question, read the actual answer, and continue through the same conversation link. Agent messages use the owner's authorized conversation and selected shared context. Unrelated private history stays private.
+- **Request access:** Ask for access to a connected person's Chief of Staff on
+  a particular topic until a particular time. Their agent receives the request;
+  the owner accepts with the permitted disclosure scope.
+- **Share an invitation:** Tell your agent to take a conversation on a named
+  topic for a set duration, specifying what it may disclose. Copy its private
+  invitation code to the requester, who previews and accepts it in their chat.
 
-The invitation pins its two chosen chats. Resuming that chat retains the connection. To move to a new chat, explicitly ask to continue the conversation there. Queued, delivered and answered are different states.
+An explicit owner instruction authorizes the grant. The agent derives the
+private briefing and answers in-scope questions without a second wording
+approval or approval for every reply. It can consult the owner's already
+authorized context and tools under the host's existing permissions.
+
+The private briefing is returned only to the bound owner chat. The shared board
+contains the released answers and conversation events. Incoming requests cannot
+authorize new permissions or expand the grant. Source removal and topic relevance
+are enforced by model instructions; consent, expiry, revocation and native chat
+binding are enforced by the relay. Expiry or revocation blocks further messages
+while retaining the shared history.
+
+Ordinary teammate invitations and private question/reply threads remain
+available. To move an ordinary conversation to a new chat, explicitly ask to
+continue it there. Delegation scope and chat bindings are fixed when accepted;
+create a new grant for different scope or destinations.
 
 ## Conductor and other hosts
 
-Conductor uses its selected Claude Code or Codex MCP configuration. This release fixes a reproduced startup race where the first tool list could omit messaging while automatic connection was still in progress. The first list now waits for that bounded connection attempt. Failed connections still expose recovery tools.
+Keep the owner Claude Code session open for native delivery and autonomous
+answers. Actual local Claude Code sessions on macOS passed both invitation
+directions, idle delivery, private-source refusals and scope controls. The
+packaged plugin also passed both flows against the deployed production relay.
 
-An active agent can use the MCP tools. Receiving a message while the agent is idle additionally needs that host's supported native inbox or hooks. Claude's accept/hold/refuse control is respected. A UI opening does not establish message delivery or an answer. This release does not claim universal idle push or that a closed host is launched automatically.
+The Conductor desktop interface itself remains untested. Codex lifecycle hooks
+and bounded waits do not start an idle or closed chat. Native host permissions
+and Claude's accept/hold/refuse setting remain effective. Queued, delivered and
+answered are distinct states.
 
-Use current Claude Code; native messaging requires 2.1.224+ on macOS/Linux, 2.1.234+ on Windows, or 2.1.248+ for third-party providers/disabled feature fetching. Reload a session that still exposes an older plugin.
-
-Actual macOS Conductor application testing remains outstanding. Protocol tests with Conductor environment variables are not that proof. See [the Conductor guide](docs/meet-proxy-conductor.md) for the repeated-message and restart demonstration.
+See [verification results](MEET-PROXY-VERIFICATION.md) and the
+[two-chat guide](docs/meet-proxy-conductor.md).
 
 ## Compatibility
 
-The product is Meet Proxy. Existing Commonplace storage, protocol identifiers, marketplace address and plugin alias remain compatible. Cloud Files is a separate plugin. Personal memory capture and automatic learning are not part of this plugin. The existing cloud-session launch limitations are unchanged.
-
-Cloud shared folders remain available through [Commonplace Files](FILES.md).
+Commonplace account storage, protocol identifiers, marketplace address and
+plugin alias remain compatible. Personal memory capture and automatic learning
+are not part of this plugin. [Commonplace Files](FILES.md) is a separate plugin
+and is unchanged by this release.

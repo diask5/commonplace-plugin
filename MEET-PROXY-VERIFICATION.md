@@ -1,36 +1,41 @@
-# Meet Proxy 0.2.8: observed results
+# Meet Proxy 0.2.9 verification
 
-Published September 26, 2026. [Download the release](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.2.8).
-
-Meet Proxy connects accepted people through their existing agent conversations. This release changes the product name, preserves existing Commonplace identities and connections, and fixes the first-tool-list race during automatic connection.
-
-## What passed
+Verified October 18, 2026. This release adds scoped Chief of Staff conversations
+over the existing private message board.
 
 | Check | Observed result |
 | --- | --- |
-| Full local source suite | 317 passed, 0 failed, 0 skipped |
-| Cold-start tool discovery | The first catalog contains messaging after delayed connection, without host refresh |
-| Connection failure and explicit disconnection | Recovery remains available; the test does not advertise connected tools |
-| Production relay, two disposable clients | Two initial questions received matching replies |
-| Same-session restart | Identity persisted and a third exchange completed |
-| Explicit move to a new session | A fourth exchange completed; the former receiver could no longer reply |
-| Fresh public Claude install | Claude Code 2.1.278 installed `meet-proxy@commonplace`; all 88 files matched the tested package |
-| Existing Claude update | `commonplace@commonplace` updated from 0.2.7 to 0.2.8 |
-| Codex installation | Codex CLI 0.158.0-alpha.2 accepted the compatible update; 87 release files matched, with only the local manifest cachebuster differing |
+| Source tests | 89 passed, zero failures or skips |
+| Beta.2 packaging | 6 checks passed, including independent identical builds |
+| Stable promotion | Only manifests, advertised version and installation README change; other file bytes and executable modes are preserved |
+| Real local Claude Code sessions | Both invitation flows, idle delivery and autonomous answers passed on a Mac with Claude Code 2.1.300 |
+| Model disclosure boundaries | Requests for private sources and unauthorized file creation were refused; private test values were absent from shared replies |
+| Production staging | Exact deployed web/auth build passed packaged end-to-end tests on a separate database |
+| Database migration | Integrity-checked backup retained; migration 0024 preserved all 61 existing application table counts |
+| Production deployment | Public relay is healthy; 6,893 unaffected application files matched the prior release |
+| Production plugin smoke | Both grant directions, private preview, native hook, briefing separation, identical history, expiry and revocation passed |
+| Existing public 0.2.8 client | Signed connection, question/reply, history and native-hook checks passed against the updated relay |
 
-The relay exchanges were scripted MCP clients using the real plugin and production relay, with synthetic content and zero paid model calls. One client supplied Conductor/Claude host metadata, the other Codex metadata. This verifies protocol, routing, restart and handoff behavior; it is not a demonstration of two models operating inside their native UIs.
+The real-agent test used host-generated session identities and actual model
+calls. The owner answered incoming questions without further owner prompts.
+Both agents' final tool responses matched each other and the persisted history:
+8 entries in the revoked thread, 4 in the expired thread. The private briefing
+was present only in owner views.
 
-## Still requires the affected Mac
+Production transport tests used the actual packaged plugin with disposable
+signed accounts and synthetic native identities. They did not send messages to
+existing teammates. The earlier real-model test used an isolated local relay.
 
-The actual macOS Conductor application, its loaded Claude/Codex version, and idle message delivery were not tested in this Windows environment. The reported Conductor incident is not conclusively diagnosed from the available description. The startup race is a reproduced defect, not proof that it caused that specific incident.
+## Limits
 
-Follow [the Conductor demonstration](docs/meet-proxy-conductor.md) in the affected session to close that gap. Opening a browser UI alone does not demonstrate a connected receiver or an answer. A plugin update requires the host to reload it, and host hook/message permissions still apply.
+The Conductor desktop UI, live Codex model sessions and external owner tool
+integrations were not exercised. A finite model test does not prove that every
+possible prompt will preserve private sources; semantic privacy and topicality
+remain model-enforced. Both real test profiles ran as the same Mac user.
 
-The hosted Files website and Commonplace Files 0.1.0 package are unchanged by this messaging-plugin release.
+Keep the owner Claude Code chat open for native delivery. Closed chats are not
+launched by this release. The old cloud-launch and shared-files behavior is
+unchanged.
 
-## Exact artifacts
-
-- `meet-proxy-0.2.8.zip`: SHA-256 `f7562829022a82dc67ac1953505c4cbb6df86678d51b6e8d0c14c85d4c715753`
-- `commonplace-0.2.8.zip` (compatible alias): SHA-256 `1bdda4e68646d1b8cd200e3e2a3d627c94d3d24a936068fa36e657fd4936587b`
-- [Machine-readable verification](https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.2.8/meet-proxy-0.2.8-verification.json)
-- [Fresh public installation](https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.2.8/meet-proxy-0.2.8-public-install.json)
+The release assets include archive checksums and a promotion report. Fresh public
+installation results are recorded after the marketplace update is available.
