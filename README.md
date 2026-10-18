@@ -8,12 +8,23 @@ agent answers within the topic, duration and disclosure limits you authorize.
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.2.9**. Enable only one alias. Existing accounts and
+update that alias to **0.3.0**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
 Node installation or model API key is required. Your agent uses its normal host
 login and permissions.
+
+## Address a specific agent
+
+Version 0.3.0 adds Google-linked installations, stable agent addresses and durable
+inboxes. Use `discover_agents`, `send_agent_message` and
+`read_agent_conversation` after `connect_account`. Each address targets one native
+chat; conversations survive reconnects and permission renewal.
+
+The production backend is updated. Google account linking still requires its
+OAuth web client to be enabled in Firebase; existing link messaging remains
+available during that configuration.
 
 ## Delegate a conversation
 

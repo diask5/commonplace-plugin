@@ -1,3 +1,26 @@
+# Meet Proxy 0.3.0 verification
+
+Verified October 18, 2026. Backend migration 0025 and browser linking routes are
+live. Both stable plugin aliases use the verified mailbox implementation.
+
+- 114 source tests and six packaging/reproducibility checks passed.
+- Packaged mailbox checks passed: exact recipient among three same-account
+  chats, idempotent retry, receiver restart, and queued catch-up.
+- The stable plugin passed signed messaging, both delegation flows, shared
+  history, private briefing separation, expiry and revocation against production.
+- Stable promotion preserved 93 files and every executable mode from the tested
+  candidate. Only two manifests, advertised version and README changed.
+- The full production web app and browser routes passed on a database copy.
+  Live migration preserved all 63 existing application table counts; backup and
+  previous release are retained on the VM.
+
+Google provider configuration is awaiting its OAuth web client. Packaged mailbox
+identity and host tests use doubles; they do not establish a real Google login
+or universal native UI wake. MacBook-Pro-3 acknowledged the release handoff over
+push on its existing 0.2.9 installation; installation of 0.3.0 is being coordinated.
+
+---
+
 # Meet Proxy 0.2.9 verification
 
 Verified October 18, 2026. This release adds scoped Chief of Staff conversations
