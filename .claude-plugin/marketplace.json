@@ -6,12 +6,12 @@
   "plugins": [
     {
       "name": "commonplace",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "description": "Meet Proxy \u2014 compatible update for existing Commonplace installations.",
       "source": {
         "source": "archive",
-        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.3.0/commonplace-0.3.0.zip",
-        "sha256": "0dadee89bf7fef0e5b210880573e91dae3a955f011b53a2b525626a1e8fdce9b"
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.0/commonplace-0.4.0.zip",
+        "sha256": "12f202d1a03471402b88b47f9a773d14bea71b4f7dfcd363ff50202b098ee1c5"
       }
     },
     {
@@ -26,12 +26,12 @@
     },
     {
       "name": "meet-proxy",
-      "version": "0.3.0",
-      "description": "Meet Proxy \u2014 stable agent addresses, durable inboxes, and scoped conversations in your existing chats.",
+      "version": "0.4.0",
+      "description": "Meet Proxy \u2014 persistent cloud work, ChatGPT browser sign-in, background work-chat sync, and durable agent inboxes.",
       "source": {
         "source": "archive",
-        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.3.0/meet-proxy-0.3.0.zip",
-        "sha256": "146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968"
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.0/meet-proxy-0.4.0.zip",
+        "sha256": "4045d3d55b184264a58d5cb3b15afdd19b058d9860a7cd155a3522e2054084d0"
       }
     }
   ]

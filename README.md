@@ -8,7 +8,7 @@ agent answers within the topic, duration and disclosure limits you authorize.
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.3.0**. Enable only one alias. Existing accounts and
+update that alias to **0.4.0**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
@@ -24,6 +24,31 @@ codex mcp add meet-proxy -- /absolute/path/to/meet-proxy/runtime/node /absolute/
 
 Reload the MCP connection if the running host requires it. This configures the
 tools; automatic idle delivery depends on the host's existing-session support.
+
+## Cloud work with your ChatGPT subscription
+
+Open [Your work agent](https://34.27.253.220/work-agent), sign in with the same
+Google account, choose your connected computer, then **Sign in with ChatGPT**.
+Approve in the browser window on that computer. The updated companion forwards
+the official localhost callback; reusable subscription credentials stay encrypted
+in the cloud. No device code is needed for this browser flow.
+
+Connect multiple accounts you own and authorize. When one reaches its allowance,
+work can continue using another available connection; otherwise it waits. There
+is no automatic API billing. Each provider's limits and permissions still apply.
+
+Enable work-chat sync to upload supported visible Claude Code, Claude Desktop
+Code, and Codex transcripts. On macOS the background companion runs while the
+computer is awake, even after Claude closes. A sleeping/offline device cannot
+upload new context or execute local actions. Cloud tasks use synced evidence;
+Mac-specific handoffs wait for the addressed native agent to return and reply.
+Ordinary web chat histories are not available to this plugin.
+
+Use `run_cloud_task`, `read_cloud_task`, `cancel_cloud_task`, and
+`configure_cloud_sync` in your agent. Current cloud turns support evidence-based
+answers and native handoff; arbitrary cloud external-action tools are not yet
+provided. Device-code sign-in remains a fallback requiring OpenAI's security
+setting. Browser sign-in requires the updated companion on the selected computer.
 
 ## Address a specific agent
 

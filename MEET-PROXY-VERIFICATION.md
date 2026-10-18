@@ -1,3 +1,18 @@
+# Meet Proxy 0.4.0 verification
+
+- 130 application tests passed, including callback owner/device/state isolation,
+  durable native handoff, account failover, and interrupted source upload replay.
+- Both archives preserve the pinned 0.3.0 baseline outside the reviewed overlay,
+  including bundled runtimes, hooks and executable modes.
+- The packaged companion starts and initializes MCP as 0.4.0.
+- Production health is ready. The isolated official Codex runtime generates a
+  real browser OAuth URL with PKCE and the expected loopback callback.
+- Real subscription inference and installation on the target MacBook await the
+  user's browser consent and that session's local installation approval.
+
+The following records describe earlier releases and do not establish 0.4.0's
+remaining live checks.
+
 # Meet Proxy 0.3.0 verification
 
 Verified October 18, 2026. Backend migration 0025 and browser linking routes are
