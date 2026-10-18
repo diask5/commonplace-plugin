@@ -8,7 +8,7 @@ agent answers within the topic, duration and disclosure limits you authorize.
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.0**. Enable only one alias. Existing accounts and
+update that alias to **0.4.1**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
@@ -42,7 +42,11 @@ Code, and Codex transcripts. On macOS the background companion runs while the
 computer is awake, even after Claude closes. A sleeping/offline device cannot
 upload new context or execute local actions. Cloud tasks use synced evidence;
 Mac-specific handoffs wait for the addressed native agent to return and reply.
-Ordinary web chat histories are not available to this plugin.
+For ChatGPT web history, open [Conversation context](https://34.27.253.220/context),
+preview an export ZIP or conversations.json, and import selected chats. No browser
+extension is required. ChatGPT sign-in supplies model access, not web history.
+New web conversations need a later export import. Version 0.4.1 also filters
+explicit Codex analysis channels and reparses previously synced transcripts.
 
 Use `run_cloud_task`, `read_cloud_task`, `cancel_cloud_task`, and
 `configure_cloud_sync` in your agent. Current cloud turns support evidence-based
