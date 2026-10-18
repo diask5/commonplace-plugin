@@ -3,7 +3,8 @@
 Verified October 18, 2026. Backend migration 0025 and browser linking routes are
 live. Both stable plugin aliases use the verified mailbox implementation.
 
-- 114 source tests and six packaging/reproducibility checks passed.
+- 115 source tests and six packaging/reproducibility checks passed. The added
+  regression covers identity linking while the ordinary API quota is exhausted.
 - Packaged mailbox checks passed: exact recipient among three same-account
   chats, idempotent retry, receiver restart, and queued catch-up.
 - The stable plugin passed signed messaging, both delegation flows, shared
@@ -16,11 +17,21 @@ live. Both stable plugin aliases use the verified mailbox implementation.
 
 Google sign-in is enabled with its OAuth client and authorized origin, verified
 through the Firebase Admin API and a successful Google authorization URL response.
-Packaged mailbox identity and host tests use doubles; they do not establish a
-real Google login or universal native UI wake. MacBook-Pro-3 received the update
-request through its existing native link and reports 0.2.9 still installed and
-loaded. Installation of 0.3.0 awaits confirmation in that host; its new runtime
-and tools have not yet been verified there.
+The cloud and Mac installations subsequently completed real Google sign-in to
+the same human account. The actual Claude and Codex cloud chats independently
+discovered and messaged the Mac, which replied on both conversations and
+confirmed 0.3.0 loaded in its existing native chat. Claude received its reply
+through native push. Codex used the published stdio entrypoint with its actual
+host identity and read the reply directly; idle wake in that Codex host remains
+unverified. These observations do not establish universal host wake.
+
+The production service reserves a bounded quota for account checks and Google
+linking, so heavy ordinary API traffic cannot consume the sign-in allowance.
+The previous deployment is retained and the public service is healthy.
+
+Codex's marketplace loader skips the archive sources in this catalog. The
+verified Codex connection uses direct MCP configuration of the extracted stable
+release; a Codex marketplace installation has not passed.
 
 ---
 

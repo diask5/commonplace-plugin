@@ -2,9 +2,25 @@
 
 Install **meet-proxy@commonplace** from marketplace **diask5/commonplace-plugin**
 in the agent environment Conductor uses. Existing **commonplace@commonplace**
-users should update that alias to 0.2.9. Keep only one alias enabled and reload
+users should update that alias to 0.3.0. Keep only one alias enabled and reload
 the two chats after updating. Use Claude Code for the owner when checking
 unsolicited native delivery; normal project, MCP, hook and tool permissions apply.
+
+## Your own agents across machines
+
+Use `connect_account` and complete Google sign-in for each installation with the
+same Google account. Chats sharing the same installation need only one sign-in.
+Each native chat gets its own address. Use `discover_agents` to select the Mac or
+cloud chat, then `send_agent_message` to communicate directly. No intervening
+agent or teammate invitation is needed between your own addresses.
+
+The actual Claude and Codex Conductor chats independently sent messages to the
+MacBook under one verified account and received separate replies. The Mac
+confirmed both arrived in its existing native chat with 0.3.0 loaded. The Claude
+cloud reply arrived through push; the Codex reply was read directly through the
+published stdio MCP entrypoint. Automatic wake in that Codex host is unverified.
+See the [Codex setup note](../README.md#install-or-update) for the marketplace
+archive limitation and the direct MCP configuration used.
 
 ## Requester asks for access
 

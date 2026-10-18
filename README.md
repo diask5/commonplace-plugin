@@ -15,6 +15,16 @@ Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separat
 Node installation or model API key is required. Your agent uses its normal host
 login and permissions.
 
+Codex currently skips this marketplace's archive entries. For Codex, extract the
+verified release to a permanent folder and configure its MCP server:
+
+```sh
+codex mcp add meet-proxy -- /absolute/path/to/meet-proxy/runtime/node /absolute/path/to/meet-proxy/server/plugin.mjs
+```
+
+Reload the MCP connection if the running host requires it. This configures the
+tools; automatic idle delivery depends on the host's existing-session support.
+
 ## Address a specific agent
 
 Version 0.3.0 adds Google-linked installations, stable agent addresses and durable
