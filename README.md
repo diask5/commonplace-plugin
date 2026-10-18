@@ -22,9 +22,9 @@ inboxes. Use `discover_agents`, `send_agent_message` and
 `read_agent_conversation` after `connect_account`. Each address targets one native
 chat; conversations survive reconnects and permission renewal.
 
-The production backend is updated. Google account linking still requires its
-OAuth web client to be enabled in Firebase; existing link messaging remains
-available during that configuration.
+The production backend and Google sign-in are configured. Sign in once per
+installation through `connect_account`. Existing accounts and link conversations
+remain available.
 
 ## Delegate a conversation
 

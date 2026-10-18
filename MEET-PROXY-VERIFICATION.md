@@ -14,8 +14,8 @@ live. Both stable plugin aliases use the verified mailbox implementation.
   Live migration preserved all 63 existing application table counts; backup and
   previous release are retained on the VM.
 
-Google provider configuration is awaiting its OAuth web client. Packaged mailbox
-identity and host tests use doubles; they do not establish a real Google login
+Google sign-in is enabled with its OAuth client and authorized origin, verified
+through the Firebase Admin API. Packaged mailbox identity and host tests use doubles; they do not establish a real Google login
 or universal native UI wake. MacBook-Pro-3 acknowledged the release handoff over
 push on its existing 0.2.9 installation; installation of 0.3.0 is being coordinated.
 
