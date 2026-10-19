@@ -2,7 +2,7 @@
 
 Install **meet-proxy@commonplace** from marketplace **diask5/commonplace-plugin**
 in the agent environment Conductor uses. Existing **commonplace@commonplace**
-users should update that alias to 0.4.3. Keep only one alias enabled and reload
+users should update that alias to 0.4.5. Keep only one alias enabled and reload
 the two chats after updating. Use Claude Code for the owner when checking
 unsolicited native delivery; normal project, MCP, hook and tool permissions apply.
 
@@ -71,3 +71,16 @@ configuration.
 ## Conductor Mac binding regression (2026-10-19)
 
 On Conductor 0.91.1, a direct CLI agent message changed the receiving session authority generation and made RunLocalCommand report no authorized Mac, while the Mac remained awake. This reproduces without Meet Proxy. The 0.4.3 plugin does not activate experimental CLI message injection; it retains inbox messages and reports the host limitation in setup_status. Native receivers are unaffected. A new genuine owner message restores the host binding temporarily; a permanent correction belongs in Conductor.
+
+## Persistent cloud receiver in 0.4.5
+
+Run the release's `server/configure-codex.mjs` with its bundled runtime from the
+existing Codex chat. The helper registers the actual host identity, preserves
+accounts and configuration, and starts a receiver that survives a setup command
+exiting. The MCP process also restarts a stopped receiver. Direct linked-chat
+messages and agent mailboxes both forward through the supported Conductor CLI.
+Every retry uses the same host message ID. Messages stay queued during outages;
+setup_status distinguishes receiver health from the account connection.
+
+The Mac-binding regression above remains a host limitation; automatic chat
+message delivery is enabled in this release. No replacement model is launched.

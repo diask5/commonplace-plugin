@@ -8,7 +8,7 @@ agent answers within the topic, duration and disclosure limits you authorize.
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.3**. Enable only one alias. Existing accounts and
+update that alias to **0.4.5**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
@@ -19,7 +19,7 @@ Codex currently skips this marketplace's archive entries. For Codex, extract the
 verified release to a permanent folder and configure its MCP server:
 
 ```sh
-codex mcp add meet-proxy -- /absolute/path/to/meet-proxy/runtime/node /absolute/path/to/meet-proxy/server/plugin.mjs
+/absolute/path/to/meet-proxy/runtime/node /absolute/path/to/meet-proxy/server/configure-codex.mjs
 ```
 
 Reload the MCP connection if the running host requires it. This configures the
@@ -36,7 +36,16 @@ before the plugin runs. Setup guidance shows the exact action and per-tool
 approval. The plugin does not retry denials or change permission settings.
 See [setup and host permission recovery](docs/SETUP.md).
 
-Version 0.4.3 coalesces simultaneous account setup into one Google link and browser offer. In Conductor cloud sessions without a native receiver, messages stay in the inbox: automatic CLI injection is disabled after testing found that agent messages can invalidate Conductor’s Mac execution binding. `setup_status` identifies this host limitation.
+Version 0.4.5 starts a persistent receiver for each registered cloud Conductor
+chat. Incoming messages wake that exact existing chat through Conductor's
+supported CLI, with durable receipts and stable IDs for retry protection. Setup
+keeps the Google account and invitation binding. `setup_status` reports receiver
+health separately from account connection. A host receipt is not a model reply.
+
+Conductor has a separate known Mac-access regression: an agent message may
+invalidate the receiving chat's authorized Mac binding. This release enables
+message delivery but does not bypass or repair Conductor's device authority. A
+new human message from that Mac restores access temporarily.
 
 ## Cloud work with your ChatGPT subscription
 

@@ -6,13 +6,22 @@ Ask **“Check Meet Proxy setup”** or use `/meet-proxy:setup`. The read-only
 `setup_status` tool identifies the next step without signing in again or
 accepting an invitation.
 
-Complete Google sign-in once per installation. Existing Google-linked installs
+When invited through the website, sign in with Google on the invitation page
+once, then paste its private setup prompt into your chosen chat. The one-use
+`commonplace-setup:` handoff connects that installation and exact chat using the
+already verified account. It expires after 30 minutes; the signed-in page can
+generate another prompt. No second Google login is needed. An installation
+already connected to another account is preserved and reports the mismatch.
+
+Without an invitation handoff, complete Google sign-in once per installation.
+Existing Google-linked installs
 keep their account and connections when updated. To accept a person's invitation,
 give it to your chosen chat and ask to connect. A session-bound invitation adds
 the person and links the two selected chats in one operation. It grants messaging
 access; it does not upload private history or grant access to local tools/files.
 
-Simultaneously opened chats share one pending Google link and browser offer.
+Plugin startup does not launch Google sign-in automatically. Explicit account
+connections share one pending Google link and browser offer.
 Rechecking setup reuses that link. Refreshing the connection page preserves its
 pending state; if browser storage is unavailable, the private URL fragment is
 kept until setup completes. An expired link can be renewed from your agent.
@@ -84,3 +93,34 @@ automatically; live processes and newly created locks are preserved.
 On macOS the installed companion keeps authorized sync running while the Mac is
 awake. Cloud subscription sign-in and work-chat sync are separate choices.
 A sleeping Mac pauses new uploads; its existing cloud archive remains available.
+
+## Codex in Conductor
+
+After verifying and extracting the current release to a permanent directory, run
+its bundled Node with `server/configure-codex.mjs` from a shell tool in the chat
+you are connecting. The helper preserves existing Codex settings, forwards the
+supported host environment variables, and records that chat's actual native
+thread locally. Never supply a made-up thread ID or put one fixed thread ID in
+the global MCP configuration.
+
+Activate/reconnect the MCP server through the host controls, then call
+`setup_status` from the loaded plugin. A successful command-line diagnostic is
+not proof that the host has reloaded its MCP connection. If the host cannot
+reload the current chat, report that limit rather than creating a replacement
+chat or silently changing the invitation's destination.
+
+Chats normally share the installation's Google account. For an explicitly
+requested separate-account test, the helper accepts
+`--data-dir /absolute/path/to/a/separate/profile`; it preserves that choice per
+chat and never copies credentials or replaces the default account. Each chat
+needs its own real host registration. Setup starts a persistent receiver for
+that existing cloud Conductor chat. It forwards authenticated messages through
+Conductor's supported CLI even while the model is idle, and retries using a
+stable host message ID. setup_status reports the receiver's current health.
+Messages remain on the server during a workspace outage and resume when the
+plugin starts again. A saved message or host receipt is not proof of a reply.
+
+Conductor currently has a separate host bug: an agent-origin message can remove
+the receiving chat's authorized Mac execution binding. Meat Proxy cannot repair
+that authority or bypass it. Chat delivery remains enabled; a new human message
+from the Mac restores Mac access until the host fixes that regression.
