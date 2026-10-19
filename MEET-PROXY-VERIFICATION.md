@@ -100,3 +100,25 @@ and machine-readable verification. Claude normalized two public source files
 from permission mode 0600 to 0644 during installation; their bytes and executable
 bits were unchanged. The fresh installations used isolated Claude configuration
 directories and did not change the user's existing plugin setup.
+
+## 0.4.5 — automatic cloud Conductor delivery (2026-10-19)
+
+The published plugin and production service were exercised with two existing
+cloud Conductor Codex chats under their real Google-linked installations. The
+recipient completed setup and became idle. A question sent through Meat Proxy's
+original chat link caused a Conductor message delivery and a new model turn;
+the recipient answered on that same link, and the answer arrived automatically
+in the sender chat. No polling prompt or replacement chat was used to wake the
+recipient. Actions used the packaged stdio MCP entrypoint with the actual host
+identity; native tool-catalog hot reload remains unverified.
+
+Automated validation: 197 source tests, 13 onboarding browser tests, archive
+preservation checks, and a six-profile signed package smoke test. The latter
+also verifies the receiver survives the setup/MCP process exiting, and retrying
+a send does not produce a second host submission. Google assertions and host
+sockets in automated tests are test doubles; the live test above used the real
+existing chats. Auth rate limits remained enabled in all checks.
+
+The separate Conductor Mac-binding regression still reproduces: an agent-origin
+message can make RunLocalCommand report no authorized Mac despite the computer
+remaining online. This release does not modify or bypass that authority.
