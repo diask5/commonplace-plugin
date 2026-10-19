@@ -141,3 +141,17 @@ an obsolete receiver's delivery. Reading does not consume an undelivered message
 Older plugins retain messaging compatibility, but cannot provide the new fetched
 and read receipts. Update the installed plugin and reload it in the receiving
 host. Existing accounts, conversations and selected receiving chats are retained.
+
+# Native incoming messages
+
+Version 0.4.10 delivers shared-chat messages from the persistent MCP connection
+through the host's supported native inbox, as well as through lifecycle hooks.
+The transports share one session lock and durable receipt cursor. A stopped or
+missing hook no longer forces an active native plugin to use model-driven waits.
+Incoming messages preserve sender attribution and original wording; any agent
+commentary is separate. On hosts without a supported native inbox, tool reads
+remain an explicitly limited fallback and should show the original message.
+
+Update your existing plugin alias and reload it in the same receiving chat. If
+the host has no plugin reload, restart it and reopen that existing conversation.
+Do not create a replacement chat or reconnect the account just to apply an update.
