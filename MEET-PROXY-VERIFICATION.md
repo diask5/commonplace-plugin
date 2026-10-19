@@ -138,3 +138,19 @@ remaining online. This release does not modify or bypass that authority.
 - Browser retry tests saved one message after a lost response. Changing only
   the caller’s receiver, offline pinning, stale sends, and peer/stranger/scoped
   delegation isolation are covered.
+
+## 0.4.7 — companion startup recovery (2026-10-19)
+
+- The live upgrade exposed an older loaded plugin winning the daemon lock
+  while the new child exited. Startup now retries an exited/failed child with
+  a bound and delay, while sharing concurrent connection attempts.
+- Both regression tests, the 18 affected setup/receiver tests, archive
+  preservation, and all six signed packaged onboarding profiles passed.
+- The upgraded packaged MCP reports 0.4.7 with verified native identity,
+  automatic Conductor delivery ready, and no setup diagnostics/next steps.
+- The new add_person_to_chat tool succeeded on the existing live production
+  conversation. Both receiving identities and generation 1 were preserved.
+  The unused owner invitation remains unclaimed. This live check sent no
+  additional message to the teammate.
+- Browser controls remain on verified production release
+  20261019-shared-chats1; 0.4.6 is the minimum feature version.

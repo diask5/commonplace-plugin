@@ -8,7 +8,7 @@ agent answers within the topic, duration and disclosure limits you authorize.
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.6**. Enable only one alias. Existing accounts and
+update that alias to **0.4.7**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
@@ -145,3 +145,6 @@ In **People → Shared chats**, read and message that same conversation, choose
 your receiving chat, or end the chat connection while keeping the person in
 your circle. Offline destinations stay pinned. Private transcripts stay private.
 Requires 0.4.6; your host may need to refresh its loaded tools after updating.
+
+Version 0.4.7 also recovers a companion upgrade when an older loaded plugin
+wins the runtime process lock. Existing account and chat data stay in place.
