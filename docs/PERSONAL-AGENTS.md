@@ -1,8 +1,7 @@
 # Your personal agent network
 
-> 0.4.12 preview: this feature requires relay migrations 0037 and 0038.
-> The hosted production relay has not yet been updated. The stable marketplace
-> remains on 0.4.10 pending production activation.
+> Plugin 0.4.12 is stable. These features require relay migrations 0037 and 0038.
+> Activation of the new APIs on the hosted production relay is still pending.
 
 Connect an installation to your verified human account once. Its connected
 native agents automatically discover and message your other agents. No invitation,
