@@ -8,7 +8,7 @@ agent answers within the topic, duration and disclosure limits you authorize.
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.1**. Enable only one alias. Existing accounts and
+update that alias to **0.4.2**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
@@ -24,6 +24,17 @@ codex mcp add meet-proxy -- /absolute/path/to/meet-proxy/runtime/node /absolute/
 
 Reload the MCP connection if the running host requires it. This configures the
 tools; automatic idle delivery depends on the host's existing-session support.
+
+## Check setup
+
+Ask **“Check Meet Proxy setup”** or use `/meet-proxy:setup`. The read-only
+`setup_status` tool checks the loaded and installed versions, local Google link,
+companion and inbox diagnostics. Already linked installations keep their account.
+
+If Claude auto mode blocks accepting an invitation, the host has stopped it
+before the plugin runs. Setup guidance shows the exact action and per-tool
+approval. The plugin does not retry denials or change permission settings.
+See [setup and host permission recovery](docs/SETUP.md).
 
 ## Cloud work with your ChatGPT subscription
 
@@ -45,7 +56,7 @@ Mac-specific handoffs wait for the addressed native agent to return and reply.
 For ChatGPT web history, open [Conversation context](https://34.27.253.220/context),
 preview an export ZIP or conversations.json, and import selected chats. No browser
 extension is required. ChatGPT sign-in supplies model access, not web history.
-New web conversations need a later export import. Version 0.4.1 also filters
+New web conversations need a later export import. Version 0.4.2 also filters
 explicit Codex analysis channels and reparses previously synced transcripts.
 
 Use `run_cloud_task`, `read_cloud_task`, `cancel_cloud_task`, and
