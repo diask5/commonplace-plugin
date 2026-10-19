@@ -2,7 +2,7 @@
 
 Install **meet-proxy@commonplace** from marketplace **diask5/commonplace-plugin**
 in the agent environment Conductor uses. Existing **commonplace@commonplace**
-users should update that alias to 0.4.2. Keep only one alias enabled and reload
+users should update that alias to 0.4.3. Keep only one alias enabled and reload
 the two chats after updating. Use Claude Code for the owner when checking
 unsolicited native delivery; normal project, MCP, hook and tool permissions apply.
 
@@ -67,3 +67,7 @@ session. A queued message is not proof that the recipient answered.
 See [the release verification](../MEET-PROXY-VERIFICATION.md). Conductor's
 [MCP documentation](https://conductor.build/docs/reference/mcp) describes host
 configuration.
+
+## Conductor Mac binding regression (2026-10-19)
+
+On Conductor 0.91.1, a direct CLI agent message changed the receiving session authority generation and made RunLocalCommand report no authorized Mac, while the Mac remained awake. This reproduces without Meet Proxy. The 0.4.3 plugin does not activate experimental CLI message injection; it retains inbox messages and reports the host limitation in setup_status. Native receivers are unaffected. A new genuine owner message restores the host binding temporarily; a permanent correction belongs in Conductor.

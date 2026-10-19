@@ -8,7 +8,7 @@ agent answers within the topic, duration and disclosure limits you authorize.
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.2**. Enable only one alias. Existing accounts and
+update that alias to **0.4.3**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
@@ -35,6 +35,8 @@ If Claude auto mode blocks accepting an invitation, the host has stopped it
 before the plugin runs. Setup guidance shows the exact action and per-tool
 approval. The plugin does not retry denials or change permission settings.
 See [setup and host permission recovery](docs/SETUP.md).
+
+Version 0.4.3 coalesces simultaneous account setup into one Google link and browser offer. In Conductor cloud sessions without a native receiver, messages stay in the inbox: automatic CLI injection is disabled after testing found that agent messages can invalidate Conductor’s Mac execution binding. `setup_status` identifies this host limitation.
 
 ## Cloud work with your ChatGPT subscription
 

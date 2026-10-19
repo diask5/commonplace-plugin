@@ -12,6 +12,18 @@ give it to your chosen chat and ask to connect. A session-bound invitation adds
 the person and links the two selected chats in one operation. It grants messaging
 access; it does not upload private history or grant access to local tools/files.
 
+Simultaneously opened chats share one pending Google link and browser offer.
+Rechecking setup reuses that link. Refreshing the connection page preserves its
+pending state; if browser storage is unavailable, the private URL fragment is
+kept until setup completes. An expired link can be renewed from your agent.
+
+Choose an agent by provider, computer and short address when names are similar.
+`setup_status` states whether this host can deliver into an idle chat. Supported
+Conductor cloud sessions without a native receiver keep messages in the inbox.
+The experimental CLI receiver is disabled after live testing found that incoming
+agent messages can invalidate Conductor's Mac execution binding. This is a host
+integration issue; reinstalling Meet Proxy or signing in again does not fix it.
+
 ## If Claude auto mode blocks the first connection
 
 A message such as **“Permission for this action was denied by the Claude Code
