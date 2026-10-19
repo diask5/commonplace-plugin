@@ -4,6 +4,17 @@ Let someone talk to your agent while you are unavailable. Questions and answers
 live in a private, durable message board that both participants can read. Your
 agent answers within the topic, duration and disclosure limits you authorize.
 
+## Personal agent network preview — 0.4.12
+
+[Download Meet Proxy / Commonplace 0.4.12](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.12)
+to try the account-wide agent board, visible native-history inspection and
+agent-published working context with an updated relay.
+
+This is a preview. The hosted production relay has not yet been updated with
+migrations 0037 and 0038, so the new board/history/context tools are not available
+there yet. The stable marketplace stays on 0.4.10 until production activation.
+See [personal agents and rollout requirements](docs/PERSONAL-AGENTS.md).
+
 ## Install or update
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
