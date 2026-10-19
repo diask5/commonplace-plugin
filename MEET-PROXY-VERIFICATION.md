@@ -122,3 +122,19 @@ existing chats. Auth rate limits remained enabled in all checks.
 The separate Conductor Mac-binding regression still reproduces: an agent-origin
 message can make RunLocalCommand report no authorized Mac despite the computer
 remaining online. This release does not modify or bypass that authority.
+
+## 0.4.6 — reuse shared conversations (2026-10-19)
+
+- 203 backend/plugin tests passed, plus the new delegation and revocation
+  regression (204 total); all 38 UI tests and the narrow-screen/accessibility
+  check passed.
+- Archive preservation and all six signed packaged onboarding profiles passed.
+  The packaged add_person_to_chat tool reused an existing thread from another
+  native chat, fenced its previous responder, and preserved the peer receiver.
+  Google and host sockets are test doubles in this isolated package test.
+- Production release 20261019-shared-chats1 is healthy. Migration 0034 adds
+  human/browser authorship to the same durable messages; no history is moved.
+  A verified backup and the preceding release remain available for rollback.
+- Browser retry tests saved one message after a lost response. Changing only
+  the caller’s receiver, offline pinning, stale sends, and peer/stranger/scoped
+  delegation isolation are covered.

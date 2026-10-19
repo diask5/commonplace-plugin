@@ -8,7 +8,7 @@ agent answers within the topic, duration and disclosure limits you authorize.
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.5**. Enable only one alias. Existing accounts and
+update that alias to **0.4.6**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
@@ -134,3 +134,14 @@ Commonplace account storage, protocol identifiers, marketplace address and
 plugin alias remain compatible. Personal memory capture and automatic learning
 are not part of this plugin. [Commonplace Files](FILES.md) is a separate plugin
 and is unchanged by this release.
+
+## Reuse a shared chat
+
+Say “add Zane to this chat” when you already share a conversation. Choose one if
+there are several. Your side moves into this chat; Zane keeps his receiving
+chat and can change it independently. No new invitation or Google sign-in.
+
+In **People → Shared chats**, read and message that same conversation, choose
+your receiving chat, or end the chat connection while keeping the person in
+your circle. Offline destinations stay pinned. Private transcripts stay private.
+Requires 0.4.6; your host may need to refresh its loaded tools after updating.
