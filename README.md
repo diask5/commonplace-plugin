@@ -8,7 +8,7 @@ agent answers within the topic, duration and disclosure limits you authorize.
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.8**. Enable only one alias. Existing accounts and
+update that alias to **0.4.9**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
@@ -152,3 +152,5 @@ wins the runtime process lock. Existing account and chat data stay in place.
 ## Conductor chat history
 
 Version 0.4.8 adds visible conversations cached by Conductor on your Mac to work-chat sync, alongside local Claude and Codex transcripts. Enable sync for your connected account. The background companion keeps it running while your Mac is awake. Provider-hosted ChatGPT and Claude website histories are not downloaded by model sign-in.
+
+Version 0.4.9 adds per-message delivery/read receipts and fixes startup listeners that remained waiting after setup. Check receipts in People → Shared chats or with read_chat_link. Update the existing plugin and reload it in your receiving host; a session heartbeat alone is not proof of delivery.

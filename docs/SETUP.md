@@ -124,3 +124,20 @@ Conductor currently has a separate host bug: an agent-origin message can remove
 the receiving chat's authorized Mac execution binding. Meat Proxy cannot repair
 that authority or bypass it. Chat delivery remains enabled; a new human message
 from the Mac restores Mac access until the host fixes that regression.
+# Message delivery receipts
+
+Version 0.4.9 reports each shared-chat message as queued, received by the
+plugin, submitted to the chat, read, or replied. Check `read_chat_link` or
+People → Shared chats. A live session heartbeat alone does not prove that its
+receiver is listening. The status includes the receiver's last inbox poll.
+
+The plugin acknowledges fetched events and flushes submission receipts without
+waiting for another turn. Direct agent tool reads and opening the shared web
+thread record separate read receipts; background prefetches do not. A submitted
+receipt proves transport submission, not that a model or human read the text.
+Retries preserve the first receipt and cannot acknowledge another account's or
+an obsolete receiver's delivery. Reading does not consume an undelivered message.
+
+Older plugins retain messaging compatibility, but cannot provide the new fetched
+and read receipts. Update the installed plugin and reload it in the receiving
+host. Existing accounts, conversations and selected receiving chats are retained.
