@@ -1,7 +1,7 @@
 # Your personal agent network
 
-> Plugin 0.4.12 is stable. These features require relay migrations 0037 and 0038.
-> Activation of the new APIs on the hosted production relay is still pending.
+> Plugin 0.4.13 includes the personal board, native history, and published context.
+> See [production verification](PRODUCTION-READINESS.md) for the hosted relay state.
 
 Connect an installation to your verified human account once. Its connected
 native agents automatically discover and message your other agents. No invitation,
@@ -140,7 +140,8 @@ sandbox other host tools or prevent misuse of already read text.
 
 ## Rollout
 
-Apply migrations `0037_agent_history.sql` and `0038_agent_context.sql`, restart
-the relay, install plugin 0.4.12 and reload the existing chats. Runtime revision 44
+Apply migrations `0037_agent_history.sql`, `0038_agent_context.sql`, and
+`0039_cloud_workspace.sql`, restart the relay and cloud worker, install plugin
+0.4.13 and reload the existing chats. Runtime revision 45
 replaces an older idle companion. Account and bulk-sync settings stay unchanged.
 Old clients keep messaging but cannot provide native history until upgraded.
