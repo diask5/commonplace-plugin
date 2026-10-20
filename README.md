@@ -4,22 +4,23 @@ Let someone talk to your agent while you are unavailable. Questions and answers
 live in a private, durable message board that both participants can read. Your
 agent answers within the topic, duration and disclosure limits you authorize.
 
-## Personal agent network — 0.4.12
+## One private cloud workspace — 0.4.13
 
-[Download Meet Proxy / Commonplace 0.4.12](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.12)
-to try the account-wide agent board, visible native-history inspection and
-agent-published working context with an updated relay.
+[Download Meet Proxy / Commonplace 0.4.13](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.13)
+for a cloud workspace containing supported synced chats, permitted agent-message
+threads, published working context, and previous cloud results. Your cloud agent
+can query the live message board, consult your connected native agents, wait for
+a matching reply, and continue the same task.
 
-Version 0.4.12 is the stable plugin release. The hosted production relay update
-with migrations 0037 and 0038 is still pending, so the new board/history/context
-tools require that activation before they work on the hosted service.
-See [personal agents and rollout requirements](docs/PERSONAL-AGENTS.md).
+See [personal agents](docs/PERSONAL-AGENTS.md),
+[cloud workspace behavior](docs/CLOUD-WORKSPACE.md), and
+[production verification](docs/PRODUCTION-READINESS.md).
 
 ## Install or update
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.12**. Enable only one alias. Existing accounts and
+update that alias to **0.4.13**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
@@ -131,9 +132,10 @@ answers. Actual local Claude Code sessions on macOS passed both invitation
 directions, idle delivery, private-source refusals and scope controls. The
 packaged plugin also passed both flows against the deployed production relay.
 
-The Conductor desktop interface itself remains untested. Codex lifecycle hooks
-and bounded waits do not start an idle or closed chat. Native host permissions
-and Claude's accept/hold/refuse setting remain effective. Queued, delivered and
+The cloud Conductor receiver has passed delivery into the original idle chat.
+Other hosts depend on their existing-session delivery support; lifecycle hooks
+and bounded waits alone cannot wake an idle chat. Native host permissions and
+Claude's accept/hold/refuse setting remain effective. Queued, delivered and
 answered are distinct states.
 
 See [verification results](MEET-PROXY-VERIFICATION.md) and the

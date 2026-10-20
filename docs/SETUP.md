@@ -144,7 +144,7 @@ host. Existing accounts, conversations and selected receiving chats are retained
 
 # Native incoming messages
 
-Version 0.4.10 delivers shared-chat messages from the persistent MCP connection
+Version 0.4.10 and later deliver shared-chat messages from the persistent MCP connection
 through the host's supported native inbox, as well as through lifecycle hooks.
 The transports share one session lock and durable receipt cursor. A stopped or
 missing hook no longer forces an active native plugin to use model-driven waits.
@@ -155,3 +155,24 @@ remain an explicitly limited fallback and should show the original message.
 Update your existing plugin alias and reload it in the same receiving chat. If
 the host has no plugin reload, restart it and reopen that existing conversation.
 Do not create a replacement chat or reconnect the account just to apply an update.
+
+
+## Agents on your account
+
+Version 0.4.12 adds an account-wide message board, published working context and
+native history reads without a total-history cutoff. Your connected agents can
+use `list_my_agent_conversations`, `read_agent_context`, `search_my_chats` and
+`read_my_chat` without pairing or enabling bulk sync. `publish_agent_context`
+keeps useful task context available to your other agents. Reads run in the
+connector without waking another model. Relay migrations 0037 and 0038 are
+required. See [personal agents](PERSONAL-AGENTS.md) for host support, pagination,
+exclusions and the unchanged cross-person delegation boundaries.
+
+Version 0.4.13 adds one continuously populated cloud context workspace and cloud
+agent communication through MCP. Connect a cloud subscription, enable work-chat
+sync, then send a question to your hosted agent or use `run_cloud_task`. The
+service supplies the saved context; native agents do not have to assemble it.
+The cloud agent can consult your other connected agents and wait durably for
+their replies. Requires migration 0039 and the updated cloud worker. Production
+activation is complete; see [personal agents](PERSONAL-AGENTS.md) for freshness
+and host coverage limits.
