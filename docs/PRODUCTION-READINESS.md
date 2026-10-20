@@ -1,73 +1,60 @@
-# Production verification
+# Production verification — 20 October 2026
 
-Verified October 20, 2026. The hosted relay and cloud worker are active on the
-0.4.13 runtime. Marketplace publication awaits the final native consultation.
+The production backend includes migrations 0037–0039, the persistent private
+workspace, and task-bound cloud messaging. Both web and cloud-worker health were
+checked, including a fresh worker heartbeat and every deployed runtime file hash.
 
-## Deployed service
+A real connected ChatGPT subscription read a disposable archive source, calculated
+73,411 − 22,508 = 50,903, and sent one connection-check message to an existing Mac
+agent. The task entered durable waiting, received that agent's correlated reply,
+resumed automatically, and completed with the correct result and source citation.
+This verifies the actual cloud → native Mac → cloud path, beyond a queue receipt.
 
-Release `20261020-cloud-workspace3` is active at
-[the hosted service](https://34.27.253.220). The public `/healthz` endpoint is
-ready, both services are active, and the worker reports a fresh heartbeat.
-All 117 installed runtime file hashes match the release manifest. Migrations
-0037–0039 are applied.
+Automated checks cover account isolation, exclusions and revocation, fresh
+onboarding, browser and mobile UI, retries, offline backlog, duplicate prevention,
+task cancellation, restart recovery, package contents, and deployment rollback.
+The package smoke uses real signed HTTP, companion processes and sockets, with
+synthetic Google identity and native hosts. It is not fresh human Google consent.
+The release workflow repeats these checks on pull requests and main.
 
-The initial migration rollout retained a complete SQLite backup, passed integrity
-checks, and rehearsed the migrations on a disposable copy before activation.
-Subsequent code-only rollouts verified the complete migration file set and bytes
-against the current release and the applied database digests. Failed activation
-restores the previous code and services without replacing the live database.
-The previous releases, deployment audits, and verified backup remain available.
+The production backup implementation uses a dedicated SQLite read transaction
+so continuous sync writes cannot restart a backup indefinitely. Backup tests
+restore a snapshot while the live database changes and verify timeout cleanup.
+The service retains a verified local copy if cloud upload fails and has a bounded
+systemd runtime. See PRODUCTION-ROLLOUT.md for installation and recovery.
 
-The data disk was expanded online from 10 GB to 30 GB after it reached 99% usage.
-Existing cloud workspaces were retained; approximately 20 GB is now free.
+## Host and source limits
 
-## Checks completed
+- The Mac round trip was verified. Delivery into the earlier Conductor test chat
+  was accepted by its transport but did not produce a reply turn. It remains a
+  separate unresolved host delivery check; receipt does not mean execution.
+- Conductor agent-origin messages can invalidate the host's Mac execution binding.
+  The plugin does not bypass or repair host authorization.
+- Each existing chat must load the updated plugin. Installation alone does not
+  prove a live MCP process reloaded, and offline devices cannot be verified.
+- Sync covers supported visible local transcripts and owner-authorized imports.
+  Ordinary ChatGPT/Claude website history is not available through model sign-in.
+  Missing or offline sources remain missing until a supported import or sync runs.
+- OAuth consent and native-host approvals are completed by their owners. Existing
+  sync preferences, agent bindings and account connections survive an upgrade.
 
-- 274 application tests passed before the final argument-feedback change; all
-  13 targeted cloud-workspace tests passed after that change.
-- 45 browser/API checks passed, including setup recovery, mobile layouts,
-  accessibility, account changes, and stale-response handling.
-- Ten deployment regression tests passed, including worker readiness, rollback,
-  complete bundles, and strict code-only migration verification.
-- Both plugin archives passed source, dependency, SHA-256, and executable-mode
-  checks. The dependency audit reported no known vulnerabilities.
-- Packaged signed onboarding and native-delivery smoke passed, covering retry
-  deduplication, ordered offline catch-up, and a persistent receiver. These
-  fixtures use synthetic Google and native-host assertions.
-- The pinned production container started and called both MCP servers as UID
-  1000 with a read-only root and no subscription credentials in the test.
-- A real subscription task read the disposable archive source, cited it, computed
-  73,411 minus 22,508 as 50,903, and sent one consultation to the authorized native
-  peer. The task entered durable waiting while that peer's workspace was asleep.
-  A queued message does not establish a completed round trip.
+The Pulumi Cloud Run/Postgres topology remains an optional, undeployed migration.
+Production uses the existing GCP VM, durable SQLite, cloud storage backups, and
+isolated subscription runtime containers.
 
-## Installation and scope
+## Release record
 
-The existing Codex chat loaded the verified 0.4.13 package and runtime revision
-45. Its receiver upgrade retained the account, original linked conversation,
-native binding, and delivery cursor. Status reports automatic delivery and a
-ready receiver. The host's already running MCP process may require refresh to
-expose the new tool catalog. The Mac plugin-manager update follows publication.
+Production release `20261020-cloud-workspace4` contains 118 verified runtime
+assets. The web service and worker are healthy. The repaired daily backup
+completed; a 282,689,536-byte cloud object passed its checksum and a real restore
+integrity check, with 107 tables and 40 recorded migrations. The temporary
+restore copy was deleted. Previous releases and migration backups are retained.
 
-The owner explicitly approved only the cloud runtime's
-`network.send_agent_message` tool for task-scoped consultations with their own
-agents. Recipient ownership, active leases, cancellation, and the eight-message
-budget remain enforced. Native host permissions and existing transcript-sync
-choices were preserved.
+Validation: 277 application tests, 45 browser/UI checks, 10 deployment tests,
+both archive integrity checks, and packaged transport smoke passed. The production
+dependency audit reported zero known vulnerabilities.
 
-The known Conductor Mac execution-binding regression remains a host limitation.
-A sleeping workspace cannot run its receiver; queued messages wait for that
-workspace to resume. Unsupported or unsynced sources do not supply live context.
-This verification does not establish support for every native host.
+## Package checksums
 
-## Artifacts
-
-| Artifact | SHA-256 |
-| --- | --- |
-| `meet-proxy-0.4.13.zip` | `c4c1feefb2c07e638dd5df11f72e959c6e8ac939173ba2f4d559d4fee8351b9a` |
-| `commonplace-0.4.13.zip` | `3431eec65f48eeb24fc59f2a77a850a47cdf6daa9c165687cc34e2a30dda059f` |
-| `runtime-update.json` | `553ea72a0088a0e882c263925741bb52fb87c55e07d77b46b36c55f6ecb39061` |
-
-Implementation: [cloud workspace](https://github.com/diask5/commonplace-session-tests/pull/6),
-[rollout hardening](https://github.com/diask5/commonplace-session-tests/pull/7), and
-[receiver upgrades and consultations](https://github.com/diask5/commonplace-session-tests/pull/8).
+- `meet-proxy-0.4.13.zip`: `e00213777682a39fd9ba7accd4cacdee56f846ad041513c0913c2d01775cb634`
+- `commonplace-0.4.13.zip`: `cb481fbf9e3df784027316ab33d68e47f602068a6eeb8425b4452996cabf430b`
