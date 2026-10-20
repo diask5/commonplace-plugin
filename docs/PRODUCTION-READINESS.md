@@ -50,11 +50,15 @@ completed; a 282,689,536-byte cloud object passed its checksum and a real restor
 integrity check, with 107 tables and 40 recorded migrations. The temporary
 restore copy was deleted. Previous releases and migration backups are retained.
 
-Validation: 277 application tests, 45 browser/UI checks, 10 deployment tests,
+Validation: 279 application tests, 45 browser/UI checks, 10 deployment tests,
 both archive integrity checks, and packaged transport smoke passed. The production
 dependency audit reported zero known vulnerabilities.
 
 ## Package checksums
 
-- `meet-proxy-0.4.13.zip`: `e00213777682a39fd9ba7accd4cacdee56f846ad041513c0913c2d01775cb634`
-- `commonplace-0.4.13.zip`: `cb481fbf9e3df784027316ab33d68e47f602068a6eeb8425b4452996cabf430b`
+- `meet-proxy-0.4.13.zip`: `f926f13c77668ed43d05f3bb5a158dc8335904145b2762e2cac499fb81fe0f80`
+- `commonplace-0.4.13.zip`: `6b6ab0d428977fe5db5ea03514c4289758e89f0d05902e006b83463f349d058d`
+
+The final plugin uses companion revision 46. Conductor capture retains current
+Codex assistant-message envelopes and checks scope between pages. Background
+history work cannot block inbox delivery or receiver health.

@@ -176,6 +176,6 @@ sandbox other host tools or prevent misuse of already read text.
 
 Apply migrations `0037_agent_history.sql`, `0038_agent_context.sql` and
 `0039_cloud_workspace.sql`, restart the relay and cloud worker, install plugin
-0.4.13 and reload the existing chats. Runtime revision 45
+0.4.13 and reload the existing chats. Runtime revision 46
 replaces an older idle companion. Account and bulk-sync settings stay unchanged.
 Old clients keep messaging but cannot provide native history until upgraded.

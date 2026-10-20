@@ -92,7 +92,7 @@ a legacy receiver verifies its live process, account profile, native thread,
 host/workspace identity, and process lock before graceful retirement. A receiver
 that cannot be verified or has not released its lock is not replaced; its durable
 delivery cursor remains intact. Reload the intended existing chats and confirm runtime
-revision 45, account identity, native binding, and receiver status. Preserve
+revision 46, account identity, native binding, and receiver status. Preserve
 existing sync choices; enabling transcript upload remains a separate owner choice.
 
 Keep the deployment record, previous release, and database backup. Report any
