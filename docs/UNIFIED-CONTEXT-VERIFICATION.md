@@ -1,20 +1,25 @@
 # Unified context candidate — 21 October 2026
 
 Implementation: [source PR #9](https://github.com/diask5/commonplace-session-tests/pull/9),
-commit `1231ba0`, plugin 0.4.14, runtime revision 47.
+commit `2181c53`, plugin 0.4.14, runtime revision 47.
 
 ## Validated behavior
 
-- 298 application tests pass, including source convergence, durable retry,
+- 303 application tests pass, including source convergence, durable retry,
   checkpoint recovery, edits/deletion, Unicode, child agents, native identity
   aliases, account isolation, exclusions/restore, and damaged-source isolation.
   Search checks cover ranked keywords across turns, quoted phrases, prefixes,
   literal punctuation, filters, exact read offsets and excerpt-only receipts.
   Complete file parity, old-layout upgrades and damaged-index recovery pass.
-- 46 UI/API checks pass, including mobile accessibility, source reading, project
+- 49 UI/API checks pass, including mobile accessibility, source reading, project
   pagination, account changes and exclusion controls.
 - Ten deployment regression checks pass; the dependency audit reports zero
   known production vulnerabilities.
+- Local integration checks exercise the real signed HTTP collector, search, cited
+  answers, sync pause, edits, exclusions, offline consultations, cancellation,
+  sign-in failure, model limits, persistence and origin rejection. Browser checks
+  cover search pagination, setup, account-switch races, mobile layout and accessibility.
+  Google, models and native hosts are isolated fixtures; see [local development](LOCAL-DEVELOPMENT.md).
 - Both archives passed package integrity checks. The packaged signed transport
   smoke passed with six fresh profiles, exact-chat receipts, restart recovery,
   offline backlog and deduplication. Google identity and native hosts were
@@ -24,19 +29,19 @@ The candidate includes the latest released backup and nonblocking Conductor
 receiver fixes. The previous production health check returned ready. That does
 not prove this candidate is deployed.
 
-The updated [GitHub verification run](https://github.com/diask5/commonplace-session-tests/actions/runs/39669852435)
+The updated [GitHub verification run](https://github.com/diask5/commonplace-session-tests/actions/runs/39691242304)
 checks this source commit, including application/UI suites, deployment regressions,
 package integrity, signed transport smoke and runtime bundle build.
 
 ## Rollout state
 
-Deployment is blocked: two `RunLocalCommand` calls returned
-`Error running local command: Timed out waiting for client`. There was no new
-Google authentication error or permission denial. The deployment uses the Mac's
-existing authenticated gcloud installation; no credentials were copied.
+Deployment is intentionally deferred at the owner’s request. The local lab runs
+independently and does not change production accounts, sync choices or installs.
+Prior Mac deployment attempts timed out waiting for the client; rollout still
+requires an authenticated deployment environment. No credentials were copied.
 
 The backend bundle contains additive migration `0040_unified_context.sql` and
-123 runtime/migration assets. Before activation, inspect the actual current
+124 runtime/migration assets. Before activation, inspect the actual current
 release, retain a full verified database backup and rehearse migrations using
 `deploy-cloud-update.py`. Do not use `--code-only` for this migration. Verify both
 services, a fresh worker heartbeat, all manifest hashes, and synthetic collection,
@@ -65,6 +70,6 @@ existing-installation verification complete.
 
 | Artifact | SHA-256 |
 | --- | --- |
-| `meet-proxy-0.4.14.zip` | `74b81323bbde044682537ee452a6e00a6fe91c01da7fae307cd5817684698429` |
-| `commonplace-0.4.14.zip` | `8f0496caec2eac3343daa8d004c31e199287e7b1d8cc49ebd83ed008b665753d` |
-| `runtime-update.json` | `58ea1da642269f197dad06e7effc9a7d693a97ddd143080c57b70779073379f7` |
+| `meet-proxy-0.4.14.zip` | `370206d4789bcdba08c19a91335c3b1873f5bd6db593cff03b589c722916695f` |
+| `commonplace-0.4.14.zip` | `888bbdef9c3dd8922cc8c7a28224742b12a210ab97d6b3a7ae4ab2bae08c4b4b` |
+| `runtime-update.json` | `18877cafca5d6f7a73a61bb3451703b22cb7f8e83d1e4ae5094d75923d4eaf33` |

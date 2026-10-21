@@ -11,7 +11,7 @@
       "source": {
         "source": "archive",
         "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.14/commonplace-0.4.14.zip",
-        "sha256": "8f0496caec2eac3343daa8d004c31e199287e7b1d8cc49ebd83ed008b665753d"
+        "sha256": "888bbdef9c3dd8922cc8c7a28224742b12a210ab97d6b3a7ae4ab2bae08c4b4b"
       }
     },
     {
@@ -31,7 +31,7 @@
       "source": {
         "source": "archive",
         "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.14/meet-proxy-0.4.14.zip",
-        "sha256": "74b81323bbde044682537ee452a6e00a6fe91c01da7fae307cd5817684698429"
+        "sha256": "370206d4789bcdba08c19a91335c3b1873f5bd6db593cff03b589c722916695f"
       }
     }
   ]

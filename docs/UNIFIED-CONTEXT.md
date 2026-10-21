@@ -15,6 +15,13 @@ metadata and citation chunks in `sections/`. The cloud runner mounts this folder
 read-only at `/context`. Native and cloud tools read the same account projection.
 No model or embeddings are involved in producing the files or index.
 
+The browser Library exposes the same search, filters and surrounding reads.
+Agents → Setup status distinguishes model access, worker availability, sync
+choice and actual searchable context. Connection-check answers are excluded from
+the context folder so a fresh account cannot appear populated by its own setup
+test. A complete isolated local environment is documented in the source
+repository’s `docs/LOCAL-DEVELOPMENT.md`.
+
 `archive_search` (cloud) and `search_shared_context` (native) use SQLite FTS5 to
 rank whole conversations with BM25, with extra weight for title matches. All
 keywords must match, even when they occur in different turns. Quoted phrases

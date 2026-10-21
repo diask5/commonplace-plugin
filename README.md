@@ -18,6 +18,14 @@ See [unified context](docs/UNIFIED-CONTEXT.md) and
 The migration and installation rollout are pending; 0.4.13 remains the published
 stable release until those checks complete.
 
+## Test locally before deployment
+
+The [local integration environment](docs/LOCAL-DEVELOPMENT.md) runs the real UI,
+signed API, collector, search index and task worker with isolated sample accounts
+and simulated model/host responses. In the implementation repository, run
+`npm run dev:local` or `npm run test:local`. Conductor cloud workspaces can use
+`npm run dev:preview` for a protected preview. No production setup is needed.
+
 ## One private cloud workspace — 0.4.13
 
 [Download Meet Proxy / Commonplace 0.4.13](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.13)

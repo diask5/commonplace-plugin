@@ -26,7 +26,10 @@ ranked keywords, quoted phrases, word prefixes, and project/source/capture-date
 filters. Literal search handles exact code strings and punctuation. Results
 include original excerpts and offsets for reading surrounding context. Updates
 publish complete snapshots atomically; subsequent turns see the refreshed files.
-This candidate has been tested in source and remains pending deployment.
+The Library includes these search controls and surrounding reads. Agents →
+Setup status shows model access, worker health, sync choice and context separately.
+Connection-check answers do not count as work context. The candidate remains
+pending deployment; use the [local environment](LOCAL-DEVELOPMENT.md) to test it.
 
 ## Freshness and scope
 
