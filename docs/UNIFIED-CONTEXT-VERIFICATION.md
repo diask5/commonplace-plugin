@@ -12,8 +12,10 @@ commit `4449406`, plugin 0.4.14, runtime revision 47.
   pagination, account changes and exclusion controls.
 - Ten deployment regression checks pass; the dependency audit reports zero
   known production vulnerabilities.
-- Packaging and signed transport smoke results are recorded below after the
-  final build. The smoke uses synthetic Google identity and native-host fixtures.
+- Both archives passed package integrity checks. The packaged signed transport
+  smoke passed with six fresh profiles, exact-chat receipts, restart recovery,
+  offline backlog and deduplication. Google identity and native hosts were
+  synthetic fixtures; this is separate from live deployment verification.
 
 The candidate includes the latest released backup and nonblocking Conductor
 receiver fixes. The public production health endpoint returned ready during this
