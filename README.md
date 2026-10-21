@@ -4,6 +4,18 @@ Let someone talk to your agent while you are unavailable. Questions and answers
 live in a private, durable message board that both participants can read. Your
 agent answers within the topic, duration and disclosure limits you authorize.
 
+## Unified context — 0.4.14 candidate
+
+The candidate adds one shared archive per verified account for native and cloud
+agents: resumable transcript collection, duplicate replica merging, source
+citations, exclusions, coverage, and paginated project statements. Existing
+accounts, chat bindings, permissions and sync choices are preserved.
+
+See [unified context](docs/UNIFIED-CONTEXT.md) and
+[candidate verification and rollout](docs/UNIFIED-CONTEXT-VERIFICATION.md).
+The migration and installation rollout are pending; 0.4.13 remains the published
+stable release until those checks complete.
+
 ## One private cloud workspace — 0.4.13
 
 [Download Meet Proxy / Commonplace 0.4.13](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.13)
