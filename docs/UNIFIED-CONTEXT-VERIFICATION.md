@@ -21,6 +21,10 @@ The candidate includes the latest released backup and nonblocking Conductor
 receiver fixes. The public production health endpoint returned ready during this
 verification. That does not prove this candidate is deployed.
 
+The complete [GitHub verification run](https://github.com/diask5/commonplace-session-tests/actions/runs/39542882981)
+also passed on the final source commit, including application/UI suites, deployment
+regressions, package integrity, signed transport smoke and runtime bundle build.
+
 ## Rollout state
 
 Deployment is blocked: two `RunLocalCommand` calls returned
