@@ -1,5 +1,8 @@
 # Your personal agent network
 
+Version 0.4.14 adds canonical transcript collection, common archive retrieval,
+coverage and source-attributed project views. See [unified context](UNIFIED-CONTEXT.md).
+
 ## One cloud workspace
 
 Version 0.4.13 adds automatic workspace projection and a task-bound communication
@@ -9,7 +12,10 @@ see [production verification](PRODUCTION-VERIFICATION.md) for evidence and host 
 
 The service writes synced visible chats, permitted agent-message threads,
 published working context and previous cloud results into the owner's private
-workspace. `WORKSPACE.md` indexes the files. No model needs to assemble those
+workspace. `INDEX.md` (also available as `WORKSPACE.md`) links complete text files in
+`documents/`. Ranked keyword search, quoted phrases, word prefixes and
+project/source/capture-date filters locate relevant context; literal phrase
+search handles code strings. The cloud agent reads this folder at `/context`. No model needs to assemble those
 streams. Background refresh publishes complete filesystem generations; each
 cloud turn mounts a consistent read-only snapshot, with timestamps and revision.
 Live message-board reads use current authorization and current messages.

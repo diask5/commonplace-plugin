@@ -1,13 +1,16 @@
 # Unified context candidate — 21 October 2026
 
 Implementation: [source PR #9](https://github.com/diask5/commonplace-session-tests/pull/9),
-commit `4449406`, plugin 0.4.14, runtime revision 47.
+commit `1231ba0`, plugin 0.4.14, runtime revision 47.
 
 ## Validated behavior
 
-- 293 application tests pass, including source convergence, durable retry,
+- 298 application tests pass, including source convergence, durable retry,
   checkpoint recovery, edits/deletion, Unicode, child agents, native identity
   aliases, account isolation, exclusions/restore, and damaged-source isolation.
+  Search checks cover ranked keywords across turns, quoted phrases, prefixes,
+  literal punctuation, filters, exact read offsets and excerpt-only receipts.
+  Complete file parity, old-layout upgrades and damaged-index recovery pass.
 - 46 UI/API checks pass, including mobile accessibility, source reading, project
   pagination, account changes and exclusion controls.
 - Ten deployment regression checks pass; the dependency audit reports zero
@@ -18,12 +21,12 @@ commit `4449406`, plugin 0.4.14, runtime revision 47.
   synthetic fixtures; this is separate from live deployment verification.
 
 The candidate includes the latest released backup and nonblocking Conductor
-receiver fixes. The public production health endpoint returned ready during this
-verification. That does not prove this candidate is deployed.
+receiver fixes. The previous production health check returned ready. That does
+not prove this candidate is deployed.
 
-The complete [GitHub verification run](https://github.com/diask5/commonplace-session-tests/actions/runs/39542882981)
-also passed on the final source commit, including application/UI suites, deployment
-regressions, package integrity, signed transport smoke and runtime bundle build.
+The updated [GitHub verification run](https://github.com/diask5/commonplace-session-tests/actions/runs/39669852435)
+checks this source commit, including application/UI suites, deployment regressions,
+package integrity, signed transport smoke and runtime bundle build.
 
 ## Rollout state
 
@@ -33,7 +36,7 @@ Google authentication error or permission denial. The deployment uses the Mac's
 existing authenticated gcloud installation; no credentials were copied.
 
 The backend bundle contains additive migration `0040_unified_context.sql` and
-122 runtime/migration assets. Before activation, inspect the actual current
+123 runtime/migration assets. Before activation, inspect the actual current
 release, retain a full verified database backup and rehearse migrations using
 `deploy-cloud-update.py`. Do not use `--code-only` for this migration. Verify both
 services, a fresh worker heartbeat, all manifest hashes, and synthetic collection,
@@ -62,6 +65,6 @@ existing-installation verification complete.
 
 | Artifact | SHA-256 |
 | --- | --- |
-| `meet-proxy-0.4.14.zip` | `a1e476c46b447b0eec21431ef57f83f9ba42a290a58b6e072b6f44b0a3eef57d` |
-| `commonplace-0.4.14.zip` | `7b2d5c979086febd7df8dc07aa4037c025f579ccbd8150fcb777ec05d2d6a2e4` |
-| `runtime-update.json` | `04b2bc910503ee89d47ae9a8a7f9aedf41217275fc6810b7ca67de1edad02988` |
+| `meet-proxy-0.4.14.zip` | `74b81323bbde044682537ee452a6e00a6fe91c01da7fae307cd5817684698429` |
+| `commonplace-0.4.14.zip` | `8f0496caec2eac3343daa8d004c31e199287e7b1d8cc49ebd83ed008b665753d` |
+| `runtime-update.json` | `58ea1da642269f197dad06e7effc9a7d693a97ddd143080c57b70779073379f7` |

@@ -8,7 +8,9 @@ agent answers within the topic, duration and disclosure limits you authorize.
 
 The candidate adds one shared archive per verified account for native and cloud
 agents: resumable transcript collection, duplicate replica merging, source
-citations, exclusions, coverage, and paginated project statements. Existing
+citations, exclusions, coverage, and paginated project statements. A readable
+`/context` folder holds complete source files with an index and ranked keyword
+search, phrase/prefix matching, and project/source/date filters. Existing
 accounts, chat bindings, permissions and sync choices are preserved.
 
 See [unified context](docs/UNIFIED-CONTEXT.md) and

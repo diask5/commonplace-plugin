@@ -7,6 +7,40 @@ agent messages, published context, and previous cloud results. They start no mod
 Preserve the returned revision when paging; a changed snapshot requires restarting
 the read. The cloud model uses the same projection and citation checks.
 
+## Context folder and search
+
+Every published snapshot has a readable `INDEX.md`, complete source text at
+`documents/<stable-id>.txt`, and a `manifest.json` mapping documents to source
+metadata and citation chunks in `sections/`. The cloud runner mounts this folder
+read-only at `/context`. Native and cloud tools read the same account projection.
+No model or embeddings are involved in producing the files or index.
+
+`archive_search` (cloud) and `search_shared_context` (native) use SQLite FTS5 to
+rank whole conversations with BM25, with extra weight for title matches. All
+keywords must match, even when they occur in different turns. Quoted phrases
+require adjacent words; a trailing star matches word prefixes (`deploy*`). Query
+operators are treated as words. For exact code or punctuation, use `mode: phrase`,
+a case-insensitive literal scan that also finds text crossing storage chunks.
+Unicode words are indexed without removing accents; literal mode also supports
+substring searches within words.
+
+Search and list accept `kind`, `project` (case-insensitive exact name), `after`
+(inclusive) and `before` (exclusive), with dates in Unix milliseconds. Dates
+filter each document's latest source capture/version time, not upload time. An
+unassigned project does not match a project filter. Search also accepts
+`documentId`. Results include paths, original snippets, citation IDs and character
+offsets for `archive_read` / `read_shared_context`. Follow `nextCursor`; native
+callers must preserve `revision`. Ranking is deterministic within a snapshot.
+
+The keyword index stores token postings, not another transcript copy. Each build
+handles one complete document at a time. Publication swaps the files and index
+atomically. Existing snapshots without this layout are rebuilt on preparation,
+even when source revision is unchanged. Corrupt or missing generated files are
+rebuilt from authoritative storage. Edits, deletion and exclusions trigger a new
+snapshot; running tasks keep a consistent pinned generation and their citations
+are checked again against current permissions. Only returned excerpt sections
+enter the citation receipt, never unseen keyword matches elsewhere in a document.
+
 ## Collection and identity
 
 With the owner's existing sync choice enabled, each companion discovers supported
