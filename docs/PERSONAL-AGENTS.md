@@ -1,6 +1,6 @@
 # Your personal agent network
 
-Version 0.4.14 adds canonical transcript collection, common archive retrieval,
+Version 0.4.15 adds canonical transcript collection, common archive retrieval,
 coverage and source-attributed project views. See [unified context](UNIFIED-CONTEXT.md).
 
 ## One cloud workspace
