@@ -1,0 +1,138 @@
+# Unified personal context — 0.4.14
+
+All connected agents can query the same owner-scoped archive using
+`list_shared_context`, `search_shared_context`, and `read_shared_context`.
+These tools include imported ChatGPT conversations, collected native transcripts,
+agent messages, published context, and previous cloud results. They start no model.
+Preserve the returned revision when paging; a changed snapshot requires restarting
+the read. The cloud model uses the same projection and citation checks.
+
+## Context folder and search
+
+Every published snapshot has a readable `INDEX.md`, complete source text at
+`documents/<stable-id>.txt`, and a `manifest.json` mapping documents to source
+metadata and citation chunks in `sections/`. The cloud runner mounts this folder
+read-only at `/context`. Native and cloud tools read the same account projection.
+No model or embeddings are involved in producing the files or index.
+
+The browser Library exposes the same search, filters and surrounding reads.
+Agents → Setup status distinguishes model access, worker availability, sync
+choice and actual searchable context. Connection-check answers are excluded from
+the context folder so a fresh account cannot appear populated by its own setup
+test. A complete isolated local environment is documented in the source
+repository’s `docs/LOCAL-DEVELOPMENT.md`.
+
+`archive_search` (cloud) and `search_shared_context` (native) use SQLite FTS5 to
+rank whole conversations with BM25, with extra weight for title matches. All
+keywords must match, even when they occur in different turns. Quoted phrases
+require adjacent words; a trailing star matches word prefixes (`deploy*`). Query
+operators are treated as words. For exact code or punctuation, use `mode: phrase`,
+a case-insensitive literal scan that also finds text crossing storage chunks.
+Unicode words are indexed without removing accents; literal mode also supports
+substring searches within words.
+
+Search and list accept `kind`, `project` (case-insensitive exact name), `after`
+(inclusive) and `before` (exclusive), with dates in Unix milliseconds. Dates
+filter each document's latest source capture/version time, not upload time. An
+unassigned project does not match a project filter. Search also accepts
+`documentId`. Results include paths, original snippets, citation IDs and character
+offsets for `archive_read` / `read_shared_context`. Follow `nextCursor`; native
+callers must preserve `revision`. Ranking is deterministic within a snapshot.
+
+The keyword index stores token postings, not another transcript copy. Each build
+handles one complete document at a time. Publication swaps the files and index
+atomically. Existing snapshots without this layout are rebuilt on preparation,
+even when source revision is unchanged. Corrupt or missing generated files are
+rebuilt from authoritative storage. Edits, deletion and exclusions trigger a new
+snapshot; running tasks keep a consistent pinned generation and their citations
+are checked again against current permissions. Only returned excerpt sections
+enter the citation receipt, never unseen keyword matches elsewhere in a document.
+
+## Collection and identity
+
+With the owner's existing sync choice enabled, each companion discovers supported
+Claude, Desktop Code and Codex transcript folders, including visible child-agent
+results. Conductor collectors preserve the actual host conversation identity.
+Cloud capture checkpoints a host message cursor and publishes bounded increments;
+collection runs independently of message delivery. No native execution identity
+is synthesized or moved.
+
+The relay stores conversations by verified owner and provider conversation ID.
+Known Conductor/native identity aliases join replicas transactionally. Native
+message IDs retain branches; records without IDs use a source-local position.
+Unknown identities remain separate rather than merging unrelated conversations
+on their wording. Equivalent bodies do not silently collapse distinct messages.
+
+Collectors persist the exact next batch before sending it and advance the file
+cursor only after acknowledgement. If a local checkpoint is lost or restored, a
+device-scoped revision lookup restarts collection without exposing another
+installation’s metadata. Large visible messages are split at stable
+boundaries. Pending pieces survive process restarts. Files are visited fairly in
+bounded batches. Append-only files use byte cursors; rewrites and periodic audits
+rescan the visible records. Partial lines wait for completion. Unreadable or
+oversized records are reported as partial, never as successful complete capture.
+
+New collectors attach a durable capture ID to every batch in one source scan.
+The relay stages those batches privately until the capture reaches `current`.
+Edits, large messages and deletions become readable together in one transaction;
+readers keep the previous complete capture during backfill, malformed input or
+restart. A replacement scan discards only its unfinished staged capture. Native
+history exclusions, epoch changes and device revocation erase staged text.
+Legacy source aliases retire only after publication. The relay advertises
+`contextAtomicCaptures: true`; updated collectors require that capability before
+using canonical ingestion. Older direct clients retain message-batch semantics.
+
+Each message has a source version. Newer edits supersede stale replicas. Different
+bodies at the same version remain visible with a conflict marker. Explicit
+message deletions retain a tombstone so an offline replica cannot resurrect the
+old text. Missing cached files only mark a replica unavailable; absence from a
+cache does not prove deletion of the original conversation.
+
+Upgraded collectors associate their old device/path sources with the canonical
+conversation. Retrieval hides those duplicate legacy copies. Other legacy
+sources remain readable until their installation upgrades.
+
+## Coverage and project views
+
+The Working context panel and `context_sync_status` show collected conversations,
+replicas, capture times, backfill, partial sources, conflicts, and connected agents
+without collected history. Follow both pagination cursors to inspect the inventory.
+The library reads and deletes canonical conversations alongside existing imports.
+
+Assign a project in the coverage panel or with `configure_context_source`.
+`read_project_context` exposes source-attributed `Decision:`, `Task:`, `TODO:`,
+`Status:`, `Blocker:`, and `Question:` statements. Different `subject = value`
+statements are returned as disagreements. These are transparent extracts, not
+model-invented facts or a guarantee that the last statement is authoritative.
+Follow nextOffset, then nextAfter, and read the cited conversations for context.
+The cloud agent has these coverage and project tools too.
+
+## Privacy and lifecycle
+
+An owner-requested canonical exclusion erases its collected message text and
+blocks all replicas and legacy aliases. Restoring advances an epoch and requires
+a fresh collection; stale queued batches cannot silently restore excluded text.
+Native-agent history exclusions also remove their canonical projection. Account
+changes discard local pending upload state; different Google identities remain
+separate private collections. Revoked devices and moved native bindings cannot
+supply evidence. Citation validation rechecks access after a cloud model turn.
+
+Only displayable user and assistant text is collected. Hidden reasoning, tool
+payloads, credentials and neighboring settings are excluded. Secret recognition
+is best-effort; it does not detect all sensitive prose.
+
+A sleeping computer or suspended workspace cannot collect new local text.
+Previously synced evidence remains readable. Conductor's exact-session wake path
+still depends on its supported host delivery behavior; a queued message is not a
+running chat. ChatGPT web history still requires an export import. Files,
+attachments and unsupported hosts require their own explicitly authorized source
+connectors. This release does not claim universal capture of every application.
+
+## Rollout
+
+Apply additive migrations `0040_unified_context.sql` and
+`0041_atomic_context_captures.sql` with the existing verified
+backup/rehearsal deployment procedure. Upgrade the plugin to 0.4.14, runtime 48,
+using its supported manager or the verified Codex bundle. Existing accounts,
+chat bindings, host permissions and sync choices remain unchanged. No new
+subscription or Google sign-in is required for an already connected installation.

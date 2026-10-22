@@ -4,9 +4,32 @@ Let someone talk to your agent while you are unavailable. Questions and answers
 live in a private, durable message board that both participants can read. Your
 agent answers within the topic, duration and disclosure limits you authorize.
 
-## One private cloud workspace — 0.4.13
+## Unified context — 0.4.14
 
-[Download Meet Proxy / Commonplace 0.4.13](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.13)
+Version 0.4.14 adds one shared archive per verified account for native and cloud
+agents: resumable transcript collection, duplicate replica merging, source
+citations, exclusions, coverage, and paginated project statements. A readable
+`/context` folder holds complete source files with an index and ranked keyword
+search, phrase/prefix matching, and project/source/date filters. Existing
+accounts, chat bindings, permissions and sync choices are preserved.
+
+See [unified context](docs/UNIFIED-CONTEXT.md) and
+[candidate verification and rollout](docs/UNIFIED-CONTEXT-VERIFICATION.md).
+The hosted backend and both plugin aliases are released. Update existing
+installations through their supported manager or bundled Codex helper, then
+refresh the existing chat if the host requires it. Saved sync choices are preserved.
+
+## Test locally before deployment
+
+The [local integration environment](docs/LOCAL-DEVELOPMENT.md) runs the real UI,
+signed API, collector, search index and task worker with isolated sample accounts
+and simulated model/host responses. In the implementation repository, run
+`npm run dev:local` or `npm run test:local`. Conductor cloud workspaces can use
+`npm run dev:preview` for a protected preview. No production setup is needed.
+
+## One private cloud workspace
+
+[Download Meet Proxy / Commonplace 0.4.14](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.14)
 for a cloud workspace containing supported synced chats, permitted agent-message
 threads, published working context, and previous cloud results. Your cloud agent
 can query the live message board, consult your connected native agents, wait for
@@ -20,7 +43,7 @@ See [personal agents](docs/PERSONAL-AGENTS.md),
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.13**. Enable only one alias. Existing accounts and
+update that alias to **0.4.14**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate

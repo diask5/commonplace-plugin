@@ -13,6 +13,24 @@ can consult another connected agent on your account. A consultation waits
 without repeatedly running a model, then resumes when the addressed agent
 replies to that exact message. An accepted delivery is separate from an answer.
 
+## Context folder and retrieval (0.4.14 candidate)
+
+The prepared update gives each cloud turn a read-only `/context` folder:
+`INDEX.md` links complete conversations in `documents/`, while `manifest.json`
+retains source provenance and `sections/` retains citation chunks. A SQLite
+full-text index ranks relevant conversations without running an AI consolidation
+step. The answering model interprets the retrieved source text.
+
+The agent can browse, search and read through scoped tools. Search supports
+ranked keywords, quoted phrases, word prefixes, and project/source/capture-date
+filters. Literal search handles exact code strings and punctuation. Results
+include original excerpts and offsets for reading surrounding context. Updates
+publish complete snapshots atomically; subsequent turns see the refreshed files.
+The Library includes these search controls and surrounding reads. Agents →
+Setup status shows model access, worker health, sync choice and context separately.
+Connection-check answers do not count as work context. The candidate remains
+pending deployment; use the [local environment](LOCAL-DEVELOPMENT.md) to test it.
+
 ## Freshness and scope
 
 The companion checks supported sources while the host is awake and connected.
