@@ -1,75 +1,47 @@
-# Unified context candidate — 21 October 2026
+# Unified context production verification — 22 October 2026
 
-Implementation: [source PR #9](https://github.com/diask5/commonplace-session-tests/pull/9),
-commit `2181c53`, plugin 0.4.14, runtime revision 47.
+Release: Meet Proxy 0.4.14, companion runtime 48. Implementation: [source PR #9](https://github.com/diask5/commonplace-session-tests/pull/9), commit `74d7a24`. The final bundle includes additive migrations `0040_unified_context.sql` and `0041_atomic_context_captures.sql`.
 
-## Validated behavior
+Production is active on `20261022-unified-context3`. Both services are healthy,
+all 125 installed assets match the manifest, and all 36 deployed integration
+checks pass. Existing account settings and native routing match the pre-rollout
+fingerprints. Verified backups and previous releases are retained.
 
-- 303 application tests pass, including source convergence, durable retry,
-  checkpoint recovery, edits/deletion, Unicode, child agents, native identity
-  aliases, account isolation, exclusions/restore, and damaged-source isolation.
-  Search checks cover ranked keywords across turns, quoted phrases, prefixes,
-  literal punctuation, filters, exact read offsets and excerpt-only receipts.
-  Complete file parity, old-layout upgrades and damaged-index recovery pass.
-- 49 UI/API checks pass, including mobile accessibility, source reading, project
-  pagination, account changes and exclusion controls.
-- Ten deployment regression checks pass; the dependency audit reports zero
-  known production vulnerabilities.
-- Local integration checks exercise the real signed HTTP collector, search, cited
-  answers, sync pause, edits, exclusions, offline consultations, cancellation,
-  sign-in failure, model limits, persistence and origin rejection. Browser checks
-  cover search pagination, setup, account-switch races, mobile layout and accessibility.
-  Google, models and native hosts are isolated fixtures; see [local development](LOCAL-DEVELOPMENT.md).
-- Both archives passed package integrity checks. The packaged signed transport
-  smoke passed with six fresh profiles, exact-chat receipts, restart recovery,
-  offline backlog and deduplication. Google identity and native hosts were
-  synthetic fixtures; this is separate from live deployment verification.
+## Validation
 
-The candidate includes the latest released backup and nonblocking Conductor
-receiver fixes. The previous production health check returned ready. That does
-not prove this candidate is deployed.
+- 312 application tests and 49 UI checks pass, covering signed collection, full source files, ranked search, filters, citations, source exclusions, replica convergence, deletion, and account isolation.
+- Incomplete captures preserve the previous complete version. Replacement scans, interrupted long messages, staged deletions, revocation and exclusion are covered by the new atomic-capture tests.
+- All 12 deployment checks pass. Rollout backups now pin one read-only SQLite snapshot, so ongoing worker writes cannot restart the copy indefinitely. A two-minute copy deadline removes incomplete backups before activation.
+- All 25 focused companion upgrade, receiver and setup checks pass. Runtime 48 ensures existing candidate installations load the atomic collector.
+- Both plugin aliases pass package integrity, bundled dependency and executable-mode checks. The final archive hashes are below.
+- A separate real-agent diagnostic benchmark passed 13 cases and 29 factual checks. The UI-to-worker-to-real-agent round trip completed in 32.935 seconds with six valid citations. This was a synthetic corpus and a local model adapter; see [the benchmark report](LOCAL-AGENT-BENCHMARK.md).
 
-The updated [GitHub verification run](https://github.com/diask5/commonplace-session-tests/actions/runs/39691242304)
-checks this source commit, including application/UI suites, deployment regressions,
-package integrity, signed transport smoke and runtime bundle build.
+The [GitHub verification run](https://github.com/diask5/commonplace-session-tests/actions/runs/39714216694) passed for the final source commit, including application/UI tests, deployment regressions, package integrity, signed transport smoke and runtime bundle creation.
 
-## Rollout state
+## Production rollout
 
-Deployment is intentionally deferred at the owner’s request. The local lab runs
-independently and does not change production accounts, sync choices or installs.
-Prior Mac deployment attempts timed out waiting for the client; rollout still
-requires an authenticated deployment environment. No credentials were copied.
+The hosted relay is updated through authenticated Google Cloud IAP access. Each schema change retains a verified SQLite backup, rehearses migration on a disposable copy, preserves the prior release and requires a fresh worker heartbeat after activation. The final release is `20261022-unified-context3`.
 
-The backend bundle contains additive migration `0040_unified_context.sql` and
-124 runtime/migration assets. Before activation, inspect the actual current
-release, retain a full verified database backup and rehearse migrations using
-`deploy-cloud-update.py`. Do not use `--code-only` for this migration. Verify both
-services, a fresh worker heartbeat, all manifest hashes, and synthetic collection,
-query, exclusion and restore on the deployed service before promotion.
+Preservation checks compare installation/account links, model-account state, sync choices and exact native routing with the backup. A display-name-only change observed during the first rollout did not change identity, routing or generation. All installed files are checked against the bundle manifest.
 
-After backend verification, publish the verified plugin archives, merge the
-marketplace update, and update each existing installation through its supported
-manager or bundled Codex helper. Verify accounts, sync preferences and native
-bindings are preserved. These installation steps have not been performed for
-0.4.14. Existing production stays on the released 0.4.13 code.
+Public desktop and mobile checks verify delivered UI assets against their hashes, reject unauthenticated context search, check JavaScript errors and check horizontal overflow. Authenticated UI behavior is exercised with isolated local fixtures.
+
+All 36 deployed integration checks passed in 176.493 seconds. The suite uses the installed account-runtime modules with disposable databases and a loopback signed-auth fixture. Its SDK dependencies are bundled for the fixture; no synthetic records enter the production database. This verifies module behavior, not a fresh production Google/model sign-in or a universal native-host wake test.
+
+This existing Codex chat was updated through the verified bundled helper. A fresh MCP process confirmed version 0.4.14, runtime 48, the same account, a verified native identity and a ready receiver; the existing linked conversation still permits replies. A settings fingerprint confirms that only the plugin executable paths changed.
+
+Other existing installations use their supported plugin manager or bundled Codex setup helper. Verify the current account, native binding, runtime 48 and receiver status after updating. A running host may require an MCP refresh in the same chat. No repeat Google link or transcript-sync change is required.
 
 ## Limits
 
-Collection requires an enabled sync choice and an awake, supported source.
-ChatGPT web history still requires export import; attachments and unsupported
-apps require explicit connectors. Different verified accounts retain separate
-archives. Unknown conversation/message identities remain separate. Project
-statements are attributed extracts, not automatic semantic truth resolution.
-Conductor's sleeping-chat wake remains an independent host limitation.
+Collection requires the owner's saved sync choice and an awake, supported source. ChatGPT web history requires an export import; attachments and unsupported applications need explicit connectors. Unknown conversation identities remain separate, and extracted project statements retain attribution rather than becoming automatic semantic truth.
 
-## Artifacts
+Answer citations still display as IDs. Conductor's sleeping-chat wake and Mac-binding limitations remain host-specific. The real-agent benchmark did not evaluate all private owner context or every supported host.
 
-Both plugin archives passed source, SHA-256, dependency, bundled import and
-executable-mode checks. The candidate remains a draft until backend and
-existing-installation verification complete.
+## Verified artifacts
 
 | Artifact | SHA-256 |
 | --- | --- |
-| `meet-proxy-0.4.14.zip` | `370206d4789bcdba08c19a91335c3b1873f5bd6db593cff03b589c722916695f` |
-| `commonplace-0.4.14.zip` | `888bbdef9c3dd8922cc8c7a28224742b12a210ab97d6b3a7ae4ab2bae08c4b4b` |
-| `runtime-update.json` | `18877cafca5d6f7a73a61bb3451703b22cb7f8e83d1e4ae5094d75923d4eaf33` |
+| `meet-proxy-0.4.14.zip` | `676a0e296c3f86a37e7b66cf1a949e80456bc297503d719e259c96a33cb99bbd` |
+| `commonplace-0.4.14.zip` | `a73fd6cb8d0b71d67acb83003ae85b2914df8a11708e9672d1780749f1b93919` |
+| `runtime-update.json` | `1f331efa0ef28a2ed2c134dc0d3161ac8f6dac93beaa1a8a4d64880bcf9b68af` |

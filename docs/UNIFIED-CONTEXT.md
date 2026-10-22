@@ -72,6 +72,16 @@ bounded batches. Append-only files use byte cursors; rewrites and periodic audit
 rescan the visible records. Partial lines wait for completion. Unreadable or
 oversized records are reported as partial, never as successful complete capture.
 
+New collectors attach a durable capture ID to every batch in one source scan.
+The relay stages those batches privately until the capture reaches `current`.
+Edits, large messages and deletions become readable together in one transaction;
+readers keep the previous complete capture during backfill, malformed input or
+restart. A replacement scan discards only its unfinished staged capture. Native
+history exclusions, epoch changes and device revocation erase staged text.
+Legacy source aliases retire only after publication. The relay advertises
+`contextAtomicCaptures: true`; updated collectors require that capability before
+using canonical ingestion. Older direct clients retain message-batch semantics.
+
 Each message has a source version. Newer edits supersede stale replicas. Different
 bodies at the same version remain visible with a conflict marker. Explicit
 message deletions retain a tombstone so an offline replica cannot resurrect the
@@ -120,8 +130,9 @@ connectors. This release does not claim universal capture of every application.
 
 ## Rollout
 
-Apply additive migration `0040_unified_context.sql` with the existing verified
-backup/rehearsal deployment procedure. Upgrade the plugin to 0.4.14, runtime 47,
+Apply additive migrations `0040_unified_context.sql` and
+`0041_atomic_context_captures.sql` with the existing verified
+backup/rehearsal deployment procedure. Upgrade the plugin to 0.4.14, runtime 48,
 using its supported manager or the verified Codex bundle. Existing accounts,
 chat bindings, host permissions and sync choices remain unchanged. No new
 subscription or Google sign-in is required for an already connected installation.
