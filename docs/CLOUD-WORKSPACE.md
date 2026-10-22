@@ -31,6 +31,16 @@ Setup status shows model access, worker health, sync choice and context separate
 Connection-check answers do not count as work context. The candidate remains
 pending deployment; use the [local environment](LOCAL-DEVELOPMENT.md) to test it.
 
+## Local folder instead of cloud inference
+
+The same projection is mirrored to each connected computer as plain files under
+`~/.commonplace/context/current/` (INDEX.md, documents/<id>.txt, manifest.json
+and a keyword index). An agent you are already talking to answers history
+questions from that folder with ordinary file tools and the bundled search
+command; no cloud worker, queue or subscription is involved. The cloud agent
+remains useful when every computer is asleep or a task must wait for another
+agent's reply.
+
 ## Freshness and scope
 
 The companion checks supported sources while the host is awake and connected.
