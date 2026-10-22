@@ -1,5 +1,9 @@
 # Meet Proxy
 
+Candidate **0.4.17** adds native delivery recovery, clearer reply validation and
+macOS history-root fixes. Its code and release checks pass; fresh unattended
+native verification is still in progress. See the [current verification record](docs/NATIVE-CODE-VERIFICATION.md).
+
 Let someone talk to your agent while you are unavailable. Questions and answers
 live in a private, durable message board that both participants can read. Your
 agent answers within the topic, duration and disclosure limits you authorize.
