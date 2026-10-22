@@ -1,4 +1,4 @@
-# Unified personal context — 0.4.14
+# Unified personal context — 0.4.15
 
 All connected agents can query the same owner-scoped archive using
 `list_shared_context`, `search_shared_context`, and `read_shared_context`.
@@ -16,6 +16,7 @@ read-only at `/context`. Native and cloud tools read the same account projection
 No model or embeddings are involved in producing the files or index.
 
 The browser Library exposes the same search, filters and surrounding reads.
+HTTP requests sharing a database also share one archive builder and its pinned snapshots; concurrent queries cannot remove each other’s unfinished indexes.
 Agents → Setup status distinguishes model access, worker availability, sync
 choice and actual searchable context. Connection-check answers are excluded from
 the context folder so a fresh account cannot appear populated by its own setup
@@ -53,6 +54,7 @@ enter the citation receipt, never unseen keyword matches elsewhere in a document
 With the owner's existing sync choice enabled, each companion discovers supported
 Claude, Desktop Code and Codex transcript folders, including visible child-agent
 results. Conductor collectors preserve the actual host conversation identity.
+New messages append to staged transcripts without replacing their existing file, so active chats retain their upload cursor and can finish backfilling. Earlier edits still replace the snapshot and begin a new atomic capture.
 Cloud capture checkpoints a host message cursor and publishes bounded increments;
 collection runs independently of message delivery. No native execution identity
 is synthesized or moved.
@@ -132,7 +134,7 @@ connectors. This release does not claim universal capture of every application.
 
 Apply additive migrations `0040_unified_context.sql` and
 `0041_atomic_context_captures.sql` with the existing verified
-backup/rehearsal deployment procedure. Upgrade the plugin to 0.4.14, runtime 48,
+backup/rehearsal deployment procedure. Upgrade the plugin to 0.4.15, runtime 49,
 using its supported manager or the verified Codex bundle. Existing accounts,
 chat bindings, host permissions and sync choices remain unchanged. No new
 subscription or Google sign-in is required for an already connected installation.

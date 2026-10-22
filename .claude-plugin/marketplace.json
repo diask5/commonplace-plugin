@@ -6,12 +6,12 @@
   "plugins": [
     {
       "name": "commonplace",
-      "version": "0.4.14",
+      "version": "0.4.15",
       "description": "Meet Proxy \u2014 compatible update for existing Commonplace installations.",
       "source": {
         "source": "archive",
-        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.14/commonplace-0.4.14.zip",
-        "sha256": "a73fd6cb8d0b71d67acb83003ae85b2914df8a11708e9672d1780749f1b93919"
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.15/commonplace-0.4.15.zip",
+        "sha256": "b1a29effdb542b7c74e365c3dd9a71a0df22bf797fe92897c952a56169f09bc4"
       }
     },
     {
@@ -26,12 +26,12 @@
     },
     {
       "name": "meet-proxy",
-      "version": "0.4.14",
+      "version": "0.4.15",
       "description": "Meat Proxy \u2014 sign in once, connect the exact agent chat, and verify messages with your people.",
       "source": {
         "source": "archive",
-        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.14/meet-proxy-0.4.14.zip",
-        "sha256": "676a0e296c3f86a37e7b66cf1a949e80456bc297503d719e259c96a33cb99bbd"
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.15/meet-proxy-0.4.15.zip",
+        "sha256": "f11794ba6776b8ec5ff94482452358fcd94d7f1008656c1d29f38148f97d3bca"
       }
     }
   ]

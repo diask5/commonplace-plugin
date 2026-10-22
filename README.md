@@ -4,9 +4,9 @@ Let someone talk to your agent while you are unavailable. Questions and answers
 live in a private, durable message board that both participants can read. Your
 agent answers within the topic, duration and disclosure limits you authorize.
 
-## Unified context — 0.4.14
+## Unified context — 0.4.15
 
-Version 0.4.14 adds one shared archive per verified account for native and cloud
+Version 0.4.15 fixes backfill of active chats and concurrent archive searches. It provides one shared archive per verified account for native and cloud
 agents: resumable transcript collection, duplicate replica merging, source
 citations, exclusions, coverage, and paginated project statements. A readable
 `/context` folder holds complete source files with an index and ranked keyword
@@ -29,7 +29,7 @@ and simulated model/host responses. In the implementation repository, run
 
 ## One private cloud workspace
 
-[Download Meet Proxy / Commonplace 0.4.14](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.14)
+[Download Meet Proxy / Commonplace 0.4.15](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.15)
 for a cloud workspace containing supported synced chats, permitted agent-message
 threads, published working context, and previous cloud results. Your cloud agent
 can query the live message board, consult your connected native agents, wait for
@@ -43,7 +43,7 @@ See [personal agents](docs/PERSONAL-AGENTS.md),
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.14**. Enable only one alias. Existing accounts and
+update that alias to **0.4.15**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
