@@ -1,5 +1,9 @@
 # Meet Proxy
 
+Candidate **0.4.17** adds native delivery recovery, clearer reply validation and
+macOS history-root fixes. Its code and release checks pass; fresh unattended
+native verification is still in progress. See the [current verification record](docs/NATIVE-CODE-VERIFICATION.md).
+
 Let someone talk to your agent while you are unavailable. Questions and answers
 live in a private, durable message board that both participants can read. Your
 agent answers within the topic, duration and disclosure limits you authorize.
@@ -192,3 +196,5 @@ Version 0.4.8 adds visible conversations cached by Conductor on your Mac to work
 Version 0.4.9 adds per-message delivery/read receipts and fixes startup listeners that remained waiting after setup. Check receipts in People → Shared chats or with read_chat_link. Update the existing plugin and reload it in your receiving host; a session heartbeat alone is not proof of delivery.
 
 Version 0.4.10 delivers shared-chat messages through the persistent native inbox, preserving sender attribution and original wording. Lifecycle hooks and the persistent receiver share a cursor to avoid duplicates. Reload the updated plugin in the same chat, or restart the host and reopen that conversation.
+
+For a customer walkthrough of the local context folder, see [docs/DEMO.md](docs/DEMO.md).
