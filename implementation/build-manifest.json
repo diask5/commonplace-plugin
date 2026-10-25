@@ -10,7 +10,7 @@
     "production-readiness-manifest.json"
   ],
   "published": true,
-  "installed": false,
+  "installed": true,
   "deployed": true,
   "productionDeployed": true,
   "artifacts": [
@@ -171,7 +171,7 @@
     "uiUpdate": "20261025-agent-launch-v2",
     "uiUpdateVerification": "agent-launch-verification.json"
   },
-  "lastVerifiedProductionRelease": "20261022-context-fixes3",
+  "lastVerifiedProductionRelease": "20261025-product-0.4.19",
   "lastPublishedStable": "0.4.19",
   "hostBlock": {
     "tool": "RunLocalCommand",
@@ -183,11 +183,10 @@
   "verification": "production-readiness-verification.json",
   "rolloutGuide": "../docs/PRODUCTION-ROLLOUT.md",
   "liveGates": [
-    "VM backup migration rehearsal and actual compiled /authorize compatibility",
-    "Real Google sign-in and account/server/native identity",
+    "Completed real Google sign-in and signed account/server/native identity",
+    "Mac host reload and loaded 0.4.19 confirmation",
     "Installed exact-chat idle wake, answer and both-owner audit",
-    "Installed host denial, offline recovery, expiry and sever",
-    "Public UI, download links, service health and worker heartbeat"
+    "Installed host denial, offline recovery, expiry and sever"
   ],
   "productionRollout": {
     "state": "live",
@@ -203,5 +202,22 @@
     "identityMappingsPreserved": true
   },
   "productionOrigin": "https://34.27.253.220",
-  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.19"
+  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.19",
+  "installation": {
+    "host": "Mac Claude plugin manager",
+    "alias": "meet-proxy@commonplace",
+    "scope": "user",
+    "version": "0.4.19",
+    "installed": true,
+    "relevantAliases": 1,
+    "method": "claude plugin marketplace update commonplace --json; claude plugin update meet-proxy@commonplace --json",
+    "managerResult": "Plugin \"meet-proxy\" updated from 0.4.15 to 0.4.19 for scope user. Restart to apply changes.",
+    "restartRequired": true,
+    "loadedAfterRestartVerified": false,
+    "scopeNote": "Only the Mac Claude user installation is confirmed updated. This cloud chat still loads 0.4.14/runtime48."
+  },
+  "completedLiveGates": [
+    "VM backup migration rehearsal and actual compiled /authorize unauthenticated redirect",
+    "Public phone/desktop loading, Google helper readiness, download links, service health and worker heartbeat"
+  ]
 }

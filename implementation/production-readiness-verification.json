@@ -2,7 +2,7 @@
   "candidate": "0.4.19",
   "runtimeRevision": 54,
   "date": "2026-10-25",
-  "state": "production server live and native release published; installed host update pending",
+  "state": "production server live; native release published and Mac Claude plugin installed; host restart and real signed-in journey verification pending",
   "runs": {
     "regression": {
       "tests": 379,
@@ -216,7 +216,7 @@
     ]
   },
   "published": true,
-  "installed": false,
+  "installed": true,
   "productionDeployed": true,
   "productionRehearsal": {
     "state": "passed",
@@ -236,11 +236,10 @@
     "scope": "Unauthenticated actual compiled authorization redirect; no real Google identity asserted."
   },
   "remainingLiveGates": [
-    "VM backup migration rehearsal and actual compiled /authorize compatibility",
-    "Real Google sign-in and account/server/native identity",
+    "Completed real Google sign-in and signed account/server/native identity",
+    "Mac host reload and loaded 0.4.19 confirmation",
     "Installed exact-chat idle wake, answer and both-owner audit",
-    "Installed host denial, offline recovery, expiry and sever",
-    "Public UI, download links, service health and worker heartbeat"
+    "Installed host denial, offline recovery, expiry and sever"
   ],
   "productionDeployment": {
     "release": "20261025-product-0.4.19",
@@ -338,5 +337,18 @@
       }
     ],
     "passed": true
+  },
+  "installation": {
+    "host": "Mac Claude plugin manager",
+    "alias": "meet-proxy@commonplace",
+    "scope": "user",
+    "version": "0.4.19",
+    "installed": true,
+    "relevantAliases": 1,
+    "method": "claude plugin marketplace update commonplace --json; claude plugin update meet-proxy@commonplace --json",
+    "managerResult": "Plugin \"meet-proxy\" updated from 0.4.15 to 0.4.19 for scope user. Restart to apply changes.",
+    "restartRequired": true,
+    "loadedAfterRestartVerified": false,
+    "scopeNote": "Only the Mac Claude user installation is confirmed updated. This cloud chat still loads 0.4.14/runtime48."
   }
 }

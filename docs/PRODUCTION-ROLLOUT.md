@@ -1,4 +1,4 @@
-# Production candidate: 0.4.19 / runtime 54
+# Production release: 0.4.19 / runtime 54
 
 Prepared on 25 October 2026. The candidate follows the current Draft v3 product
 contract. It does not turn an agent connection into permission to read another
@@ -12,8 +12,12 @@ release and verified SQLite backup are retained. All 45 migrations are applied.
 The deployment preserved every existing profile, device, exact agent binding and
 thread mapping. Both phone and desktop public pages clear loading without JavaScript
 errors; the real Google sign-in helper opens and becomes ready. The [0.4.19 native release](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.19)
-is published with both ZIP aliases and verified checksums. The installed-host
-update follows through the supported plugin manager.
+is published with both ZIP aliases and verified checksums. The supported Mac
+Claude plugin manager updated the single user-scoped `meet-proxy@commonplace`
+alias from 0.4.15 to 0.4.19. It requires a host restart; reopen the same existing
+chat afterward. The loaded Mac version after restart is not yet verified. This
+cloud chat still loads 0.4.14/runtime48; the Mac update does not update every host.
+No account relinking or host permission changes were made.
 
 For internal regression evidence only, the [Conductor walkthrough](https://kyle-cloud-w3.conductor.show/walkthrough)
 runs this frozen UI with disposable demo accounts. It does not sign in to a real
@@ -31,7 +35,8 @@ Google account. The real-account staging site remains on the earlier build.
   This is not a migration of every ambiguous historic thread into the new Inbox.
 - The production wrapper now forwards MCP, OAuth protocol/metadata, restricted
   Agent Auth, account APIs and internal cloud endpoints to the current runtime.
-  The actual compiled `/authorize` handler remains a live compatibility gate.
+  The actual compiled `/authorize` handler passed its unauthenticated redirect
+  rehearsal; completed real Google authorization remains unverified.
 - The plugin checks verified native identity before claiming automatic delivery
   and checks current workspace scope immediately before host submission.
 - Server dependencies are isolated under `account-runtime/node_modules`, retaining
@@ -113,7 +118,8 @@ path. It uses a disposable database and a synthetic profile over local HTTP. It
 checks discovery, PKCE/token exchange, authenticated tool/resource access, denied
 writes and foreign origins. It does not exercise real Google or the compiled
 authorization page. Rehearse the actual compiled app with isolated state before
-activation; this remains outstanding because Mac access was lost.
+activation. This rehearsal subsequently passed on the production VM with its
+HTTPS origin preserved; `/authorize` returned the expected 303 redirect.
 
 When those gates pass, run the same deployment command without `--prepare-only`
 and with a **new** release name `20261025-product-0.4.19`. The helper deliberately
@@ -129,15 +135,18 @@ reload step. Do not invent native IDs or modify host permission settings.
 
 ## Live release gates
 
-1. Verify Google sign-in and compiled `/authorize` compatibility on the candidate.
-2. Check actual server origin, signed account identity and current native chat
-   binding with the installed 0.4.19 runtime.
+The database rehearsal, compiled unauthenticated authorization redirect, public
+phone/desktop pages, download URLs, service health and fresh worker heartbeat
+passed on production. The following human/installed-host checks remain:
+
+1. Complete real Google sign-in; the public sign-in helper readiness alone does
+   not establish an authenticated session.
+2. Restart the Mac Claude host and confirm loaded 0.4.19, actual server origin,
+   signed account identity and current native chat binding.
 3. Exercise requester invite → Accept → permitted answer in the idle receiving
    chat → both-owner audit using real installed hosts.
 4. Check offline delivery, denied host actions, expiry, either-owner sever and
    current consent on that installed path.
-5. Confirm phone/desktop pages, download URLs, service health and worker heartbeat
-   on the public production origin.
 
 Fixtures, model samples, cached status and queued host messages do not satisfy
 these live gates. P1 contact delivery and personal-agent support remain separately
