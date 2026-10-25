@@ -11,8 +11,9 @@ https://34.27.253.220/#agents. Web and worker health checks passed; the previous
 release and verified SQLite backup are retained. All 45 migrations are applied.
 The deployment preserved every existing profile, device, exact agent binding and
 thread mapping. Both phone and desktop public pages clear loading without JavaScript
-errors; the real Google sign-in helper opens and becomes ready. Native release
-publication and the installed-host update follow this server activation.
+errors; the real Google sign-in helper opens and becomes ready. The [0.4.19 native release](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.19)
+is published with both ZIP aliases and verified checksums. The installed-host
+update follows through the supported plugin manager.
 
 For internal regression evidence only, the [Conductor walkthrough](https://kyle-cloud-w3.conductor.show/walkthrough)
 runs this frozen UI with disposable demo accounts. It does not sign in to a real

@@ -3,8 +3,8 @@
 **Production 0.4.19 / runtime 54 is live:** [Open Meet Proxy](https://34.27.253.220/#agents).
 The Agents/Inbox flow, phone/tablet layouts, MCP resources, local context files,
 and consent/delivery fixes are deployed. Existing accounts and chat bindings are
-preserved. Native plugin publication and the installed-host update are finishing;
-see the [rollout record](docs/PRODUCTION-ROLLOUT.md) for exact live state.
+preserved. [Plugin 0.4.19 is published](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.19).
+See the [rollout record](docs/PRODUCTION-ROLLOUT.md) for live verification and host reload steps.
 The [real-account staging site](docs/REAL-ACCOUNT-STAGING.md) remains a separate,
 earlier build.
 The [product-spec demo audit](docs/PRODUCT-SPEC-TEST-REPORT.md) records the full
@@ -43,7 +43,7 @@ and simulated model/host responses. In the implementation repository, run
 
 ## One private cloud workspace
 
-[Download Meet Proxy / Commonplace 0.4.15](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.15)
+[Download Meet Proxy / Commonplace 0.4.19](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.19)
 for a cloud workspace containing supported synced chats, permitted agent-message
 threads, published working context, and previous cloud results. Your cloud agent
 can query the live message board, consult your connected native agents, wait for
@@ -57,7 +57,7 @@ See [personal agents](docs/PERSONAL-AGENTS.md),
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.15**. Enable only one alias. Existing accounts and
+update that alias to **0.4.19**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate

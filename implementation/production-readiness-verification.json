@@ -2,7 +2,7 @@
   "candidate": "0.4.19",
   "runtimeRevision": 54,
   "date": "2026-10-25",
-  "state": "production server live; plugin publication and installed host update pending",
+  "state": "production server live and native release published; installed host update pending",
   "runs": {
     "regression": {
       "tests": 379,
@@ -215,7 +215,7 @@
       "No real Google, real host wake or real private account data was exercised."
     ]
   },
-  "published": false,
+  "published": true,
   "installed": false,
   "productionDeployed": true,
   "productionRehearsal": {

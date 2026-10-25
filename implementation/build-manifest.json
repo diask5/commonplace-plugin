@@ -9,7 +9,7 @@
     "product-flow-design-manifest.json",
     "production-readiness-manifest.json"
   ],
-  "published": false,
+  "published": true,
   "installed": false,
   "deployed": true,
   "productionDeployed": true,
@@ -172,7 +172,7 @@
     "uiUpdateVerification": "agent-launch-verification.json"
   },
   "lastVerifiedProductionRelease": "20261022-context-fixes3",
-  "lastPublishedStable": "0.4.15",
+  "lastPublishedStable": "0.4.19",
   "hostBlock": {
     "tool": "RunLocalCommand",
     "reason": "No authorized Mac is bound to this chat. Send a message from the Mac you want to use.",
@@ -202,5 +202,6 @@
     "appliedMigrations": 45,
     "identityMappingsPreserved": true
   },
-  "productionOrigin": "https://34.27.253.220"
+  "productionOrigin": "https://34.27.253.220",
+  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.19"
 }
