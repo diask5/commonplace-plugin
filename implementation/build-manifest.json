@@ -11,8 +11,8 @@
   ],
   "published": false,
   "installed": false,
-  "deployed": false,
-  "productionDeployed": false,
+  "deployed": true,
+  "productionDeployed": true,
   "artifacts": [
     {
       "alias": "meet-proxy",
@@ -190,11 +190,17 @@
     "Public UI, download links, service health and worker heartbeat"
   ],
   "productionRollout": {
-    "state": "running",
+    "state": "live",
     "unit": "commonplace-release-0419",
     "release": "20261025-product-0.4.19",
     "rehearsalRelease": "20261025-product-0.4.19-rehearsal",
     "databaseRehearsal": "passed",
-    "compiledServerRehearsal": "passed"
-  }
+    "compiledServerRehearsal": "passed",
+    "health": "ready",
+    "worker": "ready",
+    "backup": "/var/lib/commonplace/rollouts/20261025-product-0.4.19/before.sqlite",
+    "appliedMigrations": 45,
+    "identityMappingsPreserved": true
+  },
+  "productionOrigin": "https://34.27.253.220"
 }

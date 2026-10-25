@@ -1,14 +1,12 @@
 # Meet Proxy
 
-Prepared build **0.4.19 / runtime 54** includes the Agents/Inbox product flow,
-phone/tablet layouts, MCP resources and local context files, consent and delivery
-fixes, and a checked server rollout with isolated dependencies. See the
-[production rollout record](docs/PRODUCTION-ROLLOUT.md) for artifacts, validation
-and remaining live gates. The candidate is packaged and the production rollout is in progress. Mac access
-is restored; database and actual compiled-server rehearsals have passed.
-The [real-account staging site](docs/REAL-ACCOUNT-STAGING.md) still runs the earlier
-candidate. The local marketplace entries are prepared for 0.4.19 publication;
-the currently published stable release remains 0.4.15.
+**Production 0.4.19 / runtime 54 is live:** [Open Meet Proxy](https://34.27.253.220/#agents).
+The Agents/Inbox flow, phone/tablet layouts, MCP resources, local context files,
+and consent/delivery fixes are deployed. Existing accounts and chat bindings are
+preserved. Native plugin publication and the installed-host update are finishing;
+see the [rollout record](docs/PRODUCTION-ROLLOUT.md) for exact live state.
+The [real-account staging site](docs/REAL-ACCOUNT-STAGING.md) remains a separate,
+earlier build.
 The [product-spec demo audit](docs/PRODUCT-SPEC-TEST-REPORT.md) records the full
 ten-user journey, real-model behavior checks, fixes and remaining product gaps.
 

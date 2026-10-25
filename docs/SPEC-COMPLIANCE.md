@@ -171,3 +171,10 @@ Production rollout update: the owner’s next message restored Mac access. A ver
 production backup was migrated successfully and the actual compiled server passed
 its isolated HTTP rehearsal using the real HTTPS configuration. Activation is
 running as a durable VM job; see the rollout record for final serving state.
+
+
+Live server update: production now serves `20261025-product-0.4.19`. All 45
+migrations and fresh web/worker health checks passed. Existing profiles, devices,
+agent bindings and thread mappings are preserved. Public phone/desktop pages
+clear loading and open the real Google helper. This does not assert completion
+of a human Google login or installed-host autonomous pair exchange.

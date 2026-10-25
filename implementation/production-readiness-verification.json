@@ -2,7 +2,7 @@
   "candidate": "0.4.19",
   "runtimeRevision": 54,
   "date": "2026-10-25",
-  "state": "packaged; production database and compiled-server rehearsals passed; durable activation running",
+  "state": "production server live; plugin publication and installed host update pending",
   "runs": {
     "regression": {
       "tests": 379,
@@ -217,7 +217,7 @@
   },
   "published": false,
   "installed": false,
-  "productionDeployed": false,
+  "productionDeployed": true,
   "productionRehearsal": {
     "state": "passed",
     "release": "20261025-product-0.4.19-rehearsal",
@@ -241,5 +241,102 @@
     "Installed exact-chat idle wake, answer and both-owner audit",
     "Installed host denial, offline recovery, expiry and sever",
     "Public UI, download links, service health and worker heartbeat"
-  ]
+  ],
+  "productionDeployment": {
+    "release": "20261025-product-0.4.19",
+    "previous": "20261022-context-fixes3",
+    "backup": "/var/lib/commonplace/rollouts/20261025-product-0.4.19/before.sqlite",
+    "migrations": "rehearsed",
+    "worker": "ready",
+    "appliedMigrations": 45,
+    "preservation": [
+      {
+        "table": "cp_profiles",
+        "before": 71,
+        "after": 71,
+        "missingOrChanged": 0
+      },
+      {
+        "table": "cp_agent_addresses",
+        "before": 150,
+        "after": 150,
+        "missingOrChanged": 0
+      },
+      {
+        "table": "cp_agent_bindings",
+        "before": 149,
+        "after": 149,
+        "missingOrChanged": 0
+      },
+      {
+        "table": "cp_mail_conversations",
+        "before": 7,
+        "after": 7,
+        "missingOrChanged": 0
+      },
+      {
+        "table": "cp_chat_links",
+        "before": 46,
+        "after": 46,
+        "missingOrChanged": 0
+      },
+      {
+        "table": "cp_devices",
+        "before": 546,
+        "after": 546,
+        "missingOrChanged": 0
+      }
+    ],
+    "services": {
+      "commonplace": "active",
+      "commonplace-runtime": "active",
+      "commonplace-staging": "active"
+    }
+  },
+  "publicProduction": {
+    "origin": "https://34.27.253.220",
+    "realProduction": true,
+    "realGoogleLoginCompleted": false,
+    "views": [
+      {
+        "width": 390,
+        "loadingCleared": true,
+        "pageErrors": [],
+        "horizontalOverflow": false
+      },
+      {
+        "width": 1280,
+        "loadingCleared": true,
+        "pageErrors": [],
+        "horizontalOverflow": false
+      }
+    ],
+    "googleHelper": {
+      "origin": "https://vertical-web-313417.firebaseapp.com",
+      "ready": true
+    },
+    "http": [
+      {
+        "path": "/healthz",
+        "status": 200
+      },
+      {
+        "path": "/.well-known/oauth-protected-resource/mcp",
+        "status": 200
+      },
+      {
+        "path": "/.well-known/agent-configuration",
+        "status": 200
+      },
+      {
+        "path": "/account/web/cloud/status",
+        "status": 401
+      },
+      {
+        "path": "/auth/session",
+        "status": 401
+      }
+    ],
+    "passed": true
+  }
 }

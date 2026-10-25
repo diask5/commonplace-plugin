@@ -6,14 +6,15 @@ person's raw context. Existing agents can read their own account archive through
 MCP resources, search tools or the local context folder without a hosted model.
 Authentication, storage, permissions and synchronization still use the backend.
 
-**The production rollout is running.** Mac access was restored by the owner's
-next message. The verified backup/migration rehearsal and actual compiled-server
-HTTP check passed. The durable `commonplace-release-0419` job is taking a fresh
-backup and validating the final candidate before switching the live pointer.
-The last confirmed serving release remains `20261022-context-fixes3` until its
-recorded health and worker checks pass.
+**Production is live on `20261025-product-0.4.19`.** The public site is
+https://34.27.253.220/#agents. Web and worker health checks passed; the previous
+release and verified SQLite backup are retained. All 45 migrations are applied.
+The deployment preserved every existing profile, device, exact agent binding and
+thread mapping. Both phone and desktop public pages clear loading without JavaScript
+errors; the real Google sign-in helper opens and becomes ready. Native release
+publication and the installed-host update follow this server activation.
 
-The refreshed [Conductor walkthrough](https://kyle-cloud-w3.conductor.show/walkthrough)
+For internal regression evidence only, the [Conductor walkthrough](https://kyle-cloud-w3.conductor.show/walkthrough)
 runs this frozen UI with disposable demo accounts. It does not sign in to a real
 Google account. The real-account staging site remains on the earlier build.
 
