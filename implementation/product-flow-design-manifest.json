@@ -1,0 +1,119 @@
+{
+  "name": "Draft v3 product flow and visual design",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "product-flow-design.patch",
+  "sha256": "16386de51512971613b27594fd2f76efbc0212aba60c698df3ee2924d70d0cd6",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch"
+  ],
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-connections.mjs",
+      "beforeSha256": "434fb4607c1076f1570189a04cd2f5f7dcdcf4158c6cee2f6e034b5fd9c0d4dd",
+      "sha256": "73694500fdab4e2b5cf0ea1b5b260e00b8a04be4b3d2402d0f9dc674dde0c522"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/social.mjs",
+      "beforeSha256": "e3b5084dee21bf97bea71f81c15895c3654e152ceb0ecb1e16fe881a8176e737",
+      "sha256": "253681f9cc9a8dd3df44c52c723346cb29defefd762d36dc7d908ad795b3a1e5"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/work-agent.mjs",
+      "beforeSha256": "69a7ee7ec7368bee828d2fe3f2b550621cdcc0dd8264bb0325769b2bf4d6bfcd",
+      "sha256": "447b65c5f83495271ee55000ca46e2476fd184dee5f167db48c08e392cf5efc7"
+    },
+    {
+      "path": "apps/commonplace-account/server/product-flow-ui.mjs",
+      "beforeSha256": null,
+      "sha256": "4daf318ad0fe08eaa23bc06f878a8afd4f35aadf68dbbe7889da3a2361bc88bd"
+    },
+    {
+      "path": "apps/commonplace-account/server/social-ui.mjs",
+      "beforeSha256": "8563561df8bad31370183344684ea02144d36bac7a80eaafd694d278226268c2",
+      "sha256": "84de89371f0d6598d4a1a7b0cd09eee0600a173d026c8b45d517287535f6c029"
+    },
+    {
+      "path": "apps/commonplace-account/server/ui-pages.mjs",
+      "beforeSha256": "3567f640a19a00b3cff59c2f4bf9fb4734f3c68ac73b4d2d07f1bb4bbf2aa45f",
+      "sha256": "3fc182d02a7260d05c0f7dbf2399ba01f2478305db895d5a3fb1911159748f3e"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "770439bd3515d6d8207bcf1b3f736f26b2ed8e8aee25ac2ab14a648fa612b701",
+      "sha256": "4fa214b530d8e245abd9c6426bb111b02b2cbf64cf2bba63a894e9bf82606ec5"
+    },
+    {
+      "path": "scripts/preview-product-flow.mjs",
+      "beforeSha256": null,
+      "sha256": "1284feabca6c2280cd539eae66d74c10a5ebb1aed95964d5a0879420317f9920"
+    },
+    {
+      "path": "scripts/preview-ui.mjs",
+      "beforeSha256": "769e4e52a2c632c2263d50bca688aee83ea86e72ab68bfb6a13cbe08efa88fa5",
+      "sha256": "d3d0d00ba60edd6eb70c3a28346f085228a9b00d0e303b69bfff53255556e2fa"
+    },
+    {
+      "path": "tests/agent-setup-browser.test.mjs",
+      "beforeSha256": "3a5ae9a300bd943ef2aa7710c6dd4fe922d6dcd3f194b82655b8160cdaf7cce2",
+      "sha256": "d973674b7d359fe585f7576a5d8e63e80c4e9c67c08f8ed026b6ec6fd0579d1d"
+    },
+    {
+      "path": "tests/context-library-browser.test.mjs",
+      "beforeSha256": "47c7da106b11f92f3edc62794171bd9fa217f767a460ead58793e57c4c5bc77a",
+      "sha256": "58d408d0135635fdcbca352f12e85003a31f9ec43ba96264aba20afd82ea12f6"
+    },
+    {
+      "path": "tests/groups-browser.test.mjs",
+      "beforeSha256": "f4e84a00f10643bcc0ff14899f89ed51b7e5c060f3a68bf1128b60c9eaa8ce3c",
+      "sha256": "3badee5f74b383a691fe3c5deaa6c20f21d34ccacaf39092a18ebeb0f079d4ef"
+    },
+    {
+      "path": "tests/mcp-system-e2e.test.mjs",
+      "beforeSha256": "cc552a896fcafde8c544a862822db7c9c6cb84ebb5acdfe969fc8c15e5c68934",
+      "sha256": "477a547ecc3cd33cd273f16efe82a960027c27c0d03c77c599d55151fcf682c5"
+    },
+    {
+      "path": "tests/people-discovery-browser.test.mjs",
+      "beforeSha256": "54a42753b5f1e71d266cefa11bf1c674642561ff5da2c4851354153dd0bd78ff",
+      "sha256": "6eca6ca7069d8dcf3c9697e8c7770c78da4eb4bce4178700adf93fe24524efd5"
+    },
+    {
+      "path": "tests/people-invitations-browser.test.mjs",
+      "beforeSha256": "58028742cc407b56c23f29bb1236a73259ea3a3db30125b0789024d8fed8701d",
+      "sha256": "c8c3fbe1e8802688b1b21328bc282d6e38e659e9b4a912525637b1c241230b84"
+    },
+    {
+      "path": "tests/product-flow-browser.test.mjs",
+      "beforeSha256": null,
+      "sha256": "bba13cd67014a4b4a861a5564c61d8ce75c3fc20a956908f0b18d3b5a2ca30ce"
+    },
+    {
+      "path": "tests/product-navigation.mjs",
+      "beforeSha256": null,
+      "sha256": "3be063244d6aceba62215d3918ef8d44b931419241072c89573326ca489295a0"
+    },
+    {
+      "path": "tests/product-spec-e2e.test.mjs",
+      "beforeSha256": "02710afecd8761386587140822cb9affd03411bd8123bf26cd6844acb4bc45e5",
+      "sha256": "23e95bc7084f606f2a88197dbe920e206a7c5f5195e16849ccd1ae30beb49d49"
+    },
+    {
+      "path": "tests/shared-chats-browser.test.mjs",
+      "beforeSha256": "6d71c95c9b439c220f8c6f5c92f3b724ddd606da6a87d364fcafd82c2f892599",
+      "sha256": "cc6b2cbc87822af596cdecd070b4511f7cdbee0b228753975cae550941b3111e"
+    },
+    {
+      "path": "tests/social-browser.test.mjs",
+      "beforeSha256": "e494d10b60c7229cba687845e73419266ee6469f5f109e1815727e6dc935f679",
+      "sha256": "668990e2bd97f78e26f7179ad796688f0bf7630e9a0cfb4aeddb5c097e69ce7e"
+    },
+    {
+      "path": "tests/ui-browser.test.mjs",
+      "beforeSha256": "c001e8afff74ab1f7f323ee53f1c91ee54737c9d589a41ab98803c871e2ae52b",
+      "sha256": "5b01a69c4a2b0309a0226724c64df17f306d035b38a2569d5207c4e413a2d727"
+    }
+  ],
+  "state": "source and disposable design preview only; not packaged, installed or deployed to staging/production"
+}

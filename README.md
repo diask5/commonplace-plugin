@@ -1,5 +1,19 @@
 # Meet Proxy
 
+**Production 0.4.19 / runtime 54 is live:** [Open Meet Proxy](https://34.27.253.220/#agents).
+The Agents/Inbox flow, phone/tablet layouts, MCP resources, local context files,
+and consent/delivery fixes are deployed. Existing accounts and chat bindings are
+preserved. [Plugin 0.4.19 is published](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.19).
+See the [rollout record](docs/PRODUCTION-ROLLOUT.md) for live verification and host reload steps.
+The [real-account staging site](docs/REAL-ACCOUNT-STAGING.md) remains a separate,
+earlier build.
+The [product-spec demo audit](docs/PRODUCT-SPEC-TEST-REPORT.md) records the full
+ten-user journey, real-model behavior checks, fixes and remaining product gaps.
+
+The 0.4.19 candidate also includes the earlier native delivery recovery, clearer
+reply validation and macOS history-root fixes. Real installed-host verification
+remains a release gate; see the [native verification record](docs/NATIVE-CODE-VERIFICATION.md).
+
 Let someone talk to your agent while you are unavailable. Questions and answers
 live in a private, durable message board that both participants can read. Your
 agent answers within the topic, duration and disclosure limits you authorize.
@@ -29,7 +43,7 @@ and simulated model/host responses. In the implementation repository, run
 
 ## One private cloud workspace
 
-[Download Meet Proxy / Commonplace 0.4.15](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.15)
+[Download Meet Proxy / Commonplace 0.4.19](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.19)
 for a cloud workspace containing supported synced chats, permitted agent-message
 threads, published working context, and previous cloud results. Your cloud agent
 can query the live message board, consult your connected native agents, wait for
@@ -43,7 +57,7 @@ See [personal agents](docs/PERSONAL-AGENTS.md),
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.15**. Enable only one alias. Existing accounts and
+update that alias to **0.4.19**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
@@ -192,3 +206,7 @@ Version 0.4.8 adds visible conversations cached by Conductor on your Mac to work
 Version 0.4.9 adds per-message delivery/read receipts and fixes startup listeners that remained waiting after setup. Check receipts in People → Shared chats or with read_chat_link. Update the existing plugin and reload it in your receiving host; a session heartbeat alone is not proof of delivery.
 
 Version 0.4.10 delivers shared-chat messages through the persistent native inbox, preserving sender attribution and original wording. Lifecycle hooks and the persistent receiver share a cursor to avoid duplicates. Reload the updated plugin in the same chat, or restart the host and reopen that conversation.
+
+For a customer walkthrough of the local context folder, see [docs/DEMO.md](docs/DEMO.md).
+
+The [product flow and design walkthrough](docs/PRODUCT-FLOW-DESIGN.md) follows Draft v3’s Agents/Inbox and invite/accept journey. The labeled demo is separate from real-account staging; its source is preserved in the fourth incremental patch.

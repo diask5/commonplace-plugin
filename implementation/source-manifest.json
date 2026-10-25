@@ -1,0 +1,342 @@
+{
+  "candidate": "0.4.19",
+  "runtimeRevision": 54,
+  "repository": "https://github.com/diask5/commonplace-session-tests",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "mcp-adoption-0.4.19-rc.3.patch",
+  "sha256": "ceeec92dd6ba5a4f385200be118773b617c9a4c62bb2fb9fd4401b0639bbec8b",
+  "files": [
+    {
+      "path": ".github/workflows/verify.yml",
+      "status": "M",
+      "sha256": "26f7ad315310d4510d73cc26a7e74ccc6b81b99c583e44f0805daa544ade57d3"
+    },
+    {
+      "path": "README.md",
+      "status": "M",
+      "sha256": "4ec089e2f89100b720110afd9ab09fc248b8cc58a346124bd5398e59a76061b6"
+    },
+    {
+      "path": "apps/commonplace-account/drizzle/0043_cloud_task_inputs.sql",
+      "status": "A",
+      "sha256": "e60af1a60b05d45d1e7645a7fbc0db60b66be3bce4e4e31ff4649cce33cdb1f6"
+    },
+    {
+      "path": "apps/commonplace-account/drizzle/0044_agent_pair_connections.sql",
+      "status": "A",
+      "sha256": "4fbd92828801255d950a90f3f02573c9e77a2f10c4e9b3c5553266342c3c4d9d"
+    },
+    {
+      "path": "apps/commonplace-account/server/agent-board.mjs",
+      "status": "M",
+      "sha256": "95512dad13c199a47961bf0231fb5b5aef6e6140c914853e33f68e3eada47b46"
+    },
+    {
+      "path": "apps/commonplace-account/server/agent-connections-ui.mjs",
+      "status": "A",
+      "sha256": "0b0635406bc0d46dd451c68073618b0ee0134d2d54b708191f28b75ee50f6c83"
+    },
+    {
+      "path": "apps/commonplace-account/server/agent-connections.mjs",
+      "status": "A",
+      "sha256": "2e61b51f5815e4c4f537bbdea92c453ae75ac82cc87f436f6318b2c0ea4f4482"
+    },
+    {
+      "path": "apps/commonplace-account/server/archive-tools.mjs",
+      "status": "M",
+      "sha256": "2224e00e3ce5b92186374eb403ed404110702852f6c2962e9a679dde341b9409"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-http.mjs",
+      "status": "M",
+      "sha256": "909cd85ca8ee1d10962ba657e891a708e8a86e91da5c11f32831f253bc942427"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-network-tools.mjs",
+      "status": "M",
+      "sha256": "976bb14758a078897b85e1c65d1206049f641d92d49a164918da136331a7e2ce"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-work.mjs",
+      "status": "M",
+      "sha256": "0ddf3748dc5fc7190e4972a8184d9b53dd641a159ad7df603f226ed2d4a1beeb"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-connections.mjs",
+      "status": "A",
+      "sha256": "8679c3f7a8a5fcbaff582c9038337921f292d9f392aa011b32d0d161ecf9a845"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/social.mjs",
+      "status": "M",
+      "sha256": "f32b3466e4649d00b581c1754dc2dfa601234b40639dc6366ce4beac51dc8d36"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-http.mjs",
+      "status": "M",
+      "sha256": "e9d7dd5e9c196126f6e344feb4851155069718aac208d538ce58e76899de23f9"
+    },
+    {
+      "path": "apps/commonplace-account/server/mailboxes.mjs",
+      "status": "M",
+      "sha256": "c34ca1e7bd62ffc773119211cdd5f80dffcc8b770b9e39a4d54a156117674ecb"
+    },
+    {
+      "path": "apps/commonplace-account/server/mcp-adapter.LICENSE.txt",
+      "status": "A",
+      "sha256": "17bb251a218da866de24d5714e6c357d181a281b969a54b0db806f55287d8caa"
+    },
+    {
+      "path": "apps/commonplace-account/server/mcp-adapter.mjs",
+      "status": "A",
+      "sha256": "db7b5e82a3e7910bc162aab3b386ceb68c0c477646726bb8c3e5ea80042bc060"
+    },
+    {
+      "path": "apps/commonplace-account/server/remote-mcp.mjs",
+      "status": "A",
+      "sha256": "9561eb98899455b6691accdd9f47c9cbb8d21a6732a8fe25feacd824e0669cc0"
+    },
+    {
+      "path": "apps/commonplace-account/server/service.mjs",
+      "status": "M",
+      "sha256": "4c965284e58369605462010fa30ec0d10cb3f94409849a1a6803acd7733b1d50"
+    },
+    {
+      "path": "apps/commonplace-account/server/social-http.mjs",
+      "status": "M",
+      "sha256": "2f3d490e07cbc21fefc0d92b874e7b6c75890d08420a53443348c2007a31a593"
+    },
+    {
+      "path": "apps/commonplace-account/server/social-ui.mjs",
+      "status": "M",
+      "sha256": "8563561df8bad31370183344684ea02144d36bac7a80eaafd694d278226268c2"
+    },
+    {
+      "path": "apps/commonplace-account/server/subscription-runner.mjs",
+      "status": "M",
+      "sha256": "a5dd3205c4f99929a2049bf65203b6d0c0de5cd8d20e537a7ddf08c45b4bacc7"
+    },
+    {
+      "path": "apps/commonplace/server/account-inbox.mjs",
+      "status": "M",
+      "sha256": "69eee1a2f2f34da73458a6cdc33e174f7e80503e5f556285e9659dd07387091f"
+    },
+    {
+      "path": "apps/commonplace/server/desktop-receiver.mjs",
+      "status": "M",
+      "sha256": "6f2736ecead51bf0a3a3cfbf1cca89e0c5eb41cb9f5df644b4a81010da172fd0"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "status": "M",
+      "sha256": "6cd9cb073a26410773def339ac90b902f001378bdb518564c6e11cf926d35e2d"
+    },
+    {
+      "path": "apps/commonplace/server/mailbox-client.mjs",
+      "status": "M",
+      "sha256": "c633f11194cd6483119ac317c2f74af79885aaf2c2ed9c0e1f902dfd7f514808"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-adapter-source.mjs",
+      "status": "A",
+      "sha256": "68fa8a34390b595b7f425793a2620fcefb41844698c529ff6cb2402621feca81"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-adapter.LICENSE.txt",
+      "status": "A",
+      "sha256": "17bb251a218da866de24d5714e6c357d181a281b969a54b0db806f55287d8caa"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-adapter.mjs",
+      "status": "A",
+      "sha256": "db7b5e82a3e7910bc162aab3b386ceb68c0c477646726bb8c3e5ea80042bc060"
+    },
+    {
+      "path": "apps/commonplace/server/mcp.mjs",
+      "status": "M",
+      "sha256": "2de0cbdbdb5c118edb48beeb0064a054d898faaec7817c04f029ba7a3ce91bd7"
+    },
+    {
+      "path": "apps/commonplace/server/plugin-surface.mjs",
+      "status": "M",
+      "sha256": "68ea03256f4bc74aa4f437a61b77cb65bbd01b8d605ecc960ba21beb9178c056"
+    },
+    {
+      "path": "apps/commonplace/server/plugin.mjs",
+      "status": "M",
+      "sha256": "8bce3d5dfe928fd3f3ea9c2740829542235844763938f129e3024a1e94fc656b"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "status": "M",
+      "sha256": "1b4abad3be8b7908b364066e8fce00f2606775f3cb29162d2d19095a1c6bf9fa"
+    },
+    {
+      "path": "apps/commonplace/server/workspace-session.mjs",
+      "status": "M",
+      "sha256": "dd587dd9a15327a2b43ab291ba771679a98a1e4be48b6edf06e1a4bccf4d1d6b"
+    },
+    {
+      "path": "apps/commonplace/tests/runtime-mcp.test.mjs",
+      "status": "M",
+      "sha256": "c5972cc892e17ba136db66bafe5199094a350ad6fbcbc2c5c73f35d3ed3e85a3"
+    },
+    {
+      "path": "docs/MCP-CONTRACTS.md",
+      "status": "A",
+      "sha256": "08284d19f68989e9425719392700ffb66862bfd9821c750d42c316d535d13f3e"
+    },
+    {
+      "path": "docs/PRODUCT-SPEC-TESTS.md",
+      "status": "A",
+      "sha256": "22c724dcc980941bf60308c39c958ad8605508168ceb644957a013dc61da8cdf"
+    },
+    {
+      "path": "package-lock.json",
+      "status": "M",
+      "sha256": "412345dda3155a6a90484a5903d9752ce95af79714a07e5f4bbdab3372294a03"
+    },
+    {
+      "path": "package.json",
+      "status": "M",
+      "sha256": "770439bd3515d6d8207bcf1b3f736f26b2ed8e8aee25ac2ab14a648fa612b701"
+    },
+    {
+      "path": "scripts/benchmark-product-spec.mjs",
+      "status": "A",
+      "sha256": "eb689e6a557c574916919aea217d7228d619479ec70aacba0718abf5b453ca16"
+    },
+    {
+      "path": "scripts/build-mcp.mjs",
+      "status": "A",
+      "sha256": "ddebb407b93d974cbdc6f80fc67c486a61955f92a37d66988ca00965925bbfb4"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "status": "M",
+      "sha256": "8d87f095ac7c1f45be9eab39fc49e1a73fc8943ea904a82a7dee9416cf0fd134"
+    },
+    {
+      "path": "scripts/build-test-kit.py",
+      "status": "M",
+      "sha256": "4cab19e67d5b3cac5d97853ace00e22aba2dc14f5ec9144bccb14f45be7c5c79"
+    },
+    {
+      "path": "scripts/product-spec-agent-client.mjs",
+      "status": "A",
+      "sha256": "114854c0f09a31048873d408fb37f84e0826180ff1fc1599022b2fccd1bc19bd"
+    },
+    {
+      "path": "scripts/smoke-plugin.mjs",
+      "status": "M",
+      "sha256": "c68023900a393d3f0832ee7d9776770f073f63eeb9e39c5a39657ec90626a606"
+    },
+    {
+      "path": "tests/agent-connections-browser.test.mjs",
+      "status": "A",
+      "sha256": "5caf9cb7fb95c9c67d58c1123711682b411b9647e30206c4f4278f99d6f231fa"
+    },
+    {
+      "path": "tests/agent-connections.test.mjs",
+      "status": "A",
+      "sha256": "7cfdcd3f25b052de2fbef3a0f3e3f0ab930314910688ca0ed38648d2e905afa5"
+    },
+    {
+      "path": "tests/agent-setup-browser.test.mjs",
+      "status": "M",
+      "sha256": "c47001b63d7dd15b6b40b90d6837def4c479a79d0d4985676e0e307d9054aabe"
+    },
+    {
+      "path": "tests/cloud-archive.test.mjs",
+      "status": "M",
+      "sha256": "7ef38f12101b875855f60d8bb9873fca90059e76da53b8458c9b0c259d0a6beb"
+    },
+    {
+      "path": "tests/cloud-work.test.mjs",
+      "status": "M",
+      "sha256": "dff7535ab08e3b65c378051938e31b495d69a532f107e613b972f473000052a4"
+    },
+    {
+      "path": "tests/cloud-workspace.test.mjs",
+      "status": "M",
+      "sha256": "d505c5ed1923600caf47ecbab4ea985c6a93479ae8253ddebb3e8c68d6af682a"
+    },
+    {
+      "path": "tests/mcp-adapter.test.mjs",
+      "status": "A",
+      "sha256": "e79dffe25ea28c9ce550e58a797180b51c22852d2648cf478759ccce3403fd1e"
+    },
+    {
+      "path": "tests/mcp-context.test.mjs",
+      "status": "A",
+      "sha256": "7d956b1d458b69708642a70a261f47111fba9f2258e03673f463949b2c76bc1b"
+    },
+    {
+      "path": "tests/mcp-probe.test.mjs",
+      "status": "A",
+      "sha256": "523e76252ac619c03687e0f0623ab59ba08175366bb6cc88ae8a36c60f019a6b"
+    },
+    {
+      "path": "tests/mcp-remote.test.mjs",
+      "status": "A",
+      "sha256": "b24970b4c281caf383f82d458e5a7b9ff81d013b10c8a40e114bb1d434e3827a"
+    },
+    {
+      "path": "tests/mcp-system-e2e.test.mjs",
+      "status": "A",
+      "sha256": "cc552a896fcafde8c544a862822db7c9c6cb84ebb5acdfe969fc8c15e5c68934"
+    },
+    {
+      "path": "tests/mcp-upgrade.test.mjs",
+      "status": "A",
+      "sha256": "909f15afd87972bc4a9fe7238737d834caa7f768716997cffba3c79ddcfd2287"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "status": "M",
+      "sha256": "2d2384af48af8c961cc9c6c4446ff0386cc98095ea20828adab9744b525bec25"
+    },
+    {
+      "path": "tests/product-spec-e2e.test.mjs",
+      "status": "A",
+      "sha256": "58066eb52fd1a1f774ac5013674e2cf3e4434a513a3569c444c7ffa2b3644256"
+    },
+    {
+      "path": "tests/product-spec-fixture.mjs",
+      "status": "A",
+      "sha256": "60a9a6d54b5c9c3a6d5cfcb56e768628328aa58b7f0977b66499e10759d6107c"
+    },
+    {
+      "path": "tests/social-browser.test.mjs",
+      "status": "M",
+      "sha256": "e494d10b60c7229cba687845e73419266ee6469f5f109e1815727e6dc935f679"
+    },
+    {
+      "path": "tests/ui-browser.test.mjs",
+      "status": "M",
+      "sha256": "30502557f095de5141fcc0b8938e721616d4b34a0b8ce239a2e73a6f033c744a"
+    }
+  ],
+  "followupPatches": [
+    {
+      "manifest": "agent-launch-manifest.json",
+      "patch": "agent-launch-and-server-check.patch",
+      "sha256": "af86278adea67e864ade31c066064b730f599c07cb3c6b0eadcd8f744248ff87"
+    },
+    {
+      "manifest": "spec-alignment-manifest.json",
+      "patch": "spec-alignment.patch",
+      "sha256": "187b435aecce97b45c4bdf6da7e6e02d3ae8eedcfeb6082d291d7e2b5a91f606"
+    },
+    {
+      "manifest": "product-flow-design-manifest.json",
+      "patch": "product-flow-design.patch",
+      "sha256": "16386de51512971613b27594fd2f76efbc0212aba60c698df3ee2924d70d0cd6"
+    },
+    {
+      "manifest": "production-readiness-manifest.json",
+      "patch": "production-readiness.patch",
+      "sha256": "6e9045bdcfcf17edbaef0e5dc1aef32ed764bf52849df4f82e17eaf67395d5d8"
+    }
+  ]
+}

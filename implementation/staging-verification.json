@@ -1,0 +1,50 @@
+{
+  "checkedAt": "2026-10-25T18:14:13.777Z",
+  "origin": "https://meet-proxy-staging.34.27.253.220.nip.io",
+  "checks": [
+    {
+      "path": "/healthz",
+      "status": 200,
+      "result": {
+        "ok": true,
+        "product": "Meet Proxy",
+        "environment": "staging",
+        "candidate": "0.4.19-rc.3"
+      }
+    },
+    {
+      "path": "/account/web/social/pair-list",
+      "status": 401,
+      "result": {
+        "error": "Sign in with Google."
+      }
+    },
+    {
+      "path": "/auth/session",
+      "status": 401,
+      "result": {
+        "error": "Unable to sign in. Please try again."
+      }
+    },
+    {
+      "path": "/auth/session",
+      "status": 403,
+      "result": {
+        "error": "Sign in from Commonplace."
+      }
+    }
+  ],
+  "signInHelperReady": true,
+  "productionHealth": {
+    "ready": true
+  },
+  "realUserSignInVerified": false,
+  "candidate": "0.4.19-rc.3",
+  "browserUiAndGoogleHelperReady": true,
+  "browserErrors": [],
+  "openedOnOwnerMac": true,
+  "productionWebAndWorkerActive": true,
+  "stagingServiceActive": true,
+  "stagingCertificateRenewalActive": true,
+  "productionDeployed": false
+}
