@@ -1,0 +1,88 @@
+{
+  "checkedAt": "2026-10-25T18:58:15.080720+00:00",
+  "spec": {
+    "path": "docs/MEET-PROXY-PRODUCT-SPEC.md",
+    "sha256": "1d061a660d1e280c4f33a111fdabb1c5fb8fc52a3aa4cd86ebe4fee5f396091d"
+  },
+  "sourcePatchSha256": "187b435aecce97b45c4bdf6da7e6e02d3ae8eedcfeb6082d291d7e2b5a91f606",
+  "results": [
+    {
+      "suite": "backend",
+      "log": ".context/spec-alignment/backend.log",
+      "tests": 370,
+      "pass": 370,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "ui",
+      "log": ".context/spec-alignment/ui-final.log",
+      "tests": 53,
+      "pass": 53,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "product-spec end-to-end",
+      "log": ".context/spec-alignment/e2e-stable.log",
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "affected UI and MCP regression",
+      "log": ".context/spec-alignment/changed-components.log",
+      "tests": 29,
+      "pass": 29,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "code entry and shared UI",
+      "log": ".context/spec-alignment/code-entry.log",
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0
+    }
+  ],
+  "countsOverlap": true,
+  "demoCohort": {
+    "owners": 10,
+    "agents": 20,
+    "concreteEndToEndScenarios": 14,
+    "nativeIdentityAndGoogleAssertions": "fixtures"
+  },
+  "benchmarkHarness": {
+    "persistedOwnerConsentSmokePassed": true,
+    "independentModelRerun": false
+  },
+  "patch": {
+    "patchOrder": [
+      "mcp-adoption-0.4.19-rc.3.patch",
+      "agent-launch-and-server-check.patch",
+      "spec-alignment.patch"
+    ],
+    "cleanBase": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+    "changedFilesCompared": 70,
+    "allMatchSource": true
+  },
+  "sourceOnly": true,
+  "packaged": false,
+  "installed": false,
+  "deployed": false,
+  "specComplete": false,
+  "remaining": [
+    "Real native installation, account/server attachment and delivery verification",
+    "Independent real-model evaluation using the new persisted consent path",
+    "Legacy person/session thread migration policy",
+    "P1 dedicated local contact email/iMessage delivery",
+    "P1 personal-agent attachment",
+    "Unconfirmed proposed items and open product questions remain separately tracked"
+  ],
+  "earlierRuns": {
+    "ui": "Four stale product-name/sign-in-label assertions updated; final complete UI suite passed.",
+    "e2e-final.log": "Invalid mixed revision: template modules were loaded before DOM IDs changed while scripts were served from disk. Frozen-source e2e-stable.log passed without further code changes."
+  }
+}

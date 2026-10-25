@@ -1,121 +1,142 @@
-# Cloud workspace rollout
+# Production candidate: 0.4.19 / runtime 54
 
-The 0.4.13 source integrates the personal agent board, published working context,
-and supported visible chat sync into one private cloud workspace. The hosted
-relay must be updated before publishing the corresponding marketplace update.
-Installing the plugin alone does not activate these server capabilities.
+Prepared on 25 October 2026. The candidate follows the current Draft v3 product
+contract. It does not turn an agent connection into permission to read another
+person's raw context. Existing agents can read their own account archive through
+MCP resources, search tools or the local context folder without a hosted model.
+Authentication, storage, permissions and synchronization still use the backend.
 
-## Prepare the release
+**The production rollout is running.** Mac access was restored by the owner's
+next message. The verified backup/migration rehearsal and actual compiled-server
+HTTP check passed. The durable `commonplace-release-0419` job is taking a fresh
+backup and validating the final candidate before switching the live pointer.
+The last confirmed serving release remains `20261022-context-fixes3` until its
+recorded health and worker checks pass.
 
-Use Node 22.13 or newer and Python 3.9 or newer. From this repository:
+The refreshed [Conductor walkthrough](https://kyle-cloud-w3.conductor.show/walkthrough)
+runs this frozen UI with disposable demo accounts. It does not sign in to a real
+Google account. The real-account staging site remains on the earlier build.
+
+## Candidate contents
+
+- Agents/Inbox remain the main navigation, with a contact-list layout, distinct
+  active connections, a person-first invite and one Accept action. Mobile setup,
+  sticky dialog controls, 44px touch targets and error recovery are improved.
+- Explicit per-owner answer consent survives out-of-order invitations and expiry.
+  Renewing a pair cannot resurrect work queued under an expired grant.
+- Exact native legacy pairs are refused as duplicates with a useful recovery
+  message. Existing narrow transcripts and private briefings are not merged.
+  This is not a migration of every ambiguous historic thread into the new Inbox.
+- The production wrapper now forwards MCP, OAuth protocol/metadata, restricted
+  Agent Auth, account APIs and internal cloud endpoints to the current runtime.
+  The actual compiled `/authorize` handler remains a live compatibility gate.
+- The plugin checks verified native identity before claiming automatic delivery
+  and checks current workspace scope immediately before host submission.
+- Server dependencies are isolated under `account-runtime/node_modules`, retaining
+  the older compiled website's dependencies. A checked archive, backup rehearsal,
+  release-pointer rollback and fresh worker heartbeat protect activation.
+
+## Artifacts and source
+
+Artifacts are under `.context/commonplace-source/artifacts/production-0.4.19/`:
+
+- `meet-proxy-0.4.19.zip` and `commonplace-0.4.19.zip`, each with `.sha256` and build
+  inventory. Enable only the installation's existing alias.
+- `server/runtime-update.json`: all 136 runtime assets and migration files.
+- `runtime-dependencies.tgz`: lockfile-pinned production dependencies installed
+  with `npm ci --omit=dev --ignore-scripts`; no credentials or account data.
+- `server-rollout-0.4.19.tgz`: server bundle, dependencies, reviewed deployment
+  helper, isolated HTTP verifier and checksums. SHA-256:
+  `768fecfd8d6e3530d8c496fbc112f4b5a5bfe76faa211b73d26abb27c8048425`.
+
+Use `implementation/build-manifest.json` and
+`implementation/production-readiness-verification.json` for final artifact and
+test state. The fifth ordered patch is `production-readiness.patch`; the complete
+chain reproduces 95 changed files byte for byte from the recorded source base.
+
+## Completed local verification
+
+| Check | Result |
+| --- | --- |
+| Broad regression suite | 379/379 passed |
+| Required browser UI suite | 57/57 passed |
+| Product lifecycle scenarios | 15/15 tests passed |
+| Native regressions | 131/131 passed |
+| Packaged launchers and both-alias integrity | Passed |
+| Actual packaged stdio and signed-HTTP smoke | Passed with synthetic host/Google fixtures |
+| Deployment helper | 15/15 passed |
+| Isolated candidate on production Node v22.23.2 | OAuth/MCP/resources checks passed |
+| Separate agent behavior sample | 11/11 cases passed |
+
+Browser coverage includes seven screens at four widths plus attachment and
+recovery states (52 viewport checks). The model produced two synthetic invitations
+and seven persisted answers/refusals; it sent nothing for an ordinary reply or
+expired authorization. It answered the permitted release-date question, refused
+source/personal-data disclosure, prompt injection and unauthorized uploads, and
+recognized an unspecified time. The model evaluation is a sample with synthetic
+identities, not a guarantee of all answers or an installed-host test. Some suites
+overlap; their counts should not be summed.
+
+## Deployment procedure
+
+Re-read the real VM baseline before making changes. Existing authorization covers
+the rollout; restoring Conductor's Mac binding is a host requirement, not a new
+product approval. Use the existing authorized Mac Google Cloud account and IAP
+connection to VM `commonplace`, project `vertical-web-313417`, zone
+`us-central1-a`. Preserve production and staging accounts and databases.
+
+Transfer the reviewed archive through the authorized path, verify its SHA-256,
+extract into a new directory, and verify every entry against `files.json`. First
+run a preparation release (paths below are relative to that extracted directory):
 
 ```sh
-npm ci --ignore-scripts
-npm test
-npm run test:ui
-npm run test:deployment
-python3 scripts/build-plugin.py --output artifacts/public-0.4.13
-COMMONPLACE_TEST_BASELINE="$PWD/artifacts/.cache/meet-proxy-0.3.0.zip" npm run test:package
-python3 scripts/build-runtime-update.py --output artifacts/runtime-0.4.13
-```
-
-The runtime bundle includes every account-runtime module, nested browser asset,
-and SQL migration, with a SHA-256 manifest. This avoids dropping a dependency
-when a deployment spans multiple plugin versions. Keep the existing compiled
-website, authentication integration, dependencies, runtime image, and secrets
-on the server. Do not copy credentials into release files or a synced workspace.
-
-## Inspect and activate the existing relay
-
-Deployment access uses the owner's authenticated Google Cloud CLI and IAP SSH
-to `commonplace` in project `vertical-web-313417`, zone `us-central1-a`.
-Authentication must succeed before deployment; reauthentication is a Google
-browser step, not a new Meet Proxy account connection.
-
-Before activation, record the current `/opt/commonplace/current` target, applied
-migrations, both systemd service states, free space on the database volume,
-and the pinned Codex image. Confirm the previous service is healthy. Transfer
-the reviewed bundle, manifest, checksum, and `scripts/deploy-cloud-update.py`
-through that authenticated SSH connection. Verify the checksum on the VM.
-
-Run as root with the exact observed baseline and a new release name:
-
-```sh
-python3 deploy-cloud-update.py \
+sudo python3 deploy-cloud-update.py \
+  --baseline 20261022-context-fixes3 \
+  --release 20261025-product-0.4.19-rehearsal \
   --bundle runtime-update.json \
-  --baseline OBSERVED_CURRENT_RELEASE \
-  --release 20261020-cloud-workspace1
+  --bundle-sha256 b6822b77b9792a0e85299e6e08e1ea368288dd7a8bf4cc8fbd5d38f6de947cfe \
+  --dependencies runtime-dependencies.tgz \
+  --dependencies-sha256 a23d485dd9392c996b20838dae4b4eb2a9fbbbdfe664bb13a03289c71a4d9967 \
+  --prepare-only
 ```
 
-The script keeps a verified SQLite backup, rehearses all unapplied migrations on
-a disposable copy, preserves the previous release, switches the release, and
-checks web readiness. It then requires an active cloud-worker service and a
-heartbeat written after that worker started. A web response or an old heartbeat
-cannot establish worker readiness. A failed activation restores the previous
-release and restarts both services. It does not overwrite the live database or
-discard writes; migrations must therefore remain additive and backward compatible.
+This pins and integrity-checks an online SQLite snapshot, rehearses migrations
+against a disposable copy, imports the new wrapper/dependencies using the VM's
+Node, and records `prepared.json`. It does not switch the live pointer or restart
+services. The verified backup remains on the VM; never copy private data into
+test artifacts or a release.
 
-The rollout record includes the exact installed file hashes and retained backup.
-Check these against `runtime-update-manifest.json`, confirm migrations
-`0037_agent_history.sql`, `0038_agent_context.sql`, and `0039_cloud_workspace.sql`,
-and confirm both services remain healthy. Do not edit already applied migrations.
+Run `verify-runtime-update.mjs` with `/opt/node/bin/node` and the prepared release
+path. It uses a disposable database and a synthetic profile over local HTTP. It
+checks discovery, PKCE/token exchange, authenticated tool/resource access, denied
+writes and foreign origins. It does not exercise real Google or the compiled
+authorization page. Rehearse the actual compiled app with isolated state before
+activation; this remains outstanding because Mac access was lost.
 
-For a later code-only update, `--code-only` verifies that the complete migration
-file set and bytes match the current release, and that the live database already
-records every expected migration digest. Any difference stops the deployment.
-This mode leaves the database untouched and retains previous backups; activation
-still requires web readiness, a fresh worker heartbeat, and rollback on failure.
+When those gates pass, run the same deployment command without `--prepare-only`
+and with a **new** release name `20261025-product-0.4.19`. The helper deliberately
+refuses to overwrite the rehearsal release. This takes a fresh backup, rehearses
+again, switches the pointer, checks web health and requires a new worker heartbeat.
+On failure it restores the previous code pointer and services, preserving the live
+database. Additive migrations remain in place; rollback never discards newer data.
 
-The cloud runtime explicitly approves only `network.send_agent_message` for
-owner-authorized task-scoped consultations. Other tool approval defaults and all
-native-host permission settings remain unchanged. Account checks, active task
-leases, cancellation, recipient checks, and the eight-message budget still apply.
+Publish the verified native ZIPs/checksums so the matching UI links resolve, then
+update the existing plugin through its supported host flow. Preserve profiles,
+origins, aliases and native chat identity; a loaded old MCP process needs its host's
+reload step. Do not invent native IDs or modify host permission settings.
 
-## Verify before publishing
+## Live release gates
 
-Use disposable signed test profiles for transport checks and existing owner
-authorization for any real model or chat test. Verify:
+1. Verify Google sign-in and compiled `/authorize` compatibility on the candidate.
+2. Check actual server origin, signed account identity and current native chat
+   binding with the installed 0.4.19 runtime.
+3. Exercise requester invite → Accept → permitted answer in the idle receiving
+   chat → both-owner audit using real installed hosts.
+4. Check offline delivery, denied host actions, expiry, either-owner sever and
+   current consent on that installed path.
+5. Confirm phone/desktop pages, download URLs, service health and worker heartbeat
+   on the public production origin.
 
-- A private workspace snapshot includes supported synced text, an agent message
-  thread, and published working context, with source timestamps and revisions.
-- Owner exclusions, revocation, and unrelated accounts remain isolated.
-- The actual pinned container can start both archive and network MCP servers.
-- A cloud task uses workspace evidence, consults an authorized native agent,
-  waits without repeated model polling, and resumes on the matching reply.
-- Its final reply returns to the originating conversation. Record the model
-  reply separately from queue, transport, and read receipts.
-- A cancelled task or expired lease cannot use the communication socket.
-
-Only after those checks, publish both verified plugin aliases and update the
-marketplace hashes. The Conductor receiver records its runtime revision. Updating
-a legacy receiver verifies its live process, account profile, native thread,
-host/workspace identity, and process lock before graceful retirement. A receiver
-that cannot be verified or has not released its lock is not replaced; its durable
-delivery cursor remains intact. Reload the intended existing chats and confirm runtime
-revision 46, account identity, native binding, and receiver status. Preserve
-existing sync choices; enabling transcript upload remains a separate owner choice.
-
-Keep the deployment record, previous release, and database backup. Report any
-untested host explicitly. The known Conductor Mac-binding regression is a host
-limitation and is not fixed by this rollout.
-
-## Daily backup and restore
-
-The account runtime includes `backup.mjs`. It uses a separate read-only SQLite
-connection and an explicit read transaction to pin one consistent snapshot while
-sync and worker heartbeats continue. An unpinned incremental SQLite backup can
-restart indefinitely under those writes. Only an integrity-checked snapshot is
-renamed to the final filename. Upload failure keeps that verified local copy.
-
-After deploying the runtime, install `infra/production/backup.conf` as
-`/etc/systemd/system/commonplace-backup.service.d/reliability.conf`, reload systemd,
-and restart `commonplace-backup.service`. Keep its existing identity, restricted
-filesystem access, environment file, bucket and daily timer. The override changes
-the entrypoint and bounds execution to five minutes. Check successful exit and
-the next timer deadline; a timer waiting on an indefinitely running job is not a
-successful backup. Download the new object to a disposable path, verify SQLite
-integrity, and compare its schema/table inventory before deleting that test copy.
-Never restore a test backup over the live database.
-
-If rolling back to a release without `backup.mjs`, remove the entrypoint override
-before reloading systemd. Retain the finite timeout and verified backup objects.
+Fixtures, model samples, cached status and queued host messages do not satisfy
+these live gates. P1 contact delivery and personal-agent support remain separately
+tracked in `SPEC-COMPLIANCE.md`.

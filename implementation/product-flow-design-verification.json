@@ -1,0 +1,91 @@
+{
+  "checkedAt": "2026-10-25T19:20:35.739248+00:00",
+  "spec": "docs/MEET-PROXY-PRODUCT-SPEC.md",
+  "sourcePatchSha256": "16386de51512971613b27594fd2f76efbc0212aba60c698df3ee2924d70d0cd6",
+  "results": [
+    {
+      "suite": "backend",
+      "log": ".context/product-flow-design/backend-test-final.log",
+      "tests": 370,
+      "pass": 370,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "UI including product walkthrough",
+      "log": ".context/product-flow-design/ui-release-check.log",
+      "tests": 55,
+      "pass": 55,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "product spec end-to-end",
+      "log": ".context/product-flow-design/spec-verified.log",
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0
+    }
+  ],
+  "countsOverlap": true,
+  "visualChecks": {
+    "screens": [
+      "signin",
+      "onboarding",
+      "agents",
+      "detail",
+      "inbox",
+      "invite",
+      "thread"
+    ],
+    "widths": [
+      320,
+      390,
+      1280
+    ],
+    "axeViolations": 0,
+    "horizontalOverflow": false,
+    "acceptFitsInitiallyAt390": true,
+    "screenshots": ".context/product-flow-design/verified-screenshots",
+    "overview": ".context/product-flow-design/overview.png"
+  },
+  "patch": {
+    "patchOrder": [
+      "mcp-adoption-0.4.19-rc.3.patch",
+      "agent-launch-and-server-check.patch",
+      "spec-alignment.patch",
+      "product-flow-design.patch"
+    ],
+    "filesCompared": 80,
+    "mismatches": [],
+    "allMatchSource": true
+  },
+  "preview": {
+    "url": "https://kyle-cloud-w3.conductor.show/walkthrough",
+    "syntheticAccounts": true,
+    "modelExecution": false,
+    "requiresConductorAccess": true,
+    "unauthenticatedExternalProbe": 401,
+    "configuredOriginLocalProbe": 200,
+    "foreignOriginLocalProbe": 403
+  },
+  "sourceAndDemoOnly": true,
+  "packaged": false,
+  "installed": false,
+  "realAccountStagingUpdated": false,
+  "productionDeployed": false,
+  "specCompleteInProduction": false,
+  "remaining": [
+    "Install/package matching server and native changes for real-account staging",
+    "Verify actual host wake/delivery and independent model behavior under persisted owner consent",
+    "Resolve legacy thread migration policy",
+    "P1 direct contact delivery and personal-agent scope remain open"
+  ],
+  "earlierRunCorrections": [
+    "Navigation visibility and 320px layout fixed",
+    "Secondary menu keyboard focus and dialog dismissal fixed",
+    "Existing UI tests now use visible More navigation",
+    "Disposable fixture teardown retries transient ENOTEMPTY from background snapshot cleanup; assertions are unchanged"
+  ]
+}

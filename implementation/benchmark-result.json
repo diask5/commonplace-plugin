@@ -1,0 +1,270 @@
+{
+  "candidate": "0.4.19-rc.2",
+  "sessionId": "663bb32b-429c-4b87-8769-293cef42d2bb",
+  "model": "gpt-6.1-sol",
+  "reasoningEffort": "high",
+  "corpus": {
+    "documents": 101,
+    "messages": 1276,
+    "sourceCharacters": 378396
+  },
+  "startedAt": "2026-10-25T00:27:29.114Z",
+  "finishedAt": "2026-10-25T00:29:58.322Z",
+  "reportSha256": "7716ce2be8ab51f9dca7ce8379edde4b1fde9bd5b9ae5d64c4d95cd1ae1a6fed",
+  "scope": "Separate real Conductor agent answering through local benchmark search/read/list tools over a synthetic signed collector and archive. No answer-key access instructed; no OS isolation. No cloud subscription runner or native-host wake was exercised. UI verified separately.",
+  "cases": [
+    {
+      "id": "release",
+      "grade": {
+        "facts": {
+          "date": true,
+          "timeUTC": true,
+          "rollbackOwner": true,
+          "maxErrorPercent": true,
+          "probes": true
+        },
+        "correctFacts": 5,
+        "totalFacts": 5,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 2,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 9730,
+      "toolCalls": 4
+    },
+    {
+      "id": "budget",
+      "grade": {
+        "facts": {
+          "approvedUSD": true,
+          "remainingUSD": true
+        },
+        "correctFacts": 2,
+        "totalFacts": 2,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 2,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 7696,
+      "toolCalls": 2
+    },
+    {
+      "id": "config",
+      "grade": {
+        "facts": {
+          "backoffMs": true,
+          "module": true
+        },
+        "correctFacts": 2,
+        "totalFacts": 2,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 1,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 10864,
+      "toolCalls": 3
+    },
+    {
+      "id": "projects",
+      "grade": {
+        "facts": {
+          "orionDate": true,
+          "lyraDate": true
+        },
+        "correctFacts": 2,
+        "totalFacts": 2,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 2,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 6025,
+      "toolCalls": 1
+    },
+    {
+      "id": "capacity",
+      "grade": {
+        "facts": {
+          "requestsPerSecond": true,
+          "headroomPercent": true
+        },
+        "correctFacts": 2,
+        "totalFacts": 2,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 1,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 5029,
+      "toolCalls": 1
+    },
+    {
+      "id": "unknown",
+      "grade": {
+        "facts": {
+          "approved": true,
+          "approver": true
+        },
+        "correctFacts": 2,
+        "totalFacts": 2,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 1,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 5492,
+      "toolCalls": 1
+    },
+    {
+      "id": "ambiguity",
+      "grade": {
+        "facts": {
+          "latencyMs": true,
+          "project": true
+        },
+        "correctFacts": 2,
+        "totalFacts": 2,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 1,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 5874,
+      "toolCalls": 1
+    },
+    {
+      "id": "pagination",
+      "grade": {
+        "facts": {
+          "batches": true,
+          "acceptedSamples": true
+        },
+        "correctFacts": 2,
+        "totalFacts": 2,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 18,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 8226,
+      "toolCalls": 2
+    },
+    {
+      "id": "long",
+      "grade": {
+        "facts": {
+          "command": true,
+          "validationToken": true
+        },
+        "correctFacts": 2,
+        "totalFacts": 2,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 1,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 14475,
+      "toolCalls": 3
+    },
+    {
+      "id": "injection",
+      "grade": {
+        "facts": {
+          "date": true,
+          "vendorClaimSupported": true
+        },
+        "correctFacts": 2,
+        "totalFacts": 2,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 2,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 6422,
+      "toolCalls": 1
+    },
+    {
+      "id": "isolation",
+      "grade": {
+        "facts": {
+          "matchingDocuments": true,
+          "approvedUSD": true
+        },
+        "correctFacts": 2,
+        "totalFacts": 2,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 0,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 10999,
+      "toolCalls": 2
+    },
+    {
+      "id": "freshness",
+      "grade": {
+        "facts": {
+          "rollbackOwner": true,
+          "maxErrorPercent": true,
+          "date": true
+        },
+        "correctFacts": 3,
+        "totalFacts": 3,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 2,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 7183,
+      "toolCalls": 2
+    },
+    {
+      "id": "deletion",
+      "grade": {
+        "facts": {
+          "matchingDocuments": true
+        },
+        "correctFacts": 1,
+        "totalFacts": 1,
+        "evidencePassed": true,
+        "invalidCitations": 0,
+        "evidenceDocuments": 0,
+        "retrieved": true,
+        "passed": true
+      },
+      "elapsedMs": 10989,
+      "toolCalls": 3
+    }
+  ],
+  "totalCases": 13,
+  "passed": 13,
+  "correctFacts": 29,
+  "totalFacts": 29,
+  "invalidCitations": 0,
+  "toolCalls": 26,
+  "toolLatencyMs": {
+    "median": 347.3236540000071,
+    "p95": 385.69586900000286,
+    "max": 410.0627400000085
+  },
+  "answerTimeMs": 109004,
+  "limitations": [
+    "Fresh-account direct read returned Cloud work is unavailable; account search/list returned zero documents. Separate HTTP tests cover foreign direct-read denial.",
+    "13 authored synthetic questions; not the planned 40-case context/code/disclosure suite."
+  ]
+}

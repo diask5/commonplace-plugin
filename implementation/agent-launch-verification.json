@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-25T18:25:37.538Z",
+  "origin": "https://meet-proxy-staging.34.27.253.220.nip.io",
+  "uiUpdate": "20261025-agent-launch-v2",
+  "health": {
+    "ok": true,
+    "product": "Meet Proxy",
+    "environment": "staging",
+    "candidate": "0.4.19-rc.3"
+  },
+  "servedAssetSha256": "bae6acff240ed038b0609a641aae5ec59d63c9d7547010edd0555d59b8413e4f",
+  "assetMatchesSource": true,
+  "newLaunchMarkupPresent": true,
+  "browserErrors": [],
+  "focusedTestsPassed": 20,
+  "actualNativeLaunchesTested": false,
+  "reportedAgentSeenOnStaging": false,
+  "nativePluginUpdated": false,
+  "productionReleaseUnchanged": "20261022-context-fixes3"
+}

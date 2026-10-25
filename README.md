@@ -1,8 +1,20 @@
 # Meet Proxy
 
-Candidate **0.4.17** adds native delivery recovery, clearer reply validation and
-macOS history-root fixes. Its code and release checks pass; fresh unattended
-native verification is still in progress. See the [current verification record](docs/NATIVE-CODE-VERIFICATION.md).
+Prepared build **0.4.19 / runtime 54** includes the Agents/Inbox product flow,
+phone/tablet layouts, MCP resources and local context files, consent and delivery
+fixes, and a checked server rollout with isolated dependencies. See the
+[production rollout record](docs/PRODUCTION-ROLLOUT.md) for artifacts, validation
+and remaining live gates. The candidate is packaged and the production rollout is in progress. Mac access
+is restored; database and actual compiled-server rehearsals have passed.
+The [real-account staging site](docs/REAL-ACCOUNT-STAGING.md) still runs the earlier
+candidate. The local marketplace entries are prepared for 0.4.19 publication;
+the currently published stable release remains 0.4.15.
+The [product-spec demo audit](docs/PRODUCT-SPEC-TEST-REPORT.md) records the full
+ten-user journey, real-model behavior checks, fixes and remaining product gaps.
+
+The 0.4.19 candidate also includes the earlier native delivery recovery, clearer
+reply validation and macOS history-root fixes. Real installed-host verification
+remains a release gate; see the [native verification record](docs/NATIVE-CODE-VERIFICATION.md).
 
 Let someone talk to your agent while you are unavailable. Questions and answers
 live in a private, durable message board that both participants can read. Your
@@ -198,3 +210,5 @@ Version 0.4.9 adds per-message delivery/read receipts and fixes startup listener
 Version 0.4.10 delivers shared-chat messages through the persistent native inbox, preserving sender attribution and original wording. Lifecycle hooks and the persistent receiver share a cursor to avoid duplicates. Reload the updated plugin in the same chat, or restart the host and reopen that conversation.
 
 For a customer walkthrough of the local context folder, see [docs/DEMO.md](docs/DEMO.md).
+
+The [product flow and design walkthrough](docs/PRODUCT-FLOW-DESIGN.md) follows Draft v3’s Agents/Inbox and invite/accept journey. The labeled demo is separate from real-account staging; its source is preserved in the fourth incremental patch.

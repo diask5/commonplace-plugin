@@ -1,0 +1,125 @@
+{
+  "candidate": "0.4.19-rc.3",
+  "verifiedAt": "2026-10-25T00:57:31.169623+00:00",
+  "allProductionComponentsVerifiedEndToEnd": false,
+  "allProductSpecRequirementsImplemented": false,
+  "localReleaseChecksPassed": true,
+  "sourcePatchSha256": "ceeec92dd6ba5a4f385200be118773b617c9a4c62bb2fb9fd4401b0639bbec8b",
+  "checks": {
+    "backend": {
+      "passed": 368,
+      "failed": 0,
+      "skipped": 0
+    },
+    "ui": {
+      "passed": 50,
+      "failed": 0,
+      "skipped": 0
+    },
+    "package": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "launcher": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    "product-spec": {
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "scenarios": 13,
+      "nodeCountIncludesParentContainer": true,
+      "demoAccounts": 10,
+      "demoAgents": 20,
+      "durationMs": 132267.034407
+    },
+    "deployment": {
+      "passed": 12,
+      "failed": 0,
+      "scope": "Local Python deployment harness; no deployment"
+    },
+    "plugin-smoke": {
+      "passed": true,
+      "localContextFolder": true,
+      "linkedAgentPairs": true,
+      "legacyDelegationsAfterLinking": true,
+      "actualPackagedStdio": true,
+      "firstCatalog": true,
+      "signedHttp": true,
+      "freshAccounts": 2,
+      "duplicatePosts": 0,
+      "codexHookDeliveredOnce": true,
+      "subscriptionReceivedAnswer": true,
+      "requesterAccessFlow": true,
+      "ownerHandoffFlow": true,
+      "privateBriefingSeparated": true,
+      "symmetricAudit": true,
+      "revokeAndExpiryEnforced": true,
+      "nativeHostVerified": false,
+      "relayOrigin": "http://127.0.0.1:37069",
+      "productionTouched": false
+    },
+    "mailbox-smoke": {
+      "passed": true,
+      "freshProfiles": 6,
+      "nativeHostVerified": false,
+      "productionTouched": false
+    },
+    "runtime-update": {
+      "files": 135,
+      "relativeImportsVerified": 180,
+      "sha256": "ec952f39e75ebb2dbe0bfb1b2b1abec343c53de1539cc4e61b0e9c55e06ada60",
+      "matchesSource": true
+    }
+  },
+  "productionDependencyVulnerabilities": 0,
+  "realAgentBenchmark": {
+    "passed": 11,
+    "totalCases": 11,
+    "model": "gpt-6.1-sol",
+    "sessionId": "b94f3b51-661a-4991-9a78-2bb5c929bf03",
+    "report": "product-spec-model-result.json",
+    "reportSha256": "6be946f0507becc02fc917e27bd2be9c2da8ba338a68174918baa3ff3c16fd71",
+    "scope": "Real separate model over demo signed MCP clients; explicit owner mandate supplied by the test. This does not implement or certify automatic pair-to-Chief-of-Staff mandate integration. Provider and native identities are fixtures; expiry is induced in durable demo policies and verified through the signed API. Case identifiers reveal no expected result. No OS isolation from answer keys."
+  },
+  "scopeNotes": [
+    "Product-spec Node count includes one parent container: 14 tests represent 13 concrete scenarios. Targeted reruns overlap; do not sum counts.",
+    "Google verification and native chat identities are fixtures; browser sessions and signed HTTP use actual application routes.",
+    "Expiry is induced in disposable database policies while the delivery claim remains valid; signed dispatch must fail with HTTP 403.",
+    "Separate real Conductor evaluator used the demo tools and an explicit owner mandate. This does not exercise automatic production cloud inference or native wake.",
+    "Pair messaging does not establish a private Chief of Staff mandate; the bridge readiness diagnostic returns HTTP 403.",
+    "No deployment, real-account changes, external invitations, native installation or host permission changes.",
+    "Historical RC2 retrieval and targeted checks remain documented separately; they are not new RC3 runs."
+  ],
+  "evidence": {
+    "backend": ".context/spec-demo-20261025/backend-final.log",
+    "ui": ".context/spec-demo-20261025/ui-rc3-final.log",
+    "package": ".context/spec-demo-20261025/package.log",
+    "launcher": ".context/spec-demo-20261025/launcher.log",
+    "product-spec": ".context/spec-demo-20261025/product-spec-e2e.log",
+    "deployment": ".context/spec-demo-20261025/deployment.log",
+    "plugin-smoke": ".context/spec-demo-20261025/plugin-smoke.log",
+    "mailbox-smoke": ".context/spec-demo-20261025/mailbox-smoke.log",
+    "audit": ".context/spec-demo-20261025/audit.log"
+  },
+  "evidenceSha256": {
+    "backend": "ae57b4d44b4ea6095450648697249085fe32b674d8965d58e0fc9897cca04831",
+    "ui": "dbfa9aa26384d7db79a90d55736963013742e0073f7f941ad1b56edb281b9667",
+    "package": "71a1b87b19e3b43b261ae101759600f3c153ad22d28e8eaf54c990234f770554",
+    "launcher": "d1b138a7191bda43645da7fcb985a2a0a04f3c164dadaaff6fbc4e88fb928c29",
+    "product-spec": "f8229986962d7dfe4a929bfe7f69fbd20fa39d61726ed785a6ed6eb3fa60b95a",
+    "deployment": "c5c9e530f01e8df01b3d865da124a59dd828d2bcd36cb9b37fcf646b56eb7926",
+    "plugin-smoke": "ee77aae0051854c566eb87b23095531e8fb86b2a07e63a5c54a3eab412d2c1f0",
+    "mailbox-smoke": "241b25afe163b2185af7c222960694b00341ca6e8a43521303e9f69bcaad7006",
+    "audit": "6d8c5c8f3d7684adb070417bd608d01ae90aa3dc26a65af03ffda4955f38d9a3"
+  },
+  "portablePatch": {
+    "appliesToCleanBase": true,
+    "verifiedFiles": 62,
+    "sha256": "ceeec92dd6ba5a4f385200be118773b617c9a4c62bb2fb9fd4401b0639bbec8b",
+    "generatedSdkTemplateAndLicenseWhitespacePreserved": true
+  }
+}

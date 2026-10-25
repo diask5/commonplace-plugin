@@ -1,0 +1,163 @@
+{
+  "candidate": "0.4.19-rc.3",
+  "verifiedAt": "2026-10-25T00:57:31.169623+00:00",
+  "spec": {
+    "title": "Meet Proxy Product Spec",
+    "draft": "v3",
+    "date": "2026-10-24",
+    "sha256": "1d061a660d1e280c4f33a111fdabb1c5fb8fc52a3aa4cd86ebe4fee5f396091d"
+  },
+  "allRequirementsComplete": false,
+  "demo": {
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "scenarios": 13,
+    "nodeCountIncludesParentContainer": true,
+    "demoAccounts": 10,
+    "demoAgents": 20,
+    "durationMs": 132267.034407
+  },
+  "scenarios": [
+    {
+      "name": "7.1–7.2: first sign-in, attach Claude Code, confirm actual registered demo agent",
+      "passed": true,
+      "durationMs": 966.543494
+    },
+    {
+      "name": "7.5–7.6: requester invitation survives signed-out acceptance and first attachment",
+      "passed": true,
+      "durationMs": 823.352897
+    },
+    {
+      "name": "6, 7.2–7.4: ten owners with twenty agents, duplicate providers and account-isolated lists",
+      "passed": true,
+      "durationMs": 121149.079693
+    },
+    {
+      "name": "7.5–7.8: both invitation directions and repeated acceptance keep exactly one pair thread",
+      "passed": true,
+      "durationMs": 390.479676
+    },
+    {
+      "name": "7.8: same signed question/reply visible to both owners after refresh, with boundaries",
+      "passed": true,
+      "durationMs": 485.713323
+    },
+    {
+      "name": "7.9: private source cannot be fetched or surfaced through the peer connection",
+      "passed": true,
+      "durationMs": 55.356795
+    },
+    {
+      "name": "7.6: forged account/agent, foreign-origin acceptance, token replay and missing permission are rejected",
+      "passed": true,
+      "durationMs": 40.085147
+    },
+    {
+      "name": "7.8: full audit pagination, lossless ordering, escaped messages and keyboard/mobile access",
+      "passed": true,
+      "durationMs": 2885.85383
+    },
+    {
+      "name": "7.10: requester cancels confirmation, then severs; queued delivery stops and history stays readable",
+      "passed": true,
+      "durationMs": 592.818603
+    },
+    {
+      "name": "7.10: other owner severs independently, preserving the single earlier audit",
+      "passed": true,
+      "durationMs": 329.275362
+    },
+    {
+      "name": "7.7–7.8: default two-week expiry fences in-flight delivery and retains audit across restart",
+      "passed": true,
+      "durationMs": 157.312509
+    },
+    {
+      "name": "7.6, 7.9: delayed private thread cannot reappear after account changes; invalid invites recover",
+      "passed": true,
+      "durationMs": 940.717329
+    },
+    {
+      "name": "7.8: an open thread recovers a burst larger than one page without missing or reordering audit",
+      "passed": true,
+      "durationMs": 2250.292634
+    }
+  ],
+  "model": {
+    "passed": 11,
+    "totalCases": 11,
+    "model": "gpt-6.1-sol",
+    "sessionId": "b94f3b51-661a-4991-9a78-2bb5c929bf03",
+    "report": "product-spec-model-result.json",
+    "reportSha256": "6be946f0507becc02fc917e27bd2be9c2da8ba338a68174918baa3ff3c16fd71",
+    "scope": "Real separate model over demo signed MCP clients; explicit owner mandate supplied by the test. This does not implement or certify automatic pair-to-Chief-of-Staff mandate integration. Provider and native identities are fixtures; expiry is induced in durable demo policies and verified through the signed API. Case identifiers reveal no expected result. No OS isolation from answer keys."
+  },
+  "readinessDiagnostics": {
+    "unifiedChiefOfStaff": {
+      "available": false,
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "isError": true,
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"error\":\"Account server request failed for delegations/request (HTTP 403).\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "Account server request failed for delegations/request (HTTP 403)."
+          }
+        }
+      }
+    },
+    "boundaryEditing": {
+      "implemented": false,
+      "proposed": true
+    },
+    "directEmailOrIMessage": {
+      "implemented": false,
+      "priority": "P1"
+    },
+    "personalAgentAttachment": {
+      "implemented": false,
+      "priority": "P1"
+    }
+  },
+  "stillRequired": [
+    "Integrate selected-agent acceptance with explicit private Chief of Staff authorization and legacy identity mapping.",
+    "Real Google sign-in, actual Claude/Codex installation, host approval inheritance and idle delivery tests.",
+    "Production cloud subscription runner, deployed migration/canary and real-account verification.",
+    "P1 direct email/iMessage invitations and contacts; generic personal-agent attachment.",
+    "Proposed standalone boundary editing, Google profile photo and manual code-entry browser UX."
+  ],
+  "screenshots": [
+    ".context/spec-demo-20261025/01-connected.png",
+    ".context/spec-demo-20261025/02-agents.png",
+    ".context/spec-demo-20261025/03-shared-audit.png",
+    ".context/spec-demo-20261025/04-severed.png"
+  ],
+  "evidenceSha256": {
+    "backend": "ae57b4d44b4ea6095450648697249085fe32b674d8965d58e0fc9897cca04831",
+    "ui": "dbfa9aa26384d7db79a90d55736963013742e0073f7f941ad1b56edb281b9667",
+    "package": "71a1b87b19e3b43b261ae101759600f3c153ad22d28e8eaf54c990234f770554",
+    "launcher": "d1b138a7191bda43645da7fcb985a2a0a04f3c164dadaaff6fbc4e88fb928c29",
+    "product-spec": "f8229986962d7dfe4a929bfe7f69fbd20fa39d61726ed785a6ed6eb3fa60b95a",
+    "deployment": "c5c9e530f01e8df01b3d865da124a59dd828d2bcd36cb9b37fcf646b56eb7926",
+    "plugin-smoke": "ee77aae0051854c566eb87b23095531e8fb86b2a07e63a5c54a3eab412d2c1f0",
+    "mailbox-smoke": "241b25afe163b2185af7c222960694b00341ca6e8a43521303e9f69bcaad7006",
+    "audit": "6d8c5c8f3d7684adb070417bd608d01ae90aa3dc26a65af03ffda4955f38d9a3"
+  },
+  "fixtureLimitations": [
+    "Product-spec Node count includes one parent container: 14 tests represent 13 concrete scenarios. Targeted reruns overlap; do not sum counts.",
+    "Google verification and native chat identities are fixtures; browser sessions and signed HTTP use actual application routes.",
+    "Expiry is induced in disposable database policies while the delivery claim remains valid; signed dispatch must fail with HTTP 403.",
+    "Separate real Conductor evaluator used the demo tools and an explicit owner mandate. This does not exercise automatic production cloud inference or native wake.",
+    "Pair messaging does not establish a private Chief of Staff mandate; the bridge readiness diagnostic returns HTTP 403.",
+    "No deployment, real-account changes, external invitations, native installation or host permission changes.",
+    "Historical RC2 retrieval and targeted checks remain documented separately; they are not new RC3 runs."
+  ]
+}
