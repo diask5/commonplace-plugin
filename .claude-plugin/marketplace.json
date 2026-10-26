@@ -6,12 +6,12 @@
   "plugins": [
     {
       "name": "commonplace",
-      "version": "0.4.25",
+      "version": "0.4.26",
       "description": "Meet Proxy \u2014 compatible update for existing Commonplace installations.",
       "source": {
         "source": "archive",
-        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.25/commonplace-0.4.25.zip",
-        "sha256": "9939900734dc7d2cb4c2a5e49b670a6830e5ef595f57c89a37528bf1f5cff0e1"
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.26/commonplace-0.4.26.zip",
+        "sha256": "d1580f5f9f1b0a89962500874aae54073d9a7e37dcd46eed237b164919af47cb"
       }
     },
     {
@@ -26,12 +26,12 @@
     },
     {
       "name": "meet-proxy",
-      "version": "0.4.25",
+      "version": "0.4.26",
       "description": "Meet Proxy \u2014 connect your existing assistant and share context with your people, with your own rules.",
       "source": {
         "source": "archive",
-        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.25/meet-proxy-0.4.25.zip",
-        "sha256": "5a1a442b3fed6c73f5adf12047792c447d8fcc5d8a5c3fb1fe7384b67a0c2f0c"
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.26/meet-proxy-0.4.26.zip",
+        "sha256": "b76b139ada73d849a13a0354ea4623cf47e940c3be4f032e93821e6f66f17ac5"
       }
     }
   ]
