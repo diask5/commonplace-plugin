@@ -1,0 +1,93 @@
+{
+  "name": "Native MCP discovery without account network reads",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "native-discovery.patch",
+  "sha256": "28dd4824d39c8f812913e7b70f4a7ddce467344277c800ebe53b5a97f8ee663c",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch"
+  ],
+  "nativeVersion": "0.4.22",
+  "runtimeRevision": 56,
+  "state": "Packaged candidate; rollout tracked in spec-recheck-verification.json",
+  "files": [
+    {
+      "path": "apps/commonplace/server/mcp-adapter-source.mjs",
+      "beforeSha256": "e6eed77e1f39cd0c9d635b0ffdf4aee177df03ed5aeff5224d352f31055f4e13",
+      "sha256": "10c66144aa1c41b6c6c7000ae1d5587807d3a61a472af4e14181f6528cfd8058"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-adapter.mjs",
+      "beforeSha256": "5c5905394e61d049930056c07cd85028b3df255811a68d7fd4abaec539deeb70",
+      "sha256": "0afaefde0291e863cfc1c88e04515fe186d5c64947e7110a74a5df6d7ab06b6a"
+    },
+    {
+      "path": "apps/commonplace-account/server/mcp-adapter.mjs",
+      "beforeSha256": "5c5905394e61d049930056c07cd85028b3df255811a68d7fd4abaec539deeb70",
+      "sha256": "0afaefde0291e863cfc1c88e04515fe186d5c64947e7110a74a5df6d7ab06b6a"
+    },
+    {
+      "path": "apps/commonplace/server/plugin.mjs",
+      "beforeSha256": "7d5a9b75318c353302a8344074c7ac3aad42b656e24a6bb9b04c29ae291098b3",
+      "sha256": "bd21e32996e9c45da95e81e3777e5dfcee989113ef404331053f85ba4102f8be"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "41f8d56aa129f44281da085d4483d48025b9d0332b148762df02ea01b2670056",
+      "sha256": "73a132ac7324d186dc42e7c342134102a7d372be542efb028d7e300d538e4232"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-setup.mjs",
+      "beforeSha256": "54ba8088c26abf02fb7413ca5e3b8139bb54a8762339c0cee5054bb224d3557c",
+      "sha256": "dd489e68f680e5e0eeccf789bf19dbcb3caa962af49da525e577af1fbb4e42ec"
+    },
+    {
+      "path": "tests/mcp-adapter.test.mjs",
+      "beforeSha256": "e79dffe25ea28c9ce550e58a797180b51c22852d2648cf478759ccce3403fd1e",
+      "sha256": "dfbbb14e3f22dcb39371a553d1375909d069ea122453e053017fd2b7b5b9caf6"
+    },
+    {
+      "path": "tests/mcp-probe.test.mjs",
+      "beforeSha256": "523e76252ac619c03687e0f0623ab59ba08175366bb6cc88ae8a36c60f019a6b",
+      "sha256": "41a1f33f67c1f4d580a22285f520a3de3c5ed3b9de025a76f0691d5b577d3ab6"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "f5170eb18f4fdd6dea7a74c866484c0967d1137c9a4bb626ee08c9cfa61456ae",
+      "sha256": "6cd81421ed47eaf519974d5ffa1796d7196c93e1d7655cea883f91f7548eed52"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "8f852c3051276ef14a3a92a26bb1f4c61dd8481a9793305216e37d816131ac7c",
+      "sha256": "a0fa8890474849df912efb9f306ecfd39a466f3ff303dcc4364a496f278cde01"
+    },
+    {
+      "path": "scripts/smoke-plugin.mjs",
+      "beforeSha256": "189cec5f62421894680605c27ee75cca7038dc1242973ce62bd46e6d65e0186b",
+      "sha256": "f9103fa5da3460194dd7d3354ba7df31afecef24f32faa2658ddcba005540567"
+    },
+    {
+      "path": "tests/product-flow-browser.test.mjs",
+      "beforeSha256": "1f25818e95899587a5f116ebe7d75dac0397fce98065fe87dbd277e86eef1ebd",
+      "sha256": "d1352d3beb2123f0ec034213c14916225b5692d2a9fb4c18b8352be1a94ea66a"
+    }
+  ]
+}

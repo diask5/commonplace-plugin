@@ -1,17 +1,13 @@
 # Meet Proxy Draft v3 compliance
 
-> **Current audit, 26 October 2026:** See [Context MVP readiness](CONTEXT-MVP-READINESS.md)
-> for the original requirements mapped to the owner's later context-sharing instructions,
-> completed gaps, classifier limits and current release evidence. The sections below
-> preserve the original agent-centric milestone; they are not the current home design.
+The [26 October recheck](SPEC-RECHECK.md) maps every P0 and the remaining P1/P2
+items to the owner's current context-sharing design, current tests and live gaps.
+The current product is Spaces / My context; sharing rules are implemented.
+Do not use the historical source-only milestones below as today's release status.
+Current release evidence is in
+[`spec-recheck-verification.json`](../implementation/spec-recheck-verification.json).
 
-> **Current direction, 25 October 2026:** The owner merged Connections and Shared
-> access into Spaces. The two top links are Spaces and My context. Each space has
-> shared context, a message board, people/access controls, files and assistant
-> setup. Private-library prompt rules remain drafts; explicit uploaded files use
-> actual group membership. The Draft v3 matrix below remains historical. See
-> [Context product direction](CONTEXT-PRODUCT-DIRECTION.md) for current implementation
-> and pending prompt-based access / upstream MCP ingestion. Production remains 0.4.19.
+## Historical implementation milestones
 
 Authoritative document: [Meet Proxy Product Spec](MEET-PROXY-PRODUCT-SPEC.md),
 24 October 2026, Draft v3. This is an unchanged copy of the owner's latest
