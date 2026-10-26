@@ -1,0 +1,18 @@
+{
+  "state": "passed",
+  "previousRevision": 49,
+  "activeRevision": 59,
+  "oldProcessStoppedGracefully": true,
+  "savedPermissionsAndAccountUnchanged": true,
+  "temporarilyPausedPluginProcesses": 14,
+  "allStillExistingPausedProcessesResumed": true,
+  "installedVersion": "0.4.26",
+  "accountAndBindingPreserved": true,
+  "savedPermissionsPreserved": true,
+  "codexOnlyPluginPathsChanged": true,
+  "earlierHandoffAttempts": [
+    "Old cached launchers were not all paused because of a maintenance-script path delimiter bug; an old companion reclaimed the lock.",
+    "Guard refused the mismatched process identity before signaling anything."
+  ],
+  "correction": "Exact cache paths and verified old test-plugin roots included; all still-existing paused processes resumed."
+}

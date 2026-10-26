@@ -1,0 +1,32 @@
+{
+  "state": "passed",
+  "release": "20261026-timeout-recovery",
+  "filesVerified": 156,
+  "services": [
+    "active",
+    "active",
+    "active"
+  ],
+  "migrations": "unchanged; exact applied digests verified",
+  "previous": "20261026-seamless-context-final",
+  "verifiedAt": 1792998035.5610096,
+  "current": "20261026-timeout-recovery",
+  "helperSha256": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408",
+  "healthSamples": [
+    {
+      "status": 200,
+      "ready": true,
+      "seconds": 12.515
+    },
+    {
+      "status": 200,
+      "ready": true,
+      "seconds": 14.737
+    },
+    {
+      "status": 200,
+      "ready": true,
+      "seconds": 13.246
+    }
+  ]
+}

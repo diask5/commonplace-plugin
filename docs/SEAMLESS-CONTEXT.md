@@ -1,6 +1,8 @@
 # Seamless context update — 0.4.25/runtime58
 
-**0.4.25 is published; the server is live at `20261026-seamless-context-final`.**
+**Historical 0.4.25 rollout:** it was activated at `20261026-seamless-context-final`.
+[0.4.26/runtime59 is now live and installed](TIMEOUT-RECOVERY.md); the evidence
+below preserves the earlier release and first benchmark attempts.
 All 156 deployed files match the verified bundle. Public desktop/phone, OAuth,
 compiled authorize, unauthenticated MCP rejection and six UI asset byte checks pass.
 The first activation rolled back after a two-second health timeout. A tested,

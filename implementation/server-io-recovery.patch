@@ -1,0 +1,374 @@
+diff --git a/apps/commonplace-account/server/agent-auth.mjs b/apps/commonplace-account/server/agent-auth.mjs
+index d830244..9752b49 100644
+--- a/apps/commonplace-account/server/agent-auth.mjs
++++ b/apps/commonplace-account/server/agent-auth.mjs
+@@ -18,9 +18,38 @@ const routes = new Set([
+   'capability/execute',
+ ]);
+ 
++// Bounded fixed-window counters for the SDK's outer rate limit. A window starts
++// at the first hit and expires after ttl seconds; hits within it increment
++// atomically (single-threaded, no await between read and write). At capacity,
++// expired entries are reclaimed (at most once per second); if none are, the
++// request is denied rather than evicting an active counter.
++export function createRateCounters(capacity) {
++  const entries = new Map();
++  let nextSweep = 0;
++  return {
++    get size() {
++      return entries.size;
++    },
++    increment(key, ttl) {
++      const now = Date.now();
++      const entry = entries.get(key);
++      if (entry && entry.expires > now) return ++entry.count;
++      if (!entry && entries.size >= capacity) {
++        if (now >= nextSweep) {
++          nextSweep = now + 1000;
++          for (const [k, v] of entries) if (v.expires <= now) entries.delete(k);
++        }
++        if (entries.size >= capacity) return Infinity;
++      }
++      entries.set(key, { count: 1, expires: now + ttl * 1000 });
++      return 1;
++    },
++  };
++}
++
+ // Only this module can supply a principal to the existing service. No HTTP
+ // header/body field is accepted as an account, device, or membership claim.
+-export function createAgentAuth(service) {
++export function createAgentAuth(service, { maxCounters = 10_000 } = {}) {
+   if (cache.has(service.db)) return cache.get(service.db);
+   const sql = service.db.sqlite;
+   if (!sql) throw Error('Agent Auth requires durable SQLite storage.');
+@@ -36,6 +65,7 @@ export function createAgentAuth(service) {
+   const secret = sql
+     .prepare('SELECT value FROM cp_agent_auth_store WHERE key=?')
+     .get('server-secret').value;
++  const counters = createRateCounters(maxCounters);
+   const options = {
+     database: sql,
+     baseURL: service.origin,
+@@ -52,14 +82,11 @@ export function createAgentAuth(service) {
+       customRules: { '/capability/execute': { window: 60, max: 3600 } },
+     },
+     secondaryStorage: {
++      // SDK use: only the rate limiter calls increment(`${ip}|${path}`, window
++      // seconds) and compares the result with the rule max. Counters stay in
++      // memory so a throttle hit is not a durable fsync commit.
+       async increment(key, ttl) {
+-        const now = Date.now();
+-        const row = sql
+-          .prepare(
+-            "INSERT INTO cp_agent_auth_store(key,value,expires) VALUES(?,'1',?) ON CONFLICT(key) DO UPDATE SET value=CASE WHEN expires<=? THEN '1' ELSE CAST(value AS INTEGER)+1 END, expires=CASE WHEN expires<=? THEN excluded.expires ELSE expires END RETURNING value",
+-          )
+-          .get('sdk:' + key, now + ttl * 1000, now, now);
+-        return Number(row.value);
++        return counters.increment('sdk:' + key, ttl);
+       },
+       async getAndDelete(key) {
+         const row = sql
+diff --git a/apps/commonplace-account/server/archive-index.mjs b/apps/commonplace-account/server/archive-index.mjs
+index 31e5fc8..1ceba17 100644
+--- a/apps/commonplace-account/server/archive-index.mjs
++++ b/apps/commonplace-account/server/archive-index.mjs
+@@ -1,5 +1,5 @@
+ import {DatabaseSync} from 'node:sqlite';
+-import {readFile,writeFile,mkdir,chmod,lstat} from 'node:fs/promises';
++import {readFile,writeFile,mkdir,chmod,lstat,link} from 'node:fs/promises';
+ import {createReadStream} from 'node:fs';
+ import {createHash} from 'node:crypto';
+ import path from 'node:path';
+@@ -51,7 +51,19 @@ export async function forEachFile(items,visit){
+   if(error){iterator.return?.();throw error;}
+ }
+ const safeLabel=value=>String(value).replace(/[\r\n]/g,' ').replace(/[\\\[\]<>`*_]/g,'\\$&');
+-export async function buildContextFiles(directory,manifest){
++// Reuse an immutable generated document only when the previously verified file
++// holds exactly the bytes just rendered. The comparison reads; it never trusts
++// the prior digest alone, so damaged or swapped files are rewritten fresh.
++async function reusableDocument(prior,old,doc,body){
++  if(!old||old.digest!==doc.digest||old.path!==doc.path)return null;
++  try{
++    const source=path.join(prior.directory,old.path),stat=await lstat(source);
++    if(!stat.isFile()||stat.isSymbolicLink()||(stat.mode&0o222)!==0||!(stat.mode&0o004)||stat.size!==Buffer.byteLength(body))return null;
++    return Buffer.from(body,'utf8').equals(await readFile(source))?source:null;
++  }catch{return null;}
++}
++export async function buildContextFiles(directory,manifest,{prior,stats}={}){
++  const priorDocuments=new Map((prior?.manifest.documents||[]).map(doc=>[doc.id,doc]));
+   const docs=path.join(directory,'documents');await mkdir(docs,{mode:0o755});await chmod(docs,0o755);
+   const filename=path.join(directory,'search.sqlite'),db=new DatabaseSync(filename);
+   try{
+@@ -64,7 +76,11 @@ export async function buildContextFiles(directory,manifest){
+       const chunks=new Array(doc.sections.length);
+       await forEachFile(doc.sections.entries(),async([index,id])=>{chunks[index]=await readFile(path.join(directory,'sections',id+'.txt'),'utf8');});
+       const body=chunks.join('');doc.path='documents/'+doc.id+'.txt';doc.digest=createHash('sha256').update(body).digest('hex');
+-      const file=path.join(directory,doc.path);await writeFile(file,body,{mode:0o444});await chmod(file,0o444);
++      const file=path.join(directory,doc.path),source=await reusableDocument(prior,priorDocuments.get(doc.id),doc,body);
++      let linked=false;
++      if(source){try{await link(source,file);linked=true;}catch(e){if(e.code!=='ENOENT'&&e.code!=='EMLINK'&&e.code!=='EXDEV'&&e.code!=='EPERM')throw e;}}
++      if(linked){if(stats)stats.documentsLinked++;}
++      else{await writeFile(file,body,{mode:0o444,flag:'w'});await chmod(file,0o444);if(stats)stats.documentsWritten++;}
+       meta.run(++row,doc.id,doc.kind,(doc.project||'').toLowerCase(),doc.capturedAt);index.run(row,doc.title,body);
+     }
+     db.exec("INSERT INTO search(search) VALUES('optimize'); COMMIT;");
+diff --git a/apps/commonplace-account/server/cloud-archive.mjs b/apps/commonplace-account/server/cloud-archive.mjs
+index 122f830..b18eeec 100644
+--- a/apps/commonplace-account/server/cloud-archive.mjs
++++ b/apps/commonplace-account/server/cloud-archive.mjs
+@@ -87,7 +87,7 @@ export class CloudArchive {
+       const documents=[...docs.values()].sort((a,b)=>b.updatedAt-a.updatedAt||a.id.localeCompare(b.id));
+       for(const d of documents)d.sections=d.sections.sort((a,b)=>a.position-b.position||a.id.localeCompare(b.id)).map(s=>s.id);
+       const manifest={format:1,owner,revision,createdAt:observedAt,expiresAt:network.expiresAt(owner),documents,sources,characters:documents.reduce((n,d)=>n+d.characters,0)};
+-      await buildContextFiles(staging,manifest);
++      await buildContextFiles(staging,manifest,{prior});
+       await writeFile(path.join(staging,'manifest.json'),JSON.stringify(manifest),{mode:0o444});
+       await chmod(path.join(staging,'manifest.json'),0o444);
+       db.exec('COMMIT');
+diff --git a/package.json b/package.json
+index c3fd592..1130f54 100644
+--- a/package.json
++++ b/package.json
+@@ -7,7 +7,7 @@
+   },
+   "scripts": {
+     "start": "node scripts/relay.mjs",
+-    "test": "node --test tests/agent-network.test.mjs apps/commonplace-account/tests/*.test.mjs apps/commonplace/tests/person-inbox.test.mjs apps/commonplace/tests/session-invitations.test.mjs apps/commonplace/tests/chat-wait.test.mjs apps/commonplace/tests/account-origin.test.mjs apps/commonplace/tests/delegation-client.test.mjs tests/relay.test.mjs tests/delegation-http.test.mjs tests/production-*.test.mjs tests/mailbox-*.test.mjs tests/cloud-*.test.mjs tests/context-mirror.test.mjs tests/conductor-history.test.mjs tests/people-invitations.test.mjs tests/chat-setup.test.mjs tests/codex-host-context.test.mjs tests/local-environment.test.mjs tests/mcp-*.test.mjs tests/agent-connections.test.mjs tests/policy-context.test.mjs tests/space-context*.test.mjs tests/context-setup.test.mjs tests/context-setup-request.test.mjs tests/contact-delivery.test.mjs tests/personal-assistant-setup.test.mjs tests/seamless-routing.test.mjs tests/seamless-collection.test.mjs tests/seamless-retrieval.test.mjs",
++    "test": "node --test tests/agent-network.test.mjs apps/commonplace-account/tests/*.test.mjs apps/commonplace/tests/person-inbox.test.mjs apps/commonplace/tests/session-invitations.test.mjs apps/commonplace/tests/chat-wait.test.mjs apps/commonplace/tests/account-origin.test.mjs apps/commonplace/tests/delegation-client.test.mjs tests/relay.test.mjs tests/delegation-http.test.mjs tests/production-*.test.mjs tests/mailbox-*.test.mjs tests/cloud-*.test.mjs tests/context-mirror.test.mjs tests/conductor-history.test.mjs tests/people-invitations.test.mjs tests/chat-setup.test.mjs tests/codex-host-context.test.mjs tests/local-environment.test.mjs tests/mcp-*.test.mjs tests/agent-connections.test.mjs tests/policy-context.test.mjs tests/space-context*.test.mjs tests/context-setup.test.mjs tests/context-setup-request.test.mjs tests/contact-delivery.test.mjs tests/personal-assistant-setup.test.mjs tests/seamless-routing.test.mjs tests/seamless-collection.test.mjs tests/seamless-retrieval.test.mjs tests/agent-auth-rate-storage.test.mjs tests/archive-document-reuse.test.mjs",
+     "test:backend": "node --test apps/commonplace-account/tests/*.test.mjs",
+     "test:package": "node --test tests/packaging.test.mjs",
+     "test:deployment": "python3 -m unittest discover -s tests -p 'test_deployment.py' -v",
+diff --git a/tests/agent-auth-rate-storage.test.mjs b/tests/agent-auth-rate-storage.test.mjs
+new file mode 100644
+index 0000000..4c42ebb
+--- /dev/null
++++ b/tests/agent-auth-rate-storage.test.mjs
+@@ -0,0 +1,125 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { readFileSync } from 'node:fs';
++import { createRateCounters, createAgentAuth } from '../apps/commonplace-account/server/agent-auth.mjs';
++import { signedFixture } from './signed-fixture.mjs';
++
++const at = (t, start) => {
++  let now = start;
++  t.mock.method(Date, 'now', () => now);
++  return (ms) => (now += ms);
++};
++
++test('fixed-window threshold and TTL expiry', (t) => {
++  const tick = at(t, 1_000_000);
++  const c = createRateCounters(10);
++  assert.deepEqual([1, 2, 3].map(() => c.increment('a', 60)), [1, 2, 3]);
++  tick(30_000); // fixed window: later hits do not extend it
++  assert.equal(c.increment('a', 60), 4);
++  tick(30_000);
++  assert.equal(c.increment('a', 60), 1);
++  assert.equal(c.increment('b', 60), 1);
++});
++
++test('concurrent increments are exact', async (t) => {
++  at(t, 5_000);
++  const c = createRateCounters(10);
++  const results = await Promise.all(Array.from({ length: 500 }, async () => c.increment('k', 60)));
++  assert.deepEqual([...results].sort((x, y) => x - y), Array.from({ length: 500 }, (_, i) => i + 1));
++});
++
++test('memory is bounded, reclaims expired keys and never evicts an active counter', (t) => {
++  const tick = at(t, 9_000_000);
++  const c = createRateCounters(100);
++  for (let i = 0; i < 100; i++) assert.equal(c.increment('k' + i, 60), 1);
++  assert.equal(c.increment('k0', 60), 2);
++  for (let i = 0; i < 10_000; i++) assert.equal(c.increment('attacker' + i, 60), Infinity);
++  assert.equal(c.size, 100);
++  assert.equal(c.increment('k0', 60), 3); // active counter intact
++  tick(61_000);
++  assert.equal(c.increment('fresh', 60), 1);
++  assert.equal(c.size, 1);
++});
++
++test('SDK increment is wired to memory and writes nothing durable', async (t) => {
++  const f = await signedFixture(t);
++  const auth = createAgentAuth(f.service);
++  const sql = f.service.db.sqlite;
++  const count = () => sql.prepare('SELECT COUNT(*) n FROM cp_agent_auth_store').get().n;
++  const before = count();
++  const inc = auth.options.secondaryStorage.increment;
++  assert.deepEqual([await inc('1.2.3.4|/x', 60), await inc('1.2.3.4|/x', 60)], [1, 2]);
++  assert.equal(count(), before);
++});
++
++test('signed request replay is still denied; one fewer WAL commit; durable quota unchanged', async (t) => {
++  const f = await signedFixture(t);
++  const p = await f.fresh('A', 'Claude');
++  const link = await p.client.request('/account/api/identity/start', {});
++  const owner = await f.service.profile({ userId: 'firebase:rate1', email: 'r1@example.test' });
++  f.service.mailboxes.approveLink(owner, new URL(link.authorizationUrl).hash.slice(1));
++  await p.call('discover_agents');
++
++  const db = f.service.db.sqlite;
++  const file = db.prepare('PRAGMA database_list').all().find((r) => r.name === 'main').file;
++  db.exec('PRAGMA wal_autocheckpoint=0');
++  const commits = () => {
++    const b = readFileSync(file + '-wal');
++    const ps = b.readUInt32BE(8);
++    let n = 0;
++    for (let o = 32; o + 24 + ps <= b.length; o += 24 + ps) if (b.readUInt32BE(o + 4) !== 0) n++;
++    return n;
++  };
++
++  // Capture the real signed execute request at the Agent Auth handler, then
++  // replay it byte-for-byte through the same handler.
++  const agent = createAgentAuth(f.service);
++  const handle = agent.handle;
++  let captured;
++  agent.handle = async (request) => {
++    if (!captured && request.url.includes('/capability/execute'))
++      captured = { url: request.url, headers: [...request.headers], body: await request.clone().text() };
++    return handle.call(agent, request);
++  };
++  t.after(() => { agent.handle = handle; });
++  const quota = () => sql_quota(db);
++  const sql_quota = (d) => d.prepare('SELECT COALESCE(SUM(count),0) n FROM cp_limits').get().n;
++  const measure = async () => {
++    const c0 = commits(), q0 = quota();
++    await p.call('discover_agents');
++    return { commits: commits() - c0, quota: quota() - q0 };
++  };
++  let after, before;
++  try {
++    after = await measure();
++    // A/B: the pre-change durable increment, same statement as before.
++    const storage = agent.options.secondaryStorage, memory = storage.increment;
++    storage.increment = async (key, ttl) => {
++      const now = Date.now();
++      return Number(db.prepare("INSERT INTO cp_agent_auth_store(key,value,expires) VALUES(?,'1',?) ON CONFLICT(key) DO UPDATE SET value=CASE WHEN expires<=? THEN '1' ELSE CAST(value AS INTEGER)+1 END, expires=CASE WHEN expires<=? THEN excluded.expires ELSE expires END RETURNING value").get('sdk:' + key, now + ttl * 1000, now, now).value);
++    };
++    try { before = await measure(); } finally { storage.increment = memory; }
++  } finally {
++    agent.handle = handle;
++  }
++  const perCall = after.commits;
++  assert.ok(captured, 'captured a signed execute request');
++  const replay = await handle.call(agent, new Request(captured.url, { method: 'POST', headers: captured.headers, body: captured.body }));
++  assert.ok([400, 401, 403, 409].includes(replay.status), 'replay rejected: ' + replay.status + ' ' + (await replay.text()));
++  console.log(`wal commits per tool call: memory=${after.commits} durable-increment=${before.commits}; cp_limits delta: ${after.quota} vs ${before.quota}`);
++  assert.equal(before.commits - after.commits, 1 * 2, 'one fewer commit per authenticated request (2 requests per tool call)');
++  assert.equal(after.quota, before.quota, 'durable device quota counted identically');
++  assert.ok(after.quota >= 1);
++});
++
++
++test('the actual SDK returns 429 at the fixed-window threshold', async t => {
++  const f=await signedFixture(t),auth=createAgentAuth(f.service);
++  auth.options.rateLimit.customRules['/agent-configuration']={window:60,max:2};
++  const statuses=[];
++  for(let i=0;i<3;i++){
++    const response=await auth.handle(new Request(f.service.origin+'/.well-known/agent-configuration'));
++    statuses.push(response.status);await response.text();
++  }
++  assert.deepEqual(statuses,[200,200,429]);
++});
+diff --git a/tests/archive-document-reuse.test.mjs b/tests/archive-document-reuse.test.mjs
+new file mode 100644
+index 0000000..1cffd05
+--- /dev/null
++++ b/tests/archive-document-reuse.test.mjs
+@@ -0,0 +1,95 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {randomBytes,createHash} from 'node:crypto';
++import {mkdtemp,rm,readFile,writeFile,mkdir,readdir,lstat,unlink,symlink,chmod} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {openDatabase} from '../apps/commonplace-account/server/sqlite.mjs';
++import {AccountService} from '../apps/commonplace-account/server/service.mjs';
++import {CloudWork} from '../apps/commonplace-account/server/cloud-work.mjs';
++import {CloudArchive} from '../apps/commonplace-account/server/cloud-archive.mjs';
++const uid=()=>randomBytes(12).toString('hex'),hash=s=>createHash('sha256').update(s).digest('hex');
++
++import {ArchiveTools} from '../apps/commonplace-account/server/archive-tools.mjs';
++import {closeSharedContext} from '../apps/commonplace-account/server/shared-context.mjs';
++import {ContextStore} from '../apps/commonplace-account/server/context-store.mjs';
++import {buildContextFiles} from '../apps/commonplace-account/server/archive-index.mjs';
++const uid2=uid;
++async function fixture(t){
++  const dir=await mkdtemp(path.join(tmpdir(),'archive-test-')),db=openDatabase(path.join(dir,'db.sqlite'),{migrations:path.resolve('apps/commonplace-account/drizzle')});
++  t.after(async()=>{await closeSharedContext({db});db.close();await rm(dir,{recursive:true,force:true});});
++  const service=new AccountService(db,'https://relay.example'),owner=(await service.profile({userId:'owner',email:'owner@example.test'})).id,other=(await service.profile({userId:'other',email:'other@example.test'})).id;
++  const work=new CloudWork(service),store=new ContextStore(service),archive=new CloudArchive(work,{directory:path.join(dir,'archives')});
++  const device=uid();work.run('INSERT INTO cp_devices(id,owner,client,name,scope,created_at) VALUES(?,?,?,?,?,?)',device,owner,'test','Mac','commonplace',Date.now());
++  const native=(key,body,title='Codex chats: test',revision=1)=>work.upload(owner,{id:device},{key,text:body,title,revision,capturedAt:Date.now()-1000});
++  const imported=(title,body,human=owner)=>store.upsert(human,{conversation:{id:'conversation-'+uid(),title,capturedAt:Date.now()},messages:[{id:'message-'+uid(),role:'user',text:body,position:0,capturedAt:Date.now()}]});
++  return {dir,db,service,work,store,owner,other,device,archive,native,imported};
++}
++
++const docFiles=async dir=>Object.fromEntries(await Promise.all((await readdir(path.join(dir,'documents'))).sort().map(async n=>[n,await readFile(path.join(dir,'documents',n),'utf8')])));
++const ino=(dir,rel)=>lstat(path.join(dir,rel)).then(s=>s.ino);
++
++test('one-message change links unchanged documents, rewrites only the changed one and matches a full rebuild byte for byte',async t=>{
++  const f=await fixture(t),ids=[];
++  for(let i=0;i<8;i++)ids.push(f.native('k'+i,'Body '+i+' '+'x'.repeat(2000),'Codex chats: doc '+i));
++  const old=await f.archive.prepare(f.owner);
++  f.native('k3','Changed body 3','Codex chats: doc 3',2);
++  const next=await f.archive.prepare(f.owner);assert.notEqual(next.directory,old.directory);
++  const changed=next.manifest.documents.find(d=>d.sections.includes(ids[3].id));
++  let linked=0;
++  for(const d of next.manifest.documents){
++    const same=await ino(old.directory,d.path).catch(()=>null)===await ino(next.directory,d.path);
++    if(d===changed)assert.equal(same,false);else{assert.equal(same,true,d.path);linked++;assert.equal((await lstat(path.join(next.directory,d.path))).nlink,2);}
++  }
++  assert.equal(linked,7);
++  assert.equal(await readFile(path.join(next.directory,changed.path),'utf8'),'Changed body 3');
++  // A separate owner-equivalent full rebuild (no prior generation) must produce identical documents and index results.
++  const fresh=new CloudArchive(f.work,{directory:path.join(f.dir,'fresh')}),full=await fresh.prepare(f.owner);
++  assert.deepEqual(await docFiles(next.directory),await docFiles(full.directory));
++  assert.deepEqual(next.manifest.documents,full.manifest.documents);
++  assert.equal(next.manifest.files['search.sqlite'].length,64);
++  const a=await ArchiveTools.open(next.directory),b=await ArchiveTools.open(full.directory);
++  for(const q of ['Changed','Body','doc']){const x=await a.call('archive_search',{query:q}),y=await b.call('archive_search',{query:q});assert.deepEqual(x.results,y.results);assert.ok(x.results.length)};
++  await old.release();await next.release();await full.release();
++});
++
++test('removed sources disappear and corrupted prior documents are never reused or released',async t=>{
++  const f=await fixture(t),a=f.native('a','Alpha secret'),b=f.native('b','Bravo kept');
++  let s=await f.archive.prepare(f.owner);await s.release();
++  const bdoc=s.manifest.documents.find(d=>d.sections.includes(b.id)).path,gone=s.manifest.documents.find(d=>d.sections.includes(a.id)).path;
++  f.work.run('DELETE FROM cp_cloud_sources WHERE id=?',a.id);
++  let n=await f.archive.prepare(f.owner);assert.equal(n.manifest.documents.length,1);
++  await assert.rejects(lstat(path.join(n.directory,gone)),{code:'ENOENT'});
++  assert.equal(await readFile(path.join(n.directory,bdoc),'utf8'),'Bravo kept');
++  const out=await ArchiveTools.open(n.directory);assert.equal((await out.call('archive_search',{query:'Alpha'})).results.length,0);await n.release();
++  // Corrupt the prior file in place (same inode as any future link) then change another source.
++  const file=path.join(n.directory,bdoc);await chmod(file,0o644);await writeFile(file,'Bravo FORGED');
++  f.native('c','Charlie new');n=await f.archive.prepare(f.owner);
++  assert.equal(await readFile(path.join(n.directory,bdoc),'utf8'),'Bravo kept');
++  assert.equal((await lstat(path.join(n.directory,bdoc))).nlink,1,'corrupt prior bytes are never linked');
++  await n.release();
++});
++
++test('buildContextFiles rewrites a prior document whose bytes differ from its claimed digest and reports write counts',async t=>{
++  const dir=await mkdtemp(path.join(tmpdir(),'reuse-')),prior=path.join(dir,'prior'),next=path.join(dir,'next');
++  t.after(()=>rm(dir,{recursive:true,force:true}));
++  const make=async(root,texts)=>{
++    await mkdir(path.join(root,'sections'),{recursive:true});
++    const documents=[];for(const [i,text] of texts.entries()){const id='native-'+String(i).padStart(24,'0'),sec='context_'+String(i).padStart(24,'0');await writeFile(path.join(root,'sections',sec+'.txt'),text);documents.push({id,title:'T'+i,kind:'native',capturedAt:1000+i,updatedAt:1000+i,sections:[sec]});}
++    return {revision:1,createdAt:1000,documents};
++  };
++  const m1=await make(prior,['one','two','three','four']);await buildContextFiles(prior,m1);
++  const bad=path.join(prior,m1.documents[1].path);await chmod(bad,0o644);await writeFile(bad,'TWO!');await chmod(bad,0o444); // same length as 'two'+1? size differs → rejected
++  const same=path.join(prior,m1.documents[2].path);await chmod(same,0o644);await writeFile(same,'thrEE');await chmod(same,0o444); // same size, wrong bytes
++  const writable=path.join(prior,m1.documents[3].path);await chmod(writable,0o644); // correct bytes must also be immutable before reuse
++  const m2=await make(next,['one','two','three','four']);const stats={documentsLinked:0,documentsWritten:0};
++  await buildContextFiles(next,m2,{prior:{directory:prior,manifest:m1},stats});
++  assert.deepEqual(stats,{documentsLinked:1,documentsWritten:3});
++  assert.equal(await readFile(path.join(next,m2.documents[1].path),'utf8'),'two');
++  assert.equal(await readFile(path.join(next,m2.documents[2].path),'utf8'),'three');
++  assert.equal(await ino(prior,m1.documents[0].path),await ino(next,m2.documents[0].path));
++  assert.notEqual(await ino(prior,m1.documents[3].path),await ino(next,m2.documents[3].path));
++  assert.equal((await lstat(path.join(next,m2.documents[3].path))).mode&0o222,0);
++  const cold={documentsLinked:0,documentsWritten:0};await buildContextFiles(path.join(dir,'cold'),await make(path.join(dir,'cold'),['one','two','three','four']),{stats:cold});
++  assert.deepEqual(cold,{documentsLinked:0,documentsWritten:4});
++});
