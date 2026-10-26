@@ -1,5 +1,5 @@
 {
-  "state": "reviewed and packaged; not yet published or live",
+  "state": "published and deployed; public desktop/phone smoke passed",
   "nativeVersion": "0.4.26",
   "runtimeRevision": 59,
   "nativePackagesUnchanged": true,
@@ -43,8 +43,30 @@
     "No database migration or account/permission change"
   ],
   "limits": [
-    "Public assets no longer wait on Node once activated; HTML and APIs still do.",
+    "Static public assets returned in0.028\u20130.192seconds. Publicdesktop took5.078seconds and phone8.298seconds. HTML/APIs still waitonNode.",
     "Real model latency and ordinary default-host routing remain open gates.",
     "No paid infrastructure changes."
-  ]
+  ],
+  "production": {
+    "release": "20261026-public-assets",
+    "filesVerified": 157,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "unchanged",
+    "previous": "20261026-io-recovery",
+    "nginx": {
+      "status": "applied",
+      "syntax": "passed",
+      "reload": "sent",
+      "previousConfigSha256": "71d17193bb8a51b0f30d4d95c3b77dcdf031669e9701254528a56bda1b8795ae",
+      "configSha256": "856e675a22a3b35d59dd45292fbed721654a761d8ac4fbe92db71c88c77dc42b",
+      "includeSha256": "75282c87740a95937bae9405f3cb8255fe3ebe4dd362d425fd6f7812deb0d1a6",
+      "privateBackupCreated": true
+    },
+    "publicSmoke": "public-assets-production-smoke.json",
+    "latestPluginTag": "meet-proxy-v0.4.26"
+  }
 }

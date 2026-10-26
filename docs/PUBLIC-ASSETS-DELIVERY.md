@@ -5,7 +5,7 @@ behind server work. This server-only update serves 31 exact public asset paths
 through Nginx, including CSS generated from the current source. Private pages and
 APIs retain their existing application handlers and authentication.
 
-**State: reviewed and packaged; activation is tracked in the verification record.**
+**State: published and live at `20261026-public-assets`.**
 Native 0.4.26/runtime59 and its ZIPs are unchanged. No database migrations, account
 changes, saved permission changes or paid infrastructure changes are included.
 
@@ -28,3 +28,12 @@ contains 157 files. [Verification](../implementation/public-assets-delivery-veri
 tracks the exact hashes and activation. [I/O follow-up](SERVER-IO-RECOVERY.md)
 retains the prior browser timeout and real-model failures. This change does not
 claim to resolve HTML/API latency or default-host invitation routing.
+
+Live checks verify all 31 asset bodies, MIME types and headers. OAuth discovery,
+compiled authorization, MCP authentication rejection, HEAD, denied POST and
+private-source rejection pass. Public desktop/phone pages render without overflow
+or JavaScript errors in 5.078 / 8.298 seconds; assets return in 0.028–0.192 seconds.
+These are public sign-in checks, not a new authenticated onboarding walkthrough.
+
+Production screenshots: [desktop](images/public-assets/production-desktop.png) /
+[phone](images/public-assets/production-phone.png).
