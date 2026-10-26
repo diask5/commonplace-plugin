@@ -1,0 +1,15 @@
+{
+  "case": "scope-selected",
+  "sessionId": "d694abce-dbbf-4946-ac37-3a25a5a9ddb6",
+  "tools": [
+    "list_context_spaces",
+    "read_space_activity",
+    "request_space_context"
+  ],
+  "successfulReads": [],
+  "finalCitationIds": [],
+  "supportedCitationIds": [],
+  "unsupportedCitations": [],
+  "final": "Mira\u2019s available Rillmere Circuit plan says:\n\n- **Pilot opens:** December 29, 2026.\n- **Rollout owner:** Mira Selwyn.\n\nThe shared excerpt is labeled **synthetic** and includes no revision date or further milestones, so I can\u2019t verify it as her latest real plan.",
+  "visibleReceiptsSha256": "4b7a406f6bb0d90872cae1f7672b14806f0e9c0ddb53055b9e23618e853617ae"
+}

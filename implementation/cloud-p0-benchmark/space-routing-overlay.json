@@ -1,0 +1,17 @@
+{
+  "scope": "instruction-only overlay for copied synthetic remote runtime, not production",
+  "substitutions": [
+    {
+      "before": "List your shared spaces and their current members. Private libraries remain governed by each contributor\u2019s rules.",
+      "after": "List your shared spaces and their current members. Resolve the space named or explicitly selected by the owner before reading its activity or requesting context. If that space is absent, inaccessible, expired or left, report unavailable access and stop; never substitute another space because it contains the same person or topic. If no space was selected and several spaces could match, ask the owner which space. A query itself is published to every member, so matching contributor identity alone is not authority to post it. Private libraries remain governed by each contributor\u2019s rules."
+    },
+    {
+      "before": "Request context from a current member. The query and approved excerpts are recorded for ALL space members.",
+      "after": "Request context from a current member of the owner-selected space only. Resolve the space named or explicitly selected by the owner before reading its activity or requesting context. If that space is absent, inaccessible, expired or left, report unavailable access and stop; never substitute another space because it contains the same person or topic. If no space was selected and several spaces could match, ask the owner which space. A query itself is published to every member, so matching contributor identity alone is not authority to post it. The query and approved excerpts are recorded for ALL space members."
+    },
+    {
+      "before": "For a question about someone in a shared space, first list_context_spaces to resolve current membership and contributor IDs, read_space_activity for existing exchanges, and request_space_context for the current answer. Do not substitute unrelated apps or infer no context without checking the space.",
+      "after": "For a question about someone in a shared space, first list_context_spaces to resolve current membership and contributor IDs. Resolve the space named or explicitly selected by the owner before reading its activity or requesting context. If that space is absent, inaccessible, expired or left, report unavailable access and stop; never substitute another space because it contains the same person or topic. If no space was selected and several spaces could match, ask the owner which space. A query itself is published to every member, so matching contributor identity alone is not authority to post it. Only after that resolution, use read_space_activity for existing exchanges and request_space_context for the current answer. Do not substitute unrelated apps or infer no context without checking the selected space."
+    }
+  ]
+}

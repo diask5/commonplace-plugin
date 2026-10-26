@@ -1,0 +1,85 @@
+{
+  "files": {
+    "README.md": {
+      "sha256": "ba13d5faa9d920a3b377d73a15d582da3d71f5b2a79803e53ec36c195e06be77",
+      "bytes": 2211
+    },
+    "candidate-plan.json": {
+      "sha256": "d778ce60e2bc89b2267ecb253b63fecbb5c3e012986c55a0b05e4c6c00a88431",
+      "bytes": 5212
+    },
+    "candidate-retrieval-results.json": {
+      "sha256": "f15ab17f36e4150f78ec1fb3a393c60288de40ff14fb5f99d300de858f604f9f",
+      "bytes": 19695
+    },
+    "claude-correction-baseline.json": {
+      "sha256": "ef2d8a75672abe2a00f3c3ca3a01dfc5c48eb71bc1a6856940416602dfd42f75",
+      "bytes": 2546
+    },
+    "cleanup.json": {
+      "sha256": "e8769d028a267e0f23e4a04f43de7cc2f408694d6aecc38974934c1696dabaac",
+      "bytes": 1209
+    },
+    "codex-correction-baseline.json": {
+      "sha256": "4545f2c3d9a93fdd7bb487185ec8c07080a89bdc17814f49c2ab22f9ca6b9e42",
+      "bytes": 1458
+    },
+    "harness/extract-bundle.mjs": {
+      "sha256": "f539d80cff75ce0bbfaa360722907f3fff9d05bc460ea153375a208aa033fc8e",
+      "bytes": 1271
+    },
+    "harness/grade.py": {
+      "sha256": "49d16512d484a1fb0fcd8feb63a887be6892647b187b3119d494ea27888b8919",
+      "bytes": 9740
+    },
+    "harness/grader-selftest.py": {
+      "sha256": "8cd89f69829719e87faad04d8add4b91a1f357dc3c837bb43ec1eb61c5809f71",
+      "bytes": 5663
+    },
+    "harness/plan.json": {
+      "sha256": "6f4acc4e72dfd70e62068eec65399fb8ab18e9c98138925253386f5e1f0399ce",
+      "bytes": 4738
+    },
+    "harness/protocol-check.mjs": {
+      "sha256": "6b419d84f43fa5af5c6fff2705d566b24eac685ee98740c8de932217708bc3db",
+      "bytes": 8318
+    },
+    "harness/retrieval-server.mjs": {
+      "sha256": "210a6cfea9c5be5e07c19fec0bcc36b89a8fbdc03a1ade872deab41437e1ea4d",
+      "bytes": 10483
+    },
+    "harness/space-server.mjs": {
+      "sha256": "c7526d69aeadb361d4f6898e6cd5d68a80d08bb49bb86f6608a0236c89182188",
+      "bytes": 8967
+    },
+    "lifecycle-baseline.json": {
+      "sha256": "b54b69f913be4dd25d19808436b3ae61b43ad0034c7ab175af8007952e4a5830",
+      "bytes": 8656
+    },
+    "remote-retrieval-guidance-overlay.json": {
+      "sha256": "73b57bbfb1214a303c9862b60ccb9ada90650ee0d5744b86fd90d8110f11ce2b",
+      "bytes": 3221
+    },
+    "review-disposition.md": {
+      "sha256": "25fccfb629b94e9bab1cdc69906a7083737fedf58a7a71da1d68c024835726f5",
+      "bytes": 1846
+    },
+    "scope-ambiguous.json": {
+      "sha256": "b02fecc55a0f46772cbda69743fa21ab089536822051bda0e9c86f7bc3edf919",
+      "bytes": 475
+    },
+    "scope-left.json": {
+      "sha256": "441f293dfb76ba22445f80c1602f0717eae33baa12667d8f53259ea4755b436e",
+      "bytes": 515
+    },
+    "scope-selected.json": {
+      "sha256": "f739d52228f4a0d89aab152a869c90c400913a496fe38d1809ea06788852ff99",
+      "bytes": 683
+    },
+    "space-routing-overlay.json": {
+      "sha256": "a0f7dfef04537bf8094207ca6109fe2d60a501d52473dd3a9913c0b7e1c964d6",
+      "bytes": 2822
+    }
+  },
+  "scope": "Synthetic fixture sources and visible-result summaries only; no bearer credentials, actual private account history or hidden reasoning."
+}

@@ -1,0 +1,33 @@
+{
+  "projectFiles": [
+    {
+      "path": ".codex/config.toml",
+      "before": "absent",
+      "after": "absent",
+      "temporarySha256": "c606880f94e66ec06eefb31e7609b0a3468a270243f92d3b9a2fab9c7574b5e4"
+    },
+    {
+      "path": ".mcp.json",
+      "before": "absent",
+      "after": "absent",
+      "temporarySha256": "2e8ebf79e6cb415481c037d94a2da5f45fbd307345158499acc2a62f7350e880"
+    },
+    {
+      "path": ".claude/settings.local.json",
+      "before": "absent",
+      "after": "absent",
+      "temporarySha256": "6c3c1cb71e55d68307d8164f55fcaabd8505645b7306631c001929c42e11e464"
+    }
+  ],
+  "syntheticServersStopped": 6,
+  "loopbackListenersClosed": 6,
+  "globalUserSettingsChanged": false,
+  "temporaryProjectSettingsRestored": true,
+  "reportedBy": "bootstrap session 1e75d8c0-ddb1-4bc8-b517-256a954677f8",
+  "reportHashes": {
+    "lifecycle": "30db293532970805b628fdc8e7e029686bad037b65a655189156601df3425201",
+    "retrievalBaseline": "c69a0b42c1ca4c5a2143dc197313eaf9436a859f737448770f894d0ad9ea7aaf",
+    "scopeCandidate": "0006c41c3d87c39baf7c9c0f0eb3f6a69a93e1cd4894ef2a8fbbe71256584f84",
+    "retrievalCandidate": "3ff26beabb6db25b81201a7827c9a795101818378bfc097351703d327f1e486a"
+  }
+}

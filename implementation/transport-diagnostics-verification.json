@@ -1,0 +1,138 @@
+{
+  "observedAt": "2026-10-26T18:25:14.877172+00:00",
+  "state": "source-only diagnostic preparation; failed-read cause and live gates remain open",
+  "nativeVersion": null,
+  "runtimeRevision": null,
+  "packaged": false,
+  "published": false,
+  "installed": false,
+  "deployed": false,
+  "liveReleaseUnchanged": "0.4.28/runtime61; server 20261026-current-read",
+  "existingDraftUnchanged": "0.4.29/runtime62 uploaded assets do not contain this delta",
+  "source": {
+    "patches": 36,
+    "files": 203,
+    "incrementalFiles": 3,
+    "matched": true,
+    "mismatches": [],
+    "patchSha256": "a5dadfd8dcd3a72230512719a7c22636e9cd7f3711c0be4961b7b6b31ecf57a9",
+    "manifestHashAgreement": {
+      "mcp-adoption-0.4.19-rc.3.patch": "no-standard-manifest",
+      "agent-launch-and-server-check.patch": "no-standard-manifest",
+      "spec-alignment.patch": true,
+      "product-flow-design.patch": true,
+      "production-readiness.patch": true,
+      "context-product-ui.patch": true,
+      "automatic-context-ingestion.patch": true,
+      "prompt-based-sharing.patch": true,
+      "sharing-rules-design.patch": true,
+      "sharing-desktop-layout.patch": true,
+      "sharing-interactions.patch": true,
+      "shared-spaces.patch": true,
+      "message-first-spaces.patch": true,
+      "live-context-setup.patch": true,
+      "seamless-plugin-setup.patch": true,
+      "copy-setup-prompt.patch": true,
+      "context-mvp-completion.patch": true,
+      "sharing-walkthrough.patch": true,
+      "zero-to-knowledge.patch": true,
+      "archive-read-performance.patch": true,
+      "native-discovery.patch": true,
+      "archive-revision-fence.patch": true,
+      "context-completion.patch": true,
+      "p0-native-readiness.patch": true,
+      "seamless-context.patch": true,
+      "deployment-startup-readiness.patch": true,
+      "context-timeout-recovery.patch": true,
+      "server-io-recovery.patch": true,
+      "public-assets-delivery.patch": true,
+      "context-read-performance.patch": true,
+      "registration-recovery.patch": true,
+      "live-index-reuse.patch": true,
+      "demand-archives.patch": true,
+      "current-read.patch": true,
+      "read-page-guidance.patch": true,
+      "transport-diagnostics.patch": true
+    },
+    "sourceScopeFilesNotMatchingReplay": [],
+    "sourceScopeMissingCount": 0
+  },
+  "checks": {
+    "command": "node --test apps/commonplace/tests/account-errors.test.mjs tests/agent-auth-registration-queue.test.mjs tests/seamless-routing.test.mjs",
+    "cwd": ".context/commonplace-source",
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0,
+    "durationSecondsApprox": 1.414,
+    "coverage": [
+      "allowlisted categories, privacy, malformed/cyclic exceptions and bounded output",
+      "stderr sink failure cannot mask the original failure",
+      "real AgentConnection path records original category before synthetic 503 wrapping",
+      "original rate-limit error and retryAfter preserved; exactly one SDK invocation per attempt",
+      "signed native legacy refusal, registration concurrency and native identity",
+      "durable retry, timeout and host-denial behavior"
+    ],
+    "syntax": "node --check passed for account-errors.mjs and agent-auth-client.mjs"
+  },
+  "diagnostic": {
+    "destination": "local process stderr",
+    "fields": [
+      "event",
+      "category",
+      "reportedStatus"
+    ],
+    "event": "meet_proxy_agent_auth_failure",
+    "categoryAllowlist": [
+      "dns",
+      "socket",
+      "timeout",
+      "tls",
+      "aborted",
+      "parse",
+      "reported-status",
+      "unclassified"
+    ],
+    "maxCauseDepth": 4,
+    "reportedStatus": "integer 400..599 from original exception only; otherwise null, never wrapper-generated 503",
+    "excluded": [
+      "messages",
+      "stacks",
+      "URLs",
+      "paths",
+      "identities",
+      "credentials",
+      "bodies",
+      "source text",
+      "arbitrary codes"
+    ],
+    "behaviorUnchanged": [
+      "public errors",
+      "retries",
+      "authentication",
+      "host permissions",
+      "rate-limit receipts",
+      "request count"
+    ]
+  },
+  "macRequest": {
+    "purpose": "read-only runtime receipt existence and existing gcloud login process check",
+    "executed": false,
+    "result": "The user did not respond to the local command request in time.",
+    "automaticReviewRejection": false,
+    "retried": false
+  },
+  "limits": [
+    "Underlying failed-read cause remains unknown; no behavioral fix is claimed.",
+    "No live source-retrieval or invitation acceptance gate is closed by these tests.",
+    "GCP existing-account browser reauthentication and approved Mac execution remain prerequisites for live diagnosis.",
+    "Exact per-test host allowance is still required for the prepared MCP-only acceptance and additional diagnostic tools.",
+    "No native settings, accounts, saved permissions, production state or draft release assets changed."
+  ],
+  "nextSteps": "docs/P0-CLOSEOUT.md",
+  "laterPackaging": {
+    "candidate": "0.4.30/runtime63",
+    "record": "implementation/cloud-closeout-runtime-verification.json",
+    "state": "locally packaged and verified; not uploaded, published, installed or deployed",
+    "originalSourceOnlyRecordRetained": true
+  }
+}

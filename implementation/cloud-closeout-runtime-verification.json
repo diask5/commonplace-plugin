@@ -1,0 +1,120 @@
+{
+  "observedAt": "2026-10-26T19:53:24.506521+00:00",
+  "state": "packaged and verified diagnostic candidate; not published, installed or deployed",
+  "nativeVersion": "0.4.30",
+  "runtimeRevision": 63,
+  "liveReleaseUnchanged": "0.4.28/runtime61; server20261026-current-read",
+  "existing029DraftUnchanged": true,
+  "purpose": "Combine reviewed page-size guidance with bounded native stderr diagnostics. No behavioral fix for the failed-read cause is claimed.",
+  "source": {
+    "patches": 37,
+    "files": 203,
+    "incrementalFiles": 6,
+    "matched": true,
+    "mismatches": [],
+    "patchSha256": "4d2608001164cc5fbbfd0abc2f62069a5e804e25b0127cabf92fb179b1704d90",
+    "manifestHashAgreement": {
+      "mcp-adoption-0.4.19-rc.3.patch": "no-standard-manifest",
+      "agent-launch-and-server-check.patch": "no-standard-manifest",
+      "spec-alignment.patch": true,
+      "product-flow-design.patch": true,
+      "production-readiness.patch": true,
+      "context-product-ui.patch": true,
+      "automatic-context-ingestion.patch": true,
+      "prompt-based-sharing.patch": true,
+      "sharing-rules-design.patch": true,
+      "sharing-desktop-layout.patch": true,
+      "sharing-interactions.patch": true,
+      "shared-spaces.patch": true,
+      "message-first-spaces.patch": true,
+      "live-context-setup.patch": true,
+      "seamless-plugin-setup.patch": true,
+      "copy-setup-prompt.patch": true,
+      "context-mvp-completion.patch": true,
+      "sharing-walkthrough.patch": true,
+      "zero-to-knowledge.patch": true,
+      "archive-read-performance.patch": true,
+      "native-discovery.patch": true,
+      "archive-revision-fence.patch": true,
+      "context-completion.patch": true,
+      "p0-native-readiness.patch": true,
+      "seamless-context.patch": true,
+      "deployment-startup-readiness.patch": true,
+      "context-timeout-recovery.patch": true,
+      "server-io-recovery.patch": true,
+      "public-assets-delivery.patch": true,
+      "context-read-performance.patch": true,
+      "registration-recovery.patch": true,
+      "live-index-reuse.patch": true,
+      "demand-archives.patch": true,
+      "current-read.patch": true,
+      "read-page-guidance.patch": true,
+      "transport-diagnostics.patch": true,
+      "cloud-closeout-runtime.patch": true
+    },
+    "sourceScopeFilesNotMatchingReplay": [],
+    "sourceScopeMissingCount": 0
+  },
+  "nativeArtifacts": {
+    "meet-proxy": {
+      "sha256": "74ad3ca239f63b99d217394ec5823caacba1115f80a0d36ce466e4c0ce77997f",
+      "bytes": 230157629
+    },
+    "commonplace": {
+      "sha256": "8f494ed29370888af8660028f79967dd94577e1e0ac4102bf0fb7bc67eb3a541",
+      "bytes": 230157629
+    }
+  },
+  "serverArtifacts": {
+    "runtime-update.json": "26276e41576ae676178d6e7f0290c527218a6bd00cda6a028d79f07f2f0deff6",
+    "runtime-update-manifest.json": "42c56df1169a68bde1ce308a72ddb2b40c2b4c827a475fa64c0fd428875b5e6f",
+    "runtime-update.sha256": "16975191a63a68480ad09270645c3a92a5b1459cbee0cc39e91c24340e37a349",
+    "deploy-cloud-update.py": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408"
+  },
+  "serverChangedFilesFromLive": [
+    "dist/standalone/account-runtime/archive-tools.mjs",
+    "dist/standalone/account-runtime/context-assets/agent-setup.mjs",
+    "dist/standalone/account-runtime/remote-mcp.mjs"
+  ],
+  "checks": {
+    "diagnosticFocused": {
+      "passed": 15,
+      "failed": 0
+    },
+    "bothAliasPackageIntegrity": "passed",
+    "extractedLauncher": {
+      "passed": 2,
+      "failed": 0
+    },
+    "actualPackagedPluginSmoke": "passed local stdio/signed HTTP with synthetic identities/host transport",
+    "extractedServer": "passed OAuth/PKCE/resources/read-only/origin checks; compiled authorize stub; dependency tree reused"
+  },
+  "review": {
+    "state": "no blocking findings",
+    "source": "Cloud Conductor read-only review of patch36",
+    "limits": "Stderr diagnostic is coarse metadata only and can appear in host logs; no actual failed-read cause reproduced."
+  },
+  "preservedAttempts": [
+    "packaged-launcher-before-extraction.log: checks began before extraction completed; normal sequential rerun passed.",
+    "First attempted test command used repository rather than implementation cwd; no tests executed; corrected run15/15."
+  ],
+  "limits": [
+    "New package not published/installed/deployed; production and existing0.4.29 drafts unchanged.",
+    "Mac command explicitly denied on resumed task; no Mac retry or alternate local path. Owner directed benchmark to new Conductor cloud sessions.",
+    "Cloud benchmark results pending; no Google/clean Desktop/production sharing claim.",
+    "Underlying failed-read cause remains unknown; no added retries, relinking or authority changes."
+  ],
+  "uploaded": false,
+  "published": false,
+  "installed": false,
+  "deployed": false,
+  "laterSourceDelta": {
+    "patch": "scope-preserving-space-routing.patch",
+    "packaged": false,
+    "purpose": "Owner-selected-space routing and remote archive/citation guidance; source-only, not included in these packaged artifacts.",
+    "patches": [
+      "scope-preserving-space-routing.patch",
+      "remote-retrieval-guidance.patch"
+    ]
+  }
+}
