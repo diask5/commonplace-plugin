@@ -1,6 +1,8 @@
 # P0 native and production readiness — 26 October 2026
 
-Current: native 0.4.26/runtime59 and [server public asset release](PUBLIC-ASSETS-DELIVERY.md).
+Current release: [0.4.27/runtime60 registration recovery](REGISTRATION-RECOVERY.md),
+installed and active; server `20261026-registration-recovery` is live. The
+real-host benchmark remains incomplete (3 passed, 3 fell short, 2 unstarted). The 0.4.24 evidence below remains historical.
 
 The later [ordinary-prompt benchmark](NATURAL-PROMPT-BENCHMARK.md) qualifies the
 behavioral readiness claim: retrieval works without naming tools, but host

@@ -1,5 +1,5 @@
 {
-  "state": "packaged; not yet published, installed or deployed",
+  "state": "published, deployed and active on Mac; real-host benchmark incomplete",
   "nativeVersion": "0.4.27",
   "runtimeRevision": 60,
   "serverRelease": "20261026-registration-recovery",
@@ -77,13 +77,51 @@
       "fail": 1,
       "failure": "Offline consultation waiting state; fixed by preserving durable consultation wait without publishing withheld text."
     },
-    "benchmarkHarnessPassed": 13
+    "benchmarkHarnessPassed": 13,
+    "publicLiveSmoke": {
+      "state": "passed",
+      "assets": 31,
+      "desktopWidth": 1440,
+      "phoneWidth": 390,
+      "evidence": "registration-recovery/public-smoke.json",
+      "limits": "Unauthenticated sign-in and protocol checks; not browser acceptance or native setup."
+    },
+    "realNativeBenchmark": {
+      "passed": 3,
+      "needsReview": 3,
+      "notStarted": 2,
+      "cases": 8,
+      "evidence": "registration-recovery-native-benchmark.json",
+      "limits": "Process-isolated retrieval catalog; no default-host routing proof. Search timeouts and revision churn persist; Claude cited one source not successfully read."
+    }
   },
   "limits": [
-    "Native queue fix is demonstrated by a held-registration regression; installed performance improvement is unverified.",
+    "Held-registration regression passes, but installed runtime60 still has search timeouts; no general installed performance fix is claimed.",
     "Whole archive revision changes during optional cloud model runs withhold answers and may exhaust existing retry limits under steady ingestion.",
     "Prior default-host invitation routing failures and host-denied browser acceptance remain unresolved; no denied action retried.",
     "No paid infrastructure or disk changes.",
-    "Real ordinary-prompt benchmark pending activation; all earlier failed attempts preserved."
-  ]
+    "Fresh real-host benchmark finished: 3 passed, 3 incomplete/failed rubric, 2 Claude cases not started after unexpected-tool guard. Earlier failures preserved."
+  ],
+  "production": {
+    "state": "passed",
+    "release": "20261026-registration-recovery",
+    "filesVerified": 158,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "none; unchanged migration hashes, code-only activation",
+    "previous": "20261026-read-performance"
+  },
+  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.27",
+  "nativeInstallation": {
+    "state": "passed",
+    "installedVersion": "0.4.27",
+    "runtimeRevision": 60,
+    "backgroundVersion": "0.4.27",
+    "accountAndSavedPermissionsUnchanged": true,
+    "evidence": "registration-recovery-native-install.json",
+    "limits": "Older open host chats may retain their loaded plugin metadata. Initial handoff failures are preserved."
+  }
 }

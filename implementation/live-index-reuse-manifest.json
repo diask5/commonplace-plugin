@@ -1,0 +1,77 @@
+{
+  "name": "Reuse verified search indexes for live context while preserving current projection and fences",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch"
+  ],
+  "patch": "live-index-reuse.patch",
+  "sha256": "a931c2e8ba4838c60ce7ce2e0a3bf6666168c029ba7158652249937a2cacdb89",
+  "state": "Server-only candidate; native 0.4.27/runtime60 unchanged. See live-index-reuse-verification.json for lifecycle evidence.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/archive-builder.mjs",
+      "beforeSha256": "f0fa6d846a5d3cfb45d1a17e81b08f2003af9bf94a325feb5835a7ce5db8e6da",
+      "sha256": "c03b6c907dcc5d00ecfd5d2afe48e563b9e69ce69268e85bb2dcbf29f2966307"
+    },
+    {
+      "path": "apps/commonplace-account/server/archive-source.mjs",
+      "beforeSha256": "0364011a31e3a1c9e2ce36d397fc5d5fbb644d907bf1f13c72dca27e85570b87",
+      "sha256": "bf780c6e8bd40398d7d97817449cccc26d049ffd4b54e895741e737d97308535"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-archive.mjs",
+      "beforeSha256": "45897248a1eaa063bb25e91b89d581bb0958f88e747ecdbb5009179eb7a2503b",
+      "sha256": "4282ff1361b44805e07cc1930e03da1665d828181acb5b8f1a9a25bd694d5fb7"
+    },
+    {
+      "path": "apps/commonplace-account/server/live-archive-index.mjs",
+      "beforeSha256": null,
+      "sha256": "bdc483c1e08400fa448f43aea4e95fe53fb338712fc2fc76c52438cbf9f9afbe"
+    },
+    {
+      "path": "apps/commonplace-account/server/shared-context.mjs",
+      "beforeSha256": "568b72b15c8ed40fc2c3640d878ef2e6fa0aa59a55e497c6f13d39ddda76503c",
+      "sha256": "3126089c159b7784b9e9d9f8d71724a909a5a4d3209dc33a1993816ca4e4f654"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "6d801940ead7e22fd32a027ff16ef45e26281e24b64f0382bc7d089e1aee752f",
+      "sha256": "935d1c64738262bb521b1b5c7f8c26a93b79c7dc9679f133dc696c4371e5b1e2"
+    },
+    {
+      "path": "tests/live-index-reuse.test.mjs",
+      "beforeSha256": null,
+      "sha256": "6bebb8b1038a63277de77e973369f977729d666853502c323b6cd1bdbc70c738"
+    }
+  ]
+}
