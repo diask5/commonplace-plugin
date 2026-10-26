@@ -119,12 +119,14 @@ def guarded_run(args,env,cwd,stream_path,err_path,check,timeout,popen=subprocess
  """Run a process, write the stream, and terminate on the first violation.
  Returns (exit_code, stop_reason). 124 = timeout, 125 = stopped by guard."""
  reason=None
- with open(stream_path,'w') as out,open(err_path,'w') as err:
+ with open(stream_path,'w') as out,open(err_path,'w') as err,open(str(stream_path)+'.timings','w') as timings:
+  started=now();line_number=0
   p=popen(args,cwd=cwd,env=env,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=err,text=True)
   timed=[];timer=threading.Timer(timeout,lambda:(timed.append(1),p.terminate()));timer.daemon=True;timer.start()
   try:
    for line in p.stdout:
-    out.write(line);out.flush()
+    out.write(line);out.flush();line_number+=1
+    timings.write(json.dumps({'line':line_number,'elapsedSeconds':round(now()-started,3)})+'\n');timings.flush()
     try:ev=json.loads(line)
     except ValueError:ev=None
     reason=check(ev)

@@ -1,0 +1,137 @@
+{
+  "release": "20261026-read-performance",
+  "sanitized": true,
+  "origin": "production host (address omitted)",
+  "collectedAt": "2026-10-26T08:00:44.702Z",
+  "nativeVersion": "0.4.26",
+  "runtimeRevision": 59,
+  "publicSmoke": {
+    "state": "passed",
+    "assets": 31,
+    "allAssetsStatus200": true,
+    "protocols": [
+      {
+        "path": "/healthz",
+        "method": "get",
+        "status": 200,
+        "seconds": 15.346
+      },
+      {
+        "path": "/.well-known/oauth-authorization-server",
+        "method": "get",
+        "status": 200,
+        "seconds": 5.65
+      },
+      {
+        "path": "/.well-known/agent-configuration",
+        "method": "get",
+        "status": 200,
+        "seconds": 4.773
+      },
+      {
+        "path": "/mcp",
+        "method": "post",
+        "status": 401,
+        "seconds": 3.27
+      },
+      {
+        "path": "/context/assets/ui.css",
+        "method": "post",
+        "status": 403,
+        "seconds": 0.034
+      }
+    ],
+    "screens": [
+      {
+        "name": "desktop",
+        "width": 1440,
+        "seconds": 5.4,
+        "googleButtonVisible": true,
+        "overflow": false,
+        "errors": []
+      },
+      {
+        "name": "phone",
+        "width": 390,
+        "seconds": 7.701,
+        "googleButtonVisible": true,
+        "overflow": false,
+        "errors": []
+      }
+    ],
+    "authorize": {
+      "status": 303,
+      "redirect": "/signin-with-chatgpt"
+    },
+    "privateSourceStatus": 404,
+    "errors": []
+  },
+  "screenshots": [
+    "docs/images/read-performance/signin-desktop.png",
+    "docs/images/read-performance/signin-phone.png"
+  ],
+  "sqlQuery": {
+    "beforeRelease": "20261026-public-assets",
+    "afterRelease": "20261026-read-performance",
+    "beforeSeconds": [
+      0.2198,
+      0.0301,
+      0.2184
+    ],
+    "afterSeconds": [
+      0.0094,
+      0.0077,
+      0.0069
+    ],
+    "resultCount": 4265,
+    "planAfter": [
+      "SEARCH s USING COVERING INDEX cp_cloud_sources_owner_synced",
+      "SEARCH cp_context_chunks USING COVERING INDEX cp_context_chunks_owner_synced"
+    ]
+  },
+  "health": [
+    {
+      "status": 200,
+      "ready": true,
+      "seconds": 4.237
+    },
+    {
+      "status": 200,
+      "ready": true,
+      "seconds": 4.12
+    },
+    {
+      "status": 200,
+      "ready": true,
+      "seconds": 2.203
+    }
+  ],
+  "migration": {
+    "0045_context_read_indexes.sql": "dd4f49989252db0cd6bb6d905660fe47838719baaac6d8252cfa0c1a2354c009"
+  },
+  "nativeBenchmark": "see context-read-native-benchmark.json; Claude synthesis stopped by harness, unknown not run, Codex trust passed, correction failed on provider capacity before tools",
+  "notEstablished": [
+    "all-done or seamless readiness",
+    "warm real-request latency improvement"
+  ],
+  "deployment": {
+    "state": "passed",
+    "release": "20261026-read-performance",
+    "filesVerified": 158,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "0045 indexes; verified backup and rehearsal",
+    "previous": "20261026-public-assets",
+    "currentRelease": "20261026-read-performance",
+    "servicesNow": [
+      "active",
+      "active",
+      "active"
+    ],
+    "backupExists": true,
+    "deployLogSha256": "db21a0b0d52d01fd2f49b7be126ea75b1f5d6e15c9f16ba8b34ef713a4830a67"
+  }
+}

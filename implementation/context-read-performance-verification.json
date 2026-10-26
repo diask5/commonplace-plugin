@@ -1,0 +1,133 @@
+{
+  "state": "deployed to production (server only); live latency still slow; real-model benchmark incomplete",
+  "nativeVersion": "0.4.26",
+  "runtimeRevision": 59,
+  "nativePackagesUnchanged": true,
+  "serverRelease": "20261026-read-performance",
+  "sourceManifest": "context-read-performance-manifest.json",
+  "source": {
+    "patches": 30,
+    "files": 196,
+    "incrementalFiles": 8,
+    "matched": true,
+    "patchSha256": "3738dd13abce340737926708b2d04e4a435ea9f9ef521018178af912dae299a1"
+  },
+  "artifacts": {
+    "runtime-update.json": "544747d1a0640579f00a58a1572a741e3c51d20caea490f196f3ae50dfc44e14",
+    "runtime-update-manifest.json": "9f3d94d4f4c66e6e54c7862cd4fa141a567dd6976764a722e7cb8d33a1a98d9e",
+    "runtime-update.sha256": "4f90365e0a0c860147d07caedaa89164d1553c4b8393cecad0a490792963c822",
+    "deploy-cloud-update.py": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408"
+  },
+  "runtimeFiles": 158,
+  "migration": {
+    "name": "0045_context_read_indexes.sql",
+    "kind": "three additive covering/expiry indexes; no row or authority changes",
+    "requiresFullBackupAndRehearsal": true,
+    "olderCodeCompatible": true
+  },
+  "checks": {
+    "corePassed": 551,
+    "coreFailed": 0,
+    "coreSkipped": 0,
+    "independentFocusedPassed": 53,
+    "deploymentPassed": 54,
+    "deploymentSkipped": 1,
+    "finalExpiryPassed": 4,
+    "benchmarkHarnessPassed": 13,
+    "review": "No blockers; full migration deployment required."
+  },
+  "fixturePerformance": {
+    "statusQueryBeforeP50Ms": 9.06,
+    "statusQueryAfterP50Ms": 0.16,
+    "statsQueryBeforeP50Ms": 6.9,
+    "statsQueryAfterP50Ms": 0.037,
+    "scope": "Synthetic warm-cache measurement; not production latency."
+  },
+  "preserved": [
+    "SQLite FULL durability",
+    "JTI replay/grants/tokens/quotas remain durable",
+    "Post-read revision/expiry and source-authority fences",
+    "Full byte/hash validation and source exclusion",
+    "Background cleanup of both archive copies"
+  ],
+  "limits": [
+    "The worker still maintains a separate archive copy; cleanup was not disabled.",
+    "Native package, accounts and saved permissions unchanged.",
+    "No paid infrastructure changes.",
+    "Real Claude synthesis did not complete; unknown case not run; correction case never reached tools.",
+    "Search/read tool calls still take about 26-44 seconds each in the real-host benchmark.",
+    "Production latency and default-host invitation routing remain open gates.",
+    "Live benchmarks are recorded, but cold-disk improvement and complete real-model success are not established."
+  ],
+  "deployed": {
+    "release": "20261026-read-performance",
+    "previous": "20261026-public-assets",
+    "migration0045Sha256": "dd4f49989252db0cd6bb6d905660fe47838719baaac6d8252cfa0c1a2354c009",
+    "evidence": "context-read-performance-live-evidence.json",
+    "rolloutResultJson": "Retrieved and verified; see deploymentReceipt and live evidence."
+  },
+  "live": {
+    "publicSmoke": "passed (31 assets 200, protocols, desktop and phone sign-in render)",
+    "sqlStatusQuery": {
+      "beforeSeconds": [
+        0.2198,
+        0.0301,
+        0.2184
+      ],
+      "afterSeconds": [
+        0.0094,
+        0.0077,
+        0.0069
+      ],
+      "resultCount": 4265,
+      "planBefore": "full scans",
+      "planAfter": "covering indexes cp_cloud_sources_owner_synced, cp_context_chunks_owner_synced"
+    },
+    "healthzSeconds": [
+      4.237,
+      4.12,
+      2.203
+    ],
+    "publicSmokeSlowest": {
+      "/healthz": 15.346,
+      "/.well-known/oauth-authorization-server": 5.65,
+      "/.well-known/agent-configuration": 4.773,
+      "/mcp unauthenticated 401": 3.27
+    },
+    "conclusion": "The actual SQL improved; overall requests remain slow. Not an all-done or seamless claim."
+  },
+  "nativeBenchmark": {
+    "file": "context-read-native-benchmark.json",
+    "kind": "real installed hosts, real owner archive; not default-host routing",
+    "passed": 1,
+    "needsReview": 2,
+    "notStarted": 1,
+    "complete": false,
+    "cases": {
+      "claude-synthesis": "review: three searches took 28-30s each; harness stopped the run when the model selected list_shared_context outside the approved set; no final answer",
+      "claude-unknown": "not run",
+      "codex-trust": "passed (126.33s; search plus two source reads; latest date; quoted instruction not adopted)",
+      "codex-correction": "failed before tools: provider reported model at capacity"
+    }
+  },
+  "deploymentReceipt": {
+    "state": "passed",
+    "release": "20261026-read-performance",
+    "filesVerified": 158,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "0045 indexes; verified backup and rehearsal",
+    "previous": "20261026-public-assets",
+    "currentRelease": "20261026-read-performance",
+    "servicesNow": [
+      "active",
+      "active",
+      "active"
+    ],
+    "backupExists": true,
+    "deployLogSha256": "db21a0b0d52d01fd2f49b7be126ea75b1f5d6e15c9f16ba8b34ef713a4830a67"
+  }
+}

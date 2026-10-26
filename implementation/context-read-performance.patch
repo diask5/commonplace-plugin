@@ -1,0 +1,451 @@
+diff --git a/apps/commonplace-account/drizzle/0045_context_read_indexes.sql b/apps/commonplace-account/drizzle/0045_context_read_indexes.sql
+new file mode 100644
+index 0000000..fcada75
+--- /dev/null
++++ b/apps/commonplace-account/drizzle/0045_context_read_indexes.sql
+@@ -0,0 +1,4 @@
++-- Covering read indexes for status/stats scans. Additive; no schema semantics change.
++CREATE INDEX IF NOT EXISTS cp_cloud_sources_owner_synced ON cp_cloud_sources(owner,device,source_key,synced_at);
++CREATE INDEX IF NOT EXISTS cp_context_chunks_owner_synced ON cp_context_chunks(owner,synced_at);
++CREATE INDEX IF NOT EXISTS cp_agent_auth_store_expires ON cp_agent_auth_store(expires) WHERE expires>0;
+diff --git a/apps/commonplace-account/server/archive-tools.mjs b/apps/commonplace-account/server/archive-tools.mjs
+index c7caa53..2d71e40 100644
+--- a/apps/commonplace-account/server/archive-tools.mjs
++++ b/apps/commonplace-account/server/archive-tools.mjs
+@@ -3,7 +3,6 @@ import {constants} from 'node:fs';
+ import {createHash} from 'node:crypto';
+ import {pathToFileURL} from 'node:url';
+ import path from 'node:path';
+-import {createMcpAdapter,createContextResources,contextDocumentUri} from './mcp-adapter.mjs';
+ import {filters,filterDocuments,searchTerms,rankedDocuments} from './archive-index.mjs';
+ const object=properties=>({type:'object',properties,additionalProperties:false});
+ const integer={type:'integer',minimum:0};
+@@ -107,6 +106,8 @@ export class ArchiveTools {
+   }
+ }
+ export async function serveArchive(directory,receiptFile,{input=process.stdin,output=process.stdout}={}){
++  // Loaded here because the archive worker imports this module but never serves MCP.
++  const {createMcpAdapter,createContextResources,contextDocumentUri}=await import('./mcp-adapter.mjs');
+   const archive=await ArchiveTools.open(directory,receiptFile);
+   const resources=createContextResources({call:(name,args)=>archive.call(name,args),scope:async()=>archive.manifest.owner});
+   return createMcpAdapter({info:{name:'meet-proxy-archive',version:'1.1.0'},
+diff --git a/apps/commonplace-account/server/cloud-archive.mjs b/apps/commonplace-account/server/cloud-archive.mjs
+index b18eeec..47fa41b 100644
+--- a/apps/commonplace-account/server/cloud-archive.mjs
++++ b/apps/commonplace-account/server/cloud-archive.mjs
+@@ -78,9 +78,13 @@ export class CloudArchive {
+         sources[section.id]={digest:checksum,characters:body.length,capturedAt:section.captured_at,syncedAt:section.synced_at,...(section.reference?{reference:section.reference}:{})};
+         let entry=docs.get(doc.id);if(!entry){entry={...doc,sections:[],characters:0};docs.set(doc.id,entry);}
+         entry.sections.push({id:section.id,position});entry.characters+=body.length;entry.updatedAt=Math.max(entry.updatedAt||0,section.synced_at||0);entry.capturedAt=Math.max(entry.capturedAt||0,section.captured_at||0);
+-        if(previous[section.id]?.digest===checksum){try{await link(path.join(prior.directory,'sections',section.id+'.txt'),filename);}catch(e){if(e.code!=='ENOENT')throw e;await writeFile(filename,body,{mode:0o444});}}
+-        else await writeFile(filename,body,{mode:0o444});
+-        await chmod(filename,0o444);
++        let linked=false;
++        if(previous[section.id]?.digest===checksum){try{await link(path.join(prior.directory,'sections',section.id+'.txt'),filename);linked=true;}catch(e){if(e.code!=='ENOENT')throw e;}}
++        // A hard link shares its inode, so only touch metadata when the mode is
++        // wrong. Fresh files always get an explicit chmod: the process umask can
++        // strip bits from the writeFile mode.
++        if(linked){const stat=await lstat(filename);if(!stat.isFile()){await rm(filename,{force:true});linked=false;}else if((stat.mode&0o7777)!==0o444)await chmod(filename,0o444);}
++        if(!linked){await writeFile(filename,body,{mode:0o444});await chmod(filename,0o444);}
+       };
+       await forEachFile(archiveSections(db,owner,{now:observedAt}),({doc,section,position})=>add(doc,section,position));
+       const network=new WorkspaceNetwork(db,{now:()=>observedAt});
+@@ -125,7 +129,23 @@ export class CloudArchive {
+     // Pin before another reconciliation can retire this generation.
+     this.pins.set(snapshot.directory,(this.pins.get(snapshot.directory)||0)+1);
+     let released=false;
+-    return {...snapshot,release:async()=>{if(released)return;released=true;const count=this.pins.get(snapshot.directory)-1;if(count)this.pins.set(snapshot.directory,count);else this.pins.delete(snapshot.directory);const current=await this.current(owner);if(current)await this.collect(owner,current.directory);}};
++    return {...snapshot,release:async()=>{if(released)return;released=true;const count=this.pins.get(snapshot.directory)-1;if(count)this.pins.set(snapshot.directory,count);else this.pins.delete(snapshot.directory);await this.collectAfterRelease(owner,snapshot.directory);}};
++  }
++  // Reads only the ~60-byte pointer. Nothing is deleted unless it names a
++  // well-formed generation that is a real directory inside the owner's root.
++  async pointerDirectory(owner){
++    const root=path.join(this.directory,ownerId(owner));
++    try{
++      const pointer=JSON.parse(await readFile(path.join(root,'current.json'),'utf8'));
++      if(!generation(pointer?.generation)||pointer.revision!==Number(pointer.generation.match(/^r(\d+)/)[1]))return null;
++      if((await lstat(root)).isSymbolicLink())return null;
++      const directory=path.join(root,pointer.generation),stat=await lstat(directory);
++      return stat.isDirectory()&&!stat.isSymbolicLink()?directory:null;
++    }catch{return null;}
++  }
++  async collectAfterRelease(owner,released){
++    const current=await this.pointerDirectory(owner);
++    if(current&&current!==released)await this.collect(owner,current);
+   }
+   async collect(owner,current){
+     const root=path.join(this.directory,ownerId(owner));
+diff --git a/apps/commonplace-account/server/shared-context.mjs b/apps/commonplace-account/server/shared-context.mjs
+index 675ac3b..d44e695 100644
+--- a/apps/commonplace-account/server/shared-context.mjs
++++ b/apps/commonplace-account/server/shared-context.mjs
+@@ -83,7 +83,7 @@ async function readContext(service,owner,method,input){
+  // A published snapshot at the current revision is the fast path. Otherwise a
+  // recent change must not make search/list wait for a full rebuild: answer from
+  // the canonical database and refresh the snapshot in the background.
+- if((method==='archive-search'||method==='archive-list')&&!snapshotIsCurrent(service,archive,owner)){
++ if((method==='archive-search'||method==='archive-list')&&!await snapshotIsCurrent(service,archive,owner)){
+   const live=await liveRead(service,archive,owner,method,input);
+   if(live)return live;
+  }
+@@ -107,10 +107,15 @@ async function readContext(service,owner,method,input){
+   throw error;
+  }finally{await snapshot.release();}
+ }
+-function snapshotIsCurrent(service,archive,owner){
++// The web and worker processes can publish into different directories while
++// sharing cp_cloud_archive_state, so the shared published flag says nothing
++// about this process's snapshot. Trust only the local current pointer.
++async function snapshotIsCurrent(service,archive,owner){
+  if(archive.locks.has(owner))return false;
+- const state=service.db.sqlite.prepare('SELECT revision,published_revision,expires_at FROM cp_cloud_archive_state WHERE owner=?').get(owner);
+- return !!state&&state.published_revision===state.revision&&(!state.expires_at||state.expires_at>Date.now());
++ const revision=service.db.sqlite.prepare('SELECT revision FROM cp_cloud_archive_state WHERE owner=?').get(owner)?.revision;
++ if(revision===undefined)return false;
++ const current=await archive.current(owner).catch(()=>null);
++ return !!current&&!archive.locks.has(owner)&&current.manifest.revision===revision&&(!current.manifest.expiresAt||current.manifest.expiresAt>Date.now());
+ }
+ // Each live read holds the owner's text in memory (measured ~0.5 GB RSS for a 30 MB archive). Bound simultaneous workers per database.
+ const LIVE_CONCURRENCY=2,LIVE_WAITING=8;
+diff --git a/package.json b/package.json
+index 1130f54..b2e5490 100644
+--- a/package.json
++++ b/package.json
+@@ -7,10 +7,10 @@
+   },
+   "scripts": {
+     "start": "node scripts/relay.mjs",
+-    "test": "node --test tests/agent-network.test.mjs apps/commonplace-account/tests/*.test.mjs apps/commonplace/tests/person-inbox.test.mjs apps/commonplace/tests/session-invitations.test.mjs apps/commonplace/tests/chat-wait.test.mjs apps/commonplace/tests/account-origin.test.mjs apps/commonplace/tests/delegation-client.test.mjs tests/relay.test.mjs tests/delegation-http.test.mjs tests/production-*.test.mjs tests/mailbox-*.test.mjs tests/cloud-*.test.mjs tests/context-mirror.test.mjs tests/conductor-history.test.mjs tests/people-invitations.test.mjs tests/chat-setup.test.mjs tests/codex-host-context.test.mjs tests/local-environment.test.mjs tests/mcp-*.test.mjs tests/agent-connections.test.mjs tests/policy-context.test.mjs tests/space-context*.test.mjs tests/context-setup.test.mjs tests/context-setup-request.test.mjs tests/contact-delivery.test.mjs tests/personal-assistant-setup.test.mjs tests/seamless-routing.test.mjs tests/seamless-collection.test.mjs tests/seamless-retrieval.test.mjs tests/agent-auth-rate-storage.test.mjs tests/archive-document-reuse.test.mjs",
++    "test": "node --test tests/agent-network.test.mjs apps/commonplace-account/tests/*.test.mjs apps/commonplace/tests/person-inbox.test.mjs apps/commonplace/tests/session-invitations.test.mjs apps/commonplace/tests/chat-wait.test.mjs apps/commonplace/tests/account-origin.test.mjs apps/commonplace/tests/delegation-client.test.mjs tests/relay.test.mjs tests/delegation-http.test.mjs tests/production-*.test.mjs tests/mailbox-*.test.mjs tests/cloud-*.test.mjs tests/context-mirror.test.mjs tests/conductor-history.test.mjs tests/people-invitations.test.mjs tests/chat-setup.test.mjs tests/codex-host-context.test.mjs tests/local-environment.test.mjs tests/mcp-*.test.mjs tests/agent-connections.test.mjs tests/policy-context.test.mjs tests/space-context*.test.mjs tests/context-setup.test.mjs tests/context-setup-request.test.mjs tests/contact-delivery.test.mjs tests/personal-assistant-setup.test.mjs tests/seamless-routing.test.mjs tests/seamless-collection.test.mjs tests/seamless-retrieval.test.mjs tests/agent-auth-rate-storage.test.mjs tests/archive-document-reuse.test.mjs tests/context-read-indexes.test.mjs tests/archive-io-hotpath.test.mjs tests/archive-coordination.test.mjs",
+     "test:backend": "node --test apps/commonplace-account/tests/*.test.mjs",
+     "test:package": "node --test tests/packaging.test.mjs",
+-    "test:deployment": "python3 -m unittest discover -s tests -p 'test_deployment.py' -v",
++    "test:deployment": "python3 -m unittest tests.test_deployment tests.test_public_assets_deployment tests.test_runtime_public_assets",
+     "test:plugin": "node scripts/smoke-plugin.mjs",
+     "build:plugin": "npm run build:mcp && python3 scripts/build-plugin.py",
+     "build:test-kit": "python3 scripts/build-test-kit.py",
+diff --git a/tests/archive-coordination.test.mjs b/tests/archive-coordination.test.mjs
+new file mode 100644
+index 0000000..2eff0ad
+--- /dev/null
++++ b/tests/archive-coordination.test.mjs
+@@ -0,0 +1,77 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {mkdtemp,rm,writeFile,chmod} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {openDatabase} from '../apps/commonplace-account/server/sqlite.mjs';
++import {AccountService} from '../apps/commonplace-account/server/service.mjs';
++import {CloudWork} from '../apps/commonplace-account/server/cloud-work.mjs';
++import {CloudArchive} from '../apps/commonplace-account/server/cloud-archive.mjs';
++import {ContextStore} from '../apps/commonplace-account/server/context-store.mjs';
++import {sharedContext,closeSharedContext} from '../apps/commonplace-account/server/shared-context.mjs';
++// The web process builds into COMMONPLACE_CONTEXT_DIR; the worker process builds
++// elsewhere but updates the same published_revision flag.
++async function fixture(t){
++  const dir=await mkdtemp(path.join(tmpdir(),'archive-coordination-')),previous=process.env.COMMONPLACE_CONTEXT_DIR;
++  process.env.COMMONPLACE_CONTEXT_DIR=path.join(dir,'web');
++  const db=openDatabase(path.join(dir,'db.sqlite'),{migrations:path.resolve('apps/commonplace-account/drizzle')});
++  t.after(async()=>{await closeSharedContext({db});db.close();if(previous===undefined)delete process.env.COMMONPLACE_CONTEXT_DIR;else process.env.COMMONPLACE_CONTEXT_DIR=previous;await rm(dir,{recursive:true,force:true});});
++  const service=new AccountService(db,'https://relay.example'),owner=(await service.profile({userId:'owner',email:'owner@example.test'})).id;
++  new ContextStore(service).upsert(owner,{conversation:{id:'conversation-one',title:'Orchid notes',capturedAt:Date.now()},messages:[{id:'message-one',role:'user',text:'Orchid coordination fact',position:0,capturedAt:Date.now()}]});
++  const worker=new CloudArchive(new CloudWork(service),{directory:path.join(dir,'worker')});
++  return {dir,db,service,owner,worker};
++}
++function countPrepares(t){
++  const original=CloudArchive.prototype.prepare,calls=[];
++  CloudArchive.prototype.prepare=function(...args){calls.push(args);return original.apply(this,args);};
++  t.after(()=>{CloudArchive.prototype.prepare=original;});
++  return calls;
++}
++const search=f=>sharedContext(f.service,f.owner,'archive-search',{query:'Orchid'});
++
++test('a snapshot published only by the worker directory does not make web search wait for a rebuild',async t=>{
++  const f=await fixture(t);
++  await (await f.worker.prepare(f.owner)).release();
++  const state=f.db.sqlite.prepare('SELECT revision,published_revision FROM cp_cloud_archive_state WHERE owner=?').get(f.owner);
++  assert.equal(state.published_revision,state.revision);
++  const prepares=countPrepares(t);
++  const result=await search(f);
++  assert.equal(result.results.length,1);
++  assert.equal(prepares.length,0,'live read, not a synchronous snapshot build');
++});
++
++test('a current local snapshot is used even when the shared published flag disagrees',async t=>{
++  const f=await fixture(t);
++  const web=new CloudArchive(new CloudWork(f.service),{directory:process.env.COMMONPLACE_CONTEXT_DIR});
++  await (await web.prepare(f.owner)).release();
++  f.db.sqlite.prepare('UPDATE cp_cloud_archive_state SET published_revision=0 WHERE owner=?').run(f.owner);
++  const prepares=countPrepares(t);
++  assert.equal((await search(f)).results.length,1);
++  assert.equal(prepares.length,1);
++  assert.deepEqual(prepares[0][1],{reuseCurrent:true});
++});
++
++test('a local snapshot behind the revision is not trusted',async t=>{
++  const f=await fixture(t);
++  const web=new CloudArchive(new CloudWork(f.service),{directory:process.env.COMMONPLACE_CONTEXT_DIR});
++  await (await web.prepare(f.owner)).release();
++  new ContextStore(f.service).upsert(f.owner,{conversation:{id:'conversation-two',title:'Second',capturedAt:Date.now()},messages:[{id:'message-two',role:'user',text:'Orchid later fact',position:0,capturedAt:Date.now()}]});
++  const stale=countPrepares(t);
++  const result=await search(f);
++  assert.equal(result.results.length,2);
++  assert.equal(stale.length,0,'stale local snapshot falls back to the live read');
++});
++
++// Expiry is checked locally even if the other publisher still reports ready.
++test('an expired local manifest cannot select the snapshot path',async t=>{
++  const f=await fixture(t);
++  const web=new CloudArchive(new CloudWork(f.service),{directory:process.env.COMMONPLACE_CONTEXT_DIR});
++  const snapshot=await web.prepare(f.owner);await snapshot.release();
++  const manifestFile=path.join(snapshot.directory,'manifest.json');
++  await chmod(manifestFile,0o644);
++  await writeFile(manifestFile,JSON.stringify({...snapshot.manifest,expiresAt:Date.now()-1}));
++  await chmod(manifestFile,0o444);
++  const prepares=countPrepares(t),result=await search(f);
++  assert.equal(result.results.length,1);
++  assert.equal(prepares.length,0,'expired manifest routes to authoritative live data');
++});
+diff --git a/tests/archive-io-hotpath.test.mjs b/tests/archive-io-hotpath.test.mjs
+new file mode 100644
+index 0000000..a46d3b0
+--- /dev/null
++++ b/tests/archive-io-hotpath.test.mjs
+@@ -0,0 +1,133 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {randomBytes,createHash} from 'node:crypto';
++import {mkdtemp,rm,readFile,writeFile,readdir,lstat,stat,chmod,symlink,mkdir} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import {PassThrough} from 'node:stream';
++import path from 'node:path';
++import {openDatabase} from '../apps/commonplace-account/server/sqlite.mjs';
++import {AccountService} from '../apps/commonplace-account/server/service.mjs';
++import {CloudWork} from '../apps/commonplace-account/server/cloud-work.mjs';
++import {CloudArchive} from '../apps/commonplace-account/server/cloud-archive.mjs';
++import {ArchiveTools,serveArchive} from '../apps/commonplace-account/server/archive-tools.mjs';
++const uid=()=>randomBytes(12).toString('hex'),hash=s=>createHash('sha256').update(s).digest('hex');
++async function fixture(t){
++  const dir=await mkdtemp(path.join(tmpdir(),'archive-io-')),db=openDatabase(path.join(dir,'db.sqlite'),{migrations:path.resolve('apps/commonplace-account/drizzle')});
++  t.after(async()=>{db.close();await rm(dir,{recursive:true,force:true});});
++  const service=new AccountService(db,'https://relay.example'),owner=(await service.profile({userId:'owner',email:'owner@example.test'})).id;
++  const work=new CloudWork(service),archive=new CloudArchive(work,{directory:path.join(dir,'archives')}),device=uid();
++  work.run('INSERT INTO cp_devices(id,owner,client,name,scope,created_at) VALUES(?,?,?,?,?,?)',device,owner,'test','Mac','commonplace',Date.now());
++  const native=(key,text,revision=1)=>work.upload(owner,{id:device},{key:hash(key),text,title:'Codex chats: '+key,revision,capturedAt:Date.now()-1000});
++  const root=path.join(dir,'archives',owner);
++  const generations=async()=>(await readdir(root)).filter(n=>/^r\d+-/.test(n)).sort();
++  return {dir,db,work,owner,archive,native,root,generations};
++}
++const sectionFile=(snapshot,id)=>path.join(snapshot.directory,'sections',id+'.txt');
++const idFor=(snapshot,title)=>snapshot.manifest.documents.find(d=>d.title.includes(title)).sections[0];
++
++test('reused sections keep their inode and a writable prior section is made 0444 again',async t=>{
++  const f=await fixture(t);f.native('keep','Keep body '.repeat(50));f.native('writable','Writable body '.repeat(50));
++  const a=await f.archive.prepare(f.owner),keep=idFor(a,'keep'),writable=idFor(a,'writable');
++  const inode=(await stat(sectionFile(a,keep))).ino,writableInode=(await stat(sectionFile(a,writable))).ino;
++  await chmod(sectionFile(a,writable),0o644);
++  f.native('other','Another source');
++  const b=await f.archive.prepare(f.owner);assert.notEqual(b.directory,a.directory);
++  assert.equal((await stat(sectionFile(b,keep))).ino,inode,'clean unchanged section is hard-linked');
++  assert.equal((await stat(sectionFile(b,writable))).ino,writableInode,'writable section is still linked, then fixed');
++  for(const id of [keep,writable]){const s=await lstat(sectionFile(b,id));assert.ok(s.isFile());assert.equal(s.mode&0o7777,0o444,id);}
++  for(const [id,source] of Object.entries(b.manifest.sources))assert.equal(hash(await readFile(sectionFile(b,id))),source.digest,'every byte matches its manifest digest');
++  await a.release();await b.release();
++});
++
++test('a corrupted prior section prevents any reuse and is rewritten from storage',async t=>{
++  const f=await fixture(t);f.native('keep','Keep body '.repeat(50));f.native('corrupt','Corrupt body '.repeat(50));
++  const a=await f.archive.prepare(f.owner),keep=idFor(a,'keep'),corrupt=idFor(a,'corrupt');
++  const inode=(await stat(sectionFile(a,keep))).ino;
++  await chmod(sectionFile(a,corrupt),0o644);await writeFile(sectionFile(a,corrupt),'tampered');await chmod(sectionFile(a,corrupt),0o444);
++  f.native('other','Another source');
++  const b=await f.archive.prepare(f.owner);
++  assert.notEqual((await stat(sectionFile(b,keep))).ino,inode,'untrusted prior generation is not linked');
++  for(const [id,source] of Object.entries(b.manifest.sources)){assert.equal(hash(await readFile(sectionFile(b,id))),source.digest);assert.equal((await lstat(sectionFile(b,id))).mode&0o7777,0o444);}
++  assert.notEqual(await readFile(sectionFile(b,corrupt),'utf8'),'tampered');
++  await a.release();await b.release();
++});
++
++test('freshly written sections are 0444 even under a restrictive umask and a writable linked source is fixed',async t=>{
++  const f=await fixture(t);f.native('fresh','Fresh '.repeat(40));
++  const previous=process.umask(0o277);let snapshot;
++  try{snapshot=await f.archive.prepare(f.owner);}finally{process.umask(previous);}
++  for(const id of Object.keys(snapshot.manifest.sources))assert.equal((await lstat(sectionFile(snapshot,id))).mode&0o7777,0o444);
++  await snapshot.release();
++});
++
++test('release collects a retired generation only after its last pin and never removes the current or another pinned generation',async t=>{
++  const f=await fixture(t);f.native('one','First revision');
++  const a1=await f.archive.prepare(f.owner),a2=await f.archive.prepare(f.owner,{reuseCurrent:true});assert.equal(a1.directory,a2.directory);
++  f.native('two','Second revision');
++  const b=await f.archive.prepare(f.owner);assert.notEqual(b.directory,a1.directory);
++  assert.equal((await f.generations()).length,2,'pinned older generation survives refresh');
++  await a1.release();assert.equal((await f.generations()).length,2,'second pin on the old generation remains');
++  f.native('three','Third revision');
++  const c=await f.archive.prepare(f.owner);
++  await b.release();await b.release();
++  assert.deepEqual(await f.generations(),[path.basename(a1.directory),path.basename(c.directory)].sort(),'unpinned b is collected, pinned a and current c stay');
++  const before=await f.generations();await c.release();assert.deepEqual(await f.generations(),before,'releasing the current generation deletes nothing');
++  await a2.release();assert.deepEqual(await f.generations(),[path.basename(c.directory)]);
++  const text=await readFile(sectionFile(c,Object.keys(c.manifest.sources)[0]),'utf8');assert.ok(text.length>0);
++});
++
++test('an invalid or unsafe current pointer makes release delete nothing and never throw',async t=>{
++  const f=await fixture(t);f.native('one','First revision');
++  const outside=path.join(f.dir,'outside');await mkdir(outside);await writeFile(path.join(outside,'keep.txt'),'x');
++  const pointers=[
++    '{not json',
++    JSON.stringify({generation:'../outside',revision:1}),
++    JSON.stringify({generation:'r1-0000000000000000',revision:99}),
++    JSON.stringify({generation:'r9-0000000000000000',revision:9}),
++    'SYMLINK',
++  ];
++  for(const [i,pointer] of pointers.entries()){
++    const a=await f.archive.prepare(f.owner);f.native('bump'+i,'More '+i);
++    const b=await f.archive.prepare(f.owner);
++    const link=path.join(f.root,'r99-aaaaaaaaaaaaaaaa');
++    if(pointer==='SYMLINK'){await symlink(outside,link);await writeFile(path.join(f.root,'current.json'),JSON.stringify({generation:'r99-aaaaaaaaaaaaaaaa',revision:99}));}
++    else await writeFile(path.join(f.root,'current.json'),pointer);
++    const before=await f.generations();
++    await a.release();
++    assert.deepEqual(await f.generations(),before,'pointer '+i+' deleted nothing');
++    assert.equal(await readFile(path.join(outside,'keep.txt'),'utf8'),'x');
++    await rm(link,{force:true});
++    await b.release();
++    await f.archive.refresh(f.owner);
++  }
++});
++
++test('serveArchive speaks MCP after the lazy adapter import and returns exactly the direct tool output',async t=>{
++  const f=await fixture(t);f.native('alpha','The lazy loaded archive says pineapple.');f.native('beta','Second document without that word.');
++  const snapshot=await f.archive.prepare(f.owner),receipt=path.join(f.dir,'receipt'),direct=await ArchiveTools.open(snapshot.directory,path.join(f.dir,'direct-receipt'));
++  const input=new PassThrough(),output=new PassThrough();let out='';const done=new Promise(resolve=>output.on('data',b=>{out+=b;if(out.trim().split('\n').length===5){input.end();resolve();}}));
++  const doc=snapshot.manifest.documents.find(d=>d.title.includes('alpha')).id;
++  const served=serveArchive(snapshot.directory,receipt,{input,output});
++  const requests=[{id:1,method:'initialize',params:{protocolVersion:'2024-11-05',capabilities:{},clientInfo:{name:'test',version:'1'}}},{id:2,method:'tools/list'},
++    {id:3,method:'tools/call',params:{name:'archive_search',arguments:{query:'pineapple'}}},{id:4,method:'tools/call',params:{name:'archive_read',arguments:{documentId:doc}}},{id:5,method:'tools/call',params:{name:'archive_read',arguments:{documentId:'nope'}}}];
++  await served;input.write(requests.map(r=>JSON.stringify({jsonrpc:'2.0',...r})).join('\n')+'\n');
++  await Promise.race([done,new Promise((_,reject)=>setTimeout(()=>reject(new Error('no MCP responses: '+out)),5000).unref())]);
++  const responses=out.trim().split('\n').map(JSON.parse).sort((a,b)=>a.id-b.id);assert.equal(responses.length,5);
++  assert.equal(responses[1].result.tools.length,3);
++  const strip=v=>{const copy=JSON.parse(JSON.stringify(v));delete copy.resourceUri;for(const r of copy.results||[])delete r.resourceUri;return copy;};
++  const search=JSON.parse(responses[2].result.content[0].text),read=JSON.parse(responses[3].result.content[0].text);
++  assert.deepEqual(strip(search),strip(await direct.call('archive_search',{query:'pineapple'})));
++  assert.deepEqual(strip(read),strip(await direct.call('archive_read',{documentId:doc})));
++  assert.equal(search.results.length,1);assert.ok(search.results[0].resourceUri&&read.resourceUri);assert.match(read.text,/pineapple/);
++  assert.equal(responses[4].result.isError,true);
++  assert.equal(await readFile(receipt,'utf8').then(s=>s.trim().split('\n').length>0),true,'receipts still recorded');
++  await snapshot.release();
++});
++
++test('a tampered section is still rejected on read after the hot-path changes',async t=>{
++  const f=await fixture(t);f.native('alpha','Authentic body');
++  const snapshot=await f.archive.prepare(f.owner),id=idFor(snapshot,'alpha');
++  await chmod(sectionFile(snapshot,id),0o644);await writeFile(sectionFile(snapshot,id),'Authentic bodY');
++  const tool=await ArchiveTools.open(snapshot.directory);
++  await assert.rejects(tool.section(id),/integrity/);await snapshot.release();
++});
+diff --git a/tests/context-read-indexes.test.mjs b/tests/context-read-indexes.test.mjs
+new file mode 100644
+index 0000000..cc2042f
+--- /dev/null
++++ b/tests/context-read-indexes.test.mjs
+@@ -0,0 +1,97 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { mkdtemp, rm } from 'node:fs/promises';
++import { tmpdir } from 'node:os';
++import path from 'node:path';
++import { openDatabase } from '../apps/commonplace-account/server/sqlite.mjs';
++import { AccountService } from '../apps/commonplace-account/server/service.mjs';
++import { CloudWork } from '../apps/commonplace-account/server/cloud-work.mjs';
++import { legacyVisibleSql } from '../apps/commonplace-account/server/unified-context.mjs';
++
++const migrations = path.resolve('apps/commonplace-account/drizzle');
++const savedSql = 'SELECT count(*) AS count,max(synced_at) AS lastSyncedAt FROM (SELECT synced_at FROM cp_cloud_sources s WHERE owner=? AND ' + legacyVisibleSql + ' UNION ALL SELECT synced_at FROM cp_context_chunks WHERE owner=?)';
++const plan = (db, sql, ...args) => db.sqlite.prepare('EXPLAIN QUERY PLAN ' + sql).all(...args).map(r => r.detail).join('\n');
++
++async function fixture(t) {
++  const dir = await mkdtemp(path.join(tmpdir(), 'read-indexes-'));
++  const file = path.join(dir, 'db.sqlite');
++  const db = openDatabase(file, { migrations });
++  t.after(async () => { try { db.close(); } catch {} await rm(dir, { recursive: true, force: true }); });
++  const service = new AccountService(db, 'https://relay.example');
++  const owner = (await service.profile({ userId: 'firebase:owner', email: 'owner@example.test' })).id;
++  const other = (await service.profile({ userId: 'firebase:other', email: 'other@example.test' })).id;
++  return { db, file, service, owner, other, work: new CloudWork(service, { now: () => Date.now() }) };
++}
++
++function seed(db, owner, other) {
++  const s = db.sqlite;
++  for (const [id, who] of [['dev-a', owner], ['dev-b', other], ['dev-r', owner]]) {
++    s.prepare('INSERT INTO cp_devices(id,owner,client,name,scope,created_at) VALUES(?,?,?,?,?,?)').run(id, who, 'test', id, 'commonplace:read', 1);
++  }
++  s.prepare('UPDATE cp_devices SET revoked=1 WHERE id=?').run('dev-r');
++  const src = s.prepare('INSERT INTO cp_cloud_sources(id,owner,device,source_key,revision,title,body,digest,captured_at,synced_at) VALUES(?,?,?,?,1,?,?,?,1,?)');
++  src.run('s1', owner, 'dev-a', 'k1', 't', 'body', 'd1', 100);
++  src.run('s2', owner, 'dev-a', 'k2:child', 't', 'body', 'd2', 300);
++  src.run('s3', owner, 'dev-a', 'k3', 't', 'body', 'd3', 900);
++  src.run('s4', other, 'dev-b', 'k1', 't', 'body', 'd4', 5000);
++  s.prepare("INSERT INTO cp_context_documents(id,owner,provider,external_id,title,source_url,captured_at,synced_at) VALUES('doc1',?,'chatgpt','x','d','',1,1)").run(owner);
++  s.prepare('INSERT INTO cp_context_chunks(id,document,owner,title,body,captured_at,synced_at) VALUES(?,?,?,?,?,1,?)').run('c1', 'doc1', owner, 't', 'b', 700);
++  const stream = s.prepare("INSERT INTO cp_context_streams(id,owner,provider,external_id,title,excluded,updated_at) VALUES(?,?,'codex',?,'t',?,1)");
++  const origin = s.prepare("INSERT INTO cp_context_origins(stream,device,source_key,captured_at,seen_at,state) VALUES(?,?,?,1,?,'current')");
++  stream.run('st-live', owner, 'e1', 0); origin.run('st-live', 'dev-a', 'a', 4000);
++  stream.run('st-excluded', owner, 'e2', 1); origin.run('st-excluded', 'dev-a', 'b', 8000);
++  stream.run('st-revoked', owner, 'e3', 0); origin.run('st-revoked', 'dev-r', 'c', 9000);
++}
++
++test('0045 is additive and creates the read indexes', async t => {
++  const { db } = await fixture(t);
++  const names = db.sqlite.prepare("SELECT name FROM sqlite_master WHERE type='index'").all().map(r => r.name);
++  for (const n of ['cp_cloud_sources_owner_synced', 'cp_context_chunks_owner_synced', 'cp_agent_auth_store_expires']) assert.ok(names.includes(n), n);
++  assert.ok(db.sqlite.prepare("SELECT 1 FROM cp_schema_migrations WHERE name='0045_context_read_indexes.sql'").get());
++});
++
++test('migration is idempotent across reopen and rerun', async t => {
++  const { db, file } = await fixture(t);
++  const before = db.sqlite.prepare("SELECT name,sql FROM sqlite_master WHERE type='index' ORDER BY name").all();
++  db.close();
++  const again = openDatabase(file, { migrations });
++  t.after(() => again.close());
++  assert.deepEqual(again.sqlite.prepare("SELECT name,sql FROM sqlite_master WHERE type='index' ORDER BY name").all(), before);
++  const sql = (await import('node:fs')).readFileSync(path.join(migrations, '0045_context_read_indexes.sql'), 'utf8');
++  again.sqlite.exec(sql);
++  assert.equal(again.sqlite.prepare("SELECT count(*) AS n FROM cp_schema_migrations WHERE name='0045_context_read_indexes.sql'").get().n, 1);
++});
++
++test('sourceStatus and stats queries use covering indexes, not table scans', async t => {
++  const { db, owner } = await fixture(t);
++  const p = plan(db, savedSql, owner, owner);
++  assert.match(p, /USING COVERING INDEX cp_cloud_sources_owner_synced/);
++  assert.match(p, /USING COVERING INDEX cp_context_chunks_owner_synced/);
++  assert.doesNotMatch(p, /SCAN s\b(?! USING)|SCAN cp_context_chunks(?! USING)/);
++  assert.match(plan(db, 'SELECT max(synced_at) AS at FROM cp_cloud_sources WHERE owner=?', owner), /COVERING INDEX cp_cloud_sources_owner_synced/);
++  assert.match(plan(db, 'DELETE FROM cp_agent_auth_store WHERE expires>0 AND expires<=?', 5), /cp_agent_auth_store_expires/);
++});
++
++test('sourceStatus results match unindexed evaluation for owner, exclusion and canonical streams', async t => {
++  const { db, work, owner, other } = await fixture(t);
++  seed(db, owner, other);
++  const s = db.sqlite;
++  const reference = who => s.prepare(savedSql.replace('FROM cp_cloud_sources s', 'FROM cp_cloud_sources s NOT INDEXED').replace('FROM cp_context_chunks WHERE', 'FROM cp_context_chunks NOT INDEXED WHERE')).get(who, who);
++  let got = work.sourceStatus(owner);
++  assert.equal(got.count, 3 + 1 + 1); // three sources, one chunk, one current canonical stream
++  assert.equal(got.canonicalConversations, 1);
++  assert.equal(got.lastSyncedAt, 4000); // excluded and revoked origins do not contribute
++  assert.equal(got.count - got.canonicalConversations, reference(owner).count);
++  assert.equal(reference(owner).lastSyncedAt, 900);
++  // A legacy alias hides k2 and its children from this owner only.
++  s.exec('PRAGMA foreign_keys=OFF');
++  s.prepare('INSERT INTO cp_context_legacy_aliases(owner,device,source_key,stream) VALUES(?,?,?,?)').run(owner, 'dev-a', 'k2', 'st-live');
++  s.exec('PRAGMA foreign_keys=ON');
++  got = work.sourceStatus(owner);
++  assert.equal(got.count, 2 + 1 + 1);
++  assert.equal(got.count - got.canonicalConversations, reference(owner).count);
++  const theirs = work.sourceStatus(other);
++  assert.equal(theirs.count, 1);
++  assert.equal(theirs.lastSyncedAt, 5000);
++  assert.equal(work.sourceStatus('nobody').count, 0);
++});

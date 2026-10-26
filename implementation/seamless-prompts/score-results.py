@@ -42,7 +42,7 @@ for case in plan['cases']:
     report['cases'].append({'id':case['id'],'host':case['host'],'state':'passed' if all(checks.values()) else 'review',
                             'checks':checks,'elapsedSeconds':result['elapsedSeconds'],
                             'tools':[c['name'] for c in calls],'final':sanitized,
-                            'evidenceSha256':result['evidenceSha256']})
+                            'evidenceSha256':result['evidenceSha256'],'visibleToolIntervals':result.get('visibleToolIntervals',[])})
 report['complete']=all(c['state'] not in {'pending','not-started'} for c in report['cases'])
 report['runFinished']=os.environ.get('MEET_PROXY_RUN_FINISHED')=='1'
 report['notStarted']=sum(c['state']=='not-started' for c in report['cases'])
