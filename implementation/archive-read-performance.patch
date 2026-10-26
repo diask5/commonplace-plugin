@@ -99,6 +99,38 @@ index e2774da..95e4cac 100644
    if(offset>text.length)throw invalid('Invalid file offset.');
    const limit=Math.min(FILE_SLICE,budget),slice=text.slice(offset,offset+limit);budget-=slice.length;
    files.push({path:request.path,offset,text:slice,nextOffset:offset+slice.length<text.length?offset+slice.length:null,totalCharacters:text.length,digest:request.path==='INDEX.md'?m.files?.['INDEX.md']||null:known.get(request.path).digest});
+diff --git a/scripts/deploy-context-compression.py b/scripts/deploy-context-compression.py
+new file mode 100644
+index 0000000..b692622
+--- /dev/null
++++ b/scripts/deploy-context-compression.py
+@@ -0,0 +1,26 @@
++#!/usr/bin/env python3
++from pathlib import Path
++import hashlib,json,subprocess
++paths={p.resolve() for directory in ['/etc/nginx/sites-enabled','/etc/nginx/conf.d'] for p in Path(directory).glob('*') if p.is_file()}
++needle='proxy_pass http://127.0.0.1:3000;'
++matches=[p for p in paths if needle in p.read_text()]
++assert len(matches)==1,'Expected one production proxy configuration'
++p=matches[0];before=p.read_bytes();text=before.decode()
++assert text.count(needle)==1,'Ambiguous production proxy'
++assert 'proxy_set_header Accept-Encoding' not in text,'Inspect existing encoding policy'
++after=text.replace(needle,'# Context responses must not use CPU-heavy default Brotli compression.\n        proxy_set_header Accept-Encoding gzip;\n        '+needle).encode()
++backup=Path('/var/lib/commonplace/rollouts/zero-knowledge-nginx-before.conf')
++backup.parent.mkdir(parents=True,exist_ok=True)
++assert not backup.exists(),'Backup already exists; inspect prior attempt'
++backup.write_bytes(before);backup.chmod(0o600)
++try:
++ p.write_bytes(after)
++ subprocess.run(['nginx','-t'],check=True,capture_output=True)
++ subprocess.run(['systemctl','reload','nginx'],check=True)
++except:
++ p.write_bytes(before)
++ subprocess.run(['nginx','-t'],check=True,capture_output=True)
++ subprocess.run(['systemctl','reload','nginx'],check=True)
++ raise
++print(json.dumps({'config':str(p),'beforeSha256':hashlib.sha256(before).hexdigest(),'sha256':hashlib.sha256(after).hexdigest(),'validated':True,'reloaded':True,'upstreamEncoding':'gzip'}))
++
 diff --git a/tests/cloud-archive.test.mjs b/tests/cloud-archive.test.mjs
 index 1a78b71..41f8e0e 100644
 --- a/tests/cloud-archive.test.mjs

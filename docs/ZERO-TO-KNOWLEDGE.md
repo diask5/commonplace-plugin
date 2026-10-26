@@ -1,66 +1,95 @@
 # Zero-to-knowledge verification
 
-The 26 October 2026 audit tests the path from an empty account to collected,
-searchable context, a local folder, and rule-gated sharing. Release 0.4.21 /
-runtime56 fixes a collector cursor bug found during the real Mac test. The relay
-also validates large archives with bounded parallel disk reads, retaining every
-integrity check instead of serially reading thousands of sections per request.
+**Production:** `20261026-archive-reads` at https://34.27.253.220/.
+**Native:** 0.4.21 / runtime56 installed and active on the owner's Mac.
 
-## Reproducible end-to-end journey
+The supported context pipeline works on the real account: a real Claude transcript
+was automatically collected and retrieved; all 293 files in its 34.7-million-character
+archive passed SHA-256 verification in the local folder. The later archive reached
+294 documents. The same account and server were preserved throughout the upgrade. A second message
+appended through the real native session also arrived automatically. It was observed
+within 310 seconds of the CLI finishing; this is an upper bound from periodic checks,
+not an instantaneous-sync guarantee. All 40 discovered local captures were complete
+at inspection, with no recorded parse errors.
 
-Run `npm run test:knowledge` in the implementation checkout. Set
-`COMMONPLACE_E2E_PLUGIN` to an extracted, verified plugin to exercise packaged
-native modules. Optional `ZERO_SCREENSHOTS` saves each browser stage.
+**One live approval gate remains:** a fresh Claude Code session loaded the MCP search tool,
+but Claude's noninteractive host denied `search_shared_context`. Its answer is not
+verified. The owner must approve the read-only search/read tools in Claude Code;
+no permission settings were changed and no substitute answer was supplied. See
+[the exact read permissions](NATIVE-READ-PERMISSIONS.md). Low-latency incremental
+collection also remains a performance target; the observed live delay is above.
 
-The test starts with zero profiles and an empty native installation. It exercises
-browser sign-in, the private setup handoff, Claude/Codex file collection, a child
-chat, complete long Unicode text, hidden-reasoning/credential filtering, search,
-paged MCP resources, byte-identical local files, appended messages, stale revisions,
-group creation, two-person invitation acceptance, rules, actual indexed candidate
-retrieval, approved excerpts, private audit, pause and exclusions.
+## What was tested
 
-Google identity, native host identity and classifier scores are explicit fixtures.
-They do not establish real Google, operating-system app launch or classifier
-accuracy. Signed HTTP, storage, indexing, browser behavior, and collection/mirror
-modules are exercised directly. A separate 33 MB first-install test interrupts
-file transfer, rejects partial publication, retries and reads every source to its
-last message. Existing corruption, symlink, account and revision checks remain.
+| Check | Evidence |
+| --- | --- |
+| Core backend/native protocols and privacy | 431/431 passed on final source |
+| Full browser suite | 127/127 passed; final setup checks 20/20 |
+| Original product lifecycle | 15/15 passed |
+| Archive and mirror regression | 27/27 passed, including 33 MB and interrupted transfer |
+| Packaged zero-account knowledge journey | Passed again against final relay source |
+| Packaged launcher and distribution integrity | 2/2 launcher; both aliases verified |
+| Packaged stdio and idle mailbox | Passed; host sockets and Google identities are fixtures |
+| Real Mac collection and local mirror | Full document hashes and real probe verified |
+| Fresh real assistant answer | Connected, but blocked by Claude tool approval |
 
-## Live checks and limits
+The zero-account journey uses the production browser UI and packaged native modules.
+It covers sign-in, the private setup handoff, five Claude/Codex/child-agent sources,
+complete long Unicode text, hidden-reasoning/credential filtering, search, paged MCP
+resources, identical local files, appended messages, stale revisions, group creation,
+two-person invitation acceptance, rules, actual indexed retrieval, approved excerpts,
+private audit, pause and exclusions.
 
-The real Mac account is `diaskyle10@gmail.com` on `https://34.27.253.220`.
-A real Claude CLI session created a harmless unique message; automatic collection
-made that exact message searchable in the account. Its archive contained 292
-documents and approximately 34.7 million characters. The initial local mirror
-failed intermittently with native transport timeouts. These failures are retained
-in the evidence, rather than counted as a pass.
+Google identity, native-host identity and classifier scores are fixtures in that
+journey. Signed HTTP, database, filesystem ingestion, indexing, UI, and sharing
+boundaries are real test components. Fresh real Google sign-in and every OS/app
+launch variant were not independently reverified in this audit. Codex Desktop is
+not installed on the tested Mac.
 
-Native 0.4.21 installation and production retesting are in progress; the machine
-verification record will be updated after actual receipts. Existing chats may
-still have an older MCP process loaded until their host reloads it.
+## Failures found and repaired
 
-“Full knowledge” means all currently supported, available visible histories and
-explicit imports. It does not mean arbitrary repository files, every web-only
-chat, binary attachments, or upstream MCP services. Offline devices cannot upload
-new text. Excluded sources stay excluded. Sharing still evaluates bounded matching
-candidates and can withhold allowed content; it is not a perfect classifier.
+1. Mixed-case transcript paths used locale sorting with a code-unit resume cursor.
+   The new regression failed before the fix; collection now uses one consistent order.
+2. Each archive download page revalidated thousands of unrelated sections. Current
+   authorized snapshots are reused for reads. Returned files and search indexes are
+   checked against their hashes; corruption fails closed and triggers repair. Full
+   reconciliation still validates everything, and revisions/expiry remain enforced.
+3. Production Brotli compression delayed large API responses enough to time out the
+   native transport and keep the old companion busy. The production proxy now requests
+   gzip upstream. Nginx validated and reloaded successfully. The mirror completed and
+   the native runtime then upgraded normally, without killing processes or changing
+   account, chat identity, or permissions.
 
-The original agent-centric product spec is superseded by the owner's context-only
-Spaces / My context direction. Legacy messaging tests protect compatibility; they
-are not a hosted-model requirement for context retrieval.
+The first parallel-I/O fix alone did not resolve live mirroring. Failed download and
+assistant attempts are retained in local evidence. No failed attempt is counted as
+an end-to-end pass. All 153 deployed runtime files were checked against the reviewed
+bundle; relay, worker and nginx services are active. No schema migration or backfill
+was needed. The nginx configuration backup and before/after hashes are retained.
 
-## Reproduction and release
+## Scope of “full knowledge”
 
-Apply `implementation/zero-to-knowledge.patch` nineteenth, after
-`sharing-walkthrough.patch`. Its manifest records exact changes. The full chain
-reproduces 152 source files. Browser screenshots and detailed logs are saved under
-`.context/zero-to-knowledge/`; summarized portable evidence is in
-`implementation/zero-to-knowledge-verification.json`.
+This means available, supported visible histories and explicit imports. It does not
+include arbitrary repository contents, every web-only chat, binary attachments or
+upstream MCP services. Cached Conductor history is labeled cached; a sleeping device
+cannot upload new context. Exclusions and cross-person sharing limits still apply.
+The classifier can withhold allowed information and is not guaranteed perfect.
 
-The first production retest found that bounded parallel validation alone did not
-resolve the mirror timeout. The twentieth patch, `archive-read-performance.patch`,
-removes whole-archive reconciliation from each unchanged read request. Read paths
-validate consumed files and indexes, repair corrupt generations on failure, and
-continue checking current revision and authorization expiry. The first real
-assistant retrieval attempt failed because the older companion remained busy;
-that negative result is part of this audit, not a successful retrieval.
+The current product follows the owner's context-only Spaces / My context direction.
+Legacy messaging tests preserve compatibility; owner retrieval requires no hosted AI.
+
+## Reproduce
+
+Apply all twenty portable patches in manifest order. The full chain reproduces 154
+source files. Native 0.4.21 remains immutable; the twentieth patch is a server and
+production transport follow-up.
+
+```sh
+npm test
+npm run test:ui
+npm run test:spec
+COMMONPLACE_E2E_PLUGIN=/absolute/path/to/extracted-plugin npm run test:knowledge
+```
+
+Set `ZERO_SCREENSHOTS` to capture each browser stage. Logs and seven walkthrough
+screenshots are under `.context/zero-to-knowledge/`. Portable results and artifact
+hashes are in `implementation/zero-to-knowledge-verification.json`.

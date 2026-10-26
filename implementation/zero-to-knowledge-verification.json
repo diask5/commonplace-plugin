@@ -2,7 +2,7 @@
   "date": "2026-10-26",
   "nativeVersion": "0.4.21",
   "runtimeRevision": 56,
-  "state": "packaged; pending live upgrade and production verification",
+  "state": "Production deployed; Mac 0.4.21/runtime56 active; final real assistant answer requires host approval",
   "tests": {
     "core": {
       "tests": 428,
@@ -76,11 +76,29 @@
     "mailbox-smoke": {
       "passed": true,
       "logSha256": "4af3e49901ec99fc5ad12a7a358d4988d99c79571c72bb127ad729033d4bffd0"
+    },
+    "core-release-final": {
+      "tests": 431,
+      "passed": 431,
+      "failed": 0,
+      "logSha256": "d41cfc030064bc0192798ff17849a7e7dcf07f8f8fc0b2425be18d505b28bac7"
+    },
+    "read-path-final": {
+      "tests": 27,
+      "passed": 27,
+      "failed": 0,
+      "logSha256": "07443f01dd52382e0c509bb7c2858f58e4a92e65c1a73d43c93542975e9bc6cf"
+    },
+    "journey-read-path": {
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "logSha256": "28b9ed1410c936bc21632fbc2805dd5bf3987c74756d17c4b3ad62f844e043e7"
     }
   },
   "replay": {
-    "patches": 19,
-    "files": 152,
+    "patches": 20,
+    "files": 154,
     "matched": true
   },
   "fixtures": [
@@ -88,7 +106,6 @@
     "Controlled classifier scores; actual indexed retrieval and rule evaluation wiring"
   ],
   "liveBeforeFix": {
-    "account": "diaskyle10@gmail.com",
     "origin": "https://34.27.253.220",
     "nativeClaudeSessionCreated": true,
     "automaticCollectedMarkerReadable": true,
@@ -97,5 +114,65 @@
     "mirrorReady": false,
     "snapshotPreparationMs": 11984,
     "nativeReadTimeoutObserved": true
-  }
+  },
+  "live": {
+    "runtimeRevision": 56,
+    "contentVerified": true,
+    "folderReady": true,
+    "folderError": null,
+    "mirrorMarker": true,
+    "filesVerified": 293,
+    "manifestRevision": 5419,
+    "cloudRevision": 5419,
+    "accountAndOriginPreserved": true,
+    "freshAssistant": {
+      "exitCode": 0,
+      "isError": false,
+      "toolsUsed": [
+        "ToolSearch",
+        "ToolSearch",
+        "ToolSearch",
+        "ToolSearch",
+        "mcp__plugin_meet-proxy_meet-proxy__search_shared_context"
+      ],
+      "permissionDenials": [
+        "mcp__plugin_meet-proxy_meet-proxy__search_shared_context"
+      ],
+      "durationMs": 22732,
+      "answerVerified": false
+    },
+    "incremental": {
+      "checkedAt": 1792978654831,
+      "mirrorRevision": 5426,
+      "documents": 294,
+      "incrementalMarkerPresent": true,
+      "createdByRealNativeSession": true,
+      "observedUpperBoundMs": 309947
+    }
+  },
+  "production": {
+    "release": "20261026-archive-reads",
+    "filesVerified": 153,
+    "services": {
+      "commonplace": "active",
+      "commonplace-runtime": "active",
+      "nginx": "active"
+    },
+    "nginxConfigSha256": "71d17193bb8a51b0f30d4d95c3b77dcdf031669e9701254528a56bda1b8795ae",
+    "compression": {
+      "config": "/etc/nginx/sites-available/commonplace",
+      "beforeSha256": "e9fa5a547cc21904eb8044fbeba265e62b3144abc1f30ca94b84819a12f78d78",
+      "sha256": "71d17193bb8a51b0f30d4d95c3b77dcdf031669e9701254528a56bda1b8795ae",
+      "validated": true,
+      "reloaded": true,
+      "upstreamEncoding": "gzip"
+    }
+  },
+  "limitations": [
+    "Fresh Google sign-in and all native app variants are not certified by fixture identities.",
+    "Real Claude context retrieval requires a host-approved exact read-tool rule; no host permissions were changed.",
+    "The live incremental update arrived within the 310-second observation window; real-time latency needs further performance work.",
+    "Supported visible histories/imports only; arbitrary codebases, web-only chats, binary attachments and upstream MCP ingestion are not covered.",
+    "Rule-gated sharing is not a perfect classifier."
+  ]
 }

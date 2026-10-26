@@ -2,7 +2,7 @@
   "name": "Bounded archive reads for first-install mirrors",
   "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
   "patch": "archive-read-performance.patch",
-  "sha256": "6dee8551f28cf013b1cc7bf6d7eb990ec167ee102eb33081b8bc4e997632be3b",
+  "sha256": "4f281f2873bf37d377e2ee9beca946225942bccce1ab2c24e71b67c758e9aa15",
   "applyAfter": [
     "mcp-adoption-0.4.19-rc.3.patch",
     "agent-launch-and-server-check.patch",
@@ -50,6 +50,11 @@
       "path": "tests/cloud-archive.test.mjs",
       "beforeSha256": "020f0e9cf374fd61a4d4ee73cb46cf0a0d2360db9196358526345016d68dab66",
       "sha256": "295d82f5541df7980015dbbe1dc5f3afafa48c9204684246214c79a622127cfd"
+    },
+    {
+      "path": "scripts/deploy-context-compression.py",
+      "beforeSha256": null,
+      "sha256": "b2ff3b50dd4a85498877a083d2bb69f13069c749c9152d2713c9b414b334b8cf"
     }
   ]
 }
