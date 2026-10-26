@@ -199,3 +199,12 @@ It adds the animated three-stage native setup, prominent next action, responsive
 sharing-rule explanation and clearer invitation screens. Four runtime UI modules
 and three browser-test files change; no backend, schema or native package changes.
 The full chain still reproduces 150 files. Published plugin ZIPs are unchanged.
+
+## Zero-to-knowledge verification
+
+Apply `zero-to-knowledge.patch` nineteenth, after `sharing-walkthrough.patch`.
+It fixes bounded collector cursor ordering, parallelizes complete archive integrity
+validation, adds an empty-account browser/native/context/sharing journey and a
+33 MB interrupted mirror regression, and packages 0.4.21/runtime56. See
+[the audit](../docs/ZERO-TO-KNOWLEDGE.md) and its verification JSON for actual live
+receipts and the distinction between fixture and installed-host evidence.
