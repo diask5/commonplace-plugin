@@ -431,15 +431,36 @@
       "evidenceSha256": "1cf6a7b1d7f8a8b42ca54a76e14d7577ad99c704e11f4c2fa72779381d5358e2"
     },
     "googleBrowser": {
-      "state": "signed-in Spaces opened",
+      "state": "Google sign-in returned to live Spaces as the owner-selected account",
       "usedExistingGoogleSession": true,
       "freshGoogleConsentVerified": false,
-      "matchesNativeAccount": false,
-      "handoffBlockedPendingOwnerAccountChoice": true
+      "matchesNativeAccount": true,
+      "handoffBlockedPendingOwnerAccountChoice": false,
+      "ownerChoseExistingPluginAccount": true
+    },
+    "claudeDesktopSetup": {
+      "state": "Claude launched; browser waiting for host Send",
+      "liveBrowserAccountMatchesNative": true,
+      "copyPromptPrimary": true,
+      "pasteAndSendInstructionsVisible": true,
+      "appLaunchRequested": true,
+      "registered": false,
+      "collectionReceiptVerified": false,
+      "macLaunchServicesConfirmed": true,
+      "frontmostBundleId": "com.anthropic.claudefordesktop",
+      "launchMethod": "Exact browser-prepared link passed to macOS open; browser protocol dispatch alone was not confirmed",
+      "uiInspection": {
+        "tool": "osascript via System Events",
+        "state": "denied",
+        "reason": "osascript is not allowed assistive access. (-25211)",
+        "permissionsChanged": false
+      },
+      "latestBrowserStage": "send",
+      "latestBrowserStatus": "Waiting for Claude Desktop"
     }
   },
   "remainingAcceptance": [
-    "Owner choice of matching browser/native account, then desktop handoff; existing-session real Google browser sign-in passed",
+    "Real Google browser account matches the plugin; waiting for Claude Desktop Code Send and exact-chat setup/collection receipts",
     "Actual Claude Desktop and Codex Desktop exact-chat handoff (CLI retrieval is separate)",
     "Two-person production invite/accept/revoke journey (signed fixture coverage passed; no new external invitation sent)"
   ],
