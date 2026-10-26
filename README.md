@@ -8,13 +8,12 @@ simple membership controls.
 The [production application](https://34.27.253.220/) includes context-sharing
 spaces, one-request native plugin/MCP setup, automatic private collection,
 natural-language invitations, timed rules and leave/archive controls.
-The **0.4.24 / runtime57** update is published. It includes bounded context sharing,
-selected MCP resource ingestion and direct document reads during archive rebuilds,
-plus native Codex chat attachment and background installation updates.
-The update is installed and live; actual Claude Code and Codex search/read tests
-passed. Real Google sign-in and both Desktop handoffs are verified, and context is
-searchable while background collection continues. See
-[P0 readiness](docs/P0-NATIVE-READINESS.md) for exact evidence and remaining gates. P1 email/iMessage delivery is outside this rollout.
+The **0.4.25 / runtime58** update is published with MCP-first retrieval, automatic
+request IDs, prioritized context collection and clearer setup progress. The
+[rollout record](docs/SEAMLESS-CONTEXT.md) tracks production activation, installed
+versions and fresh ordinary-prompt results separately. Earlier real Google,
+Claude Desktop and Codex Desktop handoffs remain documented in
+[P0 readiness](docs/P0-NATIVE-READINESS.md). Direct Mail/iMessage sends remain P1.
 
 [See the desktop and phone walkthrough](https://kyle-cloud-w3.conductor.show/review)
 or [open the interactive preview](https://kyle-cloud-w3.conductor.show/preview/sample?view=conversations).
