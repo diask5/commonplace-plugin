@@ -1,11 +1,11 @@
 # MCP adoption source delivery
 
-**Current native release: 0.4.22 / runtime 56.** Apply all 22 patches in the
-order recorded by `archive-revision-fence-manifest.json` (`applyAfter`, then `patch`).
-Current packaged/installed/deployed state and tests are in
-[the spec recheck](../docs/SPEC-RECHECK.md) and
-[its verification](spec-recheck-verification.json). Older statements below
-preserve historical checkpoints and are not current release claims.
+**Current published native release: 0.4.23 / runtime57.** The 0.4.24 P0
+native candidate is preserved in `p0-native-readiness.patch`. Apply all 24 patches
+in `p0-native-readiness-manifest.json` order (`applyAfter`, then `patch`).
+The clean replay reproduces 178 implementation files. See
+[the completion record](../docs/CONTEXT-COMPLETION.md) for release evidence;
+installation and production activation are distinct from packaging.
 
 The latest web UI update is [the guided sharing walkthrough](../docs/SHARING-WALKTHROUGH.md).
 Its [verification record](sharing-walkthrough-verification.json) distinguishes
