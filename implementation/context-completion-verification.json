@@ -12,16 +12,78 @@
       "incrementalFiles": 50,
       "matched": true,
       "patchSha256": "c75aa935a18d54e6521ee05c731d235b04370cfb483bd8acead8f3dfae78a64f"
-    }
+    },
+    "pullRequest": "https://github.com/diask5/commonplace-plugin/pull/16",
+    "mergeCommit": "6bcc80c5efbd970f5e4c7537400b125fccbc2374"
   },
   "releaseState": {
     "packaged": true,
-    "githubDraft": false,
+    "githubDraft": true,
     "published": false,
     "installed": false,
     "staged": false,
     "productionActivated": false,
-    "marketplace": "unchanged at 0.4.22"
+    "marketplace": "unchanged at 0.4.22",
+    "draftUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/untagged-696ffde76f485897f6fc",
+    "targetCommit": "6bcc80c5efbd970f5e4c7537400b125fccbc2374",
+    "artifactUploadVerified": true,
+    "githubReleaseId": 423836374,
+    "uploadedArtifacts": [
+      {
+        "digest": "sha256:fd1033b1ec3074692821531fd7f60fb9532fdb5164f58edc838de361187e0709",
+        "name": "commonplace-0.4.23-build.json",
+        "size": 7438,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:5da9ba9f46a319e370f8c73055ef407fc329c083242c12698f6b13ac11064f8b",
+        "name": "commonplace-0.4.23.sha256",
+        "size": 89,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:cd16f253c8c99bc858408279490cb8a89ddc957a7885c8085bd3314f224eb6a2",
+        "name": "commonplace-0.4.23.zip",
+        "size": 230150118,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:53dc94e2c07cdf638b14a4a9252aa77cb26544b871303c56c29df297c7336324",
+        "name": "meet-proxy-0.4.23-build.json",
+        "size": 7436,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:d5ac86e48802cc566be77994a4d31c6beef8e6fce0888d5029207501a6afa940",
+        "name": "meet-proxy-0.4.23.sha256",
+        "size": 88,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:67b302266d1900df9e56dd40f6fa58b4b57facf2bba65ef3e10cbd160d4be3ef",
+        "name": "meet-proxy-0.4.23.zip",
+        "size": 230150118,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:f6c45ad31f2abb5fbbc5a08a4ebf580cf5a4adf932ced02705130acddf114c12",
+        "name": "runtime-update-manifest.json",
+        "size": 19415,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:799f60874653175d09474a42c514bd2466c43c5f9ca54a216fb3d7661ac20b1e",
+        "name": "runtime-update.json",
+        "size": 2663553,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:bfc707273636272bb88bc82b42db0c4cbea8aee1f46af59ab93c44925d9e8ccd",
+        "name": "runtime-update.sha256",
+        "size": 86,
+        "state": "uploaded"
+      }
+    ]
   },
   "lastVerifiedProduction": {
     "native": "0.4.22",

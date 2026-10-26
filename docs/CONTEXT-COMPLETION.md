@@ -4,6 +4,8 @@
 activated in production.** The last verified live release remains
 `20261026-revision-fence`, with native 0.4.22 / runtime56. Release state, hashes
 and evidence are in [the verification record](../implementation/context-completion-verification.json).
+Source is merged in [PR #16](https://github.com/diask5/commonplace-plugin/pull/16).
+The [0.4.23 release is a draft](https://github.com/diask5/commonplace-plugin/releases/tag/untagged-696ffde76f485897f6fc).
 The [Draft v3 recheck](SPEC-RECHECK.md) remains the requirement-by-requirement
 baseline; this document records the remaining feature work against it.
 
