@@ -6,6 +6,10 @@ The current product is Spaces / My context; sharing rules are implemented.
 Do not use the historical source-only milestones below as today's release status.
 Current release evidence is in
 [`spec-recheck-verification.json`](../implementation/spec-recheck-verification.json).
+Native 0.4.22 is published and installed; `20261026-revision-fence` is live.
+Actual Claude search/read succeeded across a retry with unchanged saved
+permissions. Intermittent read timeouts, fresh-user/all-host acceptance and
+the documented P1/context feature gaps prevent an all-complete claim.
 
 ## Historical implementation milestones
 

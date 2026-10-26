@@ -3,7 +3,7 @@
   "specSha256": "1d061a660d1e280c4f33a111fdabb1c5fb8fc52a3aa4cd86ebe4fee5f396091d",
   "nativeVersion": "0.4.22",
   "runtimeRevision": 56,
-  "state": "All candidate checks passed; native publication, installed Mac and production update pending",
+  "state": "Published 0.4.22 and installed on Mac; production revision-fence live; actual context read passed after retry, reliability and scope gaps remain",
   "tests": {
     "core-before": {
       "tests": 431,
@@ -93,10 +93,37 @@
       "cancelled": 0,
       "duration_ms": 154205.490277,
       "logSha256": "d4a1bfc543787b13604db7ac009f3844171486af7e4a2efee23d168a0ac49e82"
+    },
+    "revision-after": {
+      "tests": 41,
+      "pass": 41,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 7898.089513,
+      "logSha256": "4f2b986d269f09c7e1d8e54ddd4c198af5544ffb3e91ff3f930ede92ee1f72e0"
+    },
+    "core-revision-final": {
+      "tests": 433,
+      "pass": 433,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 28778.898229,
+      "logSha256": "87e953346905fc87630371596a2015ee24b7461c2634ab218ba69fceba869337"
+    },
+    "knowledge-revision-final": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 19998.731594,
+      "logSha256": "70eeb56b3fd5ee878909545083cb4842974347e89e46fd48e999ed4062162263"
     }
   },
   "replay": {
-    "patches": 21,
+    "patches": 22,
     "files": 154,
     "matched": true
   },
@@ -106,7 +133,7 @@
   },
   "livePublic": {
     "origin": "https://34.27.253.220",
-    "at": "2026-10-26T02:53:11.747Z",
+    "at": "2026-10-26T03:01:42.209Z",
     "screens": [
       {
         "width": 1440,
@@ -151,6 +178,12 @@
         "sha256": "fffdaeec0bbc87bc11f8bdafbc68f50e050675c1aa1eea0d700b384159f31100"
       },
       {
+        "route": "/context/assets/agent-setup.mjs",
+        "status": 200,
+        "sourceMatches": true,
+        "sha256": "dd489e68f680e5e0eeccf789bf19dbcb3caa962af49da525e577af1fbb4e42ec"
+      },
+      {
         "route": "/mcp",
         "unauthenticatedStatus": 401
       },
@@ -167,11 +200,78 @@
     "P1 automatic email/iMessage delivery and personal-agent attachment are not implemented.",
     "Safe long-document sharing, broader recipient-safe pagination and upstream MCP ingestion remain pending.",
     "Classifier semantic accuracy is not guaranteed; previous real benchmark had five false withholds in 28 cases.",
-    "Large-account sync and read latency remain performance targets."
+    "Large-account sync and read latency remain unresolved: two latest read attempts timed out before a successful resumed read. This is not a clean single-attempt retrieval pass."
   ],
   "priorFailedChecks": [
     "Discovery regression failed before repair.",
     "Browser attachment assertion expected obsolete 0.4.20; corrected to current packaged version and passed targeted rerun.",
-    "Initial packaged smoke was invoked before extraction completed; rerun passed after packaging."
-  ]
+    "Initial packaged smoke was invoked before extraction completed; rerun passed after packaging.",
+    "Stale revision regression failed before server fix; first installed 0.4.22 model attempt returned the marker from search after read timeout, so was not counted as a read pass."
+  ],
+  "production": {
+    "release": "20261026-revision-fence",
+    "filesVerified": 153,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "unchanged",
+    "bundleSha256": "fc2feee5e30f96e7411ad79552e07f127d1b3c0a13b3c4291317fb1fe427f3bd"
+  },
+  "installation": {
+    "version": "0.4.22",
+    "accountAndBindingPreserved": true,
+    "persistentPermissionsChanged": false,
+    "managerReported": "Restart to apply changes; new CLI processes load the new plugin."
+  },
+  "liveReadAttempts": [
+    {
+      "phase": "native-discovery-fix",
+      "exitCode": 0,
+      "durationMs": 51965,
+      "permissionDenials": [],
+      "successfulSearch": true,
+      "successfulRead": false,
+      "answerVerifiedByRead": false,
+      "error": "Commonplace Agent Auth failed (23).",
+      "persistentPermissionsChanged": false,
+      "evidenceSha256": "c3570f58a0d34150ad30665698087242ad2fe7549c50950b3f6f6d25e19bcc23"
+    },
+    {
+      "phase": "server-revision-fence",
+      "exitCode": 0,
+      "durationMs": 56427,
+      "permissionDenials": [],
+      "successfulSearch": true,
+      "staleReadReturnedRestart": true,
+      "successfulRead": false,
+      "answerVerifiedByRead": false,
+      "error": "Commonplace Agent Auth failed (23).",
+      "persistentPermissionsChanged": false,
+      "evidenceSha256": "81c439eee20b676d38b8003b52655d103773ad777653a06ee53905ef498c91f1"
+    },
+    {
+      "phase": "same-session-resume-after-current-archive-published",
+      "exitCode": 0,
+      "durationMs": 35320,
+      "permissionDenials": [],
+      "successfulSearchInPrecedingTurnOfSameSession": true,
+      "successfulRead": true,
+      "answerVerifiedByRead": true,
+      "markerMatched": true,
+      "readReturnedCitations": true,
+      "singleAttemptJourney": false,
+      "persistentPermissionsChanged": false,
+      "evidenceSha256": "b716b57502d1ea77b54d64201145b77c2c4a412b20ac1c6d8bee34eda4b0ac65"
+    }
+  ],
+  "nativeStartup": {
+    "mcpConnectedMs": 271,
+    "resourceDiscoveryTimeout": false,
+    "loadedVersion": "0.4.22",
+    "processExitedNormally": true
+  },
+  "overallSpecComplete": false,
+  "liveReadVerifiedAfterRetry": true
 }

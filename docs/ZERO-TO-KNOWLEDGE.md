@@ -1,5 +1,8 @@
 # Zero-to-knowledge verification
 
+This records the initial 0.4.21 audit. The newer native startup repair and current
+production/read verification are in [the spec recheck](SPEC-RECHECK.md).
+
 **Production:** `20261026-archive-reads` at https://34.27.253.220/.
 **Native:** 0.4.21 / runtime56 installed and active on the owner's Mac.
 
