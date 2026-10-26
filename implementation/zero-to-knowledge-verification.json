@@ -63,6 +63,19 @@
       "passed": 20,
       "failed": 0,
       "logSha256": "29fa613176f1b0ab6405f3f12ec6f351f0a11228b11a3188d2d7ea82ded0af55"
+    },
+    "product-spec": {
+      "tests": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    "plugin-smoke": {
+      "passed": true,
+      "logSha256": "9c5189335b28065d70d6868b6de60fdb9e0df16e5fd223637ba7257ede5d4ed8"
+    },
+    "mailbox-smoke": {
+      "passed": true,
+      "logSha256": "4af3e49901ec99fc5ad12a7a358d4988d99c79571c72bb127ad729033d4bffd0"
     }
   },
   "replay": {
