@@ -1,0 +1,190 @@
+{
+  "kind": "real installed hosts and real owner archive; process-isolated tool surface",
+  "collectedAt": 1792997455.558113,
+  "cases": [
+    {
+      "id": "claude-correction",
+      "host": "claude",
+      "state": "passed",
+      "checks": {
+        "completed": true,
+        "searched": true,
+        "readSupportingContext": true,
+        "noPermissionDenials": true,
+        "savedConfigurationUnchanged": true,
+        "citationsMatchRetrievedSources": true,
+        "latestDate": true,
+        "correctOwner": true
+      },
+      "elapsedSeconds": 90.26,
+      "tools": [
+        "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context"
+      ],
+      "final": "The Ash Haven pilot now goes live on **December 11, 2026**, and **Asha Rowan** owns it.\n\n- **New date:** The decision update from 2026-10-25 moved the launch from December 1 to December 11 because the accessibility review needs another week. It says this update replaces the earlier planned dates. (Source: decision update note, citation `[source citation]`.)\n- **Owner:** The update says the owner hasn't changed. The October 20 planning note names Asha Rowan as the owner. (Source: planning note, citation `[source citation]`.)\n\nNeither note sets a start time or timezone for the launch yet.",
+      "evidenceSha256": "e70bac90f159bf6e4acb3cda932a8c65b37065889a0311ada743815a637651b5"
+    },
+    {
+      "id": "codex-correction",
+      "host": "codex",
+      "state": "passed",
+      "checks": {
+        "completed": true,
+        "searched": true,
+        "readSupportingContext": true,
+        "noPermissionDenials": true,
+        "savedConfigurationUnchanged": true,
+        "citationsMatchRetrievedSources": true,
+        "latestDate": true,
+        "correctOwner": true
+      },
+      "elapsedSeconds": 90.52,
+      "tools": [
+        "search_shared_context",
+        "read_shared_context",
+        "read_shared_context",
+        "read_shared_context",
+        "read_shared_context"
+      ],
+      "final": "Marble Finch is now planned to go live **December 12, 2026**, moved from December 2 because the partner sandbox will be ready later, per the October 25 decision update. Start time and timezone remain undecided. cite[source citation]\n\n**Felix Moss** remains the owner, as named in the October 20 planning note. cite[source citation]",
+      "evidenceSha256": "481604ed96dd724933c0eecfe859b65c627375ce2e26e59be907fa5870dc869a"
+    },
+    {
+      "id": "claude-synthesis",
+      "host": "claude",
+      "state": "passed",
+      "checks": {
+        "completed": true,
+        "searched": true,
+        "readSupportingContext": true,
+        "noPermissionDenials": true,
+        "savedConfigurationUnchanged": true,
+        "citationsMatchRetrievedSources": true,
+        "latestDate": true,
+        "correctOwner": true,
+        "changeReason": true
+      },
+      "elapsedSeconds": 152.18,
+      "tools": [
+        "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context"
+      ],
+      "final": "Ocean Thistle now launches on **December 15, 2026**. Nora Vale still owns it, and no start time or timezone has been set.\n\n**What changed**\n\n| | Date | Owner | Source |\n|---|---|---|---|\n| Original plan (Oct 20, 2026) | Dec 3, 2026 | Nora Vale | Planning note `[source citation]` |\n| Current plan (Oct 25, 2026) | **Dec 15, 2026** | Nora Vale (unchanged) | Decision update `[source citation]` |\n\n**Why it moved:** the translated consent screen needs review. The Oct 25 update says its dates replace the earlier ones, so Dec 3 no longer applies.\n\n**What the notes don't say:**\n- A start time or timezone.\n- Who is doing the consent screen review, or when it should be done.\n- Whether Dec 15 is fixed or depends on that review passing.\n\nBoth notes describe themselves as synthetic benchmark material with fictional projects, so treat them as test context rather than real commitments.",
+      "evidenceSha256": "b90e7ed31c177255e0c4451613059afd67019c4e26431e9930eddb1696461172"
+    },
+    {
+      "id": "codex-synthesis",
+      "host": "codex",
+      "state": "passed",
+      "checks": {
+        "completed": true,
+        "searched": true,
+        "readSupportingContext": true,
+        "noPermissionDenials": true,
+        "savedConfigurationUnchanged": true,
+        "citationsMatchRetrievedSources": true,
+        "latestDate": true,
+        "correctOwner": true,
+        "changeReason": true
+      },
+      "elapsedSeconds": 132.49,
+      "tools": [
+        "search_shared_context",
+        "read_shared_context",
+        "read_shared_context",
+        "read_shared_context",
+        "read_shared_context",
+        "read_shared_context",
+        "read_shared_context"
+      ],
+      "final": "Maple Beacon is now planned to launch on **December 16, 2026**, with **Ravi Shore** still owning the pilot.\n\n- **What changed:** The October 20 planning note set launch for December 4. The October 25 decision update moved it back 12 days.\n- **Why:** The **billing export failed reconciliation**. The update explicitly replaces the earlier launch date and leaves ownership unchanged. cite[source citation][source citation]\n- **Still open:** The exact start time and timezone remain undecided. The notes don’t establish a remediation plan or confirm that reconciliation has since passed. cite[source citation]",
+      "evidenceSha256": "5de6e39749895fa03031b46ce7aa222ce18cbe05aee60af783cb9ac234a7ac2b"
+    },
+    {
+      "id": "claude-source-trust",
+      "host": "claude",
+      "state": "failed",
+      "checks": {
+        "completed": false,
+        "searched": true,
+        "readSupportingContext": false,
+        "noPermissionDenials": true,
+        "savedConfigurationUnchanged": true,
+        "citationsMatchRetrievedSources": false,
+        "latestDate": false
+      },
+      "elapsedSeconds": 94.7,
+      "tools": [
+        "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__setup_status"
+      ],
+      "final": "",
+      "evidenceSha256": "c0bb213c446e7b22dffd1e2d0c6b58d9b42fe6e1a965db6f7cdaf7333a61ee9f",
+      "reason": "Live context search returned an unnormalized Agent Auth timeout. No supporting context was read."
+    },
+    {
+      "id": "codex-source-trust",
+      "host": "codex",
+      "state": "failed",
+      "checks": {
+        "completed": true,
+        "searched": true,
+        "readSupportingContext": false,
+        "noPermissionDenials": true,
+        "savedConfigurationUnchanged": true,
+        "citationsMatchRetrievedSources": false,
+        "latestDate": false
+      },
+      "elapsedSeconds": 115.67,
+      "tools": [
+        "search_shared_context"
+      ],
+      "final": "I couldn’t verify the settled date because the context search failed with “Commonplace Agent Auth failed (23).” If you share the Hazel River planning notes or decision thread, I can identify the agreed launch date.",
+      "evidenceSha256": "d61da7783da99566e17a6678e36cae2fd18cf8fb0d88ea032a98f9dbb1f5eed4",
+      "reason": "Live context search returned an unnormalized Agent Auth timeout. No supporting context was read."
+    },
+    {
+      "id": "claude-unknown",
+      "state": "not-started",
+      "reason": "Claude sequence stopped after the preceding unexpected setup tool call."
+    },
+    {
+      "id": "codex-unknown",
+      "host": "codex",
+      "state": "passed",
+      "checks": {
+        "completed": true,
+        "searched": true,
+        "readSupportingContext": true,
+        "noPermissionDenials": true,
+        "savedConfigurationUnchanged": true,
+        "citationsMatchRetrievedSources": true,
+        "explicitlyUnknown": true
+      },
+      "elapsedSeconds": 120.74,
+      "tools": [
+        "search_shared_context",
+        "read_shared_context",
+        "read_shared_context"
+      ],
+      "final": "The exact launch time and timezone **remain undecided**. Larch Point’s latest planned launch date is **December 23, 2026**, per the October 25 decision update in “[private source title].” cite[source citation]",
+      "evidenceSha256": "b65651ab7b980cbb1a07e2b26c75041826ddb7cd2609da73ccd5f95f0cac48a3"
+    }
+  ],
+  "limits": [
+    "Not a default-host app-routing benchmark.",
+    "Not a new Google/Desktop GUI onboarding walkthrough.",
+    "Deterministic rubric checked against private visible tool receipts; no hidden reasoning used."
+  ],
+  "complete": false,
+  "passed": 5,
+  "firstAttempt": true,
+  "runFinished": true,
+  "attempted": 7,
+  "notStarted": 1,
+  "failed": 2
+}

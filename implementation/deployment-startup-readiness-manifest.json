@@ -1,0 +1,46 @@
+{
+  "name": "Bounded production startup readiness with rollback",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch"
+  ],
+  "patch": "deployment-startup-readiness.patch",
+  "sha256": "8af3bc0c909cf45da79a313712480a76de6aa8ada42066ad370ce1267a3877dc",
+  "state": "21 checks passed; helper used for 20261026-seamless-context-final; runtime bytes unchanged",
+  "files": [
+    {
+      "path": "scripts/deploy-cloud-update.py",
+      "beforeSha256": "1ea22750d4d9fd38168fac199491b9d65bbb25a82a4fbc6cba3e91f94b4e8753",
+      "sha256": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408"
+    },
+    {
+      "path": "tests/test_deployment.py",
+      "beforeSha256": "e193e2cd645cafd1f93752bf055bfe90cb782a2d58b42eca54682ae42056ab36",
+      "sha256": "851e80426afec854c99b35a9616e9df546d9f6dae08854169472a808a6e39e11"
+    }
+  ]
+}

@@ -4,13 +4,15 @@
   "runtimeSha256": "52458c164442683b4c3cd0be4ee1cf0c89c519b3cc61c56967c377c97ee491c8",
   "nativeSha256": "5a1a442b3fed6c73f5adf12047792c447d8fcc5d8a5c3fb1fe7384b67a0c2f0c",
   "compatibilitySha256": "9939900734dc7d2cb4c2a5e49b670a6830e5ef595f57c89a37528bf1f5cff0e1",
-  "state": "packaged; not yet published, installed or deployed",
+  "state": "published 0.4.25; production live; Mac runtime58 active; first real ordinary-prompt retrieval run finished with open gates",
   "source": {
     "manifest": "seamless-context-manifest.json",
-    "patches": 25,
+    "patches": 26,
     "replayedFiles": 185,
     "incrementalFiles": 31,
-    "cleanReplayMatched": true
+    "cleanReplayMatched": true,
+    "deploymentFollowup": "deployment-startup-readiness-manifest.json",
+    "deploymentFollowupFiles": 2
   },
   "checks": {
     "core": {
@@ -45,7 +47,16 @@
       "googleAndHostFixtures": true
     },
     "deployment": {
-      "passed": 16
+      "passed": 21
+    },
+    "benchmarkIsolation": {
+      "passed": 13,
+      "kind": "model-free harness tests"
+    },
+    "independentReview": {
+      "deploymentTests": 21,
+      "isolationTests": 13,
+      "sourceManifestHashesMatched": true
     }
   },
   "latency": {
@@ -62,8 +73,57 @@
     ]
   },
   "modelBenchmark": {
-    "state": "pending fresh installed-host run",
-    "priorEvidence": "natural-prompt-approved-verification.json"
+    "state": "Five of seven attempted real-archive cases passed; two failed after transport timeouts, one Claude case not started after guard stop. Full receipts retained; a 0.4.26 error-normalization fix is being packaged.",
+    "priorEvidence": "natural-prompt-approved-verification.json",
+    "defaultHost": {
+      "createInvite": "functional fixture completion but failed isolation: also created one empty unrelated ChatGPT Drive Space",
+      "accept": "failed: selected browser path, host denied browser access; not retried",
+      "context": "passed via actual fixture request_space_context",
+      "unknown": "passed: did not invent an hour/timezone",
+      "leave": "functional fixture completion but first consulted unrelated ChatGPT spaces",
+      "afterLeave": "interrupted when unsafe run stopped",
+      "private": "not retried after previous provider rejection"
+    },
+    "unexpectedExternalEffect": {
+      "createdEmptySpace": true,
+      "name": "Briar Review",
+      "cleanup": "not attempted: no purpose-built reversible archive tool exposed; exact empty space remains"
+    },
+    "freshArchiveSeeds": {
+      "realClaudeChats": 2,
+      "toolsCalled": 0,
+      "permissionDenials": 0,
+      "collected": true,
+      "receipts": [
+        {
+          "seed": "seed-plan",
+          "complete": true,
+          "lastReported": 1792996625328
+        },
+        {
+          "seed": "seed-update",
+          "complete": true,
+          "lastReported": 1792996688438
+        }
+      ]
+    },
+    "controlledLimits": "Disposable signed OAuth/MCP and deterministic classifier; apps, computer/browser, command and web search features disabled for this process. Cannot certify default host routing.",
+    "controlled": {
+      "record": "seamless-controlled-benchmark.json",
+      "passed": 5,
+      "skipped": 2,
+      "unexpectedExternalCalls": 0,
+      "membershipNeverEnabledPrivateSharing": true,
+      "savedPermissionsUnchanged": true
+    },
+    "nativeFollowup": {
+      "version": "0.4.26",
+      "runtime": 59,
+      "reason": "Exact Agent Auth timeout message includes trailing period; 0.4.25 did not normalize it and models inferred broken sign-in.",
+      "focusedTestsPassed": 7,
+      "state": "0.4.26/runtime59 packaged and checked; awaiting publication and activation"
+    },
+    "firstAttemptRecord": "seamless-native-first-attempt.json"
   },
   "notes": [
     "No persistent host permissions changed.",
@@ -71,5 +131,42 @@
     "Joining never enables private-library sharing.",
     "Initial core failure exposed snapshot-dependent setup readiness and is fixed.",
     "Initial packaging failure was outdated runtime57 assertion; updated to58."
-  ]
+  ],
+  "production": {
+    "release": "20261026-seamless-context-final",
+    "previous": "20261026-native-p0-final",
+    "origin": "https://34.27.253.220",
+    "filesVerified": 156,
+    "services": [
+      "commonplace",
+      "commonplace-runtime",
+      "nginx"
+    ],
+    "servicesActive": true,
+    "migrationChanges": false,
+    "deploymentVerifiedAtEpoch": 1792995803.942709,
+    "initialAttempt": "20261026-seamless-context failed its 2-second health deadline and automatically rolled back",
+    "startupHelper": "deployment-startup-readiness-manifest.json",
+    "publicSmoke": "seamless-public-smoke.json",
+    "latencyLimit": "Live health samples included a 15.199-second timeout, then 8.508 and 3.144 seconds. Capacity investigation remains open; optional e2-small to e2-medium resize awaits owner approval.",
+    "helperSha256": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408",
+    "activationRecord": "seamless-production-activation.json"
+  },
+  "publication": {
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.25",
+    "latest": true,
+    "sourcePr": 24,
+    "pointerPr": 25
+  },
+  "installation": {
+    "version": "0.4.25",
+    "filesInstalled": true,
+    "activeRuntimeRevision": 58,
+    "targetRuntimeRevision": 58,
+    "accountAndBindingPreserved": true,
+    "savedPermissionsPreserved": true,
+    "normalUpdate": "Owner approved graceful restart; legacy plugin and launcher contenders briefly paused and all resumed. Runtime58 confirmed.",
+    "remaining": "Existing open host chats may retain older loaded plugin metadata until reloaded.",
+    "savedPermissionsAndAccountUnchanged": true
+  }
 }

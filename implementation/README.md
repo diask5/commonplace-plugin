@@ -252,3 +252,17 @@ patch reproduces all 185 changed implementation files with the preceding chain.
 The candidate is 0.4.25/runtime58. See `seamless-context-verification.json` and
 [the rollout record](../docs/SEAMLESS-CONTEXT.md) for the distinction between
 packaged, deployed, installed and real-model-tested state.
+
+Apply `deployment-startup-readiness.patch` twenty-sixth, after `seamless-context.patch`.
+It changes the deployment helper only: a bounded startup grace with up to 10 seconds
+per health request, exact ready=true validation, unchanged worker heartbeat checks,
+and rollback on deadline/failure. Five new tests bring deployment coverage to 21.
+The published 0.4.25 plugin/runtime bytes are unchanged. The helper activated
+`20261026-seamless-context-final`; see the rollout verification for remaining gates.
+
+Apply `context-timeout-recovery.patch` twenty-seventh, after
+`deployment-startup-readiness.patch`. It recognizes the actual SDK timeout
+message including its final period, without broadening error trust or retry
+authority, and packages 0.4.26/runtime59. See
+[the follow-up record](../docs/TIMEOUT-RECOVERY.md) for publication, installed
+runtime and live verification; the failed first benchmark attempts remain intact.

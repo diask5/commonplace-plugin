@@ -1,0 +1,139 @@
+diff --git a/scripts/deploy-cloud-update.py b/scripts/deploy-cloud-update.py
+index efb0bdf..e171603 100644
+--- a/scripts/deploy-cloud-update.py
++++ b/scripts/deploy-cloud-update.py
+@@ -84,6 +84,28 @@ def wait_for_worker(database, started_at, timeout=30, clock=time.monotonic, slee
+         sleep(1)
+ 
+ 
++def wait_for_http(timeout=120, clock=time.monotonic, sleep=time.sleep, open_url=None):
++    """Bound startup grace without mistaking a slow or invalid response for ready."""
++    open_url = open_url or urllib.request.urlopen
++    deadline = clock() + timeout
++    last_error = None
++    while clock() < deadline:
++        try:
++            with open_url('http://127.0.0.1:3000/healthz',
++                          timeout=min(10, deadline - clock())) as response:
++                if json.load(response).get('ready') is not True:
++                    raise RuntimeError('HTTP health response is not ready.')
++            if clock() >= deadline:
++                raise TimeoutError('HTTP health response arrived after the startup deadline.')
++            return
++        except Exception as error:
++            last_error = error
++        remaining = deadline - clock()
++        if remaining > 0:
++            sleep(min(1, remaining))
++    raise TimeoutError('HTTP service did not become ready within the startup deadline.') from last_error
++
++
+ def main():
+     p=argparse.ArgumentParser(description=__doc__)
+     p.add_argument('--bundle',required=True,type=Path)
+@@ -162,13 +184,7 @@ def main():
+         subprocess.run(['systemctl','stop','commonplace-runtime','commonplace'],check=True)
+         next_link=Path('/opt/commonplace/next');next_link.symlink_to(target);next_link.replace(current)
+         subprocess.run(['systemctl','start','commonplace'],check=True)
+-        for i in range(30):
+-            try:
+-                with urllib.request.urlopen('http://127.0.0.1:3000/healthz',timeout=2) as r:assert json.load(r)['ready'] is True
+-                break
+-            except Exception:
+-                if i==29:raise
+-                time.sleep(1)
++        wait_for_http()
+         worker_started_at = int(time.time() * 1000)
+         subprocess.run(['systemctl','start','commonplace-runtime'],check=True)
+         wait_for_worker(database, worker_started_at)
+diff --git a/tests/test_deployment.py b/tests/test_deployment.py
+index 7d13150..5f24a14 100644
+--- a/tests/test_deployment.py
++++ b/tests/test_deployment.py
+@@ -26,6 +26,53 @@ overlay_builder = module('build_production_overlay', 'build-production-overlay.p
+ 
+ 
+ class DeploymentTest(unittest.TestCase):
++    def test_http_wait_accepts_slow_valid_startup_after_connection_refusal(self):
++        elapsed = [0]
++        attempts = []
++        def sleep(seconds):
++            elapsed[0] += seconds
++        def open_url(url, timeout):
++            attempts.append(timeout)
++            if len(attempts) == 1:
++                raise ConnectionRefusedError('starting')
++            elapsed[0] += 3
++            return io.BytesIO(b'{"ready":true}')
++        deploy.wait_for_http(clock=lambda: elapsed[0], sleep=sleep, open_url=open_url)
++        self.assertEqual(attempts, [10, 10])
++        self.assertEqual(elapsed[0], 4)
++
++    def test_http_wait_never_accepts_false_truthy_or_malformed_readiness(self):
++        for body in [b'{"ready":false}', b'{"ready":1}', b'{"ready":"true"}', b'{}', b'invalid']:
++            elapsed = [0]
++            def sleep(seconds):
++                elapsed[0] += seconds
++            with self.assertRaisesRegex(TimeoutError, 'startup deadline'):
++                deploy.wait_for_http(timeout=3, clock=lambda: elapsed[0], sleep=sleep,
++                                     open_url=lambda *a, **kw: io.BytesIO(body))
++            self.assertEqual(elapsed[0], 3)
++
++    def test_http_wait_caps_each_attempt_by_remaining_deadline(self):
++        elapsed = [0]
++        attempts = []
++        def sleep(seconds):
++            elapsed[0] += seconds
++        def open_url(url, timeout):
++            attempts.append(timeout)
++            elapsed[0] += timeout
++            raise TimeoutError('socket')
++        with self.assertRaisesRegex(TimeoutError, 'startup deadline'):
++            deploy.wait_for_http(timeout=15, clock=lambda: elapsed[0], sleep=sleep, open_url=open_url)
++        self.assertEqual(attempts, [10, 4])
++        self.assertEqual(elapsed[0], 15)
++
++    def test_http_wait_rejects_ready_response_after_deadline(self):
++        elapsed = [0]
++        def open_url(*a, **kw):
++            elapsed[0] = 20
++            return io.BytesIO(b'{"ready":true}')
++        with self.assertRaisesRegex(TimeoutError, 'startup deadline'):
++            deploy.wait_for_http(timeout=10, clock=lambda: elapsed[0], open_url=open_url)
++
+     def setUp(self):
+         self.temp = tempfile.TemporaryDirectory()
+         self.addCleanup(self.temp.cleanup)
+@@ -183,7 +230,7 @@ class DeploymentTest(unittest.TestCase):
+         }))
+         return previous, current, database, bundle
+ 
+-    def code_only_run(self, bundle, *, worker_error=None):
++    def code_only_run(self, bundle, *, worker_error=None, http_error=None):
+         commands = []
+         connect = sqlite3.connect
+         def read_only_database(database_uri, **kwargs):
+@@ -199,6 +246,7 @@ class DeploymentTest(unittest.TestCase):
+         with patch.object(deploy, 'Path', vm_path), \
+              patch.object(deploy.subprocess, 'run', run), \
+              patch.object(deploy.urllib.request, 'urlopen', return_value=io.BytesIO(b'{"ready":true}')), \
++             patch.object(deploy, 'wait_for_http', side_effect=http_error), \
+              patch.object(deploy, 'wait_for_worker', side_effect=worker_error), \
+              patch.object(deploy.sqlite3, 'connect', read_only_database), \
+              patch('sys.argv', ['deploy', '--bundle', str(bundle), '--baseline', '20261019-before', '--release', '20261020-candidate', '--code-only']):
+@@ -255,6 +303,15 @@ class DeploymentTest(unittest.TestCase):
+         self.assertEqual(database.read_bytes(), before)
+         self.assertFalse((database.parent / 'rollouts/20261020-candidate/deployment.json').exists())
+ 
++    def test_http_deadline_failure_restores_previous_release_and_database(self):
++        previous, current, database, bundle = self.code_only_fixture()
++        before = database.read_bytes()
++        with self.assertRaisesRegex(TimeoutError, 'startup deadline'):
++            self.code_only_run(bundle, http_error=TimeoutError('startup deadline'))
++        self.assertEqual(current.resolve(), previous)
++        self.assertEqual(database.read_bytes(), before)
++        self.assertFalse((database.parent / 'rollouts/20261020-candidate/deployment.json').exists())
++
+     def dependency_archive(self, entries=None):
+         filename = self.root / 'dependencies.tgz'
+         entries = entries or [('package.json', b'{}'), ('package-lock.json', b'{}'),
