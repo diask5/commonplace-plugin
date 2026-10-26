@@ -8,8 +8,9 @@ simple membership controls.
 The [production application](https://34.27.253.220/) includes context-sharing
 spaces, one-request native plugin/MCP setup, automatic private collection,
 natural-language invitations, timed rules and leave/archive controls.
-The **0.4.23 / runtime57** update is published. It adds bounded context sharing,
-selected MCP resource ingestion and direct document reads during archive rebuilds.
+The **0.4.24 / runtime57** update is published. It includes bounded context sharing,
+selected MCP resource ingestion and direct document reads during archive rebuilds,
+plus native Codex chat attachment and background installation updates.
 P0 production and native-host verification is in progress; see
 [the completion evidence](docs/CONTEXT-COMPLETION.md) for exact packaged,
 installed and live state. P1 email/iMessage delivery is outside this rollout.
@@ -53,7 +54,7 @@ and simulated model/host responses. In the implementation repository, run
 
 ## One private cloud workspace
 
-[Download Meet Proxy / Commonplace 0.4.23](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.23)
+[Download Meet Proxy / Commonplace 0.4.24](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.24)
 for a cloud workspace containing supported synced chats, permitted agent-message
 threads, published working context, and previous cloud results. Your cloud agent
 can query the live message board, consult your connected native agents, wait for
@@ -67,7 +68,7 @@ See [personal agents](docs/PERSONAL-AGENTS.md),
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.23**. Enable only one alias. Existing accounts and
+update that alias to **0.4.24**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
