@@ -276,3 +276,7 @@ All 28 patches reproduce 188 files; source/package/live evidence is in
 ## Public UI asset delivery
 
 Apply `public-assets-delivery.patch` after `server-io-recovery.patch`. All 29 patches reproduce 192 implementation files exactly. The manifest and verification record track this server-only release; native 0.4.26/runtime59 is unchanged. The guarded installer serves 31 exact public asset paths with app fallback for older releases. See [the delivery record](../docs/PUBLIC-ASSETS-DELIVERY.md).
+
+## Context read performance
+
+Apply `context-read-performance.patch` after `public-assets-delivery.patch`. All 30 patches reproduce 196 implementation files. This server-only release adds migration 0045 (three indexes), local snapshot verification and archive I/O reductions. A full database backup/rehearsal is required; never use code-only deployment for this migration. See [verification and state](../docs/CONTEXT-READ-PERFORMANCE.md).

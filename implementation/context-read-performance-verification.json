@@ -1,0 +1,59 @@
+{
+  "state": "reviewed and packaged; not yet published or deployed",
+  "nativeVersion": "0.4.26",
+  "runtimeRevision": 59,
+  "nativePackagesUnchanged": true,
+  "serverRelease": "20261026-read-performance",
+  "sourceManifest": "context-read-performance-manifest.json",
+  "source": {
+    "patches": 30,
+    "files": 196,
+    "incrementalFiles": 8,
+    "matched": true,
+    "patchSha256": "3738dd13abce340737926708b2d04e4a435ea9f9ef521018178af912dae299a1"
+  },
+  "artifacts": {
+    "runtime-update.json": "544747d1a0640579f00a58a1572a741e3c51d20caea490f196f3ae50dfc44e14",
+    "runtime-update-manifest.json": "9f3d94d4f4c66e6e54c7862cd4fa141a567dd6976764a722e7cb8d33a1a98d9e",
+    "runtime-update.sha256": "4f90365e0a0c860147d07caedaa89164d1553c4b8393cecad0a490792963c822",
+    "deploy-cloud-update.py": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408"
+  },
+  "runtimeFiles": 158,
+  "migration": {
+    "name": "0045_context_read_indexes.sql",
+    "kind": "three additive covering/expiry indexes; no row or authority changes",
+    "requiresFullBackupAndRehearsal": true,
+    "olderCodeCompatible": true
+  },
+  "checks": {
+    "corePassed": 551,
+    "coreFailed": 0,
+    "coreSkipped": 0,
+    "independentFocusedPassed": 53,
+    "deploymentPassed": 54,
+    "deploymentSkipped": 1,
+    "finalExpiryPassed": 4,
+    "benchmarkHarnessPassed": 13,
+    "review": "No blockers; full migration deployment required."
+  },
+  "fixturePerformance": {
+    "statusQueryBeforeP50Ms": 9.06,
+    "statusQueryAfterP50Ms": 0.16,
+    "statsQueryBeforeP50Ms": 6.9,
+    "statsQueryAfterP50Ms": 0.037,
+    "scope": "Synthetic warm-cache measurement; not production latency."
+  },
+  "preserved": [
+    "SQLite FULL durability",
+    "JTI replay/grants/tokens/quotas remain durable",
+    "Post-read revision/expiry and source-authority fences",
+    "Full byte/hash validation and source exclusion",
+    "Background cleanup of both archive copies"
+  ],
+  "limits": [
+    "The worker still maintains a separate archive copy; cleanup was not disabled.",
+    "Production cold-disk and real-model results pending.",
+    "Native package, accounts and saved permissions unchanged.",
+    "No paid infrastructure changes."
+  ]
+}

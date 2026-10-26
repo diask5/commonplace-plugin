@@ -58,7 +58,26 @@ def run(id,host,prompt,seed=False):
    item=e.get('item',{})
    if e.get('type')=='item.completed' and item.get('type') in ['mcp_tool_call','command_execution']:
     calls.append({'name':item.get('tool') or 'command_execution','input':item.get('arguments') or item.get('command')});receipts.append({'name':item.get('tool') or 'command_execution','isError':bool(item.get('error')) or item.get('status')=='failed','content':item.get('result') or item.get('aggregated_output')})
- result={'id':id,'host':host,'session':session,'exitCode':code,'elapsedSeconds':round(time.time()-start,2),'prompt':prompt,'final':final,'calls':calls,'receipts':receipts,'permissionDenials':denials,'stoppedReason':stop,'configUnchanged':before==fingerprint(),'evidenceSha256':hashlib.sha256((d/'stream.jsonl').read_bytes()).hexdigest()}
+ # Timing is the interval between visible tool events, including host transport;
+ # it is not a claim about server-only time. No arguments or source IDs exported.
+ tool_times=[];pending={};timing_path=Path(str(d/'stream.jsonl')+'.timings')
+ timing_rows=[json.loads(line) for line in timing_path.read_text().splitlines()] if timing_path.exists() else []
+ for event,timing in zip(events,timing_rows):
+  stamp=timing['elapsedSeconds']
+  if host=='claude':
+   msg=event.get('message',{});blocks=msg.get('content',[]) if isinstance(msg,dict) else []
+   for block in blocks if isinstance(blocks,list) else []:
+    if not isinstance(block,dict):continue
+    if block.get('type')=='tool_use':pending[block['id']]=(block.get('name'),stamp)
+    if block.get('type')=='tool_result' and block.get('tool_use_id') in pending:
+     name,began=pending.pop(block['tool_use_id']);tool_times.append({'name':name,'seconds':round(stamp-began,3)})
+  else:
+   item=event.get('item',{})
+   if item.get('type')!='mcp_tool_call':continue
+   if event.get('type')=='item.started':pending[item['id']]=(item.get('tool'),stamp)
+   if event.get('type')=='item.completed' and item.get('id') in pending:
+    name,began=pending.pop(item['id']);tool_times.append({'name':name,'seconds':round(stamp-began,3)})
+ result={'id':id,'host':host,'session':session,'exitCode':code,'elapsedSeconds':round(time.time()-start,2),'prompt':prompt,'final':final,'calls':calls,'receipts':receipts,'permissionDenials':denials,'stoppedReason':stop,'configUnchanged':before==fingerprint(),'evidenceSha256':hashlib.sha256((d/'stream.jsonl').read_bytes()).hexdigest(),'visibleToolIntervals':tool_times}
  (d/'result.json').write_text(json.dumps(result,indent=2));print(json.dumps({'id':id,'exitCode':code,'elapsedSeconds':result['elapsedSeconds'],'tools':[c['name'] for c in calls],'denials':len(denials),'configUnchanged':result['configUnchanged']}),flush=True);return result
 import sys
 if sys.argv[1]=='seed':
