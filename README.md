@@ -12,8 +12,8 @@ The **0.4.24 / runtime57** update is published. It includes bounded context shar
 selected MCP resource ingestion and direct document reads during archive rebuilds,
 plus native Codex chat attachment and background installation updates.
 The update is installed and live; actual Claude Code and Codex search/read tests
-passed. The browser and plugin accounts now match; the Desktop Send/handoff check is
-still in progress. See
+passed. Real Google sign-in and both Desktop handoffs are verified, and context is
+searchable while background collection continues. See
 [P0 readiness](docs/P0-NATIVE-READINESS.md) for exact evidence and remaining gates. P1 email/iMessage delivery is outside this rollout.
 
 [See the desktop and phone walkthrough](https://kyle-cloud-w3.conductor.show/review)
