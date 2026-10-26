@@ -1,0 +1,42 @@
+{
+  "name": "Reject stale context pages before archive rebuilding",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "archive-revision-fence.patch",
+  "sha256": "ae4ac023a606e87d3e088d7bea7781d31d19ebd1311aad1b1c570cc245380d95",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch"
+  ],
+  "state": "Server-only follow-up to native 0.4.22; rollout tracked separately",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/shared-context.mjs",
+      "beforeSha256": "3e9234b143dfd8b31cee72963ae7244421e1db406e3e0c6915b370b940da457a",
+      "sha256": "ad46eed7839ed5fcd8f7fb51bf5d565b7a98273d69b71af35ffc344fa36561ed"
+    },
+    {
+      "path": "tests/cloud-archive.test.mjs",
+      "beforeSha256": "295d82f5541df7980015dbbe1dc5f3afafa48c9204684246214c79a622127cfd",
+      "sha256": "93f539cd7e1c78184ec94d20b742e1c79728295f0b6f003da8096ce57f74de97"
+    }
+  ]
+}
