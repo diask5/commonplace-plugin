@@ -1,0 +1,53 @@
+{
+  "name": "Build optional model archives only when a cloud job needs them",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch"
+  ],
+  "patch": "demand-archives.patch",
+  "sha256": "5a03d0c164e684f959a8b47414817193fdb3d9c1f02fde2513b319ec5ddfd4f7",
+  "state": "Server-only candidate; native 0.4.27/runtime60 unchanged. See demand-archives-verification.json for lifecycle evidence.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/cloud-worker.mjs",
+      "beforeSha256": "b54aaef60ad5063c807b2b899748e81b97a90a79c0e9e587227040e558bfc876",
+      "sha256": "b4c8b5807808961029192099bda7fbc65633d9a16b9e20b16087157383b0ed1b"
+    },
+    {
+      "path": "tests/cloud-worker-archive-authority.test.mjs",
+      "beforeSha256": "cbdd3df21f71f2429912821c5b70f311c544b78d8584e4cd5d81407c08ecd324",
+      "sha256": "c74c3dabda147dce6c6d5ae6622cf4ecbfc0e8e65a6d81721fb34fc603f24db0"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Live search index reuse
 
-**Candidate packaged; production activation pending.** Native 0.4.27/runtime60 is unchanged.
+**Published and live: server `20261026-live-index`, with all 159 files verified.** Native 0.4.27/runtime60 is unchanged.
 
 Ordinary questions still timed out after registration recovery: an archive change
 made each search reconstruct the full text index. The runtime60 benchmark passed
@@ -27,3 +27,16 @@ remain open until a fresh installed-host benchmark succeeds.
 [Verification and hashes](../implementation/live-index-reuse-verification.json)
 track source, packaging, deployment and behavioral evidence separately. Patch32
 follows registration-recovery.patch; no prior release artifact is overwritten.
+
+All 580 core tests pass with no failures or skips. The complete 32-patch replay
+reproduces the source exactly. The code-only deployment preserved the migration
+set; web, runtime worker and nginx are active. The eight-case installed-host
+benchmark finished with four rubric passes and four failures requiring review. Three
+Claude answers cited a source seen only in search because supporting reads restarted;
+one Codex case could not retrieve an answer. No permission denial occurred and saved
+configuration stayed unchanged. The 69.79–192.24 second cases still had tool timeouts.
+Correct facts alone do not clear grounding or performance gates.
+
+[Sanitized model evidence](../implementation/live-index-reuse-native-benchmark.json)
+preserves all eight results. Browser acceptance and default-host routing remain
+distinct gates. The next server candidate removes unnecessary idle cloud indexing.
