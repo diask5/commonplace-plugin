@@ -1,7 +1,7 @@
 # Meet Proxy Draft v3 compliance
 
 Latest release: [0.4.26 rollout and current limitations](TIMEOUT-RECOVERY.md).
-Production is `20261026-public-assets` ([delivery checks](PUBLIC-ASSETS-DELIVERY.md)); Mac 0.4.26 files are installed,
+Production is `20261026-read-performance` ([read performance](CONTEXT-READ-PERFORMANCE.md); query indexes improved, requests remain slow, real-model benchmark incomplete; earlier [delivery checks](PUBLIC-ASSETS-DELIVERY.md)); Mac 0.4.26 files are installed,
 and runtime59 is active after the approved graceful restart.
 The new default-host benchmark still fails invitation routing and caused an
 unintended empty ChatGPT space. It is not an end-to-end pass. Production latency
