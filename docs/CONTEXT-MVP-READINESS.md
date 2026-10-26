@@ -9,8 +9,8 @@ The original spec remains unchanged in MEET-PROXY-PRODUCT-SPEC.md.
 Current release and acceptance are in [P0 native readiness](P0-NATIVE-READINESS.md).
 The completion features and 0.4.24 native fixes are published, installed and live
 on runtime57. The counts, missing features and 0.4.20 rollout below describe the
-earlier MVP milestone and are retained as history. Full real-user acceptance
-still requires the specific Google/desktop receipts listed in the P0 record.
+earlier MVP milestone and are retained as history. Real Google sign-in and both Desktop handoffs are verified; the P0 record
+separates those receipts from clean-install fixtures and continuing collection.
 
 ## Readiness decision
 

@@ -22,13 +22,13 @@ native identity; identity does not grant account consent or host permission.
 The macOS background installation was also pinned to 0.4.18. It now follows the
 loaded plugin version, preserving the installed marker on a failed host bootstrap.
 Existing open chats may retain old plugin code until reloaded. The actual Mac
-companion reached revision57 only after its own active-work guard accepted a
+companion reached revision 57 only after its own active-work guard accepted a
 graceful update. No daemon locks, saved permissions or accounts were reset.
 
 ## Release and deployment evidence
 
 - [Published 0.4.24](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.24).
-  Source is merged in PR19; installation pointers in PR20.
+  Source is merged in PR #19; installation pointers in PR #20.
 - The supported Claude manager updated the existing `meet-proxy@commonplace`
   alias. Account `diaskyle10@gmail.com`, server and chat bindings were preserved.
 - The bundled Codex helper updated only the existing plugin executable paths;
@@ -84,9 +84,11 @@ confirmed. macOS rejected automated window inspection with
 `osascript is not allowed assistive access. (-25211)`; the owner completed Send in
 each app. No accessibility permission or saved tool approval was changed.
 
-The public browser checks do not certify Google consent. CLI retrieval is recorded separately from the actual Desktop handoffs above.
+The public browser checks do not certify Google consent. CLI retrieval is
+recorded separately from the actual Desktop handoffs above.
 The walkthrough reused the existing installed plugin and owner account; it does
-not certify a new empty Google account or clean Mac installation. Share invitations, exact-pair uniqueness, two-sided audit, revocation
+not certify a new empty Google account or clean Mac installation. Share
+invitations, exact-pair uniqueness, two-sided audit, revocation
 and private-rule checks have signed integration/browser evidence; no new
 cross-person production invitation was sent during this rollout.
 
@@ -94,7 +96,8 @@ Real upstream MCP provider setup is a separate extension check. Contact scripts
 compiled on the Mac, but direct sends, delivery receipts and P1 personal-assistant
 coverage are deliberately outside this P0 release claim.
 
-Exact hashes, runtime receipts and the limits of real versus fixture coverage are recorded in
+Exact hashes, runtime receipts and the limits of real versus fixture coverage
+are recorded in
 [the verification JSON](../implementation/p0-native-readiness-verification.json).
 Raw diagnostic and failure logs remain under `.context/p0-live/` and in the Mac's
 private verification directory; source text, credentials and private prompts are
