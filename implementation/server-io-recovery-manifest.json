@@ -1,0 +1,68 @@
+{
+  "name": "Reduce server counter commits and reuse immutable archive documents",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch"
+  ],
+  "patch": "server-io-recovery.patch",
+  "sha256": "386d5463e1e42b198f493a0e803cc4b3792dd2ea88896802105fa9b7a561816e",
+  "state": "Server-only follow-up; native 0.4.26/runtime59 unchanged. Source/packaged/live evidence is tracked in server-io-recovery-verification.json.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/agent-auth.mjs",
+      "beforeSha256": "d1f53df2f73c579546a7eb5dc6ad8e86e522b5299258d5213410a86b3740a77a",
+      "sha256": "8668ac7219be7a71cac9c578850c59fc40dc0e71eddd5269c2ed07633de96f30"
+    },
+    {
+      "path": "apps/commonplace-account/server/archive-index.mjs",
+      "beforeSha256": "7da7526279013022a30e46a69a4bc7f31d4c63f95c8deb56918d9a971167a366",
+      "sha256": "eb0717dd30da4d9b6f9586d95f1008cdcf1e04b3f87546277a4aa0007ae4c65b"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-archive.mjs",
+      "beforeSha256": "ac2a7a0615ae535847231218916dcbbd5093aaf040b80ad4b720d4deea6d774c",
+      "sha256": "bb61a7889a1d5ab4dc18061bf5f49d2f2231bbf9cf80453995f8f674fdfcf191"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "cf3eb9450f742d806df45c4ef3b8baf074b7120ce82bb7ab1c8523466ae49a6c",
+      "sha256": "bbf4d59db15afb0c8b8f9a3af006dd815639f384395dbab6796fa1ca27708f23"
+    },
+    {
+      "path": "tests/agent-auth-rate-storage.test.mjs",
+      "beforeSha256": null,
+      "sha256": "e56d3bdf1cb32df14be0bb5049b9115d3f5f968b78d5b3e13da19da4f6eca9a0"
+    },
+    {
+      "path": "tests/archive-document-reuse.test.mjs",
+      "beforeSha256": null,
+      "sha256": "7b6a6e1aa3b0954e999c4da9ba72990f126304f794bbccea9a89ac3b7992767e"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "version": "0.4.26",
   "runtime": 59,
-  "state": "packaged and checked; not yet published, installed or deployed",
+  "state": "published; production live; Mac runtime59 active; benchmark and latency gates remain open",
   "sourceManifest": "context-timeout-recovery-manifest.json",
   "checks": {
     "core": 527,
@@ -31,5 +31,53 @@
     "incrementalFiles": 9,
     "matched": true,
     "patchSha256": "0580c1ccf62e7c4f1e9bd7ea6bdd409b2ddce0fc46310abe90ddf1e1a94ac182"
+  },
+  "publication": {
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.26",
+    "sourcePr": 26,
+    "pointerPr": 27,
+    "targetCommit": "148a2732818b4a0b0e59b0eaa7b0d7e4cfdb0be2",
+    "marketplaceCommit": "929e12e8d3f506797a50e5f2a3b44cbdebd07708",
+    "githubAssetDigestsMatch": true
+  },
+  "production": {
+    "record": "context-timeout-production.json",
+    "publicSmoke": "context-timeout-public-smoke.json",
+    "release": "20261026-timeout-recovery",
+    "filesVerified": 156,
+    "servicesActive": true,
+    "migrationsChanged": false
+  },
+  "installation": {
+    "record": "context-timeout-native-activation.json",
+    "version": "0.4.26",
+    "activeRuntimeRevision": 59,
+    "accountAndBindingPreserved": true,
+    "savedPermissionsPreserved": true
+  },
+  "followupBenchmark": {
+    "record": "context-timeout-native-benchmark.json",
+    "passed": 1,
+    "partial": 1,
+    "failed": 1,
+    "earlierFailuresPreserved": true,
+    "savedPermissionsUnchanged": true,
+    "summary": "Codex source-trust passed; Claude current answer correct but prior-plan citation only searched; final Claude unknown case hit reconnect/timeout and guard stopped setup_status."
+  },
+  "liveHealthSeconds": [
+    12.515,
+    14.737,
+    13.246
+  ],
+  "performanceInvestigation": {
+    "noPaidInfrastructureChanges": true,
+    "machine": "e2-small",
+    "dataDisk": "30 GB pd-standard",
+    "observedIoWaitPercent": [
+      42,
+      57
+    ],
+    "causeNotProven": true,
+    "sourceOnlyFollowup": "Reduce outer SDK rate-limit fsync and reuse verified unchanged generated documents; review/tests pending."
   }
 }

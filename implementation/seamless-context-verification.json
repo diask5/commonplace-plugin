@@ -4,7 +4,7 @@
   "runtimeSha256": "52458c164442683b4c3cd0be4ee1cf0c89c519b3cc61c56967c377c97ee491c8",
   "nativeSha256": "5a1a442b3fed6c73f5adf12047792c447d8fcc5d8a5c3fb1fe7384b67a0c2f0c",
   "compatibilitySha256": "9939900734dc7d2cb4c2a5e49b670a6830e5ef595f57c89a37528bf1f5cff0e1",
-  "state": "published 0.4.25; production live; Mac runtime58 active; first real ordinary-prompt retrieval run finished with open gates",
+  "state": "historical 0.4.25 rollout; superseded by context-timeout-recovery-verification.json",
   "source": {
     "manifest": "seamless-context-manifest.json",
     "patches": 26,
@@ -121,7 +121,7 @@
       "runtime": 59,
       "reason": "Exact Agent Auth timeout message includes trailing period; 0.4.25 did not normalize it and models inferred broken sign-in.",
       "focusedTestsPassed": 7,
-      "state": "0.4.26/runtime59 packaged and checked; awaiting publication and activation"
+      "state": "published, installed runtime59 active, production live; see context-timeout-recovery-verification.json"
     },
     "firstAttemptRecord": "seamless-native-first-attempt.json"
   },
@@ -154,7 +154,7 @@
   },
   "publication": {
     "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.25",
-    "latest": true,
+    "latest": false,
     "sourcePr": 24,
     "pointerPr": 25
   },

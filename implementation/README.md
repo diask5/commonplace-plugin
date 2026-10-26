@@ -266,3 +266,9 @@ message including its final period, without broadening error trust or retry
 authority, and packages 0.4.26/runtime59. See
 [the follow-up record](../docs/TIMEOUT-RECOVERY.md) for publication, installed
 runtime and live verification; the failed first benchmark attempts remain intact.
+
+Apply `server-io-recovery.patch` twenty-eighth, after
+`context-timeout-recovery.patch`. It reduces outer SDK throttle commits and reuses
+verified immutable generated documents without changing native 0.4.26/runtime59.
+All 28 patches reproduce 187 files; source/package/live evidence is in
+[the server follow-up](../docs/SERVER-IO-RECOVERY.md).

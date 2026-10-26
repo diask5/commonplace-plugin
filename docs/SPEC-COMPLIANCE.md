@@ -1,8 +1,8 @@
 # Meet Proxy Draft v3 compliance
 
-Latest release: [0.4.25 rollout and current limitations](SEAMLESS-CONTEXT.md).
-Production is `20261026-seamless-context-final`; Mac 0.4.25 files are installed,
-and runtime58 is active after the approved graceful restart.
+Latest release: [0.4.26 rollout and current limitations](TIMEOUT-RECOVERY.md).
+Production is `20261026-timeout-recovery`; Mac 0.4.26 files are installed,
+and runtime59 is active after the approved graceful restart.
 The new default-host benchmark still fails invitation routing and caused an
 unintended empty ChatGPT space. It is not an end-to-end pass. Production latency
 also remains an open readiness issue. See the current verification record for
