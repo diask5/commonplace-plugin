@@ -1,7 +1,7 @@
 # MCP adoption source delivery
 
-**Latest native candidate: 0.4.22 / runtime 56.** Apply all 21 patches in the
-order recorded by `native-discovery-manifest.json` (`applyAfter`, then `patch`).
+**Current native release: 0.4.22 / runtime 56.** Apply all 22 patches in the
+order recorded by `archive-revision-fence-manifest.json` (`applyAfter`, then `patch`).
 Current packaged/installed/deployed state and tests are in
 [the spec recheck](../docs/SPEC-RECHECK.md) and
 [its verification](spec-recheck-verification.json). Older statements below
@@ -223,3 +223,7 @@ archive. Explicit reads retain authorization, scope and revision checks. Remote
 and pinned archive resource enumeration is unchanged. The patch adds real stdio
 discovery/closure regressions, packages native 0.4.22, and updates the legacy setup
 release link. The companion remains runtime56; no daemon behavior or schema changes.
+
+Apply `archive-revision-fence.patch` twenty-second. Stale paged reads return a
+revision restart before joining an archive rebuild. The post-preparation revision
+check remains. This server-only update preserves native 0.4.22 ZIPs and schema.

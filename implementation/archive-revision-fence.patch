@@ -1,0 +1,42 @@
+diff --git a/apps/commonplace-account/server/shared-context.mjs b/apps/commonplace-account/server/shared-context.mjs
+index 95e4cac..0dfa300 100644
+--- a/apps/commonplace-account/server/shared-context.mjs
++++ b/apps/commonplace-account/server/shared-context.mjs
+@@ -38,6 +38,13 @@ export async function sharedContext(service,owner,method,input){
+  // retains its database connection. Coordinate builds and snapshot pins by
+  // that connection; separate request caches would delete each other's builds.
+  const archive=archiveFor(service);
++ // An old search/page revision is already unusable after collection changes.
++ // Reject it before joining a potentially slow rebuild; otherwise a small
++ // stale read can exhaust the native transport timeout just to say restart.
++ if(input.revision!==undefined){
++  const revision=service.db.sqlite.prepare('SELECT revision FROM cp_cloud_archive_state WHERE owner=?').get(owner)?.revision??0;
++  if(input.revision!==revision)return {changed:true,revision,restart:true};
++ }
+  const snapshot=await archive.prepare(owner,{reuseCurrent:true});
+  try{
+   // Snapshot revisions protect multi-page reads from silently mixing versions.
+diff --git a/tests/cloud-archive.test.mjs b/tests/cloud-archive.test.mjs
+index 41f8e0e..88c912c 100644
+--- a/tests/cloud-archive.test.mjs
++++ b/tests/cloud-archive.test.mjs
+@@ -290,3 +290,19 @@ test('paged HTTP reads reuse current snapshots, verify accessed bytes and observ
+  const stale=await sharedContext(f.service,f.owner,'archive-files',{revision:head.revision,paths:[doc.path]});assert.equal(stale.changed,true);
+  const current=await sharedContext(f.service,f.owner,'archive-files',{revision:stale.revision,paths:[doc.path]});assert.match(current.files[0].text,/Replacement source/);
+ });
++
++test('stale HTTP pages return the new revision without waiting for an archive rebuild',async t=>{
++ const f=await fixture(t);f.native('moving','Initial evidence');
++ const head=await sharedContext(f.service,f.owner,'archive-manifest',{}),doc=head.documents[0];
++ f.native('moving','Updated evidence','Codex chats: test',2);
++ const revision=f.work.get('SELECT revision FROM cp_cloud_archive_state WHERE owner=?',f.owner).revision;
++ assert.ok(revision>head.revision);
++ let prepares=0;
++ const mock=t.mock.method(CloudArchive.prototype,'prepare',async()=>{prepares++;throw Error('Slow or unavailable builder');});
++ for(const [method,args] of [['archive-read',{documentId:doc.id}],['archive-search',{query:'Initial'}],['archive-files',{paths:[doc.path]}]]){
++  assert.deepEqual(await sharedContext(f.service,f.owner,method,{...args,revision:head.revision}),{changed:true,revision,restart:true});
++ }
++ assert.equal(prepares,0,'A stale cursor is rejected before any builder or content reads');
++ mock.mock.restore();
++ assert.match((await sharedContext(f.service,f.owner,'archive-read',{documentId:doc.id,revision})).text,/Updated evidence/);
++});

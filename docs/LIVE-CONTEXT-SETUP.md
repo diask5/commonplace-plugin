@@ -1,9 +1,14 @@
 # Automatic context setup — 25 October 2026
 
-This follow-up replaces optional collection and manual chat selection with one
-app setup sheet. It is implemented and tested in source and the interactive
-preview. **It is not deployed or included in the published 0.4.19 plugin.**
-A new plugin release and the matching account runtime are required together.
+This describes the original setup implementation. It shipped in 0.4.20 and is
+included in the current **0.4.22 / runtime56** release and production runtime.
+The [current spec recheck](SPEC-RECHECK.md) records installation, deployment and
+actual read receipts. Earlier validation and release prerequisites below are
+historical; fresh Google consent and every native app launch remain separate
+live acceptance checks.
+
+The flow replaces optional collection and manual chat selection with one app
+setup sheet.
 
 ## User flow
 
@@ -115,7 +120,7 @@ Official Codex app/MCP pages returned redirect errors during this check. The
 existing Codex and Conductor app links remain best-effort and have a copy fallback;
 their OS handlers have not been verified on a Mac in this change.
 
-Required before claiming installed/production readiness:
+Original release prerequisites (publication and deployment are now complete):
 
 - Publish a new plugin version exposing `finish_context_setup`; release 0.4.19
   does not contain it. The generated request reports this missing capability

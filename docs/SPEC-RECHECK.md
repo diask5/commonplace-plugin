@@ -20,6 +20,37 @@ enable sharing rules, and each new context request invokes the configured
 classifier. This intentionally replaces the original private proxy's
 answer-only response with approved context excerpts.
 
+## Current release and real-account result
+
+**Published and installed:** [0.4.22 / runtime56](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.22)
+on the owner's Mac. The supported plugin manager retained the existing account,
+installation and single enabled alias. Fresh Claude CLI processes use the new
+plugin; already-open hosts may still need the manager's normal restart/reload.
+Saved host permissions were unchanged.
+
+**Live production:** `20261026-revision-fence` at https://34.27.253.220/.
+All 153 deployed runtime files match the reviewed bundle, and the web, runtime
+and nginx services are active. This code-only deployment changed no migrations
+or account data. Desktop and phone public pages clear loading; Google helper,
+public module hashes, unauthenticated MCP rejection and the compiled `/authorize`
+redirect passed. This does not certify a fresh Google consent journey.
+
+**Real Claude retrieval passed after retry, with a reliability gap:** the first
+0.4.22 attempt searched successfully but its read timed out; returning the marker
+from search did not count as a read pass. After the server fix, an obsolete read
+returned a revision restart promptly, but its next read still timed out. Once
+the archive reported its current revision published, the same approved test
+session resumed and successfully read the latest first page, returned citations
+and the exact complete marker. Its final answer matched that actual read receipt.
+The resumed turn took 35.32 seconds and exited normally. No permission denials or
+saved permission changes occurred. Search and successful read happened in two
+turns of the same session; this is not a clean single-attempt pass.
+
+Native MCP connected in 271 ms in the post-fix test without the former resource
+discovery timeout. Large-account context-read latency during ingestion remains
+an unresolved reliability issue. Previously observed collection delay was up to
+310 seconds between periodic checks, not an instantaneous-sync guarantee.
+
 ## Every P0 requirement
 
 | Original requirement | Implemented behavior | Verification and remaining boundary |
@@ -58,7 +89,7 @@ over 8,000 characters. These are real limits, not claimed completion.
 
 Native MCP `resources/list` fetched the account profile and archive while Claude
 was starting the plugin. On the real Mac this hit a 30-second host timeout and
-left tools displayed as connecting. The candidate now advertises the static
+left tools displayed as connecting. The released plugin now advertises the static
 context index and document template locally. Explicit index/document reads keep
 the existing account, scope, revision and exclusion checks. Remote and pinned
 archive catalogs retain their existing document enumeration.
@@ -68,15 +99,20 @@ stdio discovery through stdin closure, with no account bootstrap, companion,
 receiver or files created. No host permission, identity or account settings are
 changed by this repair.
 
+A second regression showed that an outdated page waited for archive rebuilding
+before returning its revision mismatch. The server now returns the current
+revision immediately, before opening a snapshot; it retains the second revision
+check after snapshot preparation for concurrent changes. This is a server-only
+follow-up, with no schema change or native ZIP replacement.
+
 ## Evidence
 
-On the final candidate: **432/432 core**, **127/127 browser**, **15/15 original
+On the final source: **433/433 core**, **127/127 browser**, **15/15 original
 lifecycle**, and **20/20 focused MCP** tests passed. The packaged empty-account
 knowledge journey, both-alias integrity, two launcher tests, actual packaged
 stdio and six-profile mailbox smoke passed. These suites overlap and must not
-be added as distinct product scenarios. All 21 portable patches reproduce 154
+be added as distinct product scenarios. All 22 portable patches reproduce 154
 source files exactly.
-
 
 Current machine-readable results and release state are recorded in
 [`spec-recheck-verification.json`](../implementation/spec-recheck-verification.json).
