@@ -1,6 +1,6 @@
 # P0 native and production readiness — 26 October 2026
 
-**0.4.24 / runtime57 is published and installed. Production is
+**0.4.24 / runtime57 is published, installed and verified in both Desktop apps. Production is
 `20261026-native-p0-final` at https://34.27.253.220/.** The completion features
 from 0.4.23 are live. This record supersedes the older candidate and blocked-Mac
 statements; the original Draft v3 remains unchanged.
@@ -34,7 +34,7 @@ graceful update. No daemon locks, saved permissions or accounts were reset.
 - The bundled Codex helper updated only the existing plugin executable paths;
   other TOML and permissions were unchanged. Codex Desktop is installed as
   `/Applications/ChatGPT.app`, bundle ID `com.openai.codex`.
-- Production's exact156-file baseline and new156-file bundle were verified.
+- Production's exact 156-file baseline and new 156-file bundle were verified.
   Only the generated adapter and the legacy setup download reference changed.
   All three services are active and the runtime heartbeat is current.
 - The database backup is
@@ -43,7 +43,7 @@ graceful update. No daemon locks, saved permissions or accounts were reset.
   disk I/O. Activation used the helper's code-only mode, which requires the exact
   existing migration set and applied digests. No schema or data rollback occurred.
 
-## Verification boundaries
+## Verification and limits
 
 | Check | Result |
 | --- | --- |
@@ -53,27 +53,40 @@ graceful update. No daemon locks, saved permissions or accounts were reset.
 | Both ZIP aliases and all overlay bytes/modes | Passed |
 | Packaged stdio and signed service journey | Passed |
 | Six-profile onboarding, mailbox and reconnect test | Passed; Google/host fixtures identified explicitly |
-| Portable implementation | 24 patches reproduce178 source files exactly |
-| Unchanged UI and original lifecycle | Previous129/129 and15/15 passed |
-| Live public desktop1440 / phone390 | Google visible; no overflow or script errors |
+| Portable implementation | 24 patches reproduce 178 source files exactly |
+| Unchanged UI and original lifecycle | Previous 129/129 and 15/15 passed |
+| Live public desktop 1440 / phone 390 | Google visible; no overflow or script errors |
 | Real Codex native identity | Verified actual thread from host request metadata |
+| Real Google → Claude Desktop Code setup | Account matched; exact native chat, 0.4.24 and installation collection receipts verified |
+| Real Google → Codex Desktop setup | Account matched; exact host chat, 0.4.24 and installation collection receipts verified |
 | Real Claude Code search → read | Passed; actual read returned the exact synthetic marker after two safe revision retries; saved permissions unchanged |
 | Real Codex search → read | Passed; actual host identity, successful search and document read returned the same exact synthetic marker; config unchanged |
 
-The real Google browser flow opened Spaces successfully. After the owner chose
-the existing plugin account, the browser signed in with that same account. The
-production app card prepared the private Claude Desktop request and displayed
-Copy setup prompt as the primary action with explicit paste-and-Send instructions.
-The exact prepared link was opened through macOS Launch Services and Claude
-Desktop became the frontmost app. Browser protocol dispatch alone was not
-confirmed. Final chat registration and collection receipts are waiting for the
-host's Send step; opening an app is not setup completion. macOS rejected
-window inspection with `osascript is not allowed assistive access. (-25211)`.
-No accessibility permission was changed and no alternate UI automation was used.
+The real Google flow returned to Spaces as the owner-selected account, matching
+the plugin. The owner sent the prepared request in both Claude Desktop Code and
+Codex Desktop. Both exact chats registered version 0.4.24, carried over browser
+sign-in, enabled automatic collection and returned installation-specific receipts:
+59 conversations received, 57 searchable. Claude reports host `claude-desktop` and
+native delivery; Codex reports host `codex` and prompt delivery. These are different
+capabilities; Codex registration is not a claim of automatic background message
+submission.
 
-The public browser checks do not certify Google consent. The native CLI tests do
-not certify an app deep link, an already-open Desktop chat reload, or every fresh
-user setup. Share invitations, exact-pair uniqueness, two-sided audit, revocation
+The live UI reached **Context is available / Ready to use**, and Copy setup prompt
+receded after registration. Desktop and 390px phone captures show the real
+signed-in Ready state with no horizontal overflow. These screenshots remain
+private in the workspace and on the Mac because they contain account details.
+Background collection is still partial; this does not mean every possible source
+has been ingested.
+
+The exact prepared app links were opened through macOS Launch Services, with
+both foreground bundle IDs verified. Browser protocol dispatch alone was not
+confirmed. macOS rejected automated window inspection with
+`osascript is not allowed assistive access. (-25211)`; the owner completed Send in
+each app. No accessibility permission or saved tool approval was changed.
+
+The public browser checks do not certify Google consent. CLI retrieval is recorded separately from the actual Desktop handoffs above.
+The walkthrough reused the existing installed plugin and owner account; it does
+not certify a new empty Google account or clean Mac installation. Share invitations, exact-pair uniqueness, two-sided audit, revocation
 and private-rule checks have signed integration/browser evidence; no new
 cross-person production invitation was sent during this rollout.
 
@@ -81,7 +94,7 @@ Real upstream MCP provider setup is a separate extension check. Contact scripts
 compiled on the Mac, but direct sends, delivery receipts and P1 personal-assistant
 coverage are deliberately outside this P0 release claim.
 
-Exact hashes, runtime receipts and remaining acceptance work are recorded in
+Exact hashes, runtime receipts and the limits of real versus fixture coverage are recorded in
 [the verification JSON](../implementation/p0-native-readiness-verification.json).
 Raw diagnostic and failure logs remain under `.context/p0-live/` and in the Mac's
 private verification directory; source text, credentials and private prompts are

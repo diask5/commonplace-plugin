@@ -9,7 +9,8 @@
     "configuredCodex": true,
     "macCompanionRevision": 57,
     "production": "20261026-native-p0-final",
-    "allRealUserJourneysCertified": false
+    "allRealUserJourneysCertified": false,
+    "realGoogleAndBothDesktopHandoffsVerified": true
   },
   "scope": {
     "p0": "current amended context-sharing product; P0 shareable links/codes",
@@ -436,16 +437,18 @@
       "freshGoogleConsentVerified": false,
       "matchesNativeAccount": true,
       "handoffBlockedPendingOwnerAccountChoice": false,
-      "ownerChoseExistingPluginAccount": true
+      "ownerChoseExistingPluginAccount": true,
+      "realGoogleExistingAccountFlowPassed": true,
+      "accountMatchesPlugin": true
     },
     "claudeDesktopSetup": {
-      "state": "Claude launched; browser waiting for host Send",
+      "state": "registered; context available",
       "liveBrowserAccountMatchesNative": true,
       "copyPromptPrimary": true,
       "pasteAndSendInstructionsVisible": true,
       "appLaunchRequested": true,
-      "registered": false,
-      "collectionReceiptVerified": false,
+      "registered": true,
+      "collectionReceiptVerified": true,
       "macLaunchServicesConfirmed": true,
       "frontmostBundleId": "com.anthropic.claudefordesktop",
       "launchMethod": "Exact browser-prepared link passed to macOS open; browser protocol dispatch alone was not confirmed",
@@ -455,14 +458,80 @@
         "reason": "osascript is not allowed assistive access. (-25211)",
         "permissionsChanged": false
       },
-      "latestBrowserStage": "send",
-      "latestBrowserStatus": "Waiting for Claude Desktop"
+      "latestBrowserStage": "ready",
+      "latestBrowserStatus": "Context is available",
+      "receipt": {
+        "app": "claude",
+        "httpStatus": 200,
+        "accountMatches": true,
+        "linked": true,
+        "version": "0.4.24",
+        "expired": false,
+        "spaceLinked": true,
+        "syncEnabled": true,
+        "chat": {
+          "provider": "Claude",
+          "host": "claude-desktop",
+          "delivery": "native"
+        },
+        "collector": {
+          "state": "scanning",
+          "seenAt": 1792988884273,
+          "files": 59,
+          "online": true
+        },
+        "receipts": {
+          "conversations": 59,
+          "lastReceivedAt": 1792988895262,
+          "partial": true
+        },
+        "searchableConversations": 57
+      },
+      "actualDesktopHostVerified": true,
+      "ownerSentPreparedRequest": true
+    },
+    "codexDesktopSetup": {
+      "state": "registered; context available",
+      "receipt": {
+        "app": "codex",
+        "httpStatus": 200,
+        "accountMatches": true,
+        "linked": true,
+        "version": "0.4.24",
+        "expired": false,
+        "spaceLinked": true,
+        "syncEnabled": true,
+        "chat": {
+          "provider": "Codex",
+          "host": "codex",
+          "delivery": "prompt"
+        },
+        "collector": {
+          "state": "scanning",
+          "seenAt": 1792988884273,
+          "files": 59,
+          "online": true
+        },
+        "receipts": {
+          "conversations": 59,
+          "lastReceivedAt": 1792988895262,
+          "partial": true
+        },
+        "searchableConversations": 57
+      },
+      "registered": true,
+      "collectionReceiptVerified": true,
+      "actualDesktopHostVerified": true,
+      "ownerSentPreparedRequest": true,
+      "macLaunchServicesConfirmed": true,
+      "frontmostBundleId": "com.openai.codex"
     }
   },
   "remainingAcceptance": [
-    "Real Google browser account matches the plugin; waiting for Claude Desktop Code Send and exact-chat setup/collection receipts",
-    "Actual Claude Desktop and Codex Desktop exact-chat handoff (CLI retrieval is separate)",
-    "Two-person production invite/accept/revoke journey (signed fixture coverage passed; no new external invitation sent)"
+    "Collection remains partial: 59 installation conversations received, 57 searchable at capture; continue background catch-up and source coverage monitoring",
+    "Fresh empty Google account and zero-install Mac journey are covered by fixtures, not a new real-account/device run",
+    "Two-person production invite/accept/revoke journey has signed integration/browser coverage; no new external production invitation was sent",
+    "Conductor-specific OS launch was not newly tested in this rollout; existing packaged six-profile transport checks passed"
   ],
   "logs": {
     "core-0.4.24-final.log": {
@@ -506,6 +575,27 @@
     "docs/screenshots/p0-native-readiness/production-phone.png": {
       "sha256": "cc2795af0277b0cc9e2266486a491a019fe5514ab58c1598a4c4ac94d7fd69b8",
       "scope": "live public sign-in surface"
+    }
+  },
+  "liveSetupUi": {
+    "stage": "ready",
+    "status": "Context is available",
+    "copyPromptRecedesAfterRegistration": true,
+    "desktopVerified": true,
+    "phoneWidth": 390,
+    "phoneOverflow": false,
+    "scope": "real owner account, installation-specific receipts; pre-existing plugin reused; background collection remains partial"
+  },
+  "privateScreenshots": {
+    "desktop-setup-ready.jpg": {
+      "sha256": "e2f80914204028e420055b57d03580e2f63c1ee73d808905c19dd8b65fa195eb",
+      "published": false,
+      "scope": "real signed-in setup; retained privately in workspace and on Mac"
+    },
+    "phone-setup-ready.jpg": {
+      "sha256": "7e591a3c6e9825bb1cf1b8b57298cb518fa8659a01f9c2b302798015063c132d",
+      "published": false,
+      "scope": "real signed-in setup; retained privately in workspace and on Mac"
     }
   }
 }
