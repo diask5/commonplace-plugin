@@ -1,0 +1,112 @@
+{
+  "name": "Context product UI \u2014 source preview only",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "context-product-ui.patch",
+  "sha256": "ee7e22ae3b5225dc37f5d13c0919f5d85ef5f90be49fad398670ea832eff233c",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch"
+  ],
+  "state": "source and interactive preview; not packaged or deployed",
+  "productionUnchanged": "0.4.19",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/context-product-ui.mjs",
+      "beforeSha256": null,
+      "sha256": "9cd40ff9d5ab8a63d229fa62aad55600400d05e20fc1bfad945c586493217e23"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-style.mjs",
+      "beforeSha256": null,
+      "sha256": "68dbdc22d71025eb2ac5b53bfabddacb83032df6cab0d18ae5c7b4a1b42c1066"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-product.mjs",
+      "beforeSha256": null,
+      "sha256": "94b5a2d3b80910d4fac9dd8bfadc807ca9f0bf731662a4f4199c99b02d1a2206"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-http.mjs",
+      "beforeSha256": "909cd85ca8ee1d10962ba657e891a708e8a86e91da5c11f32831f253bc942427",
+      "sha256": "9dbb8d04d9911c8a5bc0100d6c1deb00f1bd6e842a548dace3676296646c0233"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-http.mjs",
+      "beforeSha256": "e9d7dd5e9c196126f6e344feb4851155069718aac208d538ce58e76899de23f9",
+      "sha256": "effb478a12ba629f0123465cbb90d8e0f290ab256852b26bc4c775869948e4a1"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/social.mjs",
+      "beforeSha256": "ce50cf7ed3b9e148ce4469df9316e45381212c533873527b1e51edb460213666",
+      "sha256": "b241e4bd287cc02af5478d9abae6a19bef284e2103076997a264a8c0e0e925d1"
+    },
+    {
+      "path": "scripts/preview-context-product.mjs",
+      "beforeSha256": null,
+      "sha256": "338f065e0ed2f4ecf6cf215a1b50ab89b099b0cdf1702a758068a51960f00657"
+    },
+    {
+      "path": "scripts/preview-product-flow.mjs",
+      "beforeSha256": "1284feabca6c2280cd539eae66d74c10a5ebb1aed95964d5a0879420317f9920",
+      "sha256": "c2240ecb03043a704e22446f4597023f29acfad1790c31a58d679bb3a8704170"
+    },
+    {
+      "path": "tests/context-product-browser.test.mjs",
+      "beforeSha256": null,
+      "sha256": "e98f3abd00381ee60e280a144848c424eee0956ef561784e6ef0b097388f7bec"
+    },
+    {
+      "path": "tests/ui-system.test.mjs",
+      "beforeSha256": "69d8fa3e6265a5d8fc404d248514c2807a2ee68f1802966d8578075e431914c2",
+      "sha256": "d3f4091a94b1690479927ad42fd91ad5be7819fa54d34370052a3849820f8918"
+    },
+    {
+      "path": "tests/context-library-browser.test.mjs",
+      "beforeSha256": "58d408d0135635fdcbca352f12e85003a31f9ec43ba96264aba20afd82ea12f6",
+      "sha256": "dfca918a5c39597e6ef3088fdb97ae9128409a1ecd204c8b068ea6374f01c518"
+    },
+    {
+      "path": "tests/ui-browser.test.mjs",
+      "beforeSha256": "5b01a69c4a2b0309a0226724c64df17f306d035b38a2569d5207c4e413a2d727",
+      "sha256": "c3e89bd934959d6cfdea395e176df462f0dcfecc78b5d917e30e5dc2304f4ef9"
+    },
+    {
+      "path": "tests/local-environment-browser.test.mjs",
+      "beforeSha256": "52852ba9a91d00ac9f440f44935414111872b0b182460a2b252f3acd2f1899a9",
+      "sha256": "0210cf2512b84146c34acb034bd6c9ee5fb6df270491146091d73d6a1ecb00e2"
+    },
+    {
+      "path": "tests/agent-connections-browser.test.mjs",
+      "beforeSha256": "b0986260f51adb9b8473e66c317061b6e50e7fabb9eb76b14e610c6df1bf7caa",
+      "sha256": "02a9666466a54f701c8339d0f52228eab2b09d42d159528f3cf2d80c5f1918e6"
+    },
+    {
+      "path": "tests/people-discovery-browser.test.mjs",
+      "beforeSha256": "6eca6ca7069d8dcf3c9697e8c7770c78da4eb4bce4178700adf93fe24524efd5",
+      "sha256": "8346fd72b4801602fe373735e26396650e112c027aca2ec093727acaa9ad0f4e"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "4fa214b530d8e245abd9c6426bb111b02b2cbf64cf2bba63a894e9bf82606ec5",
+      "sha256": "7c78a8f30430f9bac67d96f0ad7e9db32fd043af259495775579c797b14b41b7"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-conversations.mjs",
+      "beforeSha256": null,
+      "sha256": "4b73bdc17f9ad642076c39cae1c417086686b25fd899a86f48a2d6af0fd7fd23"
+    },
+    {
+      "path": "apps/commonplace-account/server/social-agents.mjs",
+      "beforeSha256": "574d9ff6d13a30a861180eb422b8bd4e0e6f1472b3005f211b53e945f6d18c1f",
+      "sha256": "37e148e6b86dcabaacc2e7a71669649da74770c5958522ecb8c105b6b1a9e7a5"
+    },
+    {
+      "path": "scripts/preview-ui.mjs",
+      "beforeSha256": "d3d0d00ba60edd6eb70c3a28346f085228a9b00d0e303b69bfff53255556e2fa",
+      "sha256": "7defc6c1df39a5dad672e73759657e0649da60a8e6991dd13394bf8ec1192045"
+    }
+  ]
+}

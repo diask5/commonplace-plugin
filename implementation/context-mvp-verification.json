@@ -1,0 +1,239 @@
+{
+  "date": "2026-10-26",
+  "release": "0.4.20",
+  "runtime": 55,
+  "state": "packaged; release/deployment pending",
+  "patch": "context-mvp-completion.patch",
+  "patchSha256": "66d0f0c2924e5ef88213325da81e354311a6754c567cda99c9d7a921aa846978",
+  "replay": {
+    "patches": 17,
+    "incrementalFiles": 29,
+    "allChangedFilesMatch": 150,
+    "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13"
+  },
+  "verification": {
+    "core": {
+      "command": "npm test",
+      "passed": 428,
+      "failed": 0,
+      "log": ".context/spec-readiness/core.log",
+      "logSha256": "fe0cbe8ce32356ba0bd1bb33fff56e66d02aed526ec9e63b3f80c3acb3eab617"
+    },
+    "contextUi": {
+      "command": "npm run test:context-ui",
+      "passed": 70,
+      "failed": 0,
+      "log": ".context/spec-readiness/ui.log",
+      "logSha256": "46c094a2ea5bf34c3309dc560b5653110987f73c14eb17c6777d2ba82a8e8059"
+    },
+    "originalSpec": {
+      "command": "npm run test:spec",
+      "passed": 15,
+      "failed": 0,
+      "log": ".context/spec-readiness/spec-final2.log",
+      "logSha256": "3683cee679a049da13cd3ae3c01d7a1e2a3e9cd006f5c0525a8666def463108b"
+    },
+    "spaceApi": {
+      "command": "node --test tests/space-context*.test.mjs",
+      "passed": 14,
+      "failed": 0,
+      "log": ".context/spec-readiness/space-tests.log",
+      "logSha256": "6c1111ec1f08c6fb360d77718171a760d239bad20af7f0793a6f4f5fad7e37a6"
+    },
+    "legacyUiCorrections": {
+      "command": "node --test tests/ui-browser.test.mjs tests/product-flow-browser.test.mjs",
+      "passed": 10,
+      "failed": 0,
+      "log": ".context/spec-readiness/ui-regression.log",
+      "logSha256": "d88917248ea1fca2aab048d342751be0432ad1df654279c4842a2b4cb13390c1"
+    },
+    "package": {
+      "command": "npm run test:package",
+      "passed": 1,
+      "failed": 0,
+      "log": ".context/spec-readiness/package.log",
+      "logSha256": "fdaba17bd884d40b7dd9a55f5b33b0355f4fa02dd41dfffc9cbd444a8a014bc9"
+    },
+    "packagedLaunchers": {
+      "command": "node --test apps/commonplace/tests/runtime-mcp.test.mjs",
+      "passed": 2,
+      "failed": 0,
+      "log": ".context/spec-readiness/launcher.log",
+      "logSha256": "1934a9672b065001e4f36224a8c36ce5e766a5d4dc0f86e640b19bd15efbffa8"
+    },
+    "deployment": {
+      "command": "npm run test:deployment",
+      "passed": 16,
+      "failed": 0,
+      "log": ".context/spec-readiness/deployment.log",
+      "logSha256": "c0ab9f99c690719c3f9a44ca03a38ad54d18cea5235245f088d12a57a4a4fd97"
+    }
+  },
+  "packagedSmoke": {
+    "plugin": {
+      "passed": true,
+      "log": ".context/spec-readiness/plugin-smoke.log",
+      "logSha256": "de1174d28e53386736179fe50d5198f3770e35adde1e577788f84c7e7dde5a9e"
+    },
+    "mailbox": {
+      "passed": true,
+      "log": ".context/spec-readiness/mailbox-smoke.log",
+      "logSha256": "50420c3811b08c011b45ae852ebaff7b2b60fc757f17afaf5f330483dc715178"
+    }
+  },
+  "artifacts": {
+    "commonplace-0.4.20.zip": {
+      "sha256": "20e51ebbc3480dfbeab53423338ce83abf71644651a4e0a30c8d753fccae3788",
+      "bytes": 230004444
+    },
+    "meet-proxy-0.4.20.zip": {
+      "sha256": "80b70dbe860f69b7717d0a7c69e386e8f993a7339c208c3a81eddf9585daaaa1",
+      "bytes": 230004444
+    },
+    "meet-proxy-server-0.4.20.tgz": {
+      "sha256": "1e74254b321fac2e4dbb7c527410b55ea65f243c695c867128af1bbee097b43e",
+      "bytes": 813204
+    }
+  },
+  "runtimeBundle": {
+    "sha256": "52d281e2e39e75ebfece42c84b9f161a80de664dc5ed47cdf000e7b875a3a337",
+    "files": 153
+  },
+  "screenshots": [
+    {
+      "path": ".context/spec-readiness/screenshots/01-sign-in-1440.png",
+      "sha256": "2061e60146d4762fc494b2a2598795247fe6699a6dc2a9aff35d13ef9980a1b3"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/01-sign-in-390.png",
+      "sha256": "c9dcd5c43a12495155ec746d8910e5afca49d7c05f9c9543ddf404f2d7237c2f"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/02-choose-app-1440.png",
+      "sha256": "50f28a365585bc406b1bfbe5bf34e56f095dfee2237cb9a343657702accdeb09"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/02-choose-app-390.png",
+      "sha256": "f98f07c654ed176815bbced99963162530247240eff481fbca90df2057ac534b"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/03-copy-setup-1440.png",
+      "sha256": "1debe67536cd7d2294d3a505a2fef5c7abb4112f00b45c75fb5e18a8b90be753"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/03-copy-setup-390.png",
+      "sha256": "07ac35d3c562424bb220d8171ce55e6c9750d76b98170cec9f2d45bd39faf447"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/04-messages-1440.png",
+      "sha256": "4f5dff6d04365da441211d1fdea188bad314aa648713e22238892f71bffc153a"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/04-messages-390.png",
+      "sha256": "a2cd7e1d00bca48bc66d0d7d08328bbd7567ffdd9a4be91355fe4f07cbba510a"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/05-create-space-1440.png",
+      "sha256": "66248abc2e5cd52c852c48cc809da025cf90aee01172c1ba472d70f17311dc8e"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/05-create-space-390.png",
+      "sha256": "c67ba5a8aae9c98a32394227f9060cadd2c82f664c067b38d0e56bd28347497d"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/06-sharing-rules-1440.png",
+      "sha256": "7d444d5c7d5c9af48b8593222308c4a14f12222b2f97648cff79782da751b3dc"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/06-sharing-rules-390.png",
+      "sha256": "0241ce0483a6743022e1d7f553dcbbd5e42780bc73eae3a2b21cf2264264df48"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/07-members-1440.png",
+      "sha256": "01666ecfad7a2ef6a0149c4b57bbd73783d439567574ddff3900d93a5ef0f88b"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/07-members-390.png",
+      "sha256": "bcf491719908c4536c36efc60e212e01d427ed59fc82706cb2c8df2542d5d0ad"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/08-accept-invitation-1440.png",
+      "sha256": "37df82c0caf2e5b8017f63c7de26682575ed0eac36ed4c2909b6f2c90521a603"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/08-accept-invitation-390.png",
+      "sha256": "fb60f4c989d3b65ca240fff06b80645a9511f4af642348cc39dc04dad5ae8073"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/09-recipient-context-1440.png",
+      "sha256": "f8d42d574711a742bfb7b9e4d16aece1cd231e6cb69982108a10fd142415dfd5"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/09-recipient-context-390.png",
+      "sha256": "6b6b1f2a791078914fc30a518819ccad7d7b11c1e1b86d96e04e6f1437c84774"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/10-owner-audit-1440.png",
+      "sha256": "29ba4fe9eacdd1172e95b3effe4e2b9ee73ec0ce7110c6da34ce535bb100ce11"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/10-owner-audit-390.png",
+      "sha256": "66773e4299ceeac176a52bcf7d72830374210b3d58c61c6faee38496447b3b99"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/11-expired-sharing-1440.png",
+      "sha256": "493f95a580a72b596ba59256f4771e96329b23dd668bdeb5f819920cc89a686c"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/11-expired-sharing-390.png",
+      "sha256": "7812783661d523c404bb3128d754a82da8d32315b0c7e5e5b7a1d6b7beeafd92"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/12-leave-space-1440.png",
+      "sha256": "569fad9f593c242b03630f6fa55662569fcbcbb992a8dd8757d9822ee4ba0256"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/12-leave-space-390.png",
+      "sha256": "3b6426cbe3fa16e4da4a107e5eba6cc71dfa051a6c887de1881d528595e72c04"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/13-context-search-1440.png",
+      "sha256": "0c335f2659d490f171f164bedc86091818b7a57cc9116c541c7b76375de18af5"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/13-context-search-390.png",
+      "sha256": "427d3291e01b7243812b601cea6194cdcdf3ca26fe26c71bf469a352b8b985b8"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/14-archive-space-1440.png",
+      "sha256": "04a24a8ed45d1a1fb48a8d675979c18308af33f7c542b9febcab536673fe5003"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/14-archive-space-390.png",
+      "sha256": "8ff47487d054fd61c96a50fec9071ef3b0ac65681c0708e75291e947173ce552"
+    }
+  ],
+  "gallery": "https://kyle-cloud-w3.conductor.show/review",
+  "classifier": {
+    "model": "pplx-decider-v1.2",
+    "cases": 28,
+    "correct": 23,
+    "falseAllows": 0,
+    "falseWithholds": 5,
+    "providerErrors": 0,
+    "threshold": 0.995,
+    "reportSha256": "7a3074841e7d99e859b22ca4b42fe2ded5d7a97fa203b9578dbc264f8b7cf63e",
+    "limits": "Synthetic sample; not a calibrated privacy guarantee. No real private sources used."
+  },
+  "live": {
+    "deployed": false,
+    "installedHostVerified": false
+  },
+  "remaining": [
+    "Real fresh Google and native host launch/reload walkthrough",
+    "Safe large-document chunking and recipient-safe pagination",
+    "Upstream MCP ingestion",
+    "P1 automatic contact delivery and personal agents"
+  ],
+  "testLimits": "Synthetic Google and host identities in browser/native fixtures; tests overlap and counts must not be summed as distinct coverage."
+}

@@ -1,0 +1,206 @@
+{
+  "date": "2026-10-25",
+  "state": "source and interactive preview only",
+  "design": "Connections / Context / Shared access. Full-page sharing-first connection view: choose a person, select documents in a searchable picker, then review an invitation. Conversation is a secondary Slack-style tab.",
+  "preview": "https://kyle-cloud-w3.conductor.show/preview/sample?view=conversations",
+  "previewAccess": "Conductor viewer sign-in required; disposable sample account/context",
+  "productionChanged": false,
+  "published": false,
+  "installed": false,
+  "previewUsesProductionHandlers": true,
+  "realGoogleLoginTested": false,
+  "sharingGrantsImplemented": false,
+  "invitationPreviewOnly": true,
+  "createLinkAndAcceptDisabled": true,
+  "modelCallsFromNewUI": false,
+  "results": {
+    "fullUI": {
+      "tests": 78,
+      "pass": 78,
+      "fail": 0,
+      "skipped": 0,
+      "durationMs": 95905.390554,
+      "scope": "Full final-source UI suite, including sharing-first UI and retained legacy social, conversation, setup, authentication-fixture and route tests. No real-account sign-in or production deployment."
+    },
+    "focused": {
+      "tests": 21,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "durationMs": 42887.772564,
+      "scope": "Final sharing-first source: recipient-bound private selection, search and read recovery, late-response isolation, profile, conversations, account reset, and accessibility/overflow at four widths."
+    },
+    "routing": {
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "skipped": 0,
+      "durationMs": 1407.507394,
+      "scope": "Historical focused route/API run, also covered by the final full UI suite."
+    }
+  },
+  "responsiveWidths": [
+    320,
+    390,
+    768,
+    1440
+  ],
+  "viewportChecks": {
+    "mainPages": 20,
+    "sharingAndInvitationViews": 8,
+    "setupDialogs": 4,
+    "checks": [
+      "axe accessibility",
+      "horizontal overflow",
+      "exactly three horizontal navigation links",
+      "navigation touch targets",
+      "rendered UI"
+    ],
+    "connectionSharingViews": 4,
+    "contextPickerViews": 4
+  },
+  "interactionChecks": [
+    "selection includes only chosen documents",
+    "remove selected document",
+    "default and adjustable expiry preview",
+    "disabled link creation and acceptance",
+    "Escape and focus return",
+    "no automatic document read on home",
+    "source filter and body-text search",
+    "phone reader and read retry",
+    "account switch clears selection and invitation data",
+    "sign-out and load failure recovery",
+    "no model/grant/message write requests",
+    "account profile identity, private context and settings entry",
+    "pair/mailbox deduplication by exact conversation ID",
+    "same-owner messages render on both sides",
+    "automatic visible-board message refresh",
+    "108-message history with a burst gap and earlier-page recovery",
+    "thread read retry",
+    "mobile conversation back navigation",
+    "account switch cancels delayed private conversation reads",
+    "unchanged refresh preserves message DOM and expanded boundaries",
+    "signed-out sample entry restores populated context and conversations",
+    "explicit reset recovers empty preview state",
+    "conversation board stays usable during delayed archive loading",
+    "desktop channel rail switches between exact conversations",
+    "desktop opens latest conversation without stealing focus",
+    "mobile back returns to the conversation list",
+    "live refresh retains message DOM and boundary controls",
+    "Connections is the default home; Shared context is the primary tab",
+    "exact recipient persists from connection through picker and review",
+    "search preserves selected documents outside the current result page",
+    "switching connections never reassigns a private draft",
+    "picker retries failed reads and ignores delayed results after recipient changes",
+    "account reset clears picker rows, recipient and draft"
+  ],
+  "historicalRuns": [
+    {
+      "log": ".context/context-product/simple-all-ui-test.log",
+      "tests": 69,
+      "pass": 68,
+      "fail": 1,
+      "reason": "Legacy navigation test still expected Settings. and Your context. headings; updated to Settings and Context. Full final suite above passes."
+    },
+    {
+      "log": ".context/context-product/conversation-redesign-focused.log",
+      "tests": 18,
+      "pass": 16,
+      "fail": 2,
+      "reason": "New sign-in test incorrectly expected the oldest message after the existing 108-message paging scenario. Updated it to verify the newest message in the returned page; final focused 19/19 passes."
+    },
+    {
+      "log": ".context/context-product/conversation-redesign-all-ui.log",
+      "tests": 76,
+      "pass": 76,
+      "fail": 0,
+      "skipped": 0,
+      "durationMs": 91887.847833,
+      "scope": "Historical full UI run before the Slack-style channel restyle. Latest focused and routing runs below cover the changed conversation component and its HTTP routes."
+    },
+    {
+      "log": ".context/context-product/sharing-first-focused.log",
+      "tests": 20,
+      "pass": 17,
+      "fail": 3,
+      "reason": "Mobile entry tests waited for the desktop auto-selected sharing pane. Corrected to wait for the mobile connection list."
+    },
+    {
+      "log": ".context/context-product/sharing-first-final-ui.log",
+      "tests": 78,
+      "pass": 64,
+      "fail": 14,
+      "reason": "A delayed-response test removed its route before fulfillment, causing an unhandled route error and browser teardown. The test now waits for response delivery and route completion before cleanup."
+    },
+    {
+      "log": ".context/context-product/sharing-first-recovery-debug.log",
+      "tests": 21,
+      "pass": 7,
+      "fail": 14,
+      "reason": "Isolated reproduction of the same test route cleanup failure; fixed and rerun below."
+    }
+  ],
+  "patch": {
+    "file": "context-product-ui.patch",
+    "sha256": "ee7e22ae3b5225dc37f5d13c0919f5d85ef5f90be49fad398670ea832eff233c",
+    "files": 19,
+    "orderedChainReplayPassed": true
+  },
+  "screenshots": ".context/context-product/sharing-first-screenshots/",
+  "logs": {
+    "fullUI": {
+      "path": ".context/context-product/sharing-first-all-ui-final.log",
+      "sha256": "da763731d87ff345059bdc2a23040e76fd33243a1ec62f9345130b13fe5be393"
+    },
+    "focused": {
+      "path": ".context/context-product/sharing-first-focused-final.log",
+      "sha256": "6c738f03246efd9bc91a2df0731c0f8f6f84e0881f562c658e74729b49550994"
+    },
+    "routing": {
+      "path": ".context/context-product/slack-channel-routing.log",
+      "sha256": "2d32738c111963703cd6fd3b7d02e092ffb07ac523ab71e9502cf65424233cc9"
+    }
+  },
+  "reference": ".context/attachments/assets/5d37e706-730c-484f-b5a3-78da399e802c/image.png (middle Invitation panel)",
+  "conversations": {
+    "implemented": true,
+    "readAPIs": [
+      "pair-list",
+      "pair-read",
+      "agent-feed",
+      "agent-read",
+      "shared-chats",
+      "shared-read"
+    ],
+    "refreshSeconds": 10,
+    "browserImpersonatesAgent": false,
+    "humanComposerAdded": false,
+    "nativeSendingUnchanged": true,
+    "legacyConversationScopesPreserved": true,
+    "mailboxReadIncludesMonotonicSequence": true,
+    "layout": "Secondary Conversation tab within the full-page Connections view. Desktop keeps the connection rail visible; mobile switches between list and selected person.",
+    "messageGrouping": "Consecutive same-sender and same-author-kind messages on the same date within five minutes. Every original message ID, text, timestamp and receipt remains separately rendered."
+  },
+  "previewEntry": "https://kyle-cloud-w3.conductor.show/preview/sample?view=conversations",
+  "previewSignIn": "Open sample account; synthetic populated ready owner only, no Google authentication. Reset sample recovers a persisted empty sample cookie.",
+  "screenshotHashes": {
+    "connections-desktop.png": "8e840d3265b6ae7e3c11b22cc48ad66a33c9ee443afef928e36ad57a1631352e",
+    "connections-mobile.png": "2423c6d122032e2cd9aaf6b61d5d2694c38c0b08c9dd47cf582173c0391d78db",
+    "conversation-desktop.png": "8acb8e326a20bf07cf6d814175abe4ea9dbccabb6ad771eaa60fcf9a5d9edbf0",
+    "draft-desktop.png": "a1ce22bef43ca4208930a22c143cf6e6f68fd8c3babd1ac973af4098717f7faf",
+    "picker-desktop.png": "023e277fc4a26fbec8e454d32089a8dc92e6de7ee5d1bdec74c46803d215ca00",
+    "picker-mobile.png": "d26e401cf679de4a245d329a10a8bd68a340f991a72710dcef8db981fe16bcdf",
+    "review-desktop.png": "aa42158a6eccbd74496cc2e67f846652132e81634f2a8a0793280008718ba0de"
+  },
+  "visualReview": {
+    "reviewed": [
+      "connections-desktop.png",
+      "connections-mobile.png",
+      "picker-desktop.png",
+      "picker-mobile.png",
+      "review-desktop.png"
+    ],
+    "pickerFix": "Picker document labels use an explicit horizontal layout, overriding the generic dialog label rule.",
+    "livePreview": "Local serving process verified to return the sharing pane, picker, Connections navigation and secondary conversation tab."
+  }
+}

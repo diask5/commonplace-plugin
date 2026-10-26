@@ -1,0 +1,1311 @@
+diff --git a/apps/commonplace-account/server/cloud-http.mjs b/apps/commonplace-account/server/cloud-http.mjs
+index fe7b591..6dd4eb0 100644
+--- a/apps/commonplace-account/server/cloud-http.mjs
++++ b/apps/commonplace-account/server/cloud-http.mjs
+@@ -2,6 +2,7 @@ import {UnifiedContext} from './unified-context.mjs';
+ import {sharedContext,warmSharedContext} from './shared-context.mjs';
+ import {agentSetupStatus,setupConnect,verifyCloudSetup,cancelSetupLogin} from './agent-setup.mjs';
+ import { workPageHtml } from './ui-pages.mjs';
++import { contextProductHtml } from './context-product-ui.mjs';
+ import { googleLoginScript } from './browser-login.mjs';
+ import { randomBytes } from 'node:crypto';
+ import { CloudWork } from './cloud-work.mjs';
+@@ -24,8 +25,8 @@ export async function cloudHttp(request,service,{identity=readBrowserIdentity,co
+     if(route==='/auth/google.js')return new Response(googleLoginScript(config().projectId+'.firebaseapp.com'),{headers:{'Content-Type':'text/javascript; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
+     if(['/','/work-agent','/workspaces','/settings','/signin'].includes(route)) {
+       if(request.method!=='GET')return json({error:'Use GET.'},405);
+-      if(route==='/workspaces'||route==='/settings')return new Response(null,{status:303,headers:{Location:route==='/workspaces'?'/work-agent#work':'/#people','Cache-Control':'no-store'}});
+-      return workPage(config(),route==='/signin'?safeRelativeReturnPath(new URL(request.url).searchParams.get('return_to')||'/'):null);
++      if(route==='/workspaces')return new Response(null,{status:303,headers:{Location:route==='/workspaces'?'/work-agent#work':'/#people','Cache-Control':'no-store'}});
++      return workPage(config(),route==='/signin'?safeRelativeReturnPath(new URL(request.url).searchParams.get('return_to')||'/'):null,route!=='/work-agent');
+     }
+     if(request.method!=='POST')return json({error:'Use POST.'},405);
+     const browser=route.startsWith('/account/web/');
+@@ -87,8 +88,8 @@ export async function cloudHttp(request,service,{identity=readBrowserIdentity,co
+   } catch(error) {return json({error:(error instanceof WorkProblem||[400,401,403,404,409,413,429].includes(error.status))?error.message:'Cloud work is unavailable.'},[400,401,403,404,409,413,429].includes(error.status)?error.status:503);}
+ }
+ 
+-export function workPage(auth,returnTo=null) {
++export function workPage(auth,returnTo=null,contextProduct=false) {
+   const nonce=randomBytes(18).toString('base64');
+-  const html=workPageHtml(nonce).replace('<body class="social-app">','<body class="social-app"'+(returnTo===null?'':' data-signin-return="'+encodeURIComponent(returnTo)+'"')+'>');
++  const html=(contextProduct?contextProductHtml(nonce):workPageHtml(nonce)).replace('<body class="context-product">','<body class="context-product"'+(returnTo===null?'':' data-signin-return="'+encodeURIComponent(returnTo)+'"')+'>').replace('<body class="social-app">','<body class="social-app"'+(returnTo===null?'':' data-signin-return="'+encodeURIComponent(returnTo)+'"')+'>');
+   return new Response(html,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','Content-Security-Policy':`default-src 'none'; script-src 'nonce-${nonce}' 'self' https://www.gstatic.com https://apis.google.com; worker-src 'self'; style-src 'nonce-${nonce}'; font-src 'self'; connect-src 'self' https://*.googleapis.com https://*.firebaseapp.com; frame-src https://*.firebaseapp.com https://accounts.google.com; img-src https:; base-uri 'none'; frame-ancestors 'none'; form-action 'self'`}});
+ }
+diff --git a/apps/commonplace-account/server/context-assets/context-conversations.mjs b/apps/commonplace-account/server/context-assets/context-conversations.mjs
+new file mode 100644
+index 0000000..b3d62b2
+--- /dev/null
++++ b/apps/commonplace-account/server/context-assets/context-conversations.mjs
+@@ -0,0 +1,119 @@
++import {node,button} from './ui.mjs';
++const el=id=>document.getElementById(id);
++const when=at=>new Date(at).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
++const clock=at=>new Date(at).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
++const day=at=>new Date(at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:new Date(at).getFullYear()===new Date().getFullYear()?undefined:'numeric'});
++const sameDay=(a,b)=>new Date(a).toDateString()===new Date(b).toDateString();
++const receipt=delivery=>{
++ if(delivery&&typeof delivery==='object')return ({replied:'Replied',read:'Read',submitted:'Submitted to chat · reading unconfirmed',received:'Received by plugin',queued:'Queued'})[delivery.state]||delivery.state||'Delivery unconfirmed';
++ return ({accepted:'Submitted to host · reading unconfirmed',pending:'Pending delivery',claimed:'Delivery claimed',dispatching:'Submitting to host',uncertain:'Delivery uncertain',blocked:'Delivery blocked',received:'Received',read:'Read',replied:'Replied'})[delivery]||delivery||'Delivery unconfirmed';
++};
++export function conversationBoard({call,onSelect=()=>{}}){
++ let visible=false,timer=null,generation=0,reading=0,busy=false,readBusy=false,items=[],active=null,ownAgents=new Set(),cursor=null,before=null,feedPages=1,messages=new Map(),messageSignature='',peopleSignature='',boundarySignature='';
++ const key=item=>item.type+':'+item.id;
++ const channelName=item=>item.participants?.find(p=>!ownAgents.has(p.id))?.ownerName||item.person?.name||item.title;
++ function clearReader(){reading++;active=null;messages.clear();messageSignature='';peopleSignature='';boundarySignature='';before=null;el('board-reader').hidden=true;el('board-prompt').hidden=false;el('conversation-board').classList.remove('has-thread');for(const id of ['board-messages','board-boundaries','board-person-avatar','board-thread-title','board-thread-subtitle','board-thread-people','board-read-status','board-thread-help'])el(id).replaceChildren();el('more-board-messages').hidden=true;el('retry-board-thread').hidden=true;onSelect(null);}
++ function reset(){show(false);generation++;reading++;busy=false;readBusy=false;items=[];ownAgents.clear();cursor=null;feedPages=1;clearReader();el('board-list').replaceChildren();el('board-status').textContent='';el('retry-board').hidden=true;el('more-board').hidden=true;}
++ function mark(participant){const claude=/claude/i.test(participant?.provider||''),icon=node('span',null,'board-avatar');icon.dataset.provider=claude?'claude':'codex';icon.setAttribute('aria-hidden','true');const svg=document.createElementNS('http://www.w3.org/2000/svg','svg'),path=document.createElementNS(svg.namespaceURI,'path');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('class','icon');path.setAttribute('d',claude?'M12 3v18M3 12h18M5.6 5.6l12.8 12.8M5.6 18.4 18.4 5.6M8.5 3.6l7 16.8M3.6 8.5l16.8 7':'m8 6-6 6 6 6m8-12 6 6-6 6m-3-14-2 16');svg.append(path);icon.append(svg);return icon;}
++
++ function renderList(){
++  const focused=document.activeElement?.closest('[data-conversation]')?.dataset.conversation;el('board-list').replaceChildren();
++  for(const item of items){
++   const r=button('',()=>open(item));r.className='board-conversation';r.dataset.conversation=key(item);r.setAttribute('aria-pressed',String(!!active&&key(active)===key(item)));
++   const peer=item.participants?.find(p=>!ownAgents.has(p.id)),person=peer?.ownerName||item.person?.name;
++   const copy=node('span',null,'board-conversation-copy'),heading=node('span',null,'board-row-heading');heading.append(node('strong',person||item.title));
++   if(item.updatedAt){const time=node('time',sameDay(item.updatedAt,Date.now())?clock(item.updatedAt):day(item.updatedAt));time.dateTime=new Date(item.updatedAt).toISOString();heading.append(time);}
++   copy.append(heading,node('small',person?item.title:item.people),node('span',item.preview||'Open conversation','board-conversation-preview'));
++   if(item.state&&item.state!=='active')copy.append(node('small',item.state,'board-state'));
++   const avatar=node('span',(person||item.title).trim().split(/\s+/).slice(0,2).map(n=>n[0]).join('').toUpperCase(),'connection-person');avatar.setAttribute('aria-hidden','true');
++   const arrow=node('span','›','board-row-arrow');arrow.setAttribute('aria-hidden','true');r.append(avatar,copy,arrow);el('board-list').append(r);
++  }
++  if(!items.length){const empty=node('div',null,'board-empty');empty.append(node('h2','Start with a little context.'),node('p','Choose context to prepare an invitation for someone.'));const a=node('a','Manage connections');a.href='/work-agent#agents';empty.append(a);el('board-list').append(empty);}
++  if(focused)for(const r of el('board-list').querySelectorAll('[data-conversation]'))if(r.dataset.conversation===focused)r.focus({preventScroll:true});
++  el('more-board').hidden=cursor===null;
++ }
++ async function refresh(more=false){
++  if(busy||!visible)return;busy=true;const version=generation;el('refresh-board').disabled=true;el('more-board').disabled=true;
++  if(!items.length)el('board-status').textContent='Loading connections…';
++  try{
++   if(more)feedPages++;
++   const [pairs,firstFeed,shared]=await Promise.all([call('pair-list'),call('agent-feed'),call('shared-chats')]);if(version!==generation)return;
++   let feedItems=[...firstFeed.items];cursor=firstFeed.nextBefore??null;
++   for(let page=1;page<feedPages&&cursor!==null;page++){const next=await call('agent-feed',{before:cursor});if(version!==generation)return;feedItems.push(...next.items);cursor=next.nextBefore??null;}
++   ownAgents=new Set(pairs.agents.map(a=>a.id));const paired=new Set(pairs.connections.map(c=>c.id)),seen=new Set();
++   const nextItems=[...pairs.connections.map(c=>({...c,type:'pair',title:c.participants.map(p=>p.name).join(' ↔ '),people:c.participants.map(p=>p.ownerName+' · '+p.provider).join(' / ')})),...feedItems.filter(i=>{if(paired.has(i.id)||seen.has(i.id))return false;seen.add(i.id);return true;}).map(mailItem),...shared.conversations.map(c=>({...c,id:c.linkId,type:'shared',title:c.subject,people:c.person.name+(c.destination?' · '+c.destination.provider:''),preview:'Shared chat',state:'active'}))];
++   items=nextItems.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)||a.id.localeCompare(b.id));el('board-status').textContent='';el('retry-board').hidden=true;renderList();
++   if(active){const current=items.find(i=>key(i)===key(active));if(!current){clearReader();el('board-status').textContent='Connection no longer available.';}else{active=current;await read(false);}}
++   else if(items.length&&matchMedia('(min-width: 861px)').matches)await open(items[0],false);
++  }catch(error){if(version!==generation||error.stale)return;items=[];clearReader();el('board-list').replaceChildren();el('more-board').hidden=true;el('board-status').textContent=error.message||'Connections could not load.';el('retry-board').hidden=false;}
++  finally{if(version===generation){busy=false;el('refresh-board').disabled=false;el('more-board').disabled=false;}}
++ }
++ function mailItem(i){return {...i,type:'mail',title:i.participants.map(p=>p.name).join(' ↔ '),people:i.participants.map(p=>p.provider).join(' / '),preview:i.text};}
++ function renderMessages(data,older=false){
++  el('board-person-avatar').textContent=channelName(active).trim().split(/\s+/).slice(0,2).map(n=>n[0]).join('').toUpperCase();el('board-thread-title').textContent=channelName(active);el('board-thread-subtitle').textContent=active.title;
++  const participants=data.participants||active.participants||[],ownSide=(participants.find(p=>ownAgents.has(p.id))||participants[0])?.id,nextPeople=JSON.stringify([participants,ownSide]);
++  if(nextPeople!==peopleSignature){
++   peopleSignature=nextPeople;el('board-thread-people').replaceChildren();
++   const displayOrder=[...participants].sort((a,b)=>Number(a.id===ownSide)-Number(b.id===ownSide));
++   for(const p of displayOrder){const card=node('span',null,'board-participant'),label=[p.name,p.ownerName,p.provider].filter(Boolean).join(' · ');card.title=label;card.append(mark(p),node('span',label,'sr-only'));el('board-thread-people').append(card);}
++   if(!participants.length)el('board-thread-people').append(node('p',active.people,'board-shared-people'));
++  }
++  const root=el('board-messages'),atBottom=root.scrollHeight-root.scrollTop-root.clientHeight<60,oldHeight=root.scrollHeight,oldTop=root.scrollTop;
++  const ordered=[...messages.values()].sort((a,b)=>Number.isFinite(a.seq)&&Number.isFinite(b.seq)?a.seq-b.seq:a.at-b.at);
++  const nextMessages=JSON.stringify([ordered,participants,[...ownAgents]]);
++  // Background receipt checks must not interrupt selection or move a reader.
++  if(nextMessages!==messageSignature){
++   messageSignature=nextMessages;root.replaceChildren();let previousDay=null,previousMessage=null;
++   for(const m of ordered){
++    const dateKey=new Date(m.at).toDateString();if(dateKey!==previousDay){root.append(node('p',sameDay(m.at,Date.now())?'Today':day(m.at),'board-date'));previousDay=dateKey;}
++    const p=participants.find(p=>p.id===m.sender),own=active.type==='shared'?m.sender==='local':m.sender===ownSide;
++    const row=node('article',null,'board-message');row.dataset.side=own?'own':'peer';row.dataset.message=m.id;
++    const grouped=previousMessage&&previousMessage.sender===m.sender&&previousMessage.authorKind===m.authorKind&&sameDay(previousMessage.at,m.at)&&m.at>=previousMessage.at&&m.at-previousMessage.at<300000;row.dataset.grouped=String(!!grouped);
++    let name=p?.name|| (active.type==='shared'?(own?'You':active.person.name):'Agent');if(active.type==='shared')name+=' · '+(m.authorKind==='human'?'Person':'Agent');
++    const gutter=node('div',null,'board-message-gutter');gutter.append(mark(p),node('span',clock(m.at),'board-group-time'));
++    const content=node('div',null,'board-message-content'),heading=node('div',null,'board-message-heading'),time=node('time',clock(m.at));time.dateTime=new Date(m.at).toISOString();time.title=when(m.at);
++    heading.append(node('strong',name));if(p?.provider)heading.append(node('span',p.provider,'board-provider'));if(p?.ownerName)heading.append(node('span',p.ownerName,'board-message-owner'));heading.append(time);
++    content.append(heading,node('p',m.text),node('span',receipt(m.delivery),'board-receipt'));row.setAttribute('aria-label',name+', '+when(m.at));row.append(gutter,content);root.append(row);previousMessage=m;
++   }
++   if(!ordered.length)root.append(node('p','No messages yet. Continue in your connected chat.','board-empty'));
++   if(atBottom&&!older)root.scrollTop=root.scrollHeight;else root.scrollTop=Math.max(0,oldTop+root.scrollHeight-oldHeight);
++  }
++  const nextBoundary=JSON.stringify([data.state,data.expiresAt,participants.map(p=>[p.ownerName,p.policy])]);
++  if(nextBoundary!==boundarySignature){
++   boundarySignature=nextBoundary;const boundariesOpen=el('board-boundaries').querySelector('details')?.open;el('board-boundaries').replaceChildren();
++   if(active.type==='pair'){
++   const state=node('p',data.state==='active'?'Connected until '+day(data.expiresAt):'Connection '+data.state+' · history remains readable.','board-connection-state');state.dataset.active=String(data.state==='active');el('board-boundaries').append(state);
++    const details=node('details'),summary=node('summary','Time & topic boundaries'),policy=node('div',null,'board-policy');details.open=!!boundariesOpen;policy.append(node('p','Expires '+when(data.expiresAt)));for(const p of participants)policy.append(node('p',p.ownerName+': '+p.policy.topic));details.append(summary,policy);el('board-boundaries').append(details);
++   }
++  }
++  el('board-thread-help').textContent=active.type==='pair'&&data.state!=='active'?'This connection has ended or is unavailable. No new messages can be sent.':'You can read both sides here. Send messages from your connected chats.';
++ }
++ async function read(older=false){
++  if(!active||readBusy)return;readBusy=true;const target=active,version=reading,session=generation;el('more-board-messages').disabled=true;
++  try{
++   const args=target.type==='pair'?{conversationId:target.id}:target.type==='shared'?{linkId:target.id,markRead:false}:{id:target.id};if(older)args.before=before;
++   const data=await call(target.type==='pair'?'pair-read':target.type==='shared'?'shared-read':'agent-read',args);if(version!==reading||session!==generation)return;
++   // Latest and older pages can overlap. Keep exact transport IDs and monotonic sequence.
++   const disconnectedPage=data.messages.length&&messages.size&&!data.messages.some(m=>messages.has(m.id));
++   if(!messages.size||older||(disconnectedPage&&data.nextBefore!==null))before=data.nextBefore??null;
++   for(const message of data.messages)messages.set(message.id,message);
++   el('board-read-status').textContent='';el('retry-board-thread').hidden=true;el('more-board-messages').hidden=before===null;renderMessages(data,older);
++  }catch(error){if(version!==reading||session!==generation||error.stale)return;el('board-read-status').textContent=error.message||'Conversation could not load.';el('retry-board-thread').hidden=false;
++   if(error.status===403||error.status===404||error.status===401){messages.clear();messageSignature='';peopleSignature='';boundarySignature='';el('board-messages').replaceChildren();el('board-boundaries').replaceChildren();onSelect(null);el('board-person-avatar').textContent='';el('board-thread-title').textContent='Connection unavailable';el('board-thread-subtitle').textContent='';el('board-thread-people').textContent='';el('board-thread-help').textContent='';el('more-board-messages').hidden=true;}}
++  finally{if(version===reading&&session===generation){readBusy=false;el('more-board-messages').disabled=false;}}
++ }
++ async function open(item,focus=true){clearReader();active=item;setPanel('sharing');onSelect({key:key(item),label:channelName(item)});readBusy=false;el('board-reader').hidden=false;el('board-prompt').hidden=true;el('conversation-board').classList.add('has-thread');el('board-person-avatar').textContent=channelName(item).trim().split(/\s+/).slice(0,2).map(n=>n[0]).join('').toUpperCase();el('board-thread-title').textContent=channelName(item);el('board-thread-subtitle').textContent=item.title;el('board-read-status').textContent='Loading messages…';renderList();await read();if(active===item&&focus){el('board-thread-title').focus({preventScroll:true});}}
++ function setPanel(panel){
++  const sharing=panel==='sharing';el('connection-sharing').hidden=!sharing;el('connection-conversation').hidden=sharing;
++  for(const [id,selected] of [['connection-context-tab',sharing],['connection-conversation-tab',!sharing]]){el(id).setAttribute('aria-selected',String(selected));el(id).tabIndex=selected?0:-1;}
++  if(!sharing)el('board-messages').scrollTop=el('board-messages').scrollHeight;
++ }
++ for(const [id,panel] of [['connection-context-tab','sharing'],['connection-conversation-tab','conversation']]){
++  el(id).onclick=()=>setPanel(panel);el(id).onkeydown=event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const next=event.key==='Home'?'sharing':event.key==='End'?'conversation':panel==='sharing'?'conversation':'sharing';setPanel(next);el(next==='sharing'?'connection-context-tab':'connection-conversation-tab').focus();};
++ }
++ function tick(){if(visible&&document.visibilityState==='visible')refresh();}
++ function show(value){if(visible===value)return;visible=value;clearInterval(timer);timer=null;if(value){tick();timer=setInterval(tick,10000);}}
++ el('refresh-board').onclick=()=>refresh();el('retry-board').onclick=()=>refresh();el('more-board').onclick=()=>refresh(true);el('retry-board-thread').onclick=()=>read();el('more-board-messages').onclick=()=>read(true);el('close-board-thread').onclick=()=>{const selected=active&&key(active);clearReader();renderList();for(const r of el('board-list').querySelectorAll('[data-conversation]'))if(r.dataset.conversation===selected)r.focus();};
++ document.addEventListener('visibilitychange',tick);
++ return {show,reset,refresh};
++}
+diff --git a/apps/commonplace-account/server/context-assets/context-product.mjs b/apps/commonplace-account/server/context-assets/context-product.mjs
+new file mode 100644
+index 0000000..7c1d9f7
+--- /dev/null
++++ b/apps/commonplace-account/server/context-assets/context-product.mjs
+@@ -0,0 +1,166 @@
++import {conversationBoard} from './context-conversations.mjs';
++import {signInWithGoogle} from '/auth/google.js';
++import {node,button,pending,notice,announceConnectivity} from './ui.mjs';
++const el=id=>document.getElementById(id);
++const legacy=new Set(['agents','inbox','feed','people','groups','work','connections','library']);
++if(legacy.has(location.hash.slice(1))||/^#(?:agent-invite|invite)=/.test(location.hash))location.replace('/work-agent'+location.hash);
++let owner=null,account=null,signed=false,epoch=0,listVersion=0,readVersion=0,refreshing=null,kind='',query='',documents=[],next=null,revision=null,active=null,readNext=null,view='conversations',lastTrigger=null;
++const selected=new Map(),controllers=new Set(),pickerSelected=new Map();
++let currentConnection=null,shareTarget=null,pickerTarget=null,pickerTrigger=null,pickerVersion=0,pickerRows=[],pickerNext=null,pickerRevision=null,pickerQuery='';
++const board=conversationBoard({call:(action,body)=>api(action,body,'social'),onSelect:setSharingConnection});
++let profileDocuments=[],archiveTotal=null;
++const names={claude:'Claude',codex:'Codex',chatgpt:'ChatGPT',native:'Work chat','agent-context':'Working context','agent-thread':'Conversation','cloud-task':'Saved result'};
++const source=d=>names[d.kind]||'Context';
++const displayTitle=d=>d.title.replace(/^(?:Claude|Codex) chats:\s*/,'');
++const date=t=>t?new Date(t).toLocaleDateString(undefined,{month:'short',day:'numeric'}):'Capture date unavailable';
++async function api(action,body={},group='cloud'){
++ const token=epoch,controller=new AbortController();controllers.add(controller);const timer=setTimeout(()=>controller.abort(),20000);
++ try{const response=await fetch('/account/web/'+group+'/'+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:controller.signal});
++ const result=await response.json();if(token!==epoch)throw Object.assign(Error('Account changed.'),{stale:true});
++ if(!response.ok){if(response.status===401)reset();throw Object.assign(Error(result.error||'Please try again.'),{status:response.status});}return result;
++ }catch(e){if(token!==epoch||e.stale)throw Object.assign(Error('Account changed.'),{stale:true});if(controller.signal.aborted)throw Error('This is taking longer than expected. Please try again.');throw e;}finally{controllers.delete(controller);clearTimeout(timer);}
++}
++function report(error){if(!error.stale)notice(error.message||'Could not connect. Please try again.','error');}
++async function act(fn){try{await fn();}catch(e){report(e);}}
++function reset(){board.reset();currentConnection=null;shareTarget=null;pickerTarget=null;pickerVersion++;pickerSelected.clear();pickerRows=[];pickerNext=null;pickerRevision=null;pickerQuery='';el('share-query').value='';el('share-picker-documents').replaceChildren();el('share-picker-status').textContent='';el('share-picker-title').textContent='Share context';el('share-picker-count').textContent='0 selected';el('review-picked-context').disabled=true;el('retry-share-picker').hidden=true;el('more-share-picker').hidden=true;el('share-recipient').textContent='';el('share-recipient').hidden=true;if(el('share-picker').open)el('share-picker').close();profileDocuments=[];archiveTotal=null;el('profile-name').textContent='';el('profile-avatar').textContent='';el('profile-context-count').textContent='';el('profile-documents').replaceChildren();epoch++;listVersion++;readVersion++;for(const c of controllers)c.abort();controllers.clear();signed=false;owner=null;account=null;documents=[];selected.clear();next=null;revision=null;active=null;readNext=null;el('context-query').value='';query='';kind='';
++ document.body.dataset.signed='false';el('authenticated').hidden=true;el('signin').hidden=false;el('owner-name').textContent='Your workspace';el('owner-avatar').textContent='M';el('account-email').textContent='';el('connected-sources').replaceChildren();el('documents').replaceChildren();el('document-text').replaceChildren();el('document-title').textContent='';el('document-reader').hidden=true;el('share-expiry').value='14';el('expiry-summary').textContent='2 weeks';el('share-options').open=false;el('invite-documents').replaceChildren();el('share-title').textContent='Share context';el('invite-boundaries').open=false;el('invite-avatar').textContent='';if(el('share-dialog').open)el('share-dialog').close();el('connect-prompt').value='';el('setup-email').textContent='';el('setup-origin').textContent='';el('copy-status').textContent='';el('open-app').removeAttribute('href');if(el('connect-dialog').open)el('connect-dialog').close();renderSelection();for(const b of document.querySelectorAll('[data-kind]'))b.setAttribute('aria-pressed',String(b.dataset.kind===''));}
++function setView(value,write=false){view=['context','conversations','shared','profile','settings'].includes(value)?value:'conversations';for(const s of document.querySelectorAll('[data-page]'))s.hidden=s.dataset.page!==view;document.body.dataset.currentPage=view;for(const a of document.querySelectorAll('[data-page-link]')){if(a.dataset.pageLink===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');}
++ board.show(signed&&view==='conversations');if(view==='profile')renderProfile();const title={context:'Context',conversations:'Connections',shared:'Shared access',profile:'Your profile',settings:'Settings'}[view];document.title=title+' · Meet Proxy';if(write){history.pushState(null,'','/#'+view);window.scrollTo(0,0);}if(view==='shared')renderSelection();}
++setView(location.hash.slice(1)|| (location.pathname==='/settings'?'settings':location.pathname==='/context'?'context':'conversations'));
++addEventListener('hashchange',()=>{const hash=location.hash.slice(1);if(legacy.has(hash)||/^(?:agent-invite|invite)=/.test(hash)){location.replace('/work-agent'+location.hash);return;}setView(hash);});addEventListener('popstate',()=>setView(location.hash.slice(1)));
++document.addEventListener('click',e=>{const a=e.target.closest('a[href]');if(!a||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.target)return;const url=new URL(a.href,location.href);if(url.origin===location.origin&&url.pathname==='/'&&['context','conversations','shared','profile','settings'].includes(url.hash.slice(1))){e.preventDefault();setView(url.hash.slice(1),true);document.querySelector('[data-page="'+view+'"] h1').setAttribute('tabindex','-1');document.querySelector('[data-page="'+view+'"] h1').focus({preventScroll:true});}});
++function symbol(d){const s=node('span',null,'source-symbol '+(d.kind==='claude'?'claude':d.kind==='codex'?'codex':'all'));s.setAttribute('aria-hidden','true');
++ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('class','icon');const path=document.createElementNS(svg.namespaceURI,'path');path.setAttribute('d',d.kind==='claude'?'M12 3v18M3 12h18M5.6 5.6l12.8 12.8M5.6 18.4 18.4 5.6M8.5 3.6l7 16.8M3.6 8.5l16.8 7':d.kind==='codex'?'m8 6-6 6 6 6m8-12 6 6-6 6m-3-14-2 16':'M14 3H5v18h14V8zM14 3v6h5M8 13h8m-8 4h5');svg.append(path);s.append(svg);return s;}
++function renderDocuments(){
++ el('documents').replaceChildren();for(const d of documents){const id=d.id||d.documentId,row=node('div',null,'context-document');row.dataset.id=id;row.dataset.current=String(active?.id===id);const label=node('label',null,'document-check'),checkbox=node('input');checkbox.type='checkbox';checkbox.checked=selected.has(id);checkbox.setAttribute('aria-label','Select '+d.title);checkbox.onchange=()=>{shareTarget=null;if(checkbox.checked)selected.set(id,{...d,id});else selected.delete(id);renderSelection();};label.append(checkbox);
++ const open=button('',()=>act(()=>readDocument({...d,id},false,true)));open.className='document-open';open.setAttribute('aria-label','Read '+d.title);const info=node('span',null,'document-info');info.append(node('strong',displayTitle(d)),node('small',source(d)+(d.project?' · '+d.project:'')+' · '+date(d.capturedAt)));open.append(symbol(d),info,node('span','›','document-arrow'));row.append(label,open);el('documents').append(row);}
++ if(!documents.length){const blank=node('div',null,'empty-context');blank.append(node('h2',query?'No matches this time.':kind?'Nothing from '+(names[kind]||'this source')+' yet.':'A place for what you know.'),node('p',query?'Try fewer words or search another source.':kind?'Connect this app in Settings to bring your work into context.':'Connect a source or import a conversation. Your context stays private until you choose to share it.'));const c=button(query?'Clear search':'Connect a source',()=>{if(query){query='';el('context-query').value='';act(()=>loadDocuments());}else setView('settings',true);});blank.append(c);el('documents').append(blank);}
++ el('more-documents').hidden=next===null;renderSelection();
++}
++function renderSelection(){
++ const count=selected.size;el('selection-bar').hidden=!count;el('selection-label').textContent=count+' selected';el('sharing-empty').hidden=!!count;el('share-review').hidden=!count;
++ el('draft-summary').textContent=count+' document'+(count===1?'':'s')+(shareTarget?' for '+shareTarget.label:' ready to share');el('selected-documents').replaceChildren();
++ for(const d of selected.values()){
++  const row=node('div'),remove=button('×',()=>{selected.delete(d.id);renderDocuments();if(!selected.size)el('share-dialog').close();});
++  remove.className='icon-button';remove.setAttribute('aria-label','Remove '+d.title);row.append(symbol(d),node('span',displayTitle(d)),remove);el('selected-documents').append(row);
++ }
++ renderConnectionSharing();
++}
++let shareTrigger=null;
++function openSharing(){
++ if(!signed||!selected.size)return;shareTrigger=document.activeElement;renderSelection();showInvitePreview(false);el('share-options').open=false;
++ el('share-dialog').showModal();el('share-dialog').scrollTop=0;
++}
++function showInvitePreview(preview){
++ el('share-recipient').hidden=!shareTarget;el('share-recipient').textContent=shareTarget?'For '+shareTarget.label:'';el('share-compose').hidden=preview;el('invite-preview').hidden=!preview;el('share-title').textContent=preview?(account.name||'Someone')+' invited you':'Share context';
++ if(preview){
++  el('invite-avatar').textContent=el('owner-avatar').textContent;el('invite-boundaries').open=false;el('invite-expiry').textContent=el('share-expiry').selectedOptions[0].textContent.toLowerCase();
++  el('invite-description').textContent='Read '+selected.size+' selected document'+(selected.size===1?'':'s')+' for '+el('share-expiry').selectedOptions[0].textContent.toLowerCase()+'.';
++  el('invite-documents').replaceChildren();for(const d of selected.values()){const row=node('div');row.append(symbol(d),node('span',displayTitle(d)));el('invite-documents').append(row);}
++ }
++ el('share-dialog').scrollTop=0;
++}
++el('preview-invite').onclick=()=>{showInvitePreview(true);el('back-to-share').focus({preventScroll:true});};
++el('back-to-share').onclick=()=>{showInvitePreview(false);el('preview-invite').focus({preventScroll:true});};
++el('share-expiry').onchange=()=>{el('expiry-summary').textContent=el('share-expiry').selectedOptions[0].textContent;};
++el('close-share').onclick=()=>el('share-dialog').close();
++el('share-dialog').addEventListener('close',()=>{if(shareTrigger?.isConnected&&!el('authenticated').hidden)shareTrigger.focus();});
++function setSharingConnection(connection){
++ const previous=currentConnection;currentConnection=connection;
++ if(pickerTarget&&previous?.key!==connection?.key&&el('share-picker').open)el('share-picker').close();
++ if(shareTarget&&previous?.key!==connection?.key&&el('share-dialog').open)el('share-dialog').close();
++ renderConnectionSharing();
++}
++function renderConnectionSharing(){
++ const label=currentConnection?.label||'someone',draft=!!currentConnection&&shareTarget?.key===currentConnection.key&&selected.size>0;
++ el('connection-share-heading').textContent='Bring '+label+' up to speed.';
++ el('connection-share-initials').textContent=label.trim().split(/\s+/).slice(0,2).map(n=>n[0]).join('').toUpperCase();
++ el('connection-share-empty').hidden=!!draft;el('connection-draft').hidden=!draft;el('connection-share').disabled=!currentConnection;
++ el('connection-draft-description').textContent=draft?'For '+label+' · not shared':'';el('connection-draft-documents').replaceChildren();
++ if(draft)for(const d of selected.values()){const row=node('div'),copy=node('span');copy.append(node('strong',displayTitle(d)),node('small',source(d)));row.append(symbol(d),copy);el('connection-draft-documents').append(row);}
++}
++function renderPicker(){
++ el('share-picker-documents').replaceChildren();
++ for(const d of pickerRows){const row=node('label',null,'share-picker-document'),check=node('input');check.type='checkbox';check.checked=pickerSelected.has(d.id);check.setAttribute('aria-label','Include '+d.title);check.onchange=()=>{if(check.checked)pickerSelected.set(d.id,d);else pickerSelected.delete(d.id);renderPickerCount();};
++  const copy=node('span');copy.append(node('strong',displayTitle(d)),node('small',source(d)+' · '+date(d.capturedAt)));row.append(check,symbol(d),copy);el('share-picker-documents').append(row);}
++ if(!pickerRows.length)el('share-picker-documents').append(node('p',pickerQuery?'No matches. Try fewer words.':'Your library is empty. Add context from Settings to get started.','picker-empty'));
++ el('more-share-picker').hidden=pickerNext===null;renderPickerCount();
++}
++function renderPickerCount(){el('share-picker-count').textContent=pickerSelected.size+' selected';el('review-picked-context').disabled=!pickerSelected.size;}
++async function loadPicker(more=false){
++ const request=++pickerVersion,token=epoch;el('share-picker-status').textContent='Loading your context…';el('retry-share-picker').hidden=true;el('more-share-picker').disabled=true;
++ try{
++  const result=await api(pickerQuery?'archive-search':'archive-list',{...(pickerQuery?{query:pickerQuery}:{}),...(more?{cursor:pickerNext,revision:pickerRevision}:{})});
++  if(request!==pickerVersion||token!==epoch||!el('share-picker').open)return;
++  if(result.changed)return loadPicker();
++  const rows=(pickerQuery?result.results:result.documents).map(d=>({...d,id:d.id||d.documentId}));pickerRows=more?[...pickerRows,...rows.filter(d=>!pickerRows.some(old=>old.id===d.id))]:rows;pickerNext=result.nextCursor??null;pickerRevision=result.revision;
++  el('share-picker-status').textContent='';renderPicker();
++ }catch(error){if(request!==pickerVersion||token!==epoch||error.stale||!el('share-picker').open)return;el('share-picker-status').textContent=error.message;el('retry-share-picker').hidden=false;}
++ finally{if(request===pickerVersion)el('more-share-picker').disabled=false;}
++}
++function openSharePicker(target=null){
++ if(!signed)return;pickerTrigger=document.activeElement;pickerTarget=target?{...target}:null;pickerSelected.clear();
++ if((shareTarget?.key||null)===(pickerTarget?.key||null))for(const [id,d] of selected)pickerSelected.set(id,d);
++ pickerRows=[];pickerNext=null;pickerRevision=null;pickerQuery='';el('share-query').value='';el('share-picker-documents').replaceChildren();el('more-share-picker').hidden=true;renderPickerCount();
++ el('share-picker-title').textContent=target?'Share with '+target.label:'Share context';el('share-picker-description').textContent='Choose the context for your invitation. Everything else stays private.';
++ el('share-picker').showModal();el('share-picker').scrollTop=0;loadPicker();
++}
++el('share-picker-search').onsubmit=event=>{event.preventDefault();pickerQuery=el('share-query').value.trim();loadPicker();};
++el('share-query').oninput=()=>{if(!el('share-query').value&&pickerQuery){pickerQuery='';loadPicker();}};
++el('retry-share-picker').onclick=()=>loadPicker();el('more-share-picker').onclick=()=>loadPicker(true);
++el('close-share-picker').onclick=()=>el('share-picker').close();
++el('share-picker').addEventListener('close',()=>{pickerVersion++;if(!el('share-dialog').open&&pickerTrigger?.isConnected&&!el('authenticated').hidden)pickerTrigger.focus();});
++el('review-picked-context').onclick=()=>{
++ if(!pickerSelected.size)return;selected.clear();for(const [id,d] of pickerSelected)selected.set(id,d);shareTarget=pickerTarget?{...pickerTarget}:null;el('share-picker').close();renderDocuments();openSharing();shareTrigger=pickerTrigger;
++};
++el('connection-share').onclick=()=>openSharePicker(currentConnection);el('connection-choose-context').onclick=()=>openSharePicker(currentConnection);el('connection-edit-share').onclick=()=>openSharePicker(currentConnection);el('connection-review-share').onclick=openSharing;
++el('new-share').onclick=()=>openSharePicker();for(const control of document.querySelectorAll('[data-share-start]'))control.onclick=()=>openSharePicker();
++async function loadDocuments(more=false){
++ const request=++listVersion,token=epoch;el('list-status').textContent=query?'Searching your context…':'Opening your library…';el('more-documents').hidden=true;
++ const args={...(kind?{kind}:{}),...(query?{query}:{}),...(more?{cursor:next,revision}:{})};
++ try{const result=await api(query?'archive-search':'archive-list',args);if(request!==listVersion||token!==epoch)return;
++ if(result.changed){notice('Your context changed. Refreshed to the latest version.');return loadDocuments();}
++ const rows=(query?result.results:result.documents).map(d=>({...d,id:d.id||d.documentId}));if(!query&&!kind&&!more){profileDocuments=rows.slice(0,3);archiveTotal=result.total??rows.length;renderProfile();}documents=more?[...documents,...rows.filter(d=>!documents.some(old=>old.id===d.id))]:rows;revision=result.revision;next=result.nextCursor??null;el('list-status').textContent='';el('list-heading').firstChild.textContent=query?'Search results ':'All context ';el('document-count').textContent=query?String(documents.length):String(result.total??documents.length);el('snapshot-label').textContent=result.asOf?'Snapshot · '+date(result.asOf):'';renderDocuments();
++ if(active&&!documents.some(d=>d.id===active.id)){closeDocument(false);}
++ }catch(e){if(request===listVersion&&token===epoch){el('list-status').textContent='Could not load context. '+e.message;el('more-documents').hidden=!more;throw e;}}
++}
++function closeDocument(focus=true){const id=active?.id;readVersion++;active=null;readNext=null;el('document-reader').hidden=true;el('document-text').replaceChildren();for(const row of document.querySelectorAll('.context-document'))row.dataset.current='false';if(focus)document.querySelector('[data-id="'+id+'"] .document-open')?.focus();}
++async function readDocument(d,more=false,focus=false){
++ const request=++readVersion,token=epoch;active=d;el('document-reader').hidden=false;el('retry-document').hidden=true;el('more-document-text').hidden=true;
++ if(!more){el('document-title').textContent=displayTitle(d);el('document-text').textContent='Loading context…';el('document-provider').textContent=source(d);el('document-meta').textContent=(d.project?d.project+' · ':'')+'Captured '+date(d.capturedAt);}
++ for(const row of document.querySelectorAll('.context-document'))row.dataset.current=String(row.dataset.id===d.id);
++ if(focus){el('document-title').focus({preventScroll:true});if(innerWidth<=1000)el('document-reader').scrollIntoView({block:'start',behavior:'instant'});}
++ try{const result=await api('archive-read',{documentId:d.id,revision,offset:more?readNext:0,limit:12000});if(request!==readVersion||token!==epoch)return;
++ if(result.changed){el('document-text').textContent='This document has changed. Refresh your context to read the current version.';readNext=null;return;}
++ if(!more)el('document-text').replaceChildren();el('document-text').append(node('p',result.text));readNext=result.nextOffset;el('more-document-text').hidden=readNext===null;
++ }catch(e){if(request===readVersion&&token===epoch){if(!more)el('document-text').textContent='Could not read this document. '+e.message;el('retry-document').hidden=false;throw e;}}
++}
++el('search-form').onsubmit=e=>{e.preventDefault();query=el('context-query').value.trim();closeDocument(false);act(()=>loadDocuments());};el('context-query').oninput=()=>{if(!el('context-query').value&&query){query='';act(()=>loadDocuments());}};
++for(const b of document.querySelectorAll('[data-kind]'))b.onclick=()=>{kind=b.dataset.kind;for(const other of document.querySelectorAll('[data-kind]'))other.setAttribute('aria-pressed',String(other===b));closeDocument(false);act(()=>loadDocuments());};
++el('refresh-context').onclick=()=>act(()=>pending(el('refresh-context'),()=>loadDocuments()));el('more-documents').onclick=()=>act(()=>pending(el('more-documents'),()=>loadDocuments(true)));el('close-document').onclick=()=>closeDocument();el('more-document-text').onclick=()=>act(()=>pending(el('more-document-text'),()=>readDocument(active,true)));el('retry-document').onclick=()=>act(()=>readDocument(active));el('review-selection').onclick=openSharing;el('open-share').onclick=openSharing;el('clear-selection').onclick=()=>{selected.clear();renderDocuments();};
++function renderProfile(){
++ if(!account)return;el('profile-name').textContent=account.name||'Your account';el('profile-avatar').textContent=el('owner-avatar').textContent;
++ el('profile-context-count').textContent=archiveTotal===null?'Open your library to browse saved context.':archiveTotal+' saved document'+(archiveTotal===1?'':'s')+' · private to you';
++ el('profile-documents').replaceChildren();for(const d of profileDocuments){const item=button('',()=>{setView('context',true);act(()=>readDocument(d,false,true));});item.className='profile-document';const info=node('span');info.append(node('strong',displayTitle(d)),node('small',source(d)+' · '+date(d.capturedAt)));item.append(symbol(d),info,node('span','›'));el('profile-documents').append(item);}
++ if(archiveTotal===0)el('profile-documents').append(node('p','Connect an app in Settings to start your context library.','profile-empty'));
++}
++function renderAccount(data){const a=data.setup.account;account=a;el('owner-name').textContent=a.name||'Your account';el('owner-avatar').textContent=(a.name||'M').trim().split(/\s+/).slice(0,2).map(v=>v[0]).join('');el('account-email').textContent=a.email||a.name;el('sync-enabled').checked=!!data.syncEnabled;el('sync-freshness').textContent=data.sources?.lastSyncedAt?'Last upload '+new Date(data.sources.lastSyncedAt).toLocaleString():data.syncEnabled?'Waiting for your next upload.':'Sync is paused. Saved context remains available.';
++ archiveTotal=data.archive?.ready?data.archive.documents:null;renderProfile();el('mcp-endpoint').textContent=location.origin+'/mcp';el('connected-sources').replaceChildren();
++ for(const c of data.companions||[]){const row=node('div',null,'source-device');row.append(node('strong',c.machine||'Connected computer'),node('span',c.contextFolder?.ready?'Local context folder available · '+c.contextFolder.documents+' documents':'Connected installation · folder readiness not reported'));el('connected-sources').append(row);}
++}
++async function refresh(){if(refreshing)return refreshing;const token=epoch;refreshing=(async()=>{try{const data=await api('status');if(token!==epoch)return;if(document.body.dataset.signinReturn){location.replace(decodeURIComponent(document.body.dataset.signinReturn));return;}
++ if(owner&&owner!==data.setup.account.id)reset();owner=data.setup.account.id;signed=true;document.body.dataset.signed='true';el('signin').hidden=true;el('loading-panel').hidden=true;el('authenticated').hidden=false;el('load-error').hidden=true;renderAccount(data);board.show(view==='conversations');await loadDocuments();
++ }catch(e){if(e.status!==401&&!e.stale){if(!signed){el('load-error').hidden=false;el('load-error-message').textContent=e.message;}else report(e);}}finally{el('loading-panel').hidden=true;refreshing=null;}})();return refreshing;}
++el('retry').onclick=()=>pending(el('retry'),refresh);el('google').onclick=()=>act(()=>pending(el('google'),async()=>{await signInWithGoogle();await refresh();}));
++el('sync-enabled').onchange=()=>act(async()=>{const control=el('sync-enabled'),chosen=control.checked,token=epoch;control.disabled=true;try{await api('configure',{syncEnabled:chosen});if(token===epoch){notice(chosen?'Work-chat sync enabled.':'Work-chat sync paused.');await refresh();}}catch(e){if(token===epoch)control.checked=!chosen;throw e;}finally{control.disabled=false;}});
++el('settings-signout').onclick=()=>act(async()=>{reset();el('google').disabled=true;try{const r=await fetch('/auth/signout',{method:'POST',signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('Sign-out did not complete. Please try again.');location.replace('/');}catch(error){el('google').disabled=false;throw error;}});
++
++function connect(app='claude'){
++ if(!signed)return;lastTrigger=document.activeElement;el('copy-status').textContent='';const name=app==='codex'?'Codex':'Claude Code';el('connect-title').textContent='Use your context in '+name;el('setup-email').textContent=account.email||account.name;el('setup-origin').textContent=location.origin;
++ const install=app==='codex'?'Use the verified Meet Proxy 0.4.19 release at https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.19. Check the published SHA-256, extract to a permanent folder, and run its server/configure-codex.mjs using the bundled runtime from a shell in this chat. Do not invent native identity variables.':'Use the supported plugin manager for diask5/commonplace-plugin and Meet Proxy 0.4.19 or newer. Update an existing commonplace alias if present; enable only one alias.';
++ const prompt='Connect this existing '+name+' chat to my own context in Meet Proxy at '+location.origin+'. My account is '+(account.email||account.name)+'. I authorize routine plugin setup and account linking. Start with setup_status if available. '+install+' Verify both the configured server origin and signed account before claiming it is connected. Preserve an existing different account or server and report the mismatch. Respect host approvals and explain any reload required. Use context_folder_status, or the read-only list_shared_context, search_shared_context and read_shared_context tools to access my authorized context. Report freshness and unavailable sources. Do not enable transcript sync, grant another person access, start a cloud agent, or connect a model subscription as part of this setup.';
++ el('connect-prompt').value=prompt;el('open-app').href=(app==='codex'?'codex://threads/new?prompt=':'claude://code/new?q=')+encodeURIComponent(prompt);el('open-app').textContent='Open '+(app==='codex'?'Codex':'Claude');el('connect-dialog').showModal();el('connect-dialog').scrollTop=0;
++}
++for(const b of document.querySelectorAll('[data-app]'))b.onclick=()=>connect(b.dataset.app);for(const b of document.querySelectorAll('[data-connect]'))b.onclick=()=>setView('settings',true);el('close-connect').onclick=()=>el('connect-dialog').close();el('connect-dialog').addEventListener('close',()=>lastTrigger?.isConnected&&lastTrigger.focus());
++el('copy-setup').onclick=()=>act(async()=>{try{await navigator.clipboard.writeText(el('connect-prompt').value);el('copy-status').textContent='Copied. Paste it into your existing chat.';}catch{el('connect-prompt').focus();el('connect-prompt').select();el('copy-status').textContent='Select and copy the request above.';}});el('copy-endpoint').onclick=()=>act(async()=>{await navigator.clipboard.writeText(location.origin+'/mcp');notice('MCP endpoint copied.');});
++addEventListener('pageshow',event=>{if(event.persisted){reset();location.reload();}});announceConnectivity();refresh();
+diff --git a/apps/commonplace-account/server/context-assets/social.mjs b/apps/commonplace-account/server/context-assets/social.mjs
+index 80a8226..33e566c 100644
+--- a/apps/commonplace-account/server/context-assets/social.mjs
++++ b/apps/commonplace-account/server/context-assets/social.mjs
+@@ -30,7 +30,7 @@ export function socialApp({onView=()=>{},signIn,onSetup}={}){
+     for(const section of document.querySelectorAll('[data-view]'))section.hidden=section.dataset.view!==view;
+     for(const a of document.querySelectorAll('[data-view-link]')){if(a.dataset.viewLink===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');}
+     document.title=({agents:'Your agents',inbox:'Inbox',feed:'Activity',groups:'Your circles',people:'Your people',work:'Your agents',library:'Your library'})[view]+' · Meet Proxy';
+-    if(updateHash&&!location.hash.startsWith('#invite=')&&!location.hash.startsWith('#agent-invite=')){const target=view==='library'?'/context':view==='work'?'/work-agent#work':'/#'+view;if(location.pathname+location.search+location.hash!==target)history.pushState(null,'',target);}
++    if(updateHash&&!location.hash.startsWith('#invite=')&&!location.hash.startsWith('#agent-invite=')){const target=view==='library'?'/work-agent#library':view==='work'?'/work-agent#work':'/#'+view;if(location.pathname+location.search+location.hash!==target)history.pushState(null,'',target);}
+     if(activeView!==null&&activeView!==view){window.scrollTo(0,0);if(updateHash){const heading=document.querySelector('[data-view="'+view+'"] h1');heading.tabIndex=-1;heading.focus({preventScroll:true});}}
+     document.body.dataset.currentView=view;el('more-menu').open=false;
+     activeView=view;
+diff --git a/apps/commonplace-account/server/context-http.mjs b/apps/commonplace-account/server/context-http.mjs
+index c9b3ec1..394eae0 100644
+--- a/apps/commonplace-account/server/context-http.mjs
++++ b/apps/commonplace-account/server/context-http.mjs
+@@ -12,12 +12,12 @@ async function body(request){
+   let value;try{value=JSON.parse(Buffer.concat(chunks).toString());}catch{throw Object.assign(Error('Invalid JSON.'),{status:400});}
+   if(!value||typeof value!=='object'||Array.isArray(value))throw Object.assign(Error('Expected an object.'),{status:400});return value;
+ }
+-const assetTypes={'agent-connections.mjs':'text/javascript','context-search.mjs':'text/javascript','context-coverage.mjs':'text/javascript','groups.mjs':'text/javascript','shared-chats.mjs':'text/javascript','invitations.mjs':'text/javascript','agent-setup.mjs':'text/javascript','social.mjs':'text/javascript','activity.mjs':'text/javascript','manrope-latin.woff2':'font/woff2','manrope-LICENSE.txt':'text/plain','ui.mjs':'text/javascript','work-agent.mjs':'text/javascript','context.mjs':'text/javascript','context.css':'text/css','import-worker.mjs':'text/javascript','export-file.mjs':'text/javascript','chatgpt-format.mjs':'text/javascript','fflate.mjs':'text/javascript','fflate-LICENSE.txt':'text/plain'};
++const assetTypes={'context-conversations.mjs':'text/javascript','context-product.mjs':'text/javascript','agent-connections.mjs':'text/javascript','context-search.mjs':'text/javascript','context-coverage.mjs':'text/javascript','groups.mjs':'text/javascript','shared-chats.mjs':'text/javascript','invitations.mjs':'text/javascript','agent-setup.mjs':'text/javascript','social.mjs':'text/javascript','activity.mjs':'text/javascript','manrope-latin.woff2':'font/woff2','manrope-LICENSE.txt':'text/plain','ui.mjs':'text/javascript','work-agent.mjs':'text/javascript','context.mjs':'text/javascript','context.css':'text/css','import-worker.mjs':'text/javascript','export-file.mjs':'text/javascript','chatgpt-format.mjs':'text/javascript','fflate.mjs':'text/javascript','fflate-LICENSE.txt':'text/plain'};
+ export async function contextHttp(request,service,{identity=readBrowserIdentity}={}) {
+   const route=new URL(request.url).pathname;
+   if(route!=='/context'&&!route.startsWith('/context/'))return null;
+   try {
+-    if(route==='/context'&&request.method==='GET')return workPage();
++    if(route==='/context'&&request.method==='GET')return workPage(undefined,null,true);
+     if(route.startsWith('/context/assets/')&&request.method==='GET'){
+       const name=route.slice('/context/assets/'.length);
+       if(name==='ui.css')return new Response(uiCss,{headers:{...headers,'Content-Type':'text/css; charset=utf-8'}});
+diff --git a/apps/commonplace-account/server/context-product-style.mjs b/apps/commonplace-account/server/context-product-style.mjs
+new file mode 100644
+index 0000000..d304082
+--- /dev/null
++++ b/apps/commonplace-account/server/context-product-style.mjs
+@@ -0,0 +1,400 @@
++export const contextProductCss=`
++body.context-product{--background:#fbfaf8;--foreground:#302d29;--primary:#a83b27;--border:#e5e1da;--muted-foreground:#686158;--ring:#a83b27;background:var(--background)}
++.context-product [hidden]{display:none!important}
++.context-product button,.context-product .button{min-height:44px;border-radius:7px}
++.context-product button:hover{transform:none}
++.context-product button:disabled{cursor:not-allowed}
++.context-product button.primary,.context-product .button.primary{background:var(--primary);color:#fff}
++.context-product button.primary:hover,.context-product .button.primary:hover{background:#8c3020}
++.context-product button.icon-button{width:44px;min-width:44px;padding:11px;background:transparent;color:var(--muted-foreground)}
++.context-product button.icon-button:hover,.context-product button.text-button:hover{background:#eeeae3;color:var(--foreground)}
++.context-product button.text-button{background:transparent;color:var(--muted-foreground)}
++.context-product .icon{width:18px;height:18px}
++.context-header{border-bottom:1px solid var(--border)}
++.context-header-inner{max-width:1120px;margin:auto;padding:0 32px;min-height:80px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:36px}
++.context-header .brand{justify-self:start;min-height:44px;font-size:19px}
++.context-header nav{display:flex;gap:32px;align-self:stretch}
++.context-header nav a{display:flex;align-items:center;text-decoration:none;font-size:13px;font-weight:600;min-height:48px;border-bottom:2px solid transparent;padding:2px 0 0;color:var(--muted-foreground)}
++.context-header nav a[aria-current=page]{color:var(--foreground);border-color:var(--primary)}
++.context-header nav a:hover{color:var(--primary)}
++.account-link{justify-self:end;display:grid;place-items:center;width:44px;height:44px;text-decoration:none;border-radius:50%}
++.owner-avatar{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:#eae5db;color:#63594a;font-size:11px;font-weight:650}
++.context-product main{max-width:944px;margin:0 auto;padding:48px 32px 64px}
++.context-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:30px}
++.context-heading h1{font-size:30px;font-weight:650;letter-spacing:-1px}
++.context-heading p{color:var(--muted-foreground);font-size:13px;margin-top:9px}
++.context-heading>.button,.context-heading>button{flex-shrink:0}
++.library-toolbar{display:flex;gap:8px;align-items:center}
++.library-toolbar form{display:flex;align-items:center;gap:10px;flex:1;min-width:0;border:1px solid var(--border);background:#fff;border-radius:8px;padding:0 4px 0 14px}
++.library-toolbar form>.icon{color:var(--muted-foreground)}
++.library-toolbar input{flex:1;width:0;min-width:0;border:0;background:transparent;padding:12px 0;font-size:14px;outline-offset:0}
++.library-toolbar .search-submit{background:transparent;color:var(--muted-foreground);padding:10px;width:44px;min-width:44px}
++.library-filters{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 20px}
++.source-filters{display:flex;gap:4px}
++.source-filters button{background:transparent;color:var(--muted-foreground);font-size:12px;padding:8px 15px;font-weight:500}
++.source-filters button[aria-pressed=true]{color:var(--foreground);background:#eeeae3;font-weight:650}
++.source-filters button:hover{background:#f1eee8;color:var(--foreground)}
++#snapshot-label{font-size:11px;color:var(--muted-foreground)}
++.context-list-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:12px;color:var(--muted-foreground);font-size:11px}
++.context-list-heading h2{font-size:12px;font-weight:500;letter-spacing:0}
++#document-count{margin-left:5px}
++#document-count:not(:empty)::before{content:'·';margin-right:5px}
++#documents{border-top:1px solid var(--border)}
++.context-document{display:flex;align-items:center;border-bottom:1px solid var(--border);min-height:82px;gap:4px}
++.context-document:hover,.context-document[data-current=true]{background:#f2eee7}
++.document-check{display:flex;align-items:center;justify-content:center;min-height:52px;width:44px;min-width:44px}
++.document-check input{width:16px;height:16px;accent-color:var(--primary)}
++.document-open{display:flex;align-items:center;justify-content:flex-start;gap:14px;flex:1;min-width:0;text-align:left;padding:14px 12px 14px 2px;background:transparent;color:inherit}
++.context-product .document-open:hover{color:var(--foreground);background:transparent}
++.source-symbol{display:grid;place-items:center;flex-shrink:0;width:32px;height:36px;border-radius:7px;color:#796548;background:#eee7db}
++.source-symbol.claude{color:#a46140;background:#f4e8dc}
++.source-symbol.codex{color:#536b59;background:#e5ece5}
++.source-symbol.all{color:#776588;background:#ece7f1}
++.document-info{min-width:0;flex:1}
++.document-info strong{display:block;font-weight:600;font-size:14px;line-height:1.6;overflow-wrap:anywhere}
++.document-info small{display:block;font-size:11px;color:var(--muted-foreground);font-weight:400;margin-top:3px}
++.document-arrow{color:var(--muted-foreground);font-size:18px;font-weight:400}
++.selection-bar{display:flex;align-items:center;gap:8px;padding:8px 10px 8px 16px;margin-bottom:12px;border-radius:8px;background:#eeeae3;font-size:12px}
++.selection-bar>span{margin-right:auto}
++.selection-bar button{font-size:12px}
++.context-browser{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:24px}
++.context-browser:has(.document-reader:not([hidden])){grid-template-columns:minmax(0,1fr) minmax(0,350px)}
++.documents-pane{min-width:0}
++.document-reader{position:sticky;top:24px;border:1px solid var(--border);border-radius:10px;background:white;min-width:0}
++.reader-topline{display:flex;justify-content:space-between;align-items:center;padding:6px 10px 6px 22px;font-size:11px;color:var(--muted-foreground);border-bottom:1px solid var(--border)}
++.reader-content{padding:22px}
++.reader-content h2{font-size:20px;line-height:1.4;overflow-wrap:anywhere}
++#document-meta{margin-top:12px;font-size:11px;color:var(--muted-foreground)}
++#document-text{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.9;margin-top:20px;max-height:480px;overflow:auto}
++#document-text p+p{margin-top:0}
++.reader-content button{margin-top:16px}
++.library-footer{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:16px;font-size:11px;color:var(--muted-foreground)}
++.library-footer span,.library-footer a{display:flex;align-items:center;gap:7px}
++.library-footer .icon{width:14px;height:14px}
++.library-footer a{min-height:44px;text-decoration:none}
++#more-documents{margin-top:18px}
++#list-status{color:var(--muted-foreground);font-size:12px;margin:12px 0}
++#list-status:empty,#notice:empty{display:none}
++#notice{font-size:13px;padding:13px 16px;border-radius:8px;background:#f0e8da;margin-bottom:20px;overflow-wrap:anywhere}
++#notice[data-tone=error]{color:#8e3423;background:#fff0eb}
++.empty-context,.sharing-empty{text-align:center;padding:56px 16px}
++.empty-context h2,.sharing-empty h2{font-size:21px;letter-spacing:-.5px;font-weight:600}
++.empty-context p,.sharing-empty p{font-size:13px;color:var(--muted-foreground);margin:14px auto 22px;max-width:400px}
++.sharing-empty small{display:block;margin-top:18px;color:var(--muted-foreground);font-size:11px}
++.empty-symbol{display:block;color:var(--muted-foreground);margin-bottom:18px}
++.empty-symbol .icon{width:26px;height:26px}
++.sharing-note{border-top:1px solid var(--border);padding-top:20px;font-size:12px;color:var(--muted-foreground)}
++.share-draft{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 0;display:flex;align-items:center;gap:14px;margin:40px 0}
++.share-draft>div{flex:1;min-width:0}
++.share-draft strong{font-size:13px;overflow-wrap:anywhere}
++.share-draft p{font-size:12px;color:var(--muted-foreground);margin-top:4px}
++.settings-section{padding:28px 0;border-top:1px solid var(--border)}
++.settings-section h2{font-size:16px;letter-spacing:-.3px}
++.settings-section p{font-size:13px;color:var(--muted-foreground);margin-top:8px}
++.app-connections{display:grid;margin-top:18px}
++.app-connections button{padding:14px 0;justify-content:flex-start;text-align:left;gap:14px;border-bottom:1px solid var(--border);border-radius:0;background:transparent;color:var(--foreground)}
++.app-connections button:hover{background:#f3f0ea}
++.app-connections strong{display:block;font-size:13px}
++.app-connections small{display:block;margin-top:3px;font-size:11px;color:var(--muted-foreground);font-weight:400}
++.app-connections button>.icon{margin-left:auto}
++.context-product details{border:0;border-radius:0;padding:0;margin:12px 0 0;background:transparent}
++.context-product summary{display:flex;align-items:center;min-height:44px;gap:7px;font-size:12px;color:var(--muted-foreground);cursor:pointer}
++.context-product summary::before{content:'›';display:inline-block;font-size:18px}
++.context-product details[open]>summary::before{transform:rotate(90deg)}
++.mcp-details code{display:block;padding:12px;background:#f0ece4;border-radius:6px;overflow-wrap:anywhere;margin:14px 0}
++.sync-control{display:flex;align-items:center;justify-content:space-between;gap:32px;padding:20px 0}
++.sync-control strong{font-size:13px}
++.sync-control p{max-width:480px}
++#sync-freshness{display:block;font-size:11px;color:var(--muted-foreground);margin-top:8px}
++.toggle-label{display:flex;gap:10px;align-items:center;min-height:44px;white-space:nowrap;font-size:12px}
++.source-device{border-top:1px solid var(--border);padding:16px 0;font-size:12px}
++.source-device span{display:block;margin-top:5px;font-size:11px;color:var(--muted-foreground)}
++.import-link,.history-details a{display:flex;align-items:center;gap:10px;min-height:44px;font-size:12px;text-decoration:none}
++.history-details p{font-size:12px;color:var(--muted-foreground);margin:8px 0}
++.account-section{display:flex;align-items:center;justify-content:space-between;gap:20px}
++.account-section p+p{margin-top:0}
++.context-product dialog{width:min(500px,calc(100vw - 24px));max-height:calc(100svh - 24px);padding:24px;border:1px solid var(--border);border-radius:14px;background:var(--background);color:var(--foreground);box-shadow:0 20px 90px #30291f26}
++.context-product dialog::backdrop{background:#30291f50}
++.dialog-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
++.dialog-heading h2{font-size:22px;font-weight:650;line-height:1.3}
++.context-product dialog p{font-size:13px;color:var(--muted-foreground)}
++#selected-documents{border-top:1px solid var(--border);margin:22px 0}
++#selected-documents>div{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px}
++#selected-documents>div>span:not(.source-symbol){flex:1;min-width:0;overflow-wrap:anywhere}
++#selected-documents .source-symbol{width:28px;height:32px}
++.access-summary{display:grid;gap:8px;font-size:12px;color:var(--muted-foreground);margin-bottom:12px}
++.access-summary>span{display:flex;align-items:center;gap:8px}
++.access-summary .icon{width:14px;height:14px}
++#share-options{border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:20px 0;padding:6px 0}
++#share-options summary{color:var(--foreground)}
++.summary-action{margin-left:auto;color:var(--muted-foreground);text-decoration:underline;text-underline-offset:3px}
++#share-options label{display:block;font-size:12px;margin:12px 0 8px}
++#share-expiry{width:100%;margin-bottom:12px;font-size:14px}
++.share-actions{display:flex;flex-direction:column;gap:4px}
++.context-product dialog .build-note{font-size:11px;line-height:1.7;color:var(--muted-foreground)}
++#sharing-unavailable{margin-top:12px}
++/* Invitation treatment follows the owner's middle-card reference. */
++.context-product #share-dialog{width:min(420px,calc(100vw - 32px));padding:20px;border-radius:24px;background:#fffdfa;box-shadow:0 14px 48px #29212e33}
++#share-dialog::backdrop{background:#24202c59;backdrop-filter:blur(4px)}
++#share-dialog .dialog-heading{margin:0 0 18px;align-items:center;gap:12px}
++#share-dialog .dialog-heading h2{font-size:15px;letter-spacing:-.3px;line-height:1.5;overflow-wrap:anywhere}
++#share-dialog #close-share{border:1px solid #ede9e3;background:#f6f4ef;border-radius:50%;color:#6d675f;flex-shrink:0}
++#share-dialog #close-share:hover{background:#ebe7df}
++.invitation-art{height:106px;display:flex;align-items:center;justify-content:center;gap:24px;background:#eee8f6;border-radius:95px 95px 24px 24px;overflow:hidden;margin-bottom:20px;padding-top:10px}
++.invitation-tile{width:68px;height:68px;display:grid;place-items:center;border-radius:17px;flex-shrink:0;box-shadow:0 5px 0 #73618509}
++.invitation-tile .icon{width:34px;height:34px;stroke-width:1.5}
++.context-tile{background:#e8e2f0;color:#6c5c85;transform:rotate(-12deg)}
++.person-tile{background:#dce5ce;color:#58694b;transform:rotate(10deg);font-size:26px;font-weight:550}
++.invitation-bridge{color:#88739b}
++.invitation-bridge .icon{width:20px;height:20px}
++.invitation-copy{text-align:center;margin:0 auto 24px}
++.invitation-kicker{display:block;font:9px/1.6 var(--font-mono);letter-spacing:2.3px;color:#78658a;margin-bottom:14px}
++#share-dialog .invitation-copy h3{font-size:30px;font-weight:650;letter-spacing:-1.3px;line-height:1.15;margin:0 0 18px}
++#share-dialog .invitation-copy p{font-size:12px;line-height:1.85;color:#71695f}
++#share-dialog .invitation-copy p+p{margin-top:5px}
++#share-dialog #selected-documents{margin:0 0 18px}
++#share-dialog #selected-documents>div{font-size:12px}
++#share-dialog .access-summary{font-size:11px;gap:7px}
++#share-dialog #share-options{margin:18px 0}
++#share-dialog .primary{min-height:50px;border-radius:999px;background:#b63e27;color:white;font-size:13px}
++#share-dialog .primary:disabled{opacity:1;cursor:not-allowed}
++#share-dialog .primary:disabled:hover{background:#b63e27}
++#share-dialog .build-note{font-size:10px;line-height:1.8;color:#71695f}
++#invite-preview{text-align:center}
++#invite-documents{text-align:left;border-top:1px solid var(--border);margin:0}
++#invite-documents>div{border-bottom:1px solid var(--border);padding:14px 0;display:flex;align-items:center;gap:12px;font-size:12px;overflow-wrap:anywhere}
++#invite-documents>div>span:not(.source-symbol){min-width:0;flex:1}
++#invite-boundaries{text-align:left;border-bottom:1px solid var(--border);padding:8px 0;margin:0}
++#invite-boundaries summary{font-size:12px;color:#5f584f}
++#share-dialog #invite-boundaries p{font-size:12px;line-height:1.8;padding-bottom:10px}
++#share-dialog .invitation-consent{text-align:left;font-size:12px;line-height:1.85;color:#71695f;margin:18px 0 22px}
++#accept-preview{width:100%;margin-bottom:8px}
++#back-to-share{margin-top:4px;font-size:11px}
++.setup-identity{display:grid;gap:4px;padding:14px;border-radius:8px;background:#efeae1;font-size:12px;margin:20px 0;overflow-wrap:anywhere}
++.setup-identity code{font-size:11px;color:var(--muted-foreground)}
++.context-product dialog label{display:block;font-size:12px;margin-bottom:8px}
++#connect-prompt{font-size:12px;line-height:1.7;min-height:150px}
++.connect-actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
++.context-product dialog .setup-footnote{font-size:11px}
++#copy-status{margin-top:12px}
++.loading-panel,.load-error{padding:60px 0;color:var(--muted-foreground)}
++.load-error h1{font-size:28px;letter-spacing:-1px;color:var(--foreground)}
++.load-error p{margin:16px 0}
++#signin{text-align:center;padding:90px 0}
++#signin h1{font-size:38px;letter-spacing:-1.5px}
++#signin p{color:var(--muted-foreground);margin:20px 0 28px}
++#signin small{display:block;margin-top:18px;color:var(--muted-foreground);font-size:12px}
++body:not([data-signed=true]) .context-header nav,body:not([data-signed=true]) .account-link{visibility:hidden}
++@media(max-width:1000px){.context-browser:has(.document-reader:not([hidden])){grid-template-columns:1fr}.document-reader{position:relative;top:0}.context-browser:has(.document-reader:not([hidden])) .documents-pane{display:none}#document-text{max-height:none}.context-header-inner{gap:24px}}
++@media(max-width:640px){
++ .context-header-inner{padding:14px 20px 0;grid-template-columns:1fr auto;gap:4px 16px;min-height:0}
++ .context-header nav{grid-row:2;grid-column:1/-1;justify-content:space-between;gap:16px}
++ .context-header nav a{min-height:50px;font-size:13px}
++ .account-link{grid-row:1;grid-column:2}
++ .context-product main{padding:30px 20px 40px}
++ .context-heading{align-items:flex-start;gap:14px;margin-bottom:24px}
++ .context-heading h1{font-size:26px}
++ .context-heading p{font-size:12px;max-width:220px}
++ .context-heading>.button,.context-heading>button{font-size:12px;padding:10px}
++ .context-heading>.button .icon,.context-heading>button .icon{display:none}
++ .library-toolbar input{font-size:16px}
++ .library-toolbar .search-submit{display:none}
++ .library-filters{flex-wrap:wrap;margin-bottom:18px;gap:4px}
++ #snapshot-label{margin-left:auto;font-size:10px}
++ .source-filters button{padding:8px 13px}
++ .context-list-heading{font-size:10px}
++ .document-open{gap:10px;padding-right:4px}
++ .document-info strong{font-size:13px}
++ .document-info small{font-size:11px}
++ .source-symbol{width:27px;height:32px}
++ .context-document{gap:0}
++ .library-footer{flex-wrap:wrap;gap:2px;margin-top:20px}
++ .library-footer a{margin-left:auto}
++ .selection-bar{padding:7px 8px;gap:2px;font-size:11px}
++ .selection-bar button{font-size:11px;padding:10px}
++ .sync-control{align-items:flex-start;flex-direction:column;gap:12px}
++ .account-section{align-items:flex-start}
++ .account-section p{overflow-wrap:anywhere}
++ .context-product dialog{padding:18px}
++ .context-product dialog textarea,#share-expiry{font-size:16px}
++ .dialog-heading h2{font-size:21px}
++ .context-product dialog .dialog-heading{gap:4px}
++ .sharing-empty{padding:42px 0}
++ .sharing-empty br{display:none}
++ #signin{padding:60px 0}
++ #signin h1{font-size:32px}
++ body:not([data-signed=true]) .context-header nav{display:none}
++ body:not([data-signed=true]) .context-header-inner{padding-bottom:14px}
++}
++
++/* Account profile and the shared conversation board keep the same three-link shell. */
++.profile-page-top{display:flex;justify-content:space-between;gap:18px;margin-bottom:24px;font-size:12px;color:var(--muted-foreground)}
++.profile-page-top a{display:flex;align-items:center;gap:8px;text-decoration:none;min-height:44px}
++.account-profile{max-width:740px;margin:auto;border:1px solid var(--border);border-radius:24px;background:#fffdfa;overflow:hidden}
++.profile-cover{height:148px;background:#eee8f6;display:flex;justify-content:space-between;align-items:center;padding:0 64px}
++.profile-cover-tile{display:grid;place-items:center;width:70px;height:70px;border-radius:18px;transform:rotate(-13deg);background:#e4dced;color:#877398}
++.profile-cover-tile:last-child{background:#dee6cf;color:#657752;transform:rotate(11deg)}
++.profile-cover-tile .icon{width:30px;height:30px}
++.profile-identity{text-align:center;padding:0 24px 32px}
++.profile-avatar{position:relative;display:grid;place-items:center;width:88px;height:88px;border:6px solid #fffdfa;border-radius:50%;background:#e6ddce;color:#665640;font-size:29px;font-weight:600;margin:-44px auto 16px}
++.profile-identity .invitation-kicker{margin-bottom:12px;font-size:9px}
++.profile-identity h1{font-size:34px;font-weight:650;letter-spacing:-1.2px;overflow-wrap:anywhere}
++.profile-identity p{font-size:13px;color:var(--muted-foreground);margin:12px 0 22px}
++.profile-identity .primary{min-width:190px;border-radius:999px}
++.profile-content{padding:0 32px 24px}
++.profile-section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--border);padding:24px 0 12px}
++.profile-section-heading h2{font-size:15px;letter-spacing:-.3px}
++.profile-section-heading p{font-size:11px;color:var(--muted-foreground);margin-top:5px}
++.profile-section-heading a{display:flex;align-items:center;gap:7px;font-size:11px;min-height:44px;text-decoration:none;white-space:nowrap}
++.context-product .profile-document{display:flex;align-items:center;gap:12px;text-align:left;background:transparent;color:var(--foreground);padding:16px 0;width:100%;border:0;border-bottom:1px solid var(--border);border-radius:0}
++.profile-document>span:nth-child(2){flex:1;min-width:0}
++.profile-document strong{display:block;font-size:13px;font-weight:600;overflow-wrap:anywhere}
++.profile-document small{display:block;margin-top:4px;color:var(--muted-foreground);font-size:11px;font-weight:400}
++.profile-destination{display:flex;align-items:center;gap:12px;text-decoration:none;padding:20px 0;border-bottom:1px solid var(--border)}
++.profile-destination>span:nth-child(2){flex:1;min-width:0}.profile-destination strong{font-size:13px;display:block}.profile-destination small{display:block;font-size:11px;color:var(--muted-foreground);margin-top:4px}
++.profile-private{display:flex;align-items:flex-start;gap:8px;font-size:10px;color:var(--muted-foreground);margin-top:20px}.profile-private .icon{width:14px;height:14px;margin-top:2px}.profile-empty{font-size:12px;color:var(--muted-foreground);padding:16px 0}
++body[data-current-page=conversations][data-signed=true]{display:flex;flex-direction:column;height:100dvh;min-height:0;overflow:hidden}
++body[data-current-page=conversations][data-signed=true] .context-header{flex-shrink:0}
++body[data-current-page=conversations][data-signed=true] main{display:flex;flex-direction:column;flex:1;min-height:0;max-width:none;width:100%;padding:0;margin:0;overflow:hidden}
++body[data-current-page=conversations][data-signed=true] #authenticated{display:flex;flex-direction:column;flex:1;min-height:0}
++body[data-current-page=conversations][data-signed=true] #notice{margin:0;border-radius:0;flex-shrink:0}
++[data-page=conversations]{position:relative;display:flex;flex-direction:column;flex:1;min-height:0}
++.conversation-board{display:grid;grid-template-columns:248px minmax(0,1fr);flex:1;min-height:0;border:0;border-radius:0;background:#fffdfa;overflow:hidden}
++.board-refresh{position:absolute;top:17px;right:18px;z-index:3}
++.board-list-pane{display:flex;flex-direction:column;min-width:0;min-height:0;background:#f5f2ec;border-right:1px solid var(--border)}
++.board-list-heading{display:flex;align-items:center;min-height:80px;padding:18px 20px;font-size:14px;font-weight:650;color:var(--foreground);flex-shrink:0}
++.board-list-scroll{flex:1;min-height:0;overflow:auto;padding-bottom:12px}
++.context-product .board-conversation{display:flex;width:calc(100% - 16px);align-items:flex-start;justify-content:flex-start;gap:10px;text-align:left;background:transparent;color:var(--foreground);padding:13px 12px;margin:3px 8px;border:1px solid transparent;border-radius:8px}
++.context-product .board-conversation:hover{background:#ece7de}
++.context-product .board-conversation[aria-pressed=true]{background:#ede2d8;border-color:#e4d5c8;color:#843622}
++.board-channel-hash{font-size:22px;line-height:1.3;font-weight:500;color:#817265;flex-shrink:0}
++.board-conversation>.board-channel-hash{font-size:19px;line-height:1.3;margin-top:1px}
++.board-conversation[aria-pressed=true]>.board-channel-hash{color:#a83b27}
++.board-conversation-copy{display:block;min-width:0;flex:1}
++.board-row-heading{display:flex;align-items:baseline;gap:8px}.board-row-heading strong{display:block;min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:650;line-height:1.6}
++.board-row-heading time{font-size:9px;color:var(--muted-foreground);white-space:nowrap;font-weight:400}
++.board-conversation-copy small{display:block;font-size:10px;font-weight:400;color:var(--muted-foreground);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
++.board-conversation-preview{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;color:var(--muted-foreground);font-weight:400;margin-top:5px;line-height:1.6}
++.board-row-arrow{display:none}
++.board-manage{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:52px;padding:12px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--muted-foreground);text-decoration:none}.board-manage:hover{background:#ece7de}.board-manage .icon{width:15px;height:15px}
++.board-thread{display:flex;flex-direction:column;min-width:0;min-height:0}
++.board-prompt{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;flex:1;min-width:0;padding:32px;color:var(--muted-foreground)}
++.board-prompt>.board-channel-hash{font-size:36px;color:#a83b27;background:#f5e8de;display:grid;place-items:center;width:64px;height:64px;border-radius:16px;margin-bottom:20px}
++.board-prompt h2{font-size:22px;letter-spacing:-.6px;color:var(--foreground)}.board-prompt p{font-size:13px;max-width:280px;margin-top:12px;line-height:1.8}
++#board-reader{display:flex;flex-direction:column;flex:1;min-height:0}
++.board-thread-heading{display:flex;align-items:center;gap:12px;min-height:80px;padding:17px 78px 17px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
++.board-channel-title{flex:1;min-width:0}.board-thread-heading h2{font-size:17px;font-weight:700;line-height:1.5;overflow-wrap:anywhere;letter-spacing:-.3px}
++#board-thread-subtitle{font-size:11px;color:var(--muted-foreground);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
++#close-board-thread{display:none}
++.board-avatar{display:grid;place-items:center;width:36px;height:36px;border-radius:9px;background:#e9e2f1;color:#716084;flex-shrink:0}
++.board-avatar .icon{width:21px;height:21px}.board-avatar[data-provider=claude]{background:#f3e2d5;color:#a66b48}
++.board-participants{display:flex;align-items:center;gap:5px;flex-shrink:0}.board-participant{display:block;min-width:0}.board-participant .board-avatar{width:28px;height:28px;border-radius:7px}.board-participant .icon{width:16px;height:16px}
++.board-shared-people{font-size:11px;color:var(--muted-foreground);max-width:120px;overflow-wrap:anywhere}
++#board-boundaries{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 24px;border-bottom:1px solid var(--border);background:#fdfbf7;flex-shrink:0;z-index:2}
++#board-boundaries:empty{display:none}
++.board-connection-state{font-size:11px;color:var(--muted-foreground)}.board-connection-state[data-active=true]{color:#486750}.board-connection-state[data-active=true]::before{content:'';display:inline-block;width:6px;height:6px;background:#67876c;border-radius:50%;margin-right:7px;vertical-align:middle}
++#board-boundaries details{margin:0}#board-boundaries summary{font-size:11px;white-space:nowrap;min-height:44px}
++.board-policy{position:absolute;top:100%;right:20px;left:20px;border:1px solid var(--border);border-radius:10px;background:#fffdfa;box-shadow:0 8px 24px #302d2910;padding:18px;max-height:260px;overflow:auto}
++.board-policy p{font-size:12px;color:var(--muted-foreground);white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8}.board-policy p+p{margin-top:12px}
++#board-messages{padding:10px 0 24px;flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
++.board-date{display:flex;align-items:center;gap:14px;margin:16px 0 22px;font-size:11px;font-weight:600;color:var(--muted-foreground)}.board-date::before,.board-date::after{content:'';flex:1;height:1px;background:var(--border)}
++.board-message{display:flex;gap:12px;padding:10px 24px;min-width:0;margin:0}.board-message:hover{background:#f8f5f0}
++.board-message-gutter{position:relative;flex-shrink:0;width:36px;padding-top:2px}
++.board-message-content{flex:1;min-width:0}
++.board-message-heading{display:flex;align-items:baseline;flex-wrap:wrap;gap:5px 8px;margin-bottom:3px}
++.board-message-heading strong{font-size:14px;font-weight:700;color:var(--foreground);line-height:1.5}
++.board-provider{font-size:9px;font-weight:600;line-height:1.6;padding:0 5px;border-radius:4px;background:#efeae3;color:#736556}
++.board-message-owner{font-size:11px;color:var(--muted-foreground)}
++.board-message time{font-size:10px;color:var(--muted-foreground);font-weight:400;line-height:1.6}
++.board-message p{padding:0;margin:0;max-width:80ch;border:0;border-radius:0;background:transparent;font-size:14px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere}
++.board-receipt{display:block;font-size:10px;color:#736b62;margin-top:5px;line-height:1.6}
++.board-group-time{display:none;font-size:9px;line-height:1.7;color:var(--muted-foreground);text-align:center;white-space:nowrap}
++.board-message[data-grouped=true]{padding-top:3px;padding-bottom:5px}
++.board-message[data-grouped=true] .board-message-gutter .board-avatar{display:none}
++.board-message[data-grouped=true] .board-group-time{display:block}
++.board-message[data-grouped=true] .board-message-heading{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
++.board-channel-footer{display:flex;align-items:center;gap:9px;padding:15px 24px;border-top:1px solid var(--border);background:#fdfbf9;flex-shrink:0}
++.board-channel-footer>.icon{width:13px;height:13px;flex-shrink:0;color:var(--muted-foreground)}.board-thread-help{font-size:11px;line-height:1.7;color:var(--muted-foreground)}
++#board-read-status,#board-status{font-size:13px;color:var(--muted-foreground);padding:12px 20px;flex-shrink:0;overflow-wrap:anywhere}#board-read-status{padding:12px 24px}#board-read-status:empty,#board-status:empty{display:none}
++#retry-board,#more-board{margin:12px}#retry-board-thread,#more-board-messages{align-self:flex-start;margin:12px 24px;font-size:12px;flex-shrink:0}
++.board-empty{padding:28px 20px;font-size:12px;color:var(--muted-foreground)}.board-empty h2{font-size:17px;color:var(--foreground);line-height:1.5}.board-empty p{margin:12px 0;line-height:1.8}.board-empty a{display:inline-flex;min-height:44px;align-items:center}
++@media(max-width:860px){
++ .conversation-board{grid-template-columns:minmax(0,1fr)}
++ .board-list-heading{padding-right:78px}
++ .board-list-pane{border:0}.board-thread{display:none}.conversation-board.has-thread .board-list-pane{display:none}.conversation-board.has-thread .board-thread{display:flex}
++ #close-board-thread{display:inline-flex;flex-shrink:0;margin-left:-8px}.board-thread-heading>.board-channel-hash{display:none}
++ .context-product .board-conversation{padding:18px 14px;gap:12px}.board-row-heading strong{font-size:15px}.board-row-heading time{font-size:11px}.board-conversation-copy small{font-size:11px}.board-conversation-preview{font-size:12px}
++}
++@media(max-width:740px){.profile-cover{height:118px;padding:0 32px}.profile-cover-tile{width:54px;height:54px;border-radius:14px}.profile-content{padding:0 20px 20px}.profile-identity h1{font-size:29px}.profile-page-top{font-size:11px;gap:8px}.profile-private{line-height:1.8}.account-profile{border-radius:20px}}
++@media(max-width:640px){
++ .context-product .board-conversation{gap:10px}
++ .board-refresh{right:8px;top:12px}
++ .board-list-heading{min-height:70px}
++ .board-thread-heading{min-height:70px;padding:14px 60px 14px 12px;gap:8px}.board-thread-heading h2{font-size:15px}#board-thread-subtitle{font-size:10px}
++ .board-participants{gap:3px}.board-participant .board-avatar{width:22px;height:22px;border-radius:6px}.board-participant .icon{width:14px;height:14px}
++ #board-boundaries{padding:0 14px;flex-wrap:wrap;gap:0 8px}.board-connection-state{font-size:10px;padding:10px 0}#board-boundaries summary{font-size:10px;min-height:44px}
++ .board-policy{left:12px;right:12px}
++ .board-message{padding:10px 14px;gap:10px}.board-message-gutter{width:30px}.board-message-gutter .board-avatar{width:30px;height:30px;border-radius:7px}.board-message-gutter .icon{width:18px;height:18px}
++ .board-message-heading{gap:3px 6px}.board-message-heading strong{font-size:13px}.board-message-owner{font-size:10px}.board-message time{font-size:10px}.board-message p{font-size:13px;line-height:1.75}.board-group-time{white-space:normal;font-size:8px}
++ .board-channel-footer{padding:14px;gap:8px}.board-thread-help{font-size:10px}.board-shared-people{max-width:70px;font-size:10px}
++}
++@media(max-width:640px){.context-header nav{gap:8px}.context-header nav a{font-size:12px}}
++/* Sharing is the main connection view; the message feed is a secondary tab. */
++.board-list-heading{justify-content:space-between;gap:8px;padding:12px 16px}
++.context-product .board-list-heading .icon-button{flex-shrink:0}
++.connection-person,.board-person-avatar{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#e5e8d9;color:#5b674c;font-size:11px;font-weight:650;flex-shrink:0}
++.board-person-avatar{width:38px;height:38px;font-size:13px}
++.board-conversation-preview{display:none}
++.board-thread-heading{gap:14px}.board-thread-heading .primary{border-radius:999px;min-height:44px;padding:11px 18px;font-size:12px;white-space:nowrap}
++.board-thread-heading .board-participants{display:none}
++.connection-tabs{display:flex;gap:24px;padding:0 28px;border-bottom:1px solid var(--border);flex-shrink:0}
++.context-product .connection-tabs button{padding:14px 0;min-height:50px;border:0;border-bottom:2px solid transparent;border-radius:0;background:transparent;color:var(--muted-foreground);font-size:12px;font-weight:500}
++.context-product .connection-tabs button[aria-selected=true]{border-color:var(--primary);color:var(--foreground);font-weight:650}
++#connection-conversation{display:flex;flex-direction:column;flex:1;min-height:0}
++#connection-sharing{display:flex;flex-direction:column;flex:1;min-height:0;overflow:auto}
++.connection-share-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:42px 24px 24px}
++.connection-share-art{height:136px;width:280px;max-width:100%;border-radius:140px 140px 26px 26px;background:#eee8f6;display:flex;align-items:center;justify-content:center;gap:26px;margin-bottom:30px;padding-top:14px;flex-shrink:0}
++.connection-share-empty .invitation-kicker{font-size:9px;margin-bottom:14px}
++.connection-share-empty h2{font-size:30px;font-weight:650;line-height:1.25;letter-spacing:-1px;max-width:420px;overflow-wrap:anywhere}
++.connection-share-empty p{color:var(--muted-foreground);font-size:13px;line-height:1.9;margin:16px 0 24px;max-width:370px}
++.connection-share-empty .primary,.connection-draft .primary,.board-prompt .primary{border-radius:999px;padding:12px 22px;font-size:13px;min-height:46px}
++.connection-share-empty small{font-size:11px;color:var(--muted-foreground);margin-top:14px}
++.connection-sharing-note{display:flex;justify-content:center;gap:7px;padding:22px 24px;margin-top:auto;font-size:11px;color:var(--muted-foreground);line-height:1.8;text-align:center;flex-shrink:0}
++.connection-sharing-note .icon{width:13px;height:13px;flex-shrink:0;margin-top:3px}
++.connection-draft{width:calc(100% - 64px);max-width:720px;margin:42px auto}
++.connection-draft-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}
++.connection-draft-heading h2{font-size:23px;letter-spacing:-.6px}.connection-draft-heading p{font-size:12px;color:var(--muted-foreground);margin-top:7px}
++.connection-draft-heading>span{font-size:10px;color:#736556;background:#f1ede6;border-radius:6px;padding:6px 9px;white-space:nowrap}
++#connection-draft-documents{border-top:1px solid var(--border)}#connection-draft-documents>div{display:flex;align-items:center;gap:14px;padding:20px 0;border-bottom:1px solid var(--border)}#connection-draft-documents>div>span:last-child{min-width:0}
++#connection-draft-documents strong{display:block;font-size:14px;font-weight:600;overflow-wrap:anywhere}#connection-draft-documents small{display:block;font-size:11px;color:var(--muted-foreground);margin-top:5px}
++.connection-draft-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
++.board-prompt .primary{margin-top:22px}.board-prompt>.board-channel-hash .icon{width:28px;height:28px}
++.context-product #share-picker{width:min(560px,calc(100vw - 24px));max-height:min(680px,calc(100svh - 24px));border-radius:20px;background:#fffdfa;padding:24px}
++#share-picker[open]{display:flex;flex-direction:column}
++#share-picker .dialog-heading{flex-shrink:0;margin-bottom:8px}#share-picker .dialog-heading h2{font-size:20px;overflow-wrap:anywhere}
++#share-picker-description{font-size:12px;line-height:1.8;flex-shrink:0}
++.share-picker-search{display:flex;align-items:center;gap:8px;margin:20px 0 12px;border:1px solid var(--border);border-radius:8px;padding:0 4px 0 12px;background:white;flex-shrink:0}
++.share-picker-search>svg{color:var(--muted-foreground);flex-shrink:0}.share-picker-search input{flex:1;min-width:0;width:0;padding:12px 0;border:0;background:transparent;font-size:13px}
++#share-picker-documents{overflow:auto;min-height:0;flex:1;border-top:1px solid var(--border)}
++#share-picker .share-picker-document{display:flex;align-items:center;gap:12px;padding:16px 4px;margin:0;border-bottom:1px solid var(--border);min-height:64px;cursor:pointer}.share-picker-document:hover{background:#f8f5ef}
++.share-picker-document input{width:16px;height:16px;accent-color:var(--primary);flex-shrink:0}.share-picker-document>span:last-child{min-width:0}
++.share-picker-document strong{display:block;font-size:13px;font-weight:600;line-height:1.7;overflow-wrap:anywhere}.share-picker-document small{display:block;font-size:11px;color:var(--muted-foreground);margin-top:4px}
++.share-picker-footer{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-top:18px;flex-shrink:0}.share-picker-footer>span{font-size:12px;color:var(--muted-foreground)}.share-picker-footer .primary{border-radius:999px;min-height:44px;padding:11px 24px}
++#share-picker .share-picker-private{display:flex;gap:7px;align-items:center;font-size:10px;margin-top:14px;flex-shrink:0}.share-picker-private .icon{width:13px;height:13px}
++#share-picker-status{font-size:12px;line-height:1.7;flex-shrink:0;margin-bottom:10px}#share-picker-status:empty{display:none}.picker-empty{padding:20px 12px;line-height:1.8}
++#retry-share-picker,#more-share-picker{align-self:flex-start;font-size:12px;flex-shrink:0;margin-top:12px}
++#share-dialog .share-recipient{padding:10px 12px;margin:0 0 18px;border-radius:8px;background:#f2eee5;color:var(--foreground);font-size:12px}
++@media(max-width:860px){.board-list-heading{padding-right:72px}}
++@media(max-width:640px){
++ .board-thread-heading{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 8px;align-items:center;padding-right:60px}
++ .board-thread-heading #close-board-thread{grid-column:1;grid-row:1}.board-thread-heading .board-channel-title{grid-column:2;grid-row:1}.board-person-avatar{display:none}
++ .board-thread-heading #connection-share{grid-column:2;grid-row:2;justify-self:start;padding:10px 16px;font-size:11px;margin-top:4px}
++ .connection-tabs{padding:0 20px;gap:24px}.connection-tabs button{font-size:12px}
++ .connection-share-empty{padding:28px 20px 20px}.connection-share-art{width:230px;height:112px;margin-bottom:24px;gap:22px}.connection-share-art .invitation-tile{width:58px;height:58px;border-radius:15px}.connection-share-art .invitation-tile .icon{width:29px;height:29px}
++ .connection-share-empty h2{font-size:26px;max-width:300px}.connection-share-empty p{font-size:12px;line-height:1.8}.connection-share-empty small{font-size:10px}
++ .connection-sharing-note{font-size:10px;padding:18px 20px;text-align:left}
++ .connection-draft{width:calc(100% - 40px);margin:28px auto}.connection-draft-heading{gap:10px;align-items:flex-start}.connection-draft-heading h2{font-size:21px}.connection-draft-heading>span{font-size:9px}
++ .context-product #share-picker{padding:18px}.share-picker-search input{font-size:16px}.share-picker-document{gap:10px}.share-picker-document strong{font-size:12px}.share-picker-document small{font-size:10px}
++}
++@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
++`;
+diff --git a/apps/commonplace-account/server/context-product-ui.mjs b/apps/commonplace-account/server/context-product-ui.mjs
+new file mode 100644
+index 0000000..216cd0f
+--- /dev/null
++++ b/apps/commonplace-account/server/context-product-ui.mjs
+@@ -0,0 +1,123 @@
++import {uiCss,brand} from './ui-system.mjs';
++import {contextProductCss} from './context-product-style.mjs';
++const glyphs={claude:'<path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M5.6 18.4 18.4 5.6M8.5 3.6l7 16.8M3.6 8.5l16.8 7M3.6 15.5l16.8-7M8.5 20.4l7-16.8"/>',code:'<path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-14-2 16"/>',context:'<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/>',share:'<circle cx="17" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="17" cy="19" r="3"/><path d="m9 10 5-3M9 14l5 3"/>',settings:'<path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/>',search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',plus:'<path d="M12 5v14M5 12h14"/>',arrow:'<path d="M5 12h14m-6-6 6 6-6 6"/>',lock:'<rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/>',file:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8m-8 4h5"/>',link:'<path d="m9 15 6-6m-4-3 2-2a5 5 0 0 1 7 7l-2 2m-5 5-2 2a5 5 0 0 1-7-7l2-2"/>',close:'<path d="m6 6 12 12M6 18 18 6"/>',refresh:'<path d="M20 8a9 9 0 1 0 0 8m0-13v5h-5"/>',spark:'<path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z"/>'};
++export const contextIcon=name=>`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${glyphs[name]||glyphs.file}</svg>`;
++const icon=contextIcon;
++const invitationArt=recipient=>`<div class="invitation-art" aria-hidden="true"><span class="invitation-tile context-tile">${icon('file')}</span><span class="invitation-bridge">${icon('arrow')}</span><span class="invitation-tile person-tile" ${recipient?'id="invite-avatar"':''}>${recipient?'':icon('context')}</span></div>`;
++const nav=(view,label)=>`<a href="/#${view}" data-page-link="${view}" ${view==='conversations'?'aria-current="page"':''}>${label}</a>`;
++export function contextProductHtml(nonce){return `<!doctype html>
++<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fbfaf8"><title>Connections · Meet Proxy</title><style nonce="${nonce}">${uiCss}${contextProductCss}</style></head>
++<body class="context-product"><a class="skip-link" href="#main">Skip to content</a>
++<header class="context-header">
++  <div class="context-header-inner">
++    ${brand('/')}
++    <nav aria-label="Main navigation">${nav('conversations','Connections')}${nav('context','Context')}${nav('shared','Shared access')}</nav>
++    <a class="account-link" href="/#profile" aria-label="Your profile"><span id="owner-avatar" class="owner-avatar" aria-hidden="true">M</span></a>
++  </div>
++</header>
++<main id="main">
++  <div id="notice" role="status" aria-live="polite"></div>
++  <section id="loading-panel" class="loading-panel" aria-live="polite">Opening your workspace…</section>
++  <div id="load-error" class="load-error" hidden><h1>Let’s get you reconnected.</h1><p id="load-error-message"></p><button id="retry" class="primary">Try again ${icon('refresh')}</button></div>
++  <section id="signin" hidden><h1>A little more context.</h1><p>Your conversations and project knowledge,<br>ready in the tools you already use.</p><button id="google" class="primary">Continue with Google ${icon('arrow')}</button><small>You choose what to share.</small></section>
++  <div id="authenticated" hidden>
++    <section data-page="context">
++      <div class="context-heading"><div><h1>Context</h1><p>Find it here. Take it into your next conversation.</p></div><button class="secondary" data-connect>${icon('plus')} Add context</button></div>
++      <div class="library-toolbar">
++        <form id="search-form" role="search"><label class="sr-only" for="context-query">Search your context</label>${icon('search')}<input id="context-query" type="search" maxlength="300" autocomplete="off" placeholder="Search your context…"><button type="submit" class="search-submit" aria-label="Search">${icon('arrow')}</button></form>
++        <button id="refresh-context" class="icon-button" aria-label="Refresh context">${icon('refresh')}</button>
++      </div>
++      <div class="library-filters"><div class="source-filters" role="group" aria-label="Filter context by source"><button data-kind="" aria-pressed="true">All</button><button data-kind="claude" aria-pressed="false">Claude</button><button data-kind="codex" aria-pressed="false">Codex</button></div><span id="snapshot-label"></span></div>
++      <div class="context-list-heading"><h2 id="list-heading">All context <span id="document-count"></span></h2><span>Select to share</span></div>
++      <div id="selection-bar" class="selection-bar" hidden><span id="selection-label" role="status"></span><button id="clear-selection" class="text-button">Clear</button><button id="review-selection" class="primary">Share ${icon('arrow')}</button></div>
++      <p id="list-status" role="status" aria-live="polite"></p>
++      <div class="context-browser"><div class="documents-pane"><div id="documents" aria-label="Context documents"></div><button id="more-documents" class="secondary" hidden>Load more</button></div>
++        <aside id="document-reader" class="document-reader" aria-label="Document preview" hidden><div class="reader-topline"><span id="document-provider"></span><button id="close-document" class="icon-button" aria-label="Close document">${icon('close')}</button></div><div class="reader-content"><h2 id="document-title" tabindex="-1"></h2><p id="document-meta"></p><div id="document-text"></div><button id="more-document-text" class="secondary" hidden>Read more</button><button id="retry-document" class="secondary" hidden>Try reading again</button></div></aside>
++      </div>
++      <footer class="library-footer"><span>${icon('lock')} Private to you and your apps.</span><a href="/#settings">Use in your apps ${icon('arrow')}</a></footer>
++    </section>
++    <section data-page="shared" hidden>
++      <div class="context-heading"><div><h1>Shared access</h1><p>What you share, and who can read it.</p></div><button class="primary" data-share-start>Share context ${icon('arrow')}</button></div>
++      <div id="sharing-empty" class="sharing-empty"><span class="empty-symbol" aria-hidden="true">${icon('link')}</span><h2>Give someone the context.</h2><p>Choose a few documents, send a link,<br>and they’re ready to pick up where you left off.</p><button class="primary" data-share-start>Choose context ${icon('arrow')}</button><small>Context invitations aren’t available yet.</small></div>
++      <div id="share-review" class="share-draft" hidden><span class="source-symbol all" aria-hidden="true">${icon('file')}</span><div><strong id="draft-summary"></strong><p>Private selection · not shared</p></div><button id="open-share" class="secondary">Review</button></div>
++      <p class="sharing-note">Shared documents will be readable by the recipient and their apps. Everything else stays private.</p>
++    </section>
++    <section data-page="conversations" hidden>
++      <h1 class="sr-only">Connections</h1><button id="refresh-board" class="icon-button board-refresh" aria-label="Refresh" title="Refresh conversations">${icon('refresh')}</button>
++      <div class="conversation-board" id="conversation-board">
++        <aside class="board-list-pane" aria-label="Connections"><div class="board-list-heading">Connections<button id="new-share" class="icon-button" aria-label="Share context with someone new" title="Share context with someone new">${icon('plus')}</button></div><div id="board-status" role="status" aria-live="polite"></div><button id="retry-board" class="secondary" hidden>Retry conversations</button><div class="board-list-scroll"><div id="board-list"></div><button id="more-board" class="secondary" hidden>Older conversations</button></div><a class="board-manage" href="/work-agent#inbox">Manage connections ${icon('arrow')}</a></aside>
++        <section class="board-thread" aria-label="Selected connection"><div id="board-prompt" class="board-prompt"><span class="board-channel-hash" aria-hidden="true">${icon('share')}</span><h2>A little context goes a long way.</h2><p>Choose what to share. Give someone a place to start.</p><button class="primary" data-share-start>Share context ${icon('arrow')}</button></div>
++          <div id="board-reader" hidden><div class="board-thread-heading"><button id="close-board-thread" class="icon-button" aria-label="Back to connections">←</button><span id="board-person-avatar" class="board-person-avatar" aria-hidden="true"></span><div class="board-channel-title"><h2 id="board-thread-title" tabindex="-1"></h2><p id="board-thread-subtitle"></p></div><div id="board-thread-people" class="board-participants" aria-label="Participants"></div><button id="connection-share" class="primary">Share context ${icon('arrow')}</button></div>
++            <div class="connection-tabs" role="tablist" aria-label="Connection view"><button id="connection-context-tab" role="tab" aria-selected="true" aria-controls="connection-sharing">Shared context</button><button id="connection-conversation-tab" role="tab" aria-selected="false" aria-controls="connection-conversation" tabindex="-1">Conversation</button></div>
++            <section id="connection-sharing" role="tabpanel" aria-labelledby="connection-context-tab" tabindex="0">
++              <div id="connection-share-empty" class="connection-share-empty">
++                <div class="connection-share-art" aria-hidden="true"><span class="invitation-tile context-tile">${icon('file')}</span><span class="invitation-bridge">${icon('arrow')}</span><span id="connection-share-initials" class="invitation-tile person-tile"></span></div>
++                <span class="invitation-kicker">A SHARED STARTING POINT</span><h2 id="connection-share-heading">Bring someone up to speed.</h2><p>Decisions, notes, the background that matters.<br>Choose what they can read. The rest stays yours.</p><button id="connection-choose-context" class="primary">Choose context ${icon('arrow')}</button><small>Only the documents you select.</small>
++              </div>
++              <div id="connection-draft" class="connection-draft" hidden><div class="connection-draft-heading"><div><h2>Your selection</h2><p id="connection-draft-description"></p></div><span>Private draft</span></div><div id="connection-draft-documents"></div><div class="connection-draft-actions"><button id="connection-review-share" class="primary">Review invitation ${icon('arrow')}</button><button id="connection-edit-share" class="secondary">Edit selection</button></div></div>
++              <p class="connection-sharing-note">${icon('lock')} Link creation isn’t available yet. Your selection stays private.</p>
++            </section>
++            <section id="connection-conversation" role="tabpanel" aria-labelledby="connection-conversation-tab" hidden>
++            <div id="board-boundaries"></div><div id="board-read-status" role="status"></div><button id="retry-board-thread" class="secondary" hidden>Retry conversation</button><button id="more-board-messages" class="secondary" hidden>Earlier messages</button><div id="board-messages" role="region" aria-label="Agent messages" tabindex="0"></div>
++            <div class="board-channel-footer">${icon('lock')}<p id="board-thread-help" class="board-thread-help"></p></div>
++            </section>
++          </div>
++        </section>
++      </div>
++    </section>
++    <section data-page="profile" hidden>
++      <div class="profile-page-top"><a href="/#context">← Your context</a><a href="/#settings">Account settings ${icon('settings')}</a></div>
++      <article class="account-profile" aria-label="Your account profile">
++        <div class="profile-cover" aria-hidden="true"><span class="profile-cover-tile">${icon('file')}</span><span class="profile-cover-tile">${icon('share')}</span></div>
++        <div class="profile-identity"><span id="profile-avatar" class="profile-avatar" aria-hidden="true"></span><span class="invitation-kicker">YOUR PROFILE</span><h1 id="profile-name"></h1><p>Your work. Your context. A little easier to share.</p><a class="button primary" href="/#context">Share context ${icon('arrow')}</a></div>
++        <div class="profile-content"><div class="profile-section-heading"><div><h2>Your context</h2><p id="profile-context-count"></p></div><a href="/#context">View all ${icon('arrow')}</a></div><div id="profile-documents"></div>
++        <a class="profile-destination" href="/#conversations"><span class="source-symbol all">${icon('share')}</span><span><strong>Connections</strong><small>Share context and keep the conversation going.</small></span>${icon('arrow')}</a>
++        <a class="profile-destination" href="/#shared"><span class="source-symbol codex">${icon('lock')}</span><span><strong>Shared access</strong><small>Review the context you choose to share.</small></span>${icon('arrow')}</a>
++        <p class="profile-private">${icon('lock')} This is your private account view. Your library isn’t a public profile.</p></div>
++      </article>
++    </section>
++    <section data-page="settings" hidden>
++      <div class="context-heading"><div><h1>Settings</h1><p>Your apps, sources and account.</p></div></div>
++      <div class="settings-section"><h2>Use your context</h2><p>Connect the assistant you already use.</p><div class="app-connections"><button data-app="claude"><span class="source-symbol claude">${icon('claude')}</span><span><strong>Claude Code</strong><small>Connect to your context</small></span>${icon('arrow')}</button><button data-app="codex"><span class="source-symbol codex">${icon('code')}</span><span><strong>Codex</strong><small>Connect to your context</small></span>${icon('arrow')}</button></div>
++        <details class="mcp-details"><summary>Another MCP-compatible app</summary><p>Add this endpoint in your app, then authorize it with your account.</p><code id="mcp-endpoint"></code><button id="copy-endpoint" class="secondary">Copy endpoint</button><p>Your app uses its own model to answer.</p></details>
++      </div>
++      <div class="settings-section"><h2>Sources</h2><div class="sync-control"><div><strong>Sync work chats</strong><p>Supported Claude and Codex conversations sync while your computers are awake.</p><span id="sync-freshness"></span></div><label class="toggle-label"><input id="sync-enabled" type="checkbox" role="switch"><span>Enable sync</span></label></div><div id="connected-sources"></div><a class="import-link" href="/work-agent#library">Import a ChatGPT export ${icon('arrow')}</a></div>
++      <div class="settings-section account-section"><div><h2>Your account</h2><p id="owner-name"></p><p id="account-email"></p></div><button id="settings-signout" class="secondary">Sign out</button></div>
++      <details class="history-details"><summary>Earlier connections &amp; conversations</summary><p>View existing conversations and manage their permissions.</p><a href="/work-agent#inbox">Open conversation history ${icon('arrow')}</a><a href="/work-agent#agents">Manage existing connections ${icon('arrow')}</a></details>
++    </section>
++  </div>
++</main>
++<dialog id="share-picker" aria-labelledby="share-picker-title">
++  <div class="dialog-heading"><h2 id="share-picker-title">Choose context</h2><button id="close-share-picker" class="icon-button" aria-label="Close context picker">${icon('close')}</button></div>
++  <p id="share-picker-description">Select the documents for your invitation.</p>
++  <form id="share-picker-search" class="share-picker-search" role="search"><label class="sr-only" for="share-query">Search context to share</label>${icon('search')}<input id="share-query" type="search" maxlength="300" placeholder="Find a document, note, or conversation…" autocomplete="off"><button class="icon-button" aria-label="Search context to share">${icon('arrow')}</button></form>
++  <p id="share-picker-status" role="status"></p><div id="share-picker-documents"></div><button id="retry-share-picker" class="secondary" hidden>Retry context</button><button id="more-share-picker" class="secondary" hidden>More context</button>
++  <div class="share-picker-footer"><span id="share-picker-count" role="status">0 selected</span><button id="review-picked-context" class="primary" disabled>Continue ${icon('arrow')}</button></div><p class="share-picker-private">${icon('lock')} Your selection stays private until you share it.</p>
++</dialog>
++<dialog id="share-dialog" aria-labelledby="share-title">
++  <div class="dialog-heading"><h2 id="share-title">Share context</h2><button id="close-share" class="icon-button" aria-label="Close sharing">${icon('close')}</button></div>
++  <div id="share-compose"><p id="share-recipient" class="share-recipient" hidden></p>
++    ${invitationArt(false)}
++    <div class="invitation-copy"><span class="invitation-kicker">A LITTLE CONTEXT</span><h3>Bring someone<br>up to speed.</h3><p>Give them the context they need.<br>The rest stays yours.</p></div>
++    <div id="selected-documents" aria-label="Selected documents"></div>
++    <div class="access-summary"><span>${icon('file')} Can read selected documents</span><span>${icon('lock')} Everything else stays private</span></div>
++    <details id="share-options"><summary>Access lasts <span id="expiry-summary">2 weeks</span><span class="summary-action">Change</span></summary><label for="share-expiry">Access expires after</label><select id="share-expiry"><option value="1">1 day</option><option value="7">1 week</option><option value="14" selected>2 weeks</option><option value="30">30 days</option></select></details>
++    <div class="share-actions"><button id="create-share" class="primary" disabled aria-describedby="sharing-unavailable">Create invite link ${icon('link')}</button><button id="preview-invite" class="text-button">Preview invitation</button></div>
++    <p id="sharing-unavailable" class="build-note">Link creation isn’t available yet. Nothing has been shared.</p>
++  </div>
++  <div id="invite-preview" hidden>
++    ${invitationArt(true)}
++    <div class="invitation-copy"><span class="invitation-kicker">YOU’RE INVITED</span><h3>Let’s share<br>some context.</h3><p id="invite-description"></p><p>A shared starting point, on your terms.</p></div>
++    <div id="invite-documents" aria-label="Included documents"></div>
++    <details id="invite-boundaries"><summary>Access · <span id="invite-expiry">2 weeks</span></summary><p>You and your connected apps can read these documents. No access to other context.</p><p>Access ends when it expires or is revoked.</p></details>
++    <p class="invitation-consent">Use the shared context in your existing apps. Everything outside this selection stays private.</p>
++    <button class="primary" id="accept-preview" disabled aria-describedby="invite-preview-note">Accept invitation</button>
++    <p id="invite-preview-note" class="build-note">Preview only. This isn’t an active invitation.</p>
++    <button id="back-to-share" class="text-button">Back to sharing</button>
++  </div>
++</dialog>
++<dialog id="connect-dialog" aria-labelledby="connect-title">
++  <div class="dialog-heading"><h2 id="connect-title">Use your context in Claude</h2><button id="close-connect" class="icon-button" aria-label="Close setup">${icon('close')}</button></div>
++  <p id="connect-description">Copy this request into an existing chat to connect it to your context.</p><div class="setup-identity"><span id="setup-email"></span><code id="setup-origin"></code></div><label for="connect-prompt">Setup request</label><textarea id="connect-prompt" readonly rows="5"></textarea><div class="connect-actions"><button id="copy-setup" class="primary">Copy setup request</button><a id="open-app" class="button secondary">Open app ${icon('arrow')}</a></div><p class="setup-footnote">Your app may ask for approval or a reload. Sync is a separate choice in Settings.</p><p id="copy-status" role="status" aria-live="polite"></p>
++</dialog>
++<script type="module" src="/context/assets/context-product.mjs"></script></body></html>`;}
+diff --git a/apps/commonplace-account/server/social-agents.mjs b/apps/commonplace-account/server/social-agents.mjs
+index 5ffeabe..de656d7 100644
+--- a/apps/commonplace-account/server/social-agents.mjs
++++ b/apps/commonplace-account/server/social-agents.mjs
+@@ -34,5 +34,5 @@ export async function readAgentThread(service,owner,body){
+   if(body.before!==undefined&&(!Number.isSafeInteger(body.before)||body.before<1))throw new WorkProblem(400,'Invalid message cursor.');
+   const rows=await service.all(`SELECT m.seq,m.id,m.sender,m.body,m.created_at AS at,d.state AS delivery FROM cp_mail_messages m LEFT JOIN cp_mail_deliveries d ON d.message=m.id WHERE m.conversation=? AND m.seq<? ORDER BY m.seq DESC LIMIT 101`,row.id,body.before||Number.MAX_SAFE_INTEGER);
+   const hasMore=rows.length>100;rows.splice(100);rows.reverse();
+-  return {id:row.id,type:'agent',participants:participants(row),messages:rows.map(m=>({id:m.id,sender:m.sender,text:m.body,at:m.at,delivery:m.delivery||'pending'})),nextBefore:hasMore?rows[0].seq:null,hasMore};
++  return {id:row.id,type:'agent',participants:participants(row),messages:rows.map(m=>({id:m.id,seq:m.seq,sender:m.sender,text:m.body,at:m.at,delivery:m.delivery||'pending'})),nextBefore:hasMore?rows[0].seq:null,hasMore};
+ }
+diff --git a/package.json b/package.json
+index 3adc36c..2d802e9 100644
+--- a/package.json
++++ b/package.json
+@@ -17,7 +17,7 @@
+     "test:mailbox": "node --test tests/mailbox-*.test.mjs",
+     "test:mailbox-package": "node scripts/smoke-mailbox.mjs",
+     "preview:ui": "node scripts/preview-ui.mjs",
+-    "test:ui": "node --test --test-concurrency=2 tests/ui-system.test.mjs tests/ui-browser.test.mjs tests/context-library-browser.test.mjs tests/context-coverage-browser.test.mjs tests/social-http.test.mjs tests/shared-chats-browser.test.mjs tests/groups-browser.test.mjs tests/social-browser.test.mjs tests/agent-setup-browser.test.mjs tests/people-discovery.test.mjs tests/people-discovery-browser.test.mjs tests/people-invitations-browser.test.mjs tests/local-environment-browser.test.mjs tests/agent-connections-browser.test.mjs tests/product-flow-browser.test.mjs",
++    "test:ui": "node --test --test-concurrency=2 tests/ui-system.test.mjs tests/ui-browser.test.mjs tests/context-library-browser.test.mjs tests/context-coverage-browser.test.mjs tests/social-http.test.mjs tests/shared-chats-browser.test.mjs tests/groups-browser.test.mjs tests/social-browser.test.mjs tests/agent-setup-browser.test.mjs tests/people-discovery.test.mjs tests/people-discovery-browser.test.mjs tests/people-invitations-browser.test.mjs tests/local-environment-browser.test.mjs tests/agent-connections-browser.test.mjs tests/product-flow-browser.test.mjs tests/context-product-browser.test.mjs",
+     "test:invitations": "node --test tests/people-invitations.test.mjs tests/people-invitations-browser.test.mjs",
+     "dev:local": "node scripts/local-lab.mjs",
+     "test:local": "node --test tests/local-environment.test.mjs tests/local-environment-browser.test.mjs",
+@@ -30,7 +30,9 @@
+     "build:mcp": "node scripts/build-mcp.mjs",
+     "test:mcp": "node --test tests/mcp-*.test.mjs",
+     "test:spec": "node --test tests/product-spec-e2e.test.mjs",
+-    "preview:product": "node scripts/preview-product-flow.mjs"
++    "preview:product": "node scripts/preview-product-flow.mjs",
++    "preview:context": "node scripts/preview-context-product.mjs",
++    "test:context-ui": "node --test tests/context-product-browser.test.mjs"
+   },
+   "dependencies": {
+     "@better-auth/agent-auth": "0.6.2",
+diff --git a/scripts/preview-context-product.mjs b/scripts/preview-context-product.mjs
+new file mode 100644
+index 0000000..921a865
+--- /dev/null
++++ b/scripts/preview-context-product.mjs
+@@ -0,0 +1,34 @@
++// Production UI and HTTP handlers, isolated sample context. No real login.
++import {startUiPreview} from './preview-ui.mjs';
++import {createHash,randomBytes} from 'node:crypto';
++import {fileURLToPath} from 'node:url';
++export async function startContextPreview({port=0,host='127.0.0.1',publicOrigin=null}={}){
++ const p=await startUiPreview({port,host,publicOrigin,signInMode:'ready',handleDemoRequest:(req,res,url)=>{
++  if(url.pathname!=='/preview/sample')return false;
++  if(req.method!=='GET'){res.writeHead(405);res.end();return true;}
++  const view=['context','conversations','profile','shared','settings'].includes(url.searchParams.get('view'))?url.searchParams.get('view'):'conversations';
++  res.writeHead(303,{'Location':'/#'+view,'Set-Cookie':'ui_demo=ready; Path=/; SameSite=Lax','Cache-Control':'no-store'});res.end();return true;
++ },decorateHtml:html=>html.replace('Continue with Google','Open sample account').replace('You choose what to share.</small>','Sample workspace. No Google sign-in.</small>').replace('</style>','.design-preview-label{display:flex;align-items:center;justify-content:center;gap:8px;font:11px Manrope,sans-serif;color:#686158;padding:12px 16px}.design-preview-label a{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;color:inherit}</style>').replace('</body>','<aside class="design-preview-label" aria-label="Preview environment">Sample workspace · <a href="/preview/sample">Reset sample</a></aside></body>')});
++ const owner=p.people.ready.owner,device=p.work.get('SELECT * FROM cp_devices WHERE owner=? LIMIT 1',owner);p.work.run('INSERT INTO cp_cloud_settings VALUES(?,1) ON CONFLICT(owner) DO UPDATE SET sync_enabled=1',owner);
++ const docs=[
++  ['Claude','Website launch · the decisions so far','Website launch\n\nA calmer first impression\n\nWe want the first screen to make one thing clear: this is your context, ready where you work. Lead with the library and a useful search field.\n\nWhat we decided\n\n• Context is the home screen.\n• Connected apps belong in Settings.\n• A document opens beside the list on desktop.\n• Only selected context can be shared.\n\nNext up\n\nReview the mobile reading flow before the team walkthrough. Keep the primary action visible without covering the content.'],
++  ['Codex','Search & indexing · implementation notes','Search implementation\n\nUse ranked keyword matching across complete conversations. Exact phrase search supports code and punctuation. Preserve source references and capture timestamps.\n\nThe search test keyword is cedar-maple.\n\nPaging\n\nPin reads to the same archive revision. If the snapshot changes, restart the search so results never mix different versions.'],
++  ['Claude','Customer conversations · recurring themes','Customer conversations\n\nPeople want to continue work without repeating the background. They need to see what is collected, when it was captured, and who can access it.\n\nA useful moment\n\nFind a decision from last week and use it in the next conversation.'],
++  ['Codex','MCP connection · setup checklist','MCP setup\n\nConnect the existing assistant to the authenticated endpoint. Context retrieval uses read-only tools and resources. The assistant uses its own model.\n\nCheck the configured server and account before completing setup.'],
++  ['Claude','Brand notes · warm, quiet, useful','Brand direction\n\nWarm paper, generous space, a small terracotta accent. Use simple lists and familiar document controls.\n\nClarity first\n\nMake privacy and sharing understandable in one sentence. Keep the interface calm.'],
++  ['Codex','Release checks · what to verify','Release verification\n\nSearch and read context at desktop and phone widths. Check signed-out, empty, offline and failed request states.\n\nA passing fixture does not prove a real account connection.']
++ ];
++ for(let i=0;i<docs.length;i++){const [provider,title,text]=docs[i];p.work.upload(owner,device,{key:createHash('sha256').update('context-design-'+i).digest('hex')+':0',title:provider+' chats: '+title,text,revision:1,capturedAt:Date.now()-i*3500000});}
++ // Real local message handlers with disposable native identities, never actual accounts.
++ const mail=p.service.mailboxes;const [alex]=mail.connections.list(owner).agents,[taylor]=mail.connections.list(p.people['no-companion'].owner).agents;
++ mail.run('UPDATE cp_agent_bindings SET label=? WHERE agent=?','Launch partner',alex.id);mail.run('UPDATE cp_agent_bindings SET label=? WHERE agent=?','Chief of Staff',taylor.id);
++ p.service.origin=p.origin;
++ const invite=mail.connections.create(owner,{agentId:alex.id,direction:'delegate',authorizeAnswers:true});
++ const conversation=mail.connections.accept(p.people['no-companion'].owner,{invitation:invite.invitation,agentId:taylor.id,authorizeAnswers:true});
++ const send=(agent,to,text,replyTo)=>{const binding=mail.get('SELECT * FROM cp_agent_bindings WHERE agent=?',agent.id),device=mail.get('SELECT * FROM cp_devices WHERE id=?',binding.device);return mail.send(device,{sessionId:binding.session,provider:binding.provider,verified:true,to,conversationId:conversation.id,text,nonce:randomBytes(12).toString('hex'),...(replyTo?{replyTo}:{}),responseRequested:!replyTo});};
++ const question=send(alex,taylor.id,'Can you check with Taylor about the launch? We’re hoping to share the preview on Thursday.');
++ send(taylor,alex.id,'Thursday works. The preview is ready for a small group. Taylor would like feedback on the context-sharing flow first.',question.id);
++ p.pairing={id:conversation.id,alex,taylor,send};
++ return p;
++}
++if(process.argv[1]===fileURLToPath(import.meta.url)){const startup=setInterval(()=>{},1000);const p=await startContextPreview({port:Number(process.env.CONTEXT_PREVIEW_PORT||43319),host:'0.0.0.0',publicOrigin:process.env.CONTEXT_PREVIEW_ORIGIN||null});clearInterval(startup);console.log('Context design preview: '+p.origin);for(const signal of ['SIGINT','SIGTERM'])process.on(signal,async()=>{await p.close();process.exit();});}
+diff --git a/scripts/preview-product-flow.mjs b/scripts/preview-product-flow.mjs
+index 6997b0a..f019e01 100644
+--- a/scripts/preview-product-flow.mjs
++++ b/scripts/preview-product-flow.mjs
+@@ -19,7 +19,7 @@ export async function startProductPreview({port=0,host='127.0.0.1',publicOrigin=
+  const q=send(alexA,taylor.id,'Can you check with Taylor about the launch? We’re hoping to share the preview on Thursday.');
+  send(taylor,alexA.id,'Thursday works. The preview is ready for a small group, and Taylor would like feedback on the invitation flow first.',q.id);
+  const invitation=mail.connections.create(p.people.ready.owner,{agentId:alexB.id,direction:'request',authorizeAnswers:true});
+- routes={signin:['signed-out','/'],onboarding:['empty','/#agents'],agents:['ready','/#agents'],inbox:['ready','/#inbox'],invite:['no-companion','/#agent-invite='+invitation.invitation]};
++ routes={signin:['signed-out','/work-agent#agents'],onboarding:['empty','/#agents'],agents:['ready','/#agents'],inbox:['ready','/#inbox'],invite:['no-companion','/#agent-invite='+invitation.invitation]};
+  return {origin:p.origin,preview:p,close:()=>p.close()};
+ }
+ if(process.argv[1]===fileURLToPath(import.meta.url)){const p=await startProductPreview({port:Number(process.env.PRODUCT_PREVIEW_PORT||43214),host:'0.0.0.0',publicOrigin:process.env.PRODUCT_PREVIEW_ORIGIN||null});console.log(p.origin+'/walkthrough');for(const signal of ['SIGINT','SIGTERM'])process.on(signal,async()=>{await p.close();process.exit();});}
+diff --git a/scripts/preview-ui.mjs b/scripts/preview-ui.mjs
+index 382d5b3..7318ea0 100644
+--- a/scripts/preview-ui.mjs
++++ b/scripts/preview-ui.mjs
+@@ -12,7 +12,8 @@ import {CloudWork} from '../apps/commonplace-account/server/cloud-work.mjs';
+ import {ContextStore} from '../apps/commonplace-account/server/context-store.mjs';
+ import {googleSigninHelper} from '../apps/commonplace-account/server/browser-login.mjs';
+ const uid=()=>randomBytes(12).toString('hex');
+-export async function startUiPreview({port=0,host='127.0.0.1',publicOrigin=null,handleDemoRequest=null,decorateHtml=null}={}){
++export async function startUiPreview({port=0,host='127.0.0.1',publicOrigin=null,handleDemoRequest=null,decorateHtml=null,signInMode='empty'}={}){
++  if(!['ready','empty','no-companion'].includes(signInMode))throw Error('Unknown preview sign-in account.');
+   const dir=await mkdtemp(path.join(tmpdir(),'meet-proxy-ui-'));
+   const db=openDatabase(path.join(dir,'ui.sqlite'),{migrations:fileURLToPath(new URL('../apps/commonplace-account/drizzle',import.meta.url))});
+   const service=new AccountService(db,'http://127.0.0.1'),work=new CloudWork(service);
+@@ -69,7 +70,7 @@ export async function startUiPreview({port=0,host='127.0.0.1',publicOrigin=null,
+         res.writeHead(200,{'content-type':'text/html'});res.end('<!doctype html><html lang="en"><title>Meat Proxy synthetic preview</title><body><h1>Synthetic UI preview</h1><p>Disposable sample data only. No real sign-in or model execution.</p>'+['ready','empty','no-companion','signed-out','error'].map(m=>'<p><a href="/demo/'+m+'">'+m+'</a></p>').join('')+'</body></html>');return;
+       }
+       if(url.pathname==='/auth/google.js'){
+-        res.writeHead(200,{'content-type':'text/javascript'});res.end("export async function signInWithGoogle(){document.cookie='ui_demo=empty; Path=/; SameSite=Lax';}");return;
++        res.writeHead(200,{'content-type':'text/javascript','cache-control':'no-store'});res.end("export async function signInWithGoogle(){document.cookie='ui_demo="+signInMode+"; Path=/; SameSite=Lax';}");return;
+       }
+       if(mode==='error'&&url.pathname.startsWith('/account/web/')){res.writeHead(503,{'content-type':'application/json'});res.end(JSON.stringify({error:'Workspace temporarily unavailable. Refresh to try again.'}));return;}
+       const helper=googleSigninHelper(auth,base),helperName=url.pathname==='/meet-proxy-signin'?'/meet-proxy-signin.html':url.pathname;
+diff --git a/tests/agent-connections-browser.test.mjs b/tests/agent-connections-browser.test.mjs
+index 1362575..2812169 100644
+--- a/tests/agent-connections-browser.test.mjs
++++ b/tests/agent-connections-browser.test.mjs
+@@ -10,7 +10,7 @@ test('agents home, one-click existing-agent accept, live audit and either-side s
+  const owner=p.people.empty.owner,deviceId=uid();mail.run('INSERT INTO cp_devices(id,owner,client,name,scope,created_at) VALUES(?,?,?,?,?,?)',deviceId,owner,'synthetic','Recipient','commonplace:read commonplace:write',Date.now());
+  const device=mail.get('SELECT * FROM cp_devices WHERE id=?',deviceId),input={sessionId:uid(),provider:'Codex',verified:true,label:'Recipient agent',host:'conductor',delivery:'native'},recipient=mail.register(device,input);
+  const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',headless:true,args:['--no-sandbox']});t.after(async()=>{await browser.close();await p.close();});const context=await browser.newContext({viewport:{width:390,height:844}}),page=await context.newPage();page.setDefaultTimeout(10000);const errors=[];page.on('pageerror',e=>errors.push(e.message));
+- await page.goto(p.origin+'/demo/ready');await page.goto(p.origin+'/');await page.getByRole('heading',{name:'Your agents',exact:true}).waitFor();await page.locator('#agents-home-list .person-row').first().click();await page.getByRole('button',{name:'Create invitation',exact:true}).click();await page.getByRole('button',{name:'Create invitation link'}).click();const url=await page.getByLabel('Private invitation link').inputValue();assert.match(url,/#agent-invite=/);
++ await page.goto(p.origin+'/demo/ready');await page.goto(p.origin+'/work-agent#agents');await page.getByRole('heading',{name:'Your agents',exact:true}).waitFor();await page.locator('#agents-home-list .person-row').first().click();await page.getByRole('button',{name:'Create invitation',exact:true}).click();await page.getByRole('button',{name:'Create invitation link'}).click();const url=await page.getByLabel('Private invitation link').inputValue();assert.match(url,/#agent-invite=/);
+  const other=await (await browser.newContext({viewport:{width:390,height:844}})).newPage();other.setDefaultTimeout(10000);other.on('pageerror',e=>errors.push(e.message));await other.goto(p.origin+'/demo/empty');await other.goto(url);await other.getByRole('button',{name:'Accept connection',exact:true}).waitFor();assert.equal(await other.getByLabel('Your agent',{exact:true}).inputValue(),recipient.id);
+  assert.deepEqual((await new AxeBuilder({page:other}).analyze()).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[]);
+  await other.getByRole('button',{name:'Accept connection',exact:true}).click();await other.getByRole('heading',{name:'Shared conversation',exact:true}).waitFor();await other.getByText('No messages yet. Ask your connected agent to start the conversation.',{exact:true}).waitFor();
+diff --git a/tests/context-library-browser.test.mjs b/tests/context-library-browser.test.mjs
+index c03be1f..20d87b7 100644
+--- a/tests/context-library-browser.test.mjs
++++ b/tests/context-library-browser.test.mjs
+@@ -17,7 +17,7 @@ test('Library displays automatic native uploads, updates live, reads and deletes
+   const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',headless:true,args:['--no-sandbox']});t.after(()=>browser.close());
+   const context=await browser.newContext({viewport:{width:1280,height:1000}}),page=await context.newPage(),errors=[];
+   page.on('pageerror',error=>errors.push(error.message));page.on('dialog',dialog=>dialog.accept());page.setDefaultTimeout(12000);
+-  await page.goto(preview.origin+'/context');
++  await page.goto(preview.origin+'/work-agent#library');
+   await page.locator('#library-summary').filter({hasText:'2 saved conversations · 1 synced from devices · 1 imported.'}).waitFor();
+   await page.locator('#library-sync').filter({hasText:'Automatic work-chat sync is on for demo@example.test'}).waitFor();
+   const row=page.locator('#library .entry').filter({hasText:'Codex chats: native library example'});
+diff --git a/tests/context-product-browser.test.mjs b/tests/context-product-browser.test.mjs
+new file mode 100644
+index 0000000..0b64074
+--- /dev/null
++++ b/tests/context-product-browser.test.mjs
+@@ -0,0 +1,153 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {chromium} from 'playwright';
++import AxeBuilder from '@axe-core/playwright';
++import {startContextPreview} from '../scripts/preview-context-product.mjs';
++import {mkdir} from 'node:fs/promises';
++const screenDir=process.env.CONTEXT_SCREENSHOTS;
++test('context product: real retrieval, privacy-preserving selection, apps, responsive pages and recovery',async t=>{
++ const preview=await startContextPreview();t.after(()=>preview.close());const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',headless:true,args:['--no-sandbox']});t.after(()=>browser.close());const context=await browser.newContext({viewport:{width:1440,height:1000}});const page=await context.newPage();page.setDefaultTimeout(15000);const errors=[],writes=[];page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(/\/(?:create|send|pair-invite|pair-accept|connect|setup-connect|setup-verify)$/.test(new URL(r.url()).pathname))writes.push(r.url());});
++ if(screenDir)await mkdir(screenDir,{recursive:true});
++ const nav=name=>page.getByRole('navigation',{name:'Main navigation'}).getByRole('link',{name:name==='Conversations'?'Connections':name,exact:true});
++ const showMessages=()=>page.getByRole('tab',{name:'Conversation',exact:true}).click();
++ const backToList=async()=>{if(await page.getByRole('button',{name:'Back to connections',exact:true}).isVisible())await page.getByRole('button',{name:'Back to connections',exact:true}).click();};
++ const go=async name=>{if(name==='Settings'||name==='Your profile'){await page.getByRole('link',{name:'Your profile',exact:true}).click();if(name==='Settings')await page.getByRole('link',{name:'Account settings',exact:true}).click();}else{await nav(name).click();if(name==='Conversations'&&await page.locator('#board-reader').isVisible())await showMessages();}};
++ await t.test('home is Connections with sharing first and Context reads real archive text',async()=>{await page.goto(preview.origin+'/');await page.locator('#connection-choose-context').waitFor();assert.equal(await nav('Connections').getAttribute('aria-current'),'page');assert.equal(await page.getByRole('tab',{name:'Shared context',exact:true}).getAttribute('aria-selected'),'true');await nav('Context').click();await page.locator('.document-open').first().waitFor();assert.equal(await page.locator('#document-reader').isVisible(),false);assert.equal(await nav('Context').getAttribute('aria-current'),'page');assert.equal(await nav('Context').count(),1);assert.equal(await page.getByRole('link',{name:'Agents',exact:true}).count(),0);await page.getByRole('button',{name:/Read Claude chats: Website launch/}).click();await page.locator('#document-text').filter({hasText:'A calmer first impression'}).waitFor();});
++ await t.test('search matches body text and filters by source',async()=>{await page.getByRole('searchbox',{name:'Search your context'}).fill('cedar-maple');await page.getByRole('searchbox').press('Enter');await page.waitForFunction(()=>document.querySelectorAll('#documents .context-document').length===1&&!document.querySelector('#list-status').textContent);assert.equal(await page.locator('.document-open').count(),1);assert.match(await page.locator('#documents').innerText(),/Search & indexing/);await page.locator('[data-kind="claude"]').click();await page.getByRole('heading',{name:'No matches this time.'}).waitFor();await page.locator('[data-kind=""]').click();await page.waitForFunction(()=>document.querySelectorAll('.document-open').length===1&&!document.querySelector('#list-status').textContent);await page.getByRole('searchbox').fill('');await page.locator('.document-open').nth(2).waitFor();});
++ await t.test('sharing is one sheet with exact selection, default expiry and an honest invite preview',async()=>{
++  await page.getByRole('checkbox',{name:/Select Claude chats: Website launch/}).check();
++  await page.getByRole('checkbox',{name:/Select Codex chats: Search & indexing/}).check();
++  await page.getByRole('button',{name:'Share',exact:true}).click();
++  await page.getByRole('dialog',{name:'Share context',exact:true}).waitFor();
++  assert.equal(await page.locator('#selected-documents>div').count(),2);
++  await page.getByRole('button',{name:/Remove Codex chats: Search & indexing/}).click();
++  assert.equal(await page.locator('#selected-documents>div').count(),1);
++  assert.equal(await page.locator('#share-expiry').inputValue(),'14');
++  assert.equal(await page.locator('#share-options').evaluate(e=>e.open),false);
++  assert.equal(await page.getByRole('button',{name:'Create invite link'}).isDisabled(),true);
++  assert.match(await page.locator('#share-dialog').innerText(),/Nothing has been shared/);
++  await page.locator('#share-options summary').click();await page.locator('#share-expiry').selectOption('7');
++  await page.getByRole('button',{name:'Preview invitation'}).click();
++  assert.equal(await page.locator('#share-title').innerText(),'Alex Morgan invited you');assert.match(await page.locator('#invite-preview').innerText(),/Let’s share/);assert.equal(await page.locator('#invite-boundaries').evaluate(e=>e.open),false);await page.locator('#invite-boundaries summary').click();assert.match(await page.locator('#invite-boundaries').innerText(),/No access to other context/);
++  assert.match(await page.locator('#invite-description').innerText(),/1 selected document for 1 week/);
++  assert.equal(await page.locator('#invite-documents>div').count(),1);
++  assert.doesNotMatch(await page.locator('#invite-documents').innerText(),/Search & indexing/);
++  assert.equal(await page.getByRole('button',{name:'Accept invitation'}).isDisabled(),true);
++  await page.getByRole('button',{name:'Back to sharing'}).click();
++  await page.locator('#share-expiry').selectOption('14');
++  await page.getByRole('button',{name:'Close sharing'}).click();
++  assert.equal(await page.getByRole('button',{name:'Share',exact:true}).evaluate(e=>e===document.activeElement),true);
++  assert.deepEqual(writes,[]);
++ });
++ await t.test('account profile shows the signed-in person, private context and account settings',async()=>{
++  await go('Your profile');await page.getByRole('heading',{name:'Alex Morgan',exact:true}).waitFor();assert.equal(await page.locator('#profile-documents button').count(),3);assert.match(await page.locator('.account-profile').innerText(),/private account view/);assert.equal(await page.locator('#profile-avatar').innerText(),'AM');assert.equal(await page.locator('[data-page-link]').count(),3);
++  await page.locator('#profile-documents button').first().click();await page.locator('#document-reader').waitFor();await page.getByRole('button',{name:'Close document',exact:true}).click();
++ });
++ await t.test('conversation board reads actual pair and mailbox histories and updates while open',async()=>{
++  await go('Conversations');await page.locator('.board-conversation').nth(1).waitFor();assert.equal(await page.locator('.board-conversation').count(),2,'pair appears once, without duplicate mailbox thread');
++  await page.locator('.board-conversation').filter({hasText:'Chief of Staff'}).click();await showMessages();await page.locator('#board-messages').getByText(/Thursday works/).waitFor();assert.match(await page.locator('#board-thread-people').innerText(),/Taylor Brooks/);assert.equal(await page.locator('#board-messages article').count(),2);assert.equal(await page.locator('.board-message[data-side=own]').count(),1);assert.equal(await page.locator('.board-message[data-side=peer]').count(),1);assert.match(await page.locator('#board-messages').innerText(),/Pending delivery/);
++  await backToList();await page.locator('.board-conversation[data-conversation^="mail:"]').click();await showMessages();await page.locator('#board-messages').getByText(/The build checks passed/).waitFor();assert.equal(await page.locator('.board-message[data-side=own]').count(),1);assert.equal(await page.locator('.board-message[data-side=peer]').count(),1);await backToList();await page.locator('.board-conversation').filter({hasText:'Chief of Staff'}).click();await showMessages();await page.locator('#board-messages').getByText(/Thursday works/).waitFor();
++  preview.pairing.send(preview.pairing.alex,preview.pairing.taylor.id,'A new message arriving while the board is open.');
++  await page.locator('#board-messages').getByText('A new message arriving while the board is open.',{exact:true}).waitFor();
++ });
++ await t.test('desktop channel navigation preserves reading and switches the visible conversation',async()=>{
++  assert.equal(await page.locator('.board-list-pane').isVisible(),true);
++  assert.equal(await page.locator('.board-participant').count(),2);
++  assert.match(await page.locator('#board-thread-people').innerText(),/Alex Morgan/);
++  assert.match(await page.locator('.board-participant').first().innerText(),/Taylor Brooks/);
++  assert.match(await page.locator('.board-participant').last().innerText(),/Alex Morgan/);
++  await page.locator('#board-boundaries summary').click();
++  const original=await page.locator('#board-messages article').first().elementHandle();
++  await page.getByRole('button',{name:'Refresh',exact:true}).click();
++  await page.waitForFunction(()=>!document.getElementById('refresh-board').disabled);
++  assert.equal(await original.evaluate(e=>e.isConnected),true,'unchanged live refresh preserves the visible messages');
++  assert.equal(await page.locator('#board-boundaries details').evaluate(e=>e.open),true);
++  await page.locator('#board-boundaries summary').click();
++  await page.locator('.board-conversation[data-conversation^="mail:"]').click();await showMessages();await page.locator('#board-messages').getByText(/The build checks passed/).waitFor();
++  assert.equal(await page.locator('.board-list-pane').isVisible(),true);
++  assert.equal(await page.locator('.board-conversation[data-conversation^="mail:"]').getAttribute('aria-pressed'),'true');
++  await page.locator('.board-conversation').filter({hasText:'Chief of Staff'}).click();await showMessages();await page.locator('#board-messages article').nth(2).waitFor();
++ });
++ await t.test('sharing starts with the selected connection and preserves exact document choices through search and review',async()=>{
++  await page.getByRole('tab',{name:'Shared context',exact:true}).click();await page.locator('#connection-share').click();
++  await page.getByRole('dialog',{name:'Share with Taylor Brooks',exact:true}).waitFor();
++  await page.getByRole('checkbox',{name:/Include Claude chats: Website launch/}).check();await page.getByRole('checkbox',{name:/Include Codex chats: Search & indexing/}).check();
++  await page.getByRole('searchbox',{name:'Search context to share',exact:true}).fill('cedar-maple');await page.getByRole('searchbox',{name:'Search context to share',exact:true}).press('Enter');await page.waitForFunction(()=>document.querySelectorAll('#share-picker-documents label').length===1&&!document.querySelector('#share-picker-status').textContent);
++  assert.equal(await page.locator('#share-picker-count').innerText(),'2 selected');await page.getByRole('button',{name:'Continue',exact:true}).click();
++  await page.getByRole('dialog',{name:'Share context',exact:true}).waitFor();assert.equal(await page.locator('#selected-documents>div').count(),2);assert.equal(await page.locator('#share-recipient').innerText(),'For Taylor Brooks');assert.equal(await page.getByRole('button',{name:'Create invite link'}).isDisabled(),true);
++  await page.getByRole('button',{name:'Close sharing'}).click();await page.locator('#connection-draft').waitFor();assert.match(await page.locator('#connection-draft').innerText(),/not shared/);assert.equal(await page.locator('#connection-draft-documents>div').count(),2);
++  await page.locator('.board-conversation[data-conversation^="mail:"]').click();await page.locator('#connection-share-empty').waitFor();assert.equal(await page.locator('#connection-draft-documents>div').count(),0,'a draft is not reassigned to a different connection');
++  await page.locator('.board-conversation').filter({hasText:'Chief of Staff'}).click();await page.locator('#connection-draft').waitFor();assert.equal(await page.locator('#connection-draft-documents>div').count(),2);
++  assert.deepEqual(writes,[]);
++ });
++ await t.test('picker recovers failure and ignores a delayed search after changing its recipient',async()=>{
++  let fail=true;await page.route('**/account/web/cloud/archive-list',route=>fail?route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Temporary picker outage'})}):route.continue());
++  await page.locator('#connection-share').click();await page.getByRole('button',{name:'Retry context',exact:true}).waitFor();fail=false;await page.getByRole('button',{name:'Retry context',exact:true}).click();await page.locator('#share-picker-documents label').first().waitFor();await page.unroute('**/account/web/cloud/archive-list');
++  let release,seen,finished,routeError;const held=new Promise(r=>release=r),started=new Promise(r=>seen=r),handled=new Promise(r=>finished=r);
++  const delayedSearch=async route=>{try{const response=await route.fetch();seen();await held;await route.fulfill({response});}catch(error){routeError=error;seen();}finally{finished();}};
++  await page.route('**/account/web/cloud/archive-search',delayedSearch);
++  try{
++   await page.getByRole('searchbox',{name:'Search context to share',exact:true}).fill('cedar-maple');await page.getByRole('searchbox',{name:'Search context to share',exact:true}).press('Enter');await started;
++   await page.getByRole('button',{name:'Close context picker',exact:true}).click();await page.locator('.board-conversation[data-conversation^="mail:"]').click();await page.locator('#connection-share').click();await page.locator('#share-picker-documents label').nth(1).waitFor();
++   const staleResponse=page.waitForResponse('**/account/web/cloud/archive-search');release();await handled;assert.ifError(routeError);await (await staleResponse).finished();
++   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
++   assert.equal(await page.locator('#share-picker-count').innerText(),'0 selected');assert.equal(await page.locator('#share-query').inputValue(),'');assert.doesNotMatch(await page.locator('#share-picker-title').innerText(),/Taylor Brooks/);assert.ok(await page.locator('#share-picker-documents label').count()>1);
++  }finally{release();await page.unrouteAll({behavior:'wait'});}
++  await page.getByRole('button',{name:'Close context picker',exact:true}).click();await page.locator('.board-conversation').filter({hasText:'Chief of Staff'}).click();await page.locator('#connection-draft').waitFor();assert.equal(await page.locator('#connection-draft-documents>div').count(),2);
++ });
++ for(const width of [320,390,768,1440])await t.test('responsive context/shared/settings and setup at '+width,async()=>{
++  await page.setViewportSize({width,height:1000});for(const [name,id] of [['Context','context'],['Conversations','conversations'],['Shared access','shared'],['Your profile','profile'],['Settings','settings']]){await go(name);if(id==='context'){if(await page.locator('#document-reader').isVisible())await page.getByRole('button',{name:'Close document',exact:true}).click();}assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,id+' overflow at '+width);
++   const violations=(await new AxeBuilder({page}).analyze()).violations;assert.deepEqual(violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[],id+' accessibility at '+width);
++   const links=await page.locator('[data-page-link]').all();assert.equal(links.length,3);const boxes=await Promise.all(links.map(a=>a.boundingBox()));assert.equal(new Set(boxes.map(b=>b.y)).size,1,'three links across the top');assert.ok(boxes[0].x<boxes[1].x&&boxes[1].x<boxes[2].x);for(const b of boxes)assert.ok(b.height>=44,'navigation touch target');await page.evaluate(()=>scrollTo(0,0));if(screenDir)await page.screenshot({path:screenDir+'/'+id+'-'+width+'.png',fullPage:true});}
++  await nav('Connections').click();await page.getByRole('tab',{name:'Shared context',exact:true}).click();
++  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'sharing pane overflow');assert.deepEqual((await new AxeBuilder({page}).analyze()).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[]);
++  await page.locator('#connection-share').click();await page.locator('#share-picker-documents label').first().waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'context picker overflow');assert.deepEqual((await new AxeBuilder({page}).analyze()).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[]);await page.getByRole('button',{name:'Close context picker',exact:true}).click();
++  await nav('Context').click();await page.getByRole('button',{name:'Share',exact:true}).click();
++  for(const invitation of [false,true]){
++   if(invitation)await page.getByRole('button',{name:'Preview invitation'}).click();
++   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'share sheet overflow');
++   assert.deepEqual((await new AxeBuilder({page}).analyze()).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[]);
++   if(screenDir)await page.screenshot({path:screenDir+'/'+(invitation?'invitation':'share')+'-'+width+'.png',fullPage:true});
++  }
++  await page.keyboard.press('Escape');assert.equal(await page.locator('#share-dialog').isVisible(),false);await go('Settings');
++  await page.getByRole('button',{name:/Claude Code Connect to your context/}).click();await page.getByRole('dialog').waitFor();assert.match(await page.locator('#connect-prompt').inputValue(),/Do not enable transcript sync, grant another person access, start a cloud agent/);assert.equal(await page.locator('#setup-origin').innerText(),preview.origin);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);assert.deepEqual((await new AxeBuilder({page}).analyze()).violations.map(v=>v.id),[]);await page.getByRole('button',{name:'Close setup'}).click();
++ });
++ await t.test('older message pages fill a live burst gap in order and read errors can retry',async()=>{
++  await page.setViewportSize({width:1440,height:1000});await go('Conversations');await backToList();await page.locator('.board-conversation').filter({hasText:'Chief of Staff'}).click();await showMessages();await page.locator('#board-messages article').nth(2).waitFor();
++  for(let i=0;i<105;i++)preview.pairing.send(preview.pairing.alex,preview.pairing.taylor.id,'Board burst '+String(i).padStart(3,'0'));
++  await page.getByRole('button',{name:'Refresh',exact:true}).click();await page.locator('#board-messages').getByText('Board burst 104',{exact:true}).waitFor();await page.getByRole('button',{name:'Earlier messages',exact:true}).click();await page.waitForFunction(()=>document.querySelectorAll('#board-messages article').length===108);
++  const texts=await page.locator('#board-messages article p').allTextContents();assert.match(texts[0],/Can you check with Taylor/);assert.equal(texts[3],'Board burst 000');assert.equal(texts.at(-1),'Board burst 104');
++  let fail=true;await page.route('**/account/web/social/pair-read',route=>fail?route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Temporary thread outage'})}):route.continue());await page.getByRole('button',{name:'Refresh',exact:true}).click();await page.getByRole('button',{name:'Retry conversation',exact:true}).waitFor();fail=false;await page.getByRole('button',{name:'Retry conversation',exact:true}).click();await page.waitForFunction(()=>!document.getElementById('board-read-status').textContent);await page.unroute('**/account/web/social/pair-read');
++ });
++ await t.test('phone reader returns to the list',async()=>{await page.setViewportSize({width:390,height:900});await nav('Context').click();await page.locator('#refresh-context').click();await page.waitForFunction(()=>!document.getElementById('list-status').textContent);await page.getByRole('button',{name:/Read Claude chats: Website launch/}).click();await page.locator('#document-text').filter({hasText:'A calmer first impression'}).waitFor();assert.equal(await page.locator('.documents-pane').isVisible(),false);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);if(screenDir)await page.screenshot({path:screenDir+'/reader-390.png',fullPage:true});await page.getByRole('button',{name:'Close document',exact:true}).click();assert.equal(await page.locator('.documents-pane').isVisible(),true);});
++ await t.test('failed reads can retry without claiming completion',async()=>{let fail=true;await page.route('**/account/web/cloud/archive-read',route=>fail?route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Temporary read failure'})}):route.continue());await page.getByRole('button',{name:/Read Claude chats: Website launch/}).click();await page.getByRole('button',{name:'Try reading again'}).waitFor();fail=false;await page.getByRole('button',{name:'Try reading again'}).click();await page.locator('#document-text').filter({hasText:'A calmer first impression'}).waitFor();await page.unroute('**/account/web/cloud/archive-read');});
++ await t.test('empty account and sign-out clear prior context and delayed conversation reads',async()=>{
++ let release,seen;const held=new Promise(r=>release=r),started=new Promise(r=>seen=r);
++ await go('Conversations');if(await page.getByRole('button',{name:'Back to connections',exact:true}).isVisible())await page.getByRole('button',{name:'Back to connections',exact:true}).click();await page.locator('.board-conversation').filter({hasText:'Chief of Staff'}).click();await showMessages();await page.locator('#board-messages article').first().waitFor();
++ await page.route('**/account/web/social/pair-read',async route=>{const response=await route.fetch();seen();await held;try{await route.fulfill({response});}catch{}});
++ await page.getByRole('button',{name:'Refresh',exact:true}).click();await started;
++ await context.addCookies([{name:'ui_demo',value:'empty',url:preview.origin}]);await go('Settings');await page.locator('#sync-enabled').uncheck();await page.locator('#documents h2').filter({hasText:'A place for what you know.'}).waitFor({state:'attached'});release();await page.unroute('**/account/web/social/pair-read');await nav('Shared access').click();await page.locator('#sharing-empty').waitFor();assert.equal(await page.locator('#selected-documents>div').count(),0);assert.equal(await page.locator('#invite-documents>div').count(),0);assert.equal(await page.locator('#share-title').innerText(),'Share context');assert.equal(await page.locator('#board-messages article').count(),0);assert.equal(await page.locator('#share-picker-documents label').count(),0);assert.equal(await page.locator('#share-recipient').textContent(),'');assert.equal(await page.locator('#profile-name').textContent(),'Taylor Brooks');assert.equal(await page.locator('#profile-documents button').count(),0);assert.equal(await page.locator('#documents').getByText(/Website launch/).count(),0);await go('Settings');await Promise.all([page.waitForNavigation({waitUntil:'load'}),page.locator('#settings-signout').click()]);await page.getByRole('button',{name:'Open sample account'}).waitFor();assert.equal(await page.locator('#authenticated').isVisible(),false);if(screenDir)await page.screenshot({path:screenDir+'/signin-390.png',fullPage:true});});
++ await t.test('sample entry opens the populated account after sign-out',async()=>{
++  await page.getByRole('button',{name:'Open sample account'}).click();await page.locator('.board-conversation').first().waitFor();await nav('Context').click();await page.locator('.document-open').first().waitFor();
++  await go('Your profile');await page.getByRole('heading',{name:'Alex Morgan',exact:true}).waitFor();assert.equal(await page.locator('#profile-documents button').count(),3);
++  await go('Conversations');await page.locator('.board-conversation').nth(1).waitFor();await page.locator('.board-conversation').filter({hasText:'Chief of Staff'}).click();await showMessages();await page.locator('#board-messages').getByText('Board burst 104',{exact:true}).waitFor();
++  assert.equal(await page.getByRole('button',{name:'Continue with Google'}).count(),0,'sample preview never presents fake Google authentication');
++ });
++ await t.test('reset sample recovers a previously persisted empty preview account',async()=>{
++  await context.addCookies([{name:'ui_demo',value:'empty',url:preview.origin}]);await page.goto(preview.origin+'/');await nav('Context').click();await page.getByRole('heading',{name:'A place for what you know.'}).waitFor();
++  await page.getByRole('link',{name:'Reset sample',exact:true}).click();await page.locator('.board-conversation').first().waitFor();await nav('Context').click();await page.locator('.document-open').first().waitFor();await go('Conversations');await page.locator('.board-conversation').nth(1).waitFor();
++  await context.addCookies([{name:'ui_demo',value:'empty',url:preview.origin}]);await page.goto(preview.origin+'/preview/sample?view=conversations');await page.locator('.board-conversation').nth(1).waitFor();assert.equal(new URL(page.url()).hash,'#conversations');
++ });
++ await t.test('signed-in conversations are usable while context is still loading',async()=>{
++  let release;const held=new Promise(r=>release=r);
++  await page.route('**/account/web/cloud/archive-list',async route=>{await held;await route.continue();});
++  try{
++   await page.goto(preview.origin+'/#conversations');await page.locator('.board-conversation').nth(1).waitFor();
++   assert.equal(await page.locator('#loading-panel').isVisible(),false,'initial loader ends as soon as the account is ready');
++   await page.locator('.board-conversation').filter({hasText:'Chief of Staff'}).click();await showMessages();await page.locator('#board-messages article').first().waitFor();
++  }finally{release();await page.unroute('**/account/web/cloud/archive-list');}
++  await page.locator('.document-open').first().waitFor({state:'attached'});
++ });
++ await t.test('initial service failure has working retry',async()=>{await context.addCookies([{name:'ui_demo',value:'error',url:preview.origin}]);await page.goto(preview.origin+'/');await page.getByRole('button',{name:'Try again',exact:true}).waitFor();await context.addCookies([{name:'ui_demo',value:'ready',url:preview.origin}]);await page.getByRole('button',{name:'Try again',exact:true}).click();await nav('Context').click();await page.locator('.document-open').first().waitFor();assert.equal(await page.locator('#load-error').isVisible(),false);});
++ assert.deepEqual(errors,[]);assert.deepEqual(writes,[]);
++});
+diff --git a/tests/local-environment-browser.test.mjs b/tests/local-environment-browser.test.mjs
+index a294e15..d200ab5 100644
+--- a/tests/local-environment-browser.test.mjs
++++ b/tests/local-environment-browser.test.mjs
+@@ -18,7 +18,7 @@ async function search(page,query){await page.locator('#context-query').fill(quer
+ async function screenshot(page,name){const dir=process.env.LOCAL_LAB_SCREENSHOT_DIR||'artifacts/local-lab';await mkdir(dir,{recursive:true});await page.screenshot({path:path.resolve(dir,name+'.png'),fullPage:true});}
+ 
+ test('local UI searches original context, reads surrounding text, filters, paginates and renders on mobile',async t=>{
+- const {lab,page}=await fixture(t);await page.goto(lab.origin+'/context');await page.locator('#library .entry').waitFor();
++ const {lab,page}=await fixture(t);await page.goto(lab.origin+'/work-agent#library');await page.locator('#library .entry').waitFor();
+  await search(page,'release');assert.equal(await page.locator('#context-search-results article').count(),1);assert.match(await page.locator('#context-search-results').innerText(),/Thursday/);
+  await page.getByRole('button',{name:'Read surrounding text',exact:true}).click();await page.locator('#search-reader').getByText(/Thursday/).waitFor();
+  await page.getByText('Search filters',{exact:true}).click();await page.locator('#context-project').fill('another-project');await search(page,'release');assert.match(await page.locator('#context-search-status').innerText(),/No matches/);
+@@ -43,7 +43,7 @@ test('local setup UI distinguishes empty context and worker outage, verifies a r
+ });
+ 
+ test('search discards delayed private results when the browser switches sample accounts',async t=>{
+- const {lab,page}=await fixture(t);await page.goto(lab.origin+'/context');await page.locator('#library .entry').waitFor();
++ const {lab,page}=await fixture(t);await page.goto(lab.origin+'/work-agent#library');await page.locator('#library .entry').waitFor();
+  let release,arrive;const entered=new Promise(resolve=>arrive=resolve),gate=new Promise(resolve=>release=resolve);
+  await page.route('**/cloud/archive-search',async route=>{const response=await route.fetch();arrive();await gate;await route.fulfill({response});});
+  await page.locator('#context-query').fill('release');await page.locator('#context-search-submit').click();await entered;
+diff --git a/tests/people-discovery-browser.test.mjs b/tests/people-discovery-browser.test.mjs
+index 5217c27..25f7715 100644
+--- a/tests/people-discovery-browser.test.mjs
++++ b/tests/people-discovery-browser.test.mjs
+@@ -56,7 +56,7 @@ test('search incoming accept/decline uses request IDs and stale/short queries cl
+ test('signed-out onboarding offers a direct Google click and timeout keeps send nonce for retry',async t=>{
+   const p=await startUiPreview();t.after(()=>p.close());const {PeopleDiscovery}=await import('../apps/commonplace-account/server/people-discovery.mjs');const d=new PeopleDiscovery(p.service);d.save(p.people.ready.owner,{handle:'alex',displayName:'Alex Morgan',discoverable:true});
+   const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',headless:true,args:['--no-sandbox']});t.after(()=>browser.close());const context=await browser.newContext(),page=await context.newPage();page.setDefaultTimeout(15000);
+-  await page.goto(p.origin+'/demo/signed-out');await page.goto(p.origin+'/');assert.equal(await page.locator('.social-nav').isVisible(),false);await page.getByRole('button',{name:'Continue with Google',exact:true}).click();await page.getByRole('heading',{name:'Attach your agents',exact:true}).waitFor();assert.equal(await page.locator('#discovery-dialog').isVisible(),false);
++  await page.goto(p.origin+'/demo/signed-out');await page.goto(p.origin+'/work-agent#agents');assert.equal(await page.locator('.social-nav').isVisible(),false);await page.getByRole('button',{name:'Continue with Google',exact:true}).click();await page.getByRole('heading',{name:'Attach your agents',exact:true}).waitFor();assert.equal(await page.locator('#discovery-dialog').isVisible(),false);
+   await page.goto(p.origin+'/demo/ready#people');await page.locator('.person-card').first().waitFor();await page.locator('.person-card').first().getByRole('button',{name:'Chat history',exact:true}).click();await page.getByRole('button',{name:'New message',exact:true}).click();await page.getByLabel('Your message',{exact:true}).fill('A timeout must not duplicate this message.');
+   let held,first=true;const nonces=[];await page.route('**/account/web/social/send',async route=>{nonces.push(route.request().postDataJSON().nonce);if(first){first=false;await route.fetch();held=route;}else await route.continue();});
+   await page.getByRole('button',{name:/Send request/}).click();await page.getByText('Connection timed out. Reconnect and try again.',{exact:true}).waitFor();assert.equal(await page.getByLabel('Your message',{exact:true}).inputValue(),'A timeout must not duplicate this message.');await held.abort().catch(()=>{});await page.getByRole('button',{name:/Send request/}).click();await page.locator('#compose-dialog').waitFor({state:'hidden'});assert.equal(nonces.length,2);assert.equal(nonces[0],nonces[1]);assert.equal((await p.service.all("SELECT * FROM cp_messages WHERE body='A timeout must not duplicate this message.'")).length,1);await page.unroute('**/account/web/social/send');
+diff --git a/tests/ui-browser.test.mjs b/tests/ui-browser.test.mjs
+index 0e6833d..9654068 100644
+--- a/tests/ui-browser.test.mjs
++++ b/tests/ui-browser.test.mjs
+@@ -101,7 +101,7 @@ test('rendered work/context flows preserve account, task and import contracts on
+   const connectionInput=(await connection).postDataJSON();assert.equal(connectionInput.method,'browser');assert.match(connectionInput.deviceId,/^[a-f0-9]{24}$/);
+   const attempt=page.locator('#accounts article').filter({hasText:'Synthetic browser connection'});await attempt.waitFor();
+   await attempt.getByRole('button',{name:'Disconnect',exact:true}).click();await attempt.waitFor({state:'detached'});
+-  await page.goto(preview.origin+'/context');await page.getByText('Release planning',{exact:true}).waitFor();
++  await page.goto(preview.origin+'/work-agent#library');await page.getByText('Release planning',{exact:true}).waitFor();
+   assert.deepEqual((await new AxeBuilder({page}).analyze()).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[]);
+   await screenshot(page,'ui-context-desktop');
+   await page.getByRole('button',{name:'Read',exact:true}).click();await page.getByRole('heading',{name:'Release planning',exact:true}).waitFor();assert.equal(await page.locator('#reader-title').evaluate(n=>document.activeElement===n),true);
+@@ -121,7 +121,7 @@ test('rendered work/context flows preserve account, task and import contracts on
+     await navigate(page,'Feed');await page.getByRole('button',{name:'New task',exact:true}).click();await page.locator('#target').selectOption(target);assert.ok((await page.locator('#target-details').textContent()).includes(target.slice(-6)));
+     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'work overflow at '+width);
+     if(width===390)await screenshot(page,'ui-work-mobile');
+-    await page.goto(preview.origin+'/context');await page.getByText('Release planning',{exact:true}).waitFor();
++    await page.goto(preview.origin+'/work-agent#library');await page.getByText('Release planning',{exact:true}).waitFor();
+     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'context overflow at '+width);
+     if(width===390)await screenshot(page,'ui-context-mobile');
+   }
+@@ -149,7 +149,7 @@ test('all app views share navigation, retain drafts and import selection, and su
+   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(p.origin+'/demo/ready');await page.locator('#tasks article').first().waitFor();await page.evaluate(()=>window.navigationMarker='same-document');
+   const nav=page.getByRole('navigation',{name:'Main navigation'});
+   await page.getByRole('button',{name:'New task',exact:true}).click();await page.getByLabel('What needs doing?').fill('Keep this unsent task while I look up context.');
+-  await navigate(page,'Library');await page.getByText('Release planning',{exact:true}).waitFor();assert.equal(new URL(page.url()).pathname,'/context');await openMore(page);assert.equal(await nav.getByRole('link',{name:'Library',exact:true}).getAttribute('aria-current'),'page');
++  await navigate(page,'Library');await page.getByText('Release planning',{exact:true}).waitFor();assert.equal(new URL(page.url()).pathname,'/work-agent');assert.equal(new URL(page.url()).hash,'#library');await openMore(page);assert.equal(await nav.getByRole('link',{name:'Library',exact:true}).getAttribute('aria-current'),'page');
+   await page.getByLabel('ChatGPT export file').setInputFiles({name:'conversations.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(exportData))});await page.getByText('Review your selection. Nothing has been uploaded.',{exact:true}).waitFor();await page.getByLabel('Select all conversations',{exact:true}).uncheck();
+   await navigate(page,'People');await page.getByRole('heading',{name:'Your people',exact:true}).waitFor();
+   await page.goBack();await page.getByRole('heading',{name:'Your library',exact:true}).waitFor();assert.equal(await page.getByLabel('Select all conversations',{exact:true}).isChecked(),false);await page.getByRole('button',{name:'Import 0 selected conversations',exact:true}).waitFor();
+@@ -161,14 +161,14 @@ test('all app views share navigation, retain drafts and import selection, and su
+   await page.locator('.skip-link').focus();await page.keyboard.press('Enter');await page.getByRole('heading',{name:'Your library',exact:true}).waitFor();
+   await page.setViewportSize({width:390,height:844});await navigate(page,'Settings');await navigate(page,'Library');assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+   await page.goto(p.origin+'/workspaces');await page.getByRole('heading',{name:'Your agents',exact:true}).waitFor();assert.equal(new URL(page.url()).pathname,'/work-agent');
+-  await page.goto(p.origin+'/settings');await page.getByRole('heading',{name:'Your people',exact:true}).waitFor();
+-  await context.addCookies([{name:'ui_demo',value:'signed-out',url:p.origin}]);await page.goto(p.origin+'/signin?return_to=%2Fcontext');await page.getByRole('button',{name:'Continue with Google',exact:true}).click();await page.waitForURL(p.origin+'/context');await page.getByRole('heading',{name:'Your library',exact:true}).waitFor();await page.getByText('No conversations saved yet',{exact:true}).waitFor();
++  await page.goto(p.origin+'/settings');await page.getByRole('heading',{name:'Settings',exact:true}).waitFor();
++  await context.addCookies([{name:'ui_demo',value:'signed-out',url:p.origin}]);await page.goto(p.origin+'/signin?return_to=%2Fcontext');await page.getByRole('button',{name:'Continue with Google',exact:true}).click();await page.waitForURL(p.origin+'/context');await page.getByRole('heading',{name:'Context',exact:true}).waitFor();await page.getByRole('heading',{name:'A place for what you know.',exact:true}).waitFor();
+   assert.deepEqual(errors,[]);
+ });
+ 
+ test('library clears old account data and ignores a delayed reader after session expiry',async t=>{
+   const p=await startUiPreview();t.after(()=>p.close());const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',headless:true,args:['--no-sandbox']});t.after(()=>browser.close());const context=await browser.newContext(),page=await context.newPage();page.setDefaultTimeout(12000);
+-  await page.goto(p.origin+'/context');await page.getByText('Release planning',{exact:true}).waitFor();
++  await page.goto(p.origin+'/work-agent#library');await page.getByText('Release planning',{exact:true}).waitFor();
+   let release,seen;const held=new Promise(resolve=>release=resolve),started=new Promise(resolve=>seen=resolve);
+   await page.route('**/context/web/read',async route=>{const response=await route.fetch();seen();await held;await route.fulfill({response});});
+   await page.getByRole('button',{name:'Read',exact:true}).click();await started;await context.addCookies([{name:'ui_demo',value:'signed-out',url:p.origin}]);await page.locator('#refresh-tasks').evaluate(n=>n.click());await page.getByRole('button',{name:'Continue with Google',exact:true}).waitFor();
+@@ -199,7 +199,7 @@ test('Account menu signs out, clears old work, and signs into another account on
+   await page.locator('#account-menu > summary').click();await page.locator('#account-name').getByText('Alex Morgan',{exact:true}).waitFor();await page.getByText('demo@example.test',{exact:true}).waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+   assert.deepEqual((await new AxeBuilder({page}).analyze()).violations.map(v=>v.id),[]);
+   const response=page.waitForResponse(r=>r.url().includes('/auth/signout'));await page.getByRole('button',{name:'Sign out',exact:true}).click();assert.equal((await response).status(),303);await page.getByRole('button',{name:'Continue with Google',exact:true}).waitFor();assert.equal(await page.locator('#account-menu').isVisible(),false);
+-  await page.getByRole('button',{name:'Continue with Google',exact:true}).click();await page.waitForFunction(()=>document.getElementById('self-name').textContent==='Taylor Brooks');assert.equal(await page.locator('#tasks article').count(),0);assert.equal(await page.getByLabel('What needs doing?').inputValue(),'');
++  await page.getByRole('button',{name:'Continue with Google',exact:true}).click();await page.waitForFunction(()=>document.getElementById('owner-name')?.textContent==='Taylor Brooks');assert.equal(await page.locator('.document-open').count(),0);await page.goto(p.origin+'/work-agent#agents');await page.waitForFunction(()=>document.getElementById('self-name')?.textContent==='Taylor Brooks');assert.equal(await page.locator('#tasks article').count(),0);assert.equal(await page.getByLabel('What needs doing?').inputValue(),'');
+   await page.locator('#account-menu > summary').click();await page.locator('#account-name').getByText('Taylor Brooks',{exact:true}).waitFor();await page.keyboard.press('Escape');assert.equal(await page.locator('#account-menu').getAttribute('open'),null);
+  }
+ });
+diff --git a/tests/ui-system.test.mjs b/tests/ui-system.test.mjs
+index 4e6009a..a4ae83f 100644
+--- a/tests/ui-system.test.mjs
++++ b/tests/ui-system.test.mjs
+@@ -6,15 +6,15 @@ import {withConnectionRoutes} from '../apps/commonplace-account/server/connectio
+ 
+ test('shared UI routes deliver components under existing CSP and preserve unrelated routes',async t=>{
+   const p=await startUiPreview();t.after(()=>p.close());
+-  for(const route of ['/','/work-agent','/context']){
++  for(const route of ['/','/work-agent','/context','/settings']){
+     const response=await fetch(p.origin+route);assert.equal(response.status,200);const body=await response.text();
+     assert.match(body,/Skip to content/);assert.match(body,/aria-current="page"/);assert.match(body,/role="status"/);
+     assert.match(response.headers.get('content-security-policy'),/default-src 'none'/);
+     assert.equal(response.headers.get('cache-control'),'no-store');
+   }
+-  for(const route of ['/workspaces','/settings']){const response=await fetch(p.origin+route,{redirect:'manual'});assert.equal(response.status,303);assert.equal(response.headers.get('location'),route==='/workspaces'?'/work-agent#work':'/#people');assert.equal((await fetch(p.origin+route,{method:'POST'})).status,405);}
+-  for(const target of ['https://foreign.test','//foreign.test','/signin','/context']){const response=await fetch(p.origin+'/signin?return_to='+encodeURIComponent(target));const html=await response.text();assert.match(html,/class="social-app"/);assert.ok(html.includes('data-signin-return="'+encodeURIComponent(target==='/context'?target:'/')+'"'));}
+-  for(const [asset,type] of [['social.mjs','text/javascript'],['manrope-latin.woff2','font/woff2'],['manrope-LICENSE.txt','text/plain'],['ui.css','text/css'],['ui.mjs','text/javascript'],['activity.mjs','text/javascript'],['work-agent.mjs','text/javascript'],['context.css','text/css'],['context.mjs','text/javascript'],['import-worker.mjs','text/javascript']]){
++  for(const route of ['/workspaces']){const response=await fetch(p.origin+route,{redirect:'manual'});assert.equal(response.status,303);assert.equal(response.headers.get('location'),route==='/workspaces'?'/work-agent#work':'/#people');assert.equal((await fetch(p.origin+route,{method:'POST'})).status,405);}
++  for(const target of ['https://foreign.test','//foreign.test','/signin','/context']){const response=await fetch(p.origin+'/signin?return_to='+encodeURIComponent(target));const html=await response.text();assert.match(html,/class="context-product"/);assert.ok(html.includes('data-signin-return="'+encodeURIComponent(target==='/context'?target:'/')+'"'));}
++  for(const [asset,type] of [['context-product.mjs','text/javascript'],['social.mjs','text/javascript'],['manrope-latin.woff2','font/woff2'],['manrope-LICENSE.txt','text/plain'],['ui.css','text/css'],['ui.mjs','text/javascript'],['activity.mjs','text/javascript'],['work-agent.mjs','text/javascript'],['context.css','text/css'],['context.mjs','text/javascript'],['import-worker.mjs','text/javascript']]){
+     const response=await fetch(p.origin+'/context/assets/'+asset);assert.equal(response.status,200);assert.match(response.headers.get('content-type'),new RegExp(type));
+   }
+   assert.equal((await fetch(p.origin+'/context/assets/unlisted.mjs')).status,404);

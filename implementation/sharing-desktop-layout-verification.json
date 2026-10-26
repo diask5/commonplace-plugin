@@ -1,0 +1,56 @@
+{
+  "state": "source and working preview; not deployed",
+  "checks": {
+    "policySuite": {
+      "passed": 38,
+      "failed": 0,
+      "skipped": 0,
+      "log": ".context/sharing-desktop/verified-check.log"
+    },
+    "widths": [
+      320,
+      390,
+      768,
+      1024,
+      1280,
+      1440,
+      1920
+    ],
+    "responsiveBehavior": [
+      "Desktop keeps editor and preview simultaneously visible",
+      "Phone/tablet preserve the two-step card",
+      "Resizing preserves draft, results and focus without model calls",
+      "Long preview results scroll with keyboard while rules remain visible",
+      "Editing discards stale results; pending results cannot repaint changed rules"
+    ],
+    "accessibility": [
+      "axe WCAG2A/AA and WCAG2.1AA in initial and populated states at all seven widths",
+      "No horizontal overflow",
+      "44px primary controls",
+      "Reduced-motion styles retained"
+    ],
+    "livePreview": {
+      "model": "pplx-decider-v1.2",
+      "liveProvider": true,
+      "syntheticOnly": true,
+      "checked": 8,
+      "approved": 2,
+      "errors": 0,
+      "desktopFrameWidth": 1320,
+      "at": "2026-10-25T22:24:42.563Z"
+    },
+    "replay": {
+      "patches": 10,
+      "filesMatched": 3,
+      "passed": true
+    }
+  },
+  "notes": [
+    "Earlier checks identified low contrast in the lavender pane and badge; text colors were corrected.",
+    "Excerpt entrance now translates without fading text to low contrast.",
+    "Resize regression waits for the actual media-query change event before checking the new layout.",
+    "Main/backend tests were not repeated for these presentation-only changes; classifier and permissions are unchanged."
+  ],
+  "screenshots": ".context/sharing-desktop/live-screenshots",
+  "patchSha256": "9f6307e8d48b8443aeb722e25e212243533f009785935eba9dc086e0d0f7aa6a"
+}

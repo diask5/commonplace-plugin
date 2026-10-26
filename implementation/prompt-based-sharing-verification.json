@@ -1,0 +1,85 @@
+{
+  "state": "source and private preview; not deployed or wired to production sharing",
+  "at": "2026-10-25T22:09:49.196Z",
+  "checks": {
+    "mainSuite": {
+      "passed": 407,
+      "failed": 0,
+      "skipped": 0,
+      "log": ".context/policy-sharing/main-final.log"
+    },
+    "policyUnitMcpAndBrowser": {
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "log": ".context/policy-sharing/policy-final.log"
+    },
+    "existingContextUI": {
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "log": ".context/policy-sharing/context-regression.log"
+    },
+    "browserWidths": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "replay": {
+      "patches": 8,
+      "filesMatched": 12,
+      "passed": true
+    }
+  },
+  "liveProvider": {
+    "provider": "Perplexity Decisions",
+    "model": "pplx-decider-v1.2",
+    "threshold": 0.995,
+    "baseline": {
+      "threshold": 0.995,
+      "evaluated": 28,
+      "errors": 0,
+      "falseAllows": [],
+      "falseWithholds": [
+        "technical",
+        "negative-result",
+        "french-progress"
+      ],
+      "correct": 25
+    },
+    "ruleSensitivity": {
+      "threshold": 0.995,
+      "evaluated": 8,
+      "errors": 0,
+      "falseAllows": [],
+      "falseWithholds": [],
+      "correct": 8
+    },
+    "liveBrowser": {
+      "candidates": 8,
+      "approved": 2,
+      "errors": 0
+    },
+    "report": "prompt-based-sharing-benchmark.json",
+    "reportSha256": "179f351d887529109ff4eac7eda654bab313f964e17ae171830eec5f35da3bbe"
+  },
+  "notes": [
+    "Counts overlap; do not add the test suites together.",
+    "Provider fixture tests are separate from the live-model benchmark.",
+    "Initial browser run failed because two test assertions used Playwright response.status instead of response.status(); subsequent width checks inherited the failed-test state. Corrected assertions and full rerun passed. Initial log retained.",
+    "A separate earlier main run passed 405 tests before the two additional gate/MCP tests.",
+    "Only synthetic context and rule prompts reached Perplexity. No real grants, accounts, exclusions or published packages changed.",
+    "Baseline threshold comparisons are exploratory. Eight subsequent rule probes are diagnostic, not a broad held-out safety validation."
+  ],
+  "remaining": [
+    "Persistent recipient grants and invitations",
+    "Production authenticated MCP routing to the gate",
+    "Private archive candidate chunking and source revision/exclusion callbacks",
+    "Larger held-out security evaluation and provider data-processing configuration"
+  ],
+  "screenshots": [
+    ".context/policy-sharing/screenshots/rules-desktop.png",
+    ".context/policy-sharing/screenshots/rules-mobile.png"
+  ]
+}

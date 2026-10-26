@@ -1,0 +1,78 @@
+{
+  "name": "Prompt-based context sharing with Perplexity Decisions",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "prompt-based-sharing.patch",
+  "sha256": "594213c7ab0eb9ee1005585a44bdbc41061b7d9c117688cdb3b137d17eed1bf3",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch"
+  ],
+  "state": "source and private synthetic experiment; real provider benchmark completed; no production activation",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/perplexity-decisions.mjs",
+      "beforeSha256": null,
+      "sha256": "7c7bb89cc85ba571a80b20f2062015f639d550ccb40f38ed494b57c87b089c8d"
+    },
+    {
+      "path": "apps/commonplace-account/server/policy-context.mjs",
+      "beforeSha256": null,
+      "sha256": "3f6e70d9bd8df6f6647f82b0de712d4d119361c53788dcf6f32a30d3c10b76e3"
+    },
+    {
+      "path": "apps/commonplace-account/server/policy-context-mcp.mjs",
+      "beforeSha256": null,
+      "sha256": "8f115c4b6f7221318e776143b023b881f27806474e133f4d0233dce21a21e91c"
+    },
+    {
+      "path": "scripts/policy-sharing-fixtures.mjs",
+      "beforeSha256": null,
+      "sha256": "3cc1597a0e8a40c56fe207a09e21b0dfcf2b35350c552df62a9c71bae175fb90"
+    },
+    {
+      "path": "scripts/policy-sharing-config.mjs",
+      "beforeSha256": null,
+      "sha256": "2be18cf899c6f603e9afe5a6152e7e55c87a63b9447f80b6a2b88d06598c71c9"
+    },
+    {
+      "path": "scripts/benchmark-policy-sharing.mjs",
+      "beforeSha256": null,
+      "sha256": "f6a4c9cc889090ffe995c9ea73ce521e673c1db1ec20f353d0a9be75a1411bab"
+    },
+    {
+      "path": "scripts/policy-sharing-page.mjs",
+      "beforeSha256": null,
+      "sha256": "67ba0eac32c5916601b0d4512d25fdf8fd4bede938f4c38c0832fd312c0d47fa"
+    },
+    {
+      "path": "scripts/policy-sharing-preview.mjs",
+      "beforeSha256": null,
+      "sha256": "3a083b39471547e33abca91af3be5f74632c30ea50524753b4974aee29d226fb"
+    },
+    {
+      "path": "scripts/preview-context-product.mjs",
+      "beforeSha256": "338f065e0ed2f4ecf6cf215a1b50ab89b099b0cdf1702a758068a51960f00657",
+      "sha256": "13cdb116574df0f00bd82d414356afc3773cbf1c604aea34fb0ffb8d0f9e969b"
+    },
+    {
+      "path": "tests/policy-context.test.mjs",
+      "beforeSha256": null,
+      "sha256": "5a4e9abcc181e6cb33c4a1e18800b28fec58e79fa43f35f6ed3c01f2c6f42fd8"
+    },
+    {
+      "path": "tests/policy-sharing-browser.test.mjs",
+      "beforeSha256": null,
+      "sha256": "7892ce30cf19a0a6dfcc8562c12bd9b2f09df3ea5063ca8145c2ffdc259415ea"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "7c78a8f30430f9bac67d96f0ad7e9db32fd043af259495775579c797b14b41b7",
+      "sha256": "5209d3035a00f04a99da80872048ca2e052b4e851635bd4a525a3034c72b2b4a"
+    }
+  ]
+}

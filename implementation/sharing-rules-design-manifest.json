@@ -1,0 +1,39 @@
+{
+  "name": "Invitation-style sharing rules UI",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "sharing-rules-design.patch",
+  "sha256": "8cedf75301ec69fe17f7d9accdcb8c7cef2881371f669d619ecaf31a83372f5f",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch"
+  ],
+  "state": "source and working preview; no production deployment",
+  "files": [
+    {
+      "path": "scripts/policy-sharing-page.mjs",
+      "beforeSha256": "67ba0eac32c5916601b0d4512d25fdf8fd4bede938f4c38c0832fd312c0d47fa",
+      "sha256": "7e73b79e49ab4df0d4e664bf76c82ce922db3238999dc331b7036946680fdd41"
+    },
+    {
+      "path": "scripts/policy-sharing-art.mjs",
+      "beforeSha256": null,
+      "sha256": "426a786f62f5fd16dc393d58deb4415e4cd74a81c38c19e06425f53fcde42a51"
+    },
+    {
+      "path": "scripts/policy-sharing-style.mjs",
+      "beforeSha256": null,
+      "sha256": "0d12378987c372e70efb122e22faf68796e80a4e852742e43e05577a090f6455"
+    },
+    {
+      "path": "tests/policy-sharing-browser.test.mjs",
+      "beforeSha256": "7892ce30cf19a0a6dfcc8562c12bd9b2f09df3ea5063ca8145c2ffdc259415ea",
+      "sha256": "95b2b89722e328d74edd6d013cbe77ec7a55e783e2898d630d349e1ba0158c9d"
+    }
+  ]
+}

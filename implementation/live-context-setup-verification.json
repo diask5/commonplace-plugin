@@ -1,0 +1,67 @@
+{
+  "state": "source and interactive preview; not released, installed or deployed",
+  "patch": "live-context-setup.patch",
+  "core": {
+    "passed": 423,
+    "failed": 0,
+    "skipped": 0,
+    "log": ".context/live-setup/core.log"
+  },
+  "ui": {
+    "uniqueChecksPassedAcrossFinalRuns": 65,
+    "fullRunPassed": 63,
+    "updatedProductAndSetupPassed": 37,
+    "finalSetupPassed": 15,
+    "logs": [
+      ".context/live-setup/ui.log",
+      ".context/live-setup/ui-final.log",
+      ".context/live-setup/setup-final.log"
+    ],
+    "widths": [
+      320,
+      390,
+      768,
+      1024,
+      1440,
+      1920
+    ]
+  },
+  "nativeRegression": {
+    "passed": 32,
+    "failed": 0,
+    "log": ".context/live-setup/native-regression.log"
+  },
+  "deployment": {
+    "passed": 16,
+    "failed": 0,
+    "log": ".context/live-setup/deployment.log"
+  },
+  "replay": {
+    "patches": 14,
+    "incrementalFiles": 21,
+    "allChangedFilesMatch": 145,
+    "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13"
+  },
+  "flowEvidence": [
+    "Signed Agent Auth installation calls real native MCP finish_context_setup",
+    "Browser identity links without a second Google ceremony; exact group receiver selected",
+    "Filesystem collector uploads visible transcript through authenticated canonical API",
+    "Context searchable and readable; appended message collected on next cycle",
+    "Private setup code redacted; mismatched account/app, expiry and stale receiver rejected",
+    "Browser auto-progress without manual chat picker or collection checkbox",
+    "New sign-in enters setup automatically; empty, offline, errors and delayed host steps remain explicit"
+  ],
+  "limitations": [
+    "Published 0.4.19 does not expose finish_context_setup; new native release required",
+    "No real Google or Mac operating-system app launch/install/reload verified",
+    "Desktop links are best-effort; paste-and-send fallback retained",
+    "Polling is 2.5 seconds for setup, 5 seconds for collector and open library; not a latency SLA",
+    "Supported visible histories only, no automatic arbitrary repositories, attachments, web-only chats or upstream MCP ingestion",
+    "Context availability does not prove native automatic wake or end-to-end reply delivery"
+  ],
+  "screenshots": [
+    ".context/live-setup/desktop.png",
+    ".context/live-setup/connecting.png",
+    ".context/live-setup/mobile.png"
+  ]
+}

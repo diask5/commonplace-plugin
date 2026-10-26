@@ -1,0 +1,92 @@
+{
+  "name": "Unified shared spaces, group boards, access and files",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "shared-spaces.patch",
+  "sha256": "c6aebf42f713ab2eead09404b986cfa562a3b84c1332ec661295f87e037707cb",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch"
+  ],
+  "state": "source and working preview; no production deployment",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-conversations.mjs",
+      "beforeSha256": "4b73bdc17f9ad642076c39cae1c417086686b25fd899a86f48a2d6af0fd7fd23",
+      "sha256": "2257dec54270347e759116f68119a5ab942cfe222b1572ff8a283d77c8f040e3"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-product.mjs",
+      "beforeSha256": "9f05caf0335e06e0f2d517894417f52a3eae2418a552585c430b426def68b2ad",
+      "sha256": "10e7c2827dfc4e3985f53e6f02f99595299acf282330ebdcfc8c62877974fc72"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-http.mjs",
+      "beforeSha256": "effb478a12ba629f0123465cbb90d8e0f290ab256852b26bc4c775869948e4a1",
+      "sha256": "3d90d3b6305ef6cbaac1e46409bc6538d01259207ad9a87ceb363c2d5ba89d1f"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-style.mjs",
+      "beforeSha256": "26a5cb037dab4cff143df6819b0ef8c2c90ed56b3eb2addb0d4d5969d49aa9ca",
+      "sha256": "dbfd10da2597ee7450ed43dd952af3fe1a3d4d3e6703091803635ce3771b9f11"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-ui.mjs",
+      "beforeSha256": "330688873251e7293575a0d91766351a3392882a336e9cb18afdaaea4785f518",
+      "sha256": "849b2894162ef6a24cac2aaf6b3f48366563275f85cdc665649b20f16852d168"
+    },
+    {
+      "path": "apps/commonplace-account/server/social-http.mjs",
+      "beforeSha256": "2f3d490e07cbc21fefc0d92b874e7b6c75890d08420a53443348c2007a31a593",
+      "sha256": "112422553664a2af8c719dd5500689aa789640a82bba832c18337c830aaa04eb"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "5209d3035a00f04a99da80872048ca2e052b4e851635bd4a525a3034c72b2b4a",
+      "sha256": "ec0c4580ca96d3928dc25786c9e24b5c75db5f508513e3d664874cfe6779b397"
+    },
+    {
+      "path": "scripts/policy-sharing-page.mjs",
+      "beforeSha256": "51a49697702ebea3cb8f8571eef9a4f3e328a220f18c4496af9c95c22f41bada",
+      "sha256": "4002f029ea484d120d69876d36141b942cd42ec9721a8d9d2224186db72cb7f3"
+    },
+    {
+      "path": "scripts/preview-context-product.mjs",
+      "beforeSha256": "13cdb116574df0f00bd82d414356afc3773cbf1c604aea34fb0ffb8d0f9e969b",
+      "sha256": "290d1e46c8c39a8a26d2ec9e79d3c82e1d61990d9223097be6993b1a2facff3c"
+    },
+    {
+      "path": "tests/context-product-browser.test.mjs",
+      "beforeSha256": "03ab1e86e1034ce5ff67b66f7865547f4bdc4718e8254ea9dd1f9a8d684dfed5",
+      "sha256": "8e5c01d02ac81f0288068dc01d44105ebf6a53e3a87b50b3af0c86733d0158e5"
+    },
+    {
+      "path": "tests/policy-sharing-browser.test.mjs",
+      "beforeSha256": "881b9430cd3d894780c79b9a667072e87e1cf1ec5087d68a8ee28c9b97e5f2b5",
+      "sha256": "c86f203d284037bd525223c4903400f5310c33636e4f95156473afdeef9f19b1"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-spaces.mjs",
+      "beforeSha256": null,
+      "sha256": "40fa085f27f3aa06cfe8ef0d02b713f759e75ec5fc99e5fde44526ca6c3885dc"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-space-files.mjs",
+      "beforeSha256": null,
+      "sha256": "b87d6889c59cdb97bb641971d4f0a0feb0c6e07c532ef88082398ef3d127c76c"
+    },
+    {
+      "path": "tests/context-spaces-browser.test.mjs",
+      "beforeSha256": null,
+      "sha256": "0143c93e0f713679711cd0fc96b4af336145a7eb01a5495373affa151a469110"
+    }
+  ]
+}
