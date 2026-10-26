@@ -1,0 +1,102 @@
+{
+  "state": "packaged and verified candidate; not published, installed or deployed",
+  "nativeVersion": "0.4.29",
+  "runtimeRevision": 62,
+  "liveReleaseUnchanged": "0.4.28/runtime61; server 20261026-current-read",
+  "trigger": "Three invalid limit>16000 requests in the installed ordinary-prompt benchmark, followed by model correction.",
+  "change": "Explain default 12000 and maximum16000 in native/remote read descriptions, limit property descriptions and context skill. Keep strict size limits, paging, authority and data semantics.",
+  "source": {
+    "patches": 35,
+    "files": 203,
+    "incrementalFiles": 10,
+    "matched": true,
+    "mismatches": [],
+    "patchSha256": "e9cab798737f5dc3e043dc80d1b0b5b86f36df8bc9bac181b9e9d17272d6d1a9",
+    "manifestHashAgreement": {
+      "mcp-adoption-0.4.19-rc.3.patch": "no-standard-manifest",
+      "agent-launch-and-server-check.patch": "no-standard-manifest",
+      "spec-alignment.patch": true,
+      "product-flow-design.patch": true,
+      "production-readiness.patch": true,
+      "context-product-ui.patch": true,
+      "automatic-context-ingestion.patch": true,
+      "prompt-based-sharing.patch": true,
+      "sharing-rules-design.patch": true,
+      "sharing-desktop-layout.patch": true,
+      "sharing-interactions.patch": true,
+      "shared-spaces.patch": true,
+      "message-first-spaces.patch": true,
+      "live-context-setup.patch": true,
+      "seamless-plugin-setup.patch": true,
+      "copy-setup-prompt.patch": true,
+      "context-mvp-completion.patch": true,
+      "sharing-walkthrough.patch": true,
+      "zero-to-knowledge.patch": true,
+      "archive-read-performance.patch": true,
+      "native-discovery.patch": true,
+      "archive-revision-fence.patch": true,
+      "context-completion.patch": true,
+      "p0-native-readiness.patch": true,
+      "seamless-context.patch": true,
+      "deployment-startup-readiness.patch": true,
+      "context-timeout-recovery.patch": true,
+      "server-io-recovery.patch": true,
+      "public-assets-delivery.patch": true,
+      "context-read-performance.patch": true,
+      "registration-recovery.patch": true,
+      "live-index-reuse.patch": true,
+      "demand-archives.patch": true,
+      "current-read.patch": true,
+      "read-page-guidance.patch": true
+    },
+    "sourceScopeFilesNotMatchingReplay": [],
+    "sourceScopeMissingCount": 0
+  },
+  "nativeArtifacts": {
+    "meet-proxy": {
+      "sha256": "e6e5def8afdef0f7cd96702c32f9fb90d3085b32b2bafb857bd97adcdaac3192",
+      "bytes": 230156763
+    },
+    "commonplace": {
+      "sha256": "4e06ad07deb2218c45603ac56cf0f96b80d907ff438470d2965d6e8ff5d36754",
+      "bytes": 230156763
+    }
+  },
+  "serverArtifacts": {
+    "runtime-update.json": "4faf5592d70514b75291aef702f42fc7f32cd7b2a482884f0512826b07815c17",
+    "runtime-update-manifest.json": "381c5feb8547d2f0c1e57cf19b2a77afebd430548d31277992a9d4ce67181e99",
+    "runtime-update.sha256": "bb496b6b403c7a8f923ff2a7b0201e75547498cf16e4efe75dda0c2cb9937aef",
+    "deploy-cloud-update.py": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408"
+  },
+  "serverChangedFiles": [
+    "dist/standalone/account-runtime/archive-tools.mjs",
+    "dist/standalone/account-runtime/context-assets/agent-setup.mjs",
+    "dist/standalone/account-runtime/remote-mcp.mjs"
+  ],
+  "checks": {
+    "focusedRoutingAndRemoteMcp": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "setupUI": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    },
+    "catalogComparison": "Native and remote archive catalogs match published source after stripping descriptions; all fields, numeric constraints, read-only annotations and required inputs unchanged.",
+    "bothAliasPackageIntegrity": "passed",
+    "packagedLaunchers": {
+      "passed": 2,
+      "failed": 0
+    },
+    "packagedPluginSmoke": "passed real stdio/signed local HTTP; Google identity and host simulated",
+    "extractedRuntime": "passed OAuth, resources, readonly/origin checks; compiled authorization handler is a stub"
+  },
+  "limits": [
+    "Model behavior with these hints is not yet tested.",
+    "No published download or active host was changed.",
+    "Final natural-prompt and acceptance tests await exact per-test approvals.",
+    "GCP reauthentication process last known live; two subsequent observations timed out waiting for Mac client. Not restarted or treated as terminal."
+  ]
+}

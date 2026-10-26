@@ -1,5 +1,9 @@
 # Meet Proxy Draft v3 compliance
 
+A packaged 0.4.29/runtime62 page-size guidance candidate addresses observed invalid
+model arguments; it is not live. See
+[the candidate record](../implementation/read-page-guidance-verification.json).
+
 Latest release: [current-source retrieval 0.4.28/runtime61](CURRENT-SOURCE-READS.md), published, installed and active. Server `20261026-current-read` is live; ordinary-prompt verification produced seven clean passes and one correctly surfaced synthetic-name conflict. The separate clean synthesis retest stopped after connection errors and an unapproved diagnostic-tool selection; acceptance gates remain. Earlier records below retain their own release dates.
 
 Latest server release: [demand-built archives](DEMAND-ARCHIVES.md), with native

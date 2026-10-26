@@ -35,7 +35,9 @@ See [the current readiness audit](docs/CONTEXT-MVP-READINESS.md) and
 Current release is **0.4.28/runtime61**, published, installed and active on the Mac.
 Server `20261026-current-read` is live. See [current-source retrieval](docs/CURRENT-SOURCE-READS.md)
 and `implementation/current-read-verification.json` for exact source, package,
-installation and production evidence. Existing open chats can retain older loaded
+installation and production evidence. Candidate 0.4.29/runtime62 is packaged but
+not published, installed or deployed; `implementation/read-page-guidance-verification.json`
+records its page-size guidance and preserved bounds. Existing open chats can retain older loaded
 plugins until host reload. Account and saved permissions are preserved.
 
 The current ordinary-prompt run has seven clean passes and one correctly reported

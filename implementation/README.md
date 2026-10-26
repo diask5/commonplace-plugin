@@ -299,3 +299,11 @@ source continuation pages. Server fresh searches may retry one fast changed resu
 under unchanged authority, revision and expiry fences. See
 [current-source retrieval](../docs/CURRENT-SOURCE-READS.md) and its verification
 record for package, installation, deployment and live-model states.
+
+## Read page guidance — patch 35
+
+Apply `read-page-guidance.patch` after `current-read.patch`. All 35 patches
+reproduce 203 implementation files. Candidate 0.4.29/runtime62 adds model-facing
+default/maximum page-size guidance and keeps all validation constraints intact.
+`read-page-guidance-verification.json` records packaged checks separately from
+unperformed installation, deployment and real-model validation.
