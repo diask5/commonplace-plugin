@@ -6,13 +6,11 @@ automatic private ingestion, and one-request native plugin/MCP setup. Those late
 instructions supersede the original Agents home and hosted proxy-answer design.
 The original spec remains unchanged in MEET-PROXY-PRODUCT-SPEC.md.
 
-The current source/package follow-up is [Context completion](CONTEXT-COMPLETION.md):
-0.4.23/runtime57 closes upstream resources, bounded sharing/pagination and the P1
-adapter/UI implementation gaps, but is not installed or live. Its verification
-record distinguishes candidate tests from production and remaining host checks.
-The [spec recheck](SPEC-RECHECK.md) records the last verified live 0.4.22 baseline.
-The counts, missing features and 0.4.20 rollout below describe the earlier MVP
-milestone and are retained as history.
+Current release and acceptance are in [P0 native readiness](P0-NATIVE-READINESS.md).
+The completion features and 0.4.24 native fixes are published, installed and live
+on runtime57. The counts, missing features and 0.4.20 rollout below describe the
+earlier MVP milestone and are retained as history. Full real-user acceptance
+still requires the specific Google/desktop receipts listed in the P0 record.
 
 ## Readiness decision
 

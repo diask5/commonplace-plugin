@@ -272,5 +272,8 @@
     "nativeZipChangedForFix": false,
     "serverRuntimeRebuilt": true,
     "historicalLogsRetained": true
-  }
+  },
+  "supersededBy": "p0-native-readiness-verification.json",
+  "currentRolloutNote": "0.4.23 published/installed/deployed, superseded by live 0.4.24/runtime57; candidate values below are historical.",
+  "historicalCandidateRecord": true
 }

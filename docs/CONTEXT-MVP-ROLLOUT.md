@@ -2,7 +2,7 @@
 
 This is the earlier 0.4.20 rollout record. The subsequent archive/read deployment
 and real Mac test are in [Zero-to-knowledge verification](ZERO-TO-KNOWLEDGE.md);
-the newest release and requirement audit are in [the spec recheck](SPEC-RECHECK.md).
+the newest release and requirement audit are in [P0 live readiness](P0-NATIVE-READINESS.md).
 
 This milestone deployed **0.4.20 / runtime 55** with the subsequent web-only
 [sharing walkthrough update](SHARING-WALKTHROUGH.md), release directory

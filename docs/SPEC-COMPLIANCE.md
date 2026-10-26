@@ -1,24 +1,23 @@
 # Meet Proxy Draft v3 compliance
 
-The [26 October recheck](SPEC-RECHECK.md) maps P0/P1/P2 to the owner's current
-context-sharing design. The [completion candidate](CONTEXT-COMPLETION.md) closes
-the source/package gaps for upstream MCP resources, bounded long-document sharing,
-compatible assistants and contact adapters; it also removes archive rebuilds from
-the direct document-read path. Final core 489/489, UI 129/129, lifecycle 15/15 and
-extracted feature/launcher 32/32 checks pass. Exact evidence and artifact hashes:
-[`context-completion-verification.json`](../implementation/context-completion-verification.json).
+Current release and acceptance evidence: [P0 native readiness](P0-NATIVE-READINESS.md)
+and [machine-readable verification](../implementation/p0-native-readiness-verification.json).
+**0.4.24/runtime57 is published and installed; production is
+`20261026-native-p0-final`.** The prior Mac access block is resolved. Existing
+accounts, permissions and scopes were preserved. All 495 core tests and final
+package/identity checks passed. UI 129/129 and original lifecycle 15/15 remain
+valid for the unchanged product flow.
 
-**0.4.23/runtime57 is a verified candidate, not installed or live.** The last
-verified production state remains native 0.4.22/runtime56 and
-`20261026-revision-fence`. Conductor reports no authorized Mac bound to this chat,
-blocking Mac checks and the existing deployment path. Actual contact delivery,
-a real external MCP provider, fresh Google consent and Codex Desktop acceptance
-remain unverified. The real classifier benchmark still falsely withheld seven
-of 32 synthetic cases. Do not claim all goals are complete in production.
+The product remains Spaces / My context. P0 requires shareable invitation
+links/codes; direct email/iMessage delivery is P1 and explicitly deferred.
+Real Google consent and desktop app handoff acceptance must be recorded
+separately from CLI retrieval and fixtures. Do not claim every journey is
+complete from publication or cached identity alone. The real classifier
+benchmark withheld seven of 32 synthetic cases, with zero false allows at the
+unchanged 0.995 threshold.
 
-The product remains Spaces / My context. The historical milestones below are
-preserved for provenance; their old home/layout, test counts and feature gaps do
-not override current owner instructions or the completion candidate record.
+Historical milestones below preserve their evidence and do not override the
+current release record or the owner's context-sharing design amendments.
 
 ## Historical implementation milestones
 
