@@ -1,0 +1,95 @@
+{
+  "name": "Explain default read pages and strict maximum in model-facing guidance",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch"
+  ],
+  "patch": "read-page-guidance.patch",
+  "sha256": "e9cab798737f5dc3e043dc80d1b0b5b86f36df8bc9bac181b9e9d17272d6d1a9",
+  "state": "Candidate 0.4.29/runtime62; see read-page-guidance-verification.json for separate packaging, installation and deployment state.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/archive-tools.mjs",
+      "beforeSha256": "b1e6e024a9508ab6c9be85ba38c81358fa82715d07d8a533d5f16eedd78cd9bc",
+      "sha256": "72a354e91c62dbc1023a6f0948517b1d79ad83adb463e11a9a77369a05c404cb"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-setup.mjs",
+      "beforeSha256": "d6c56c96c66180d02f132cf25ec36b7a2ece0fea56374a7c8a01ea742816e07c",
+      "sha256": "f4163bcec3c3d3a259816c71b054c7c57c4da0bc5d8b67e0753f909602a54771"
+    },
+    {
+      "path": "apps/commonplace-account/server/remote-mcp.mjs",
+      "beforeSha256": "2b0ef23b22e5d262250fc5a676d9aa6214e07f1fbf8f0ac5ed64e5927d80a00e",
+      "sha256": "e6e950937e7f250a0a5a02dc27e217396823bc9eeaea7ff0f59ea1ed6df448cc"
+    },
+    {
+      "path": "apps/commonplace/plugin/commonplace/skills/context/SKILL.md",
+      "beforeSha256": "ecb48e96eed3f826b5fb0a6b4afd321bef2dc62e563668809c8c1d12150ac542",
+      "sha256": "62db511f2b83e79bedb474d247ebd9453395f70bf7157f828f689c202da2b3de"
+    },
+    {
+      "path": "apps/commonplace/server/account-inbox.mjs",
+      "beforeSha256": "42664077a77f34d50a147496464bbd425c47fdbf9301ac6c7770b0602ca9f28b",
+      "sha256": "b4a7a5053250658826ad20eb2d2600302decd446eeb4e5f5a07a564a8cd471f4"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "984a51f17588c5c9f8ef76a34002c4c2f97bcf4aecad81a6c990d624268c8455",
+      "sha256": "426eb8da21bfed328ab008150a5bcd317d9d3152622403887e600efc12d042ea"
+    },
+    {
+      "path": "apps/commonplace/server/plugin-surface.mjs",
+      "beforeSha256": "23972be2c2b03bc4f7d63bf79d2cfa72cbb6375cf3d32e6a686e0c1081e4ce48",
+      "sha256": "bdd06c91379189cc985f52c0ea944941f5b9cd1e762537631bd35d3e3a70b71d"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "786422cc3b0fce840d186a1b92ee45a881b3df85faa79eab6191c8917d30192a",
+      "sha256": "276a120b8e3889c114913400b6e6ca03e71e4a3c880c2d4d65d75581911aa1ec"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "8178ff103050db8e6c23143a8709aaf188e2971077996fb74e9f9c02b6c2853f",
+      "sha256": "1d255bbd29d2d885975be917d468606e993a10b14e0f0da414ea86d4e291f7d2"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "8a0b9a440924850eda103815220b1c3109bcc77d67a7a168f89a861fbf560cf9",
+      "sha256": "a3a2f11736279765ee7ef175a3e5c95c06ac44c1727ce3454d94521b99023cc3"
+    }
+  ]
+}

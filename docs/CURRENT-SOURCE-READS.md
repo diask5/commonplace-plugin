@@ -81,3 +81,36 @@ acceptance remains unverified; no external invitation has been sent. Fresh-accou
 and clean-machine coverage stay distinct from the verified existing-owner
 handoffs. Direct Mail/iMessage remains deferred P1. No paid infrastructure or saved
 host-permission changes are included.
+
+## Prepared page-size follow-up
+
+Candidate **0.4.29/runtime62** is packaged and verified. Its native and server
+releases are uploaded as GitHub drafts; neither is published, installed or deployed.
+All ten uploaded asset sizes and SHA-256 digests match the local artifacts.
+It addresses the three recovered oversized-page requests
+by making the normal 12,000-character page and strict 16,000-character maximum
+explicit in native and remote tool descriptions and the context skill. Larger
+documents still use `nextOffset`; no bound, authority check or paging semantics
+changed. Catalog comparison confirms only descriptions differ from the existing
+validation schema. Whether these hints reduce model mistakes still needs a live
+model test.
+
+Patch 35 replays all 203 implementation files exactly. Nine focused MCP/routing
+checks, 13 setup UI checks, both-alias package integrity, two packaged launcher
+checks, actual packaged plugin smoke and extracted OAuth/resource checks pass.
+See [candidate verification](../implementation/read-page-guidance-verification.json).
+Production and the installed Mac remain last verified at 0.4.28/runtime61. Two
+attempts to observe the existing GCP login timed out waiting for the Mac client.
+The Mac subsequently responded: the same login process is still running, with
+no success or error marker, and the companion still reports runtime61. No
+replacement login was started. The companion startup and probe logs contain no
+underlying transport error for the failed synthesis reads; their cause remains
+unproven.
+
+The [transport diagnosis](../implementation/current-read-connection-diagnosis.json)
+confirms why: the native wrapper replaces an error with no code/status by the
+generic message and a synthetic 503, losing its original cause. Fetch, redirect,
+local signing and response-body/JSON failures can reach that path. The message
+does not establish expired sign-in or an actual HTTP 503. A later successful probe
+does not resolve it; server logs and a future authorized failed-request trace are
+still needed before choosing a behavioral fix.

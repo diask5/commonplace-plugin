@@ -1,0 +1,40 @@
+{
+  "observedAt": "2026-10-26T10:45:07.925855+00:00",
+  "state": "diagnosed loss of error detail; underlying failed-read cause remains unknown",
+  "release": "0.4.28/runtime61",
+  "failedRun": "current-read-synthesis-retest.json",
+  "readDurationsSeconds": [
+    5.165,
+    5.674
+  ],
+  "publicError": "Commonplace Agent Auth failed (connection unavailable).",
+  "sourceFinding": {
+    "file": "apps/commonplace/server/agent-auth-client.mjs",
+    "function": "AgentConnection.request",
+    "meaning": "executeCapability threw an error with no truthy top-level code/status; wrapper discards original name and cause and assigns status 503 when no status exists.",
+    "possiblePaths": [
+      "Fetch rejection including nested system/TLS/socket error",
+      "redirect:error rejection or explicit pinned-endpoint guard",
+      "Unexpected local signing/storage error without a code",
+      "JSON parsing or response body consumption failure after an HTTP response"
+    ],
+    "unproven": "No original exception survived in model receipt, companion startup log or later transport-probe log. Timing alone does not identify network, proxy, local state or server failure.",
+    "knownTimeout": "The separate 30-second DOMException code23 path already has normalization; this is not that exact observed message.",
+    "noBehaviorChange": "No added retries, host-permission changes, relinking, consistency relaxation or speculative transport fix."
+  },
+  "independentSourceReview": {
+    "completed": true,
+    "kind": "read-only Claude CLI review; Read/Grep/Glob only; no private data/network/edits",
+    "rootQualification": "Review was cross-checked against bundle. Actual status is preserved when supplied; JSON/body failure is also possible. Do not treat generic error as proven network failure or confirmed HTTP503."
+  },
+  "macObservation": {
+    "reachable": true,
+    "runtimeRevision": 61,
+    "existingGcpLoginProcessPresent": true,
+    "gcpSuccessMarker": false,
+    "gcpErrorMarker": false,
+    "duplicateLoginStarted": false
+  },
+  "nextEvidence": "After same-account GCP reauthentication, inspect server-side logs around the retained failed run. If insufficient, capture a bounded allowlisted error category on a future authorized test without logging request bodies, URLs, credentials or transcripts.",
+  "doesNotCloseModelGate": true
+}
