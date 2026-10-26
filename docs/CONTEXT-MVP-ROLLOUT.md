@@ -7,7 +7,10 @@ rules and Members. The original agent-pair surface remains at `/work-agent#agent
 
 The [published release](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.20)
 contains both plugin aliases, their checksums/build manifests, and the server overlay.
-Enable only the installation's existing alias. Native app reload is a separate step.
+The Mac supported plugin manager updated the single enabled user-scoped
+`meet-proxy@commonplace` alias from 0.4.19 to 0.4.20. It reported **Restart to apply
+changes**. The running host's new loaded version remains unverified. No account
+relinking or host permission settings were changed. Enable only the existing alias.
 
 ## Verification
 

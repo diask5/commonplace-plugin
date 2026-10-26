@@ -2,7 +2,7 @@
   "date": "2026-10-26",
   "release": "0.4.20",
   "runtime": 55,
-  "state": "published 0.4.20/runtime55 and deployed; installed-host validation pending",
+  "state": "published and deployed; Mac plugin installed; host reload and fresh real-account acceptance pending",
   "patch": "context-mvp-completion.patch",
   "patchSha256": "66d0f0c2924e5ef88213325da81e354311a6754c567cda99c9d7a921aa846978",
   "replay": {
@@ -399,6 +399,19 @@
       "account": "kyledias@vurbox.com",
       "automaticDelivery": true,
       "verification": "existing plugin cached status; not updated/relinked during rollout"
+    },
+    "macPlugin": {
+      "alias": "meet-proxy@commonplace",
+      "previousVersion": "0.4.19",
+      "installedVersion": "0.4.20",
+      "scope": "user",
+      "enabled": true,
+      "duplicateAliasEnabled": false,
+      "method": "claude plugin marketplace update commonplace; claude plugin update meet-proxy@commonplace --scope user",
+      "requiresRestart": true,
+      "loadedVersionVerified": false,
+      "accountsRelinked": false,
+      "hostPermissionsChanged": false
     }
   },
   "remaining": [
@@ -408,5 +421,6 @@
     "P1 automatic contact delivery and personal agents"
   ],
   "testLimits": "Synthetic Google and host identities in browser/native fixtures; tests overlap and counts must not be summed as distinct coverage.",
-  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.20"
+  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.20",
+  "pullRequest": "https://github.com/diask5/commonplace-plugin/pull/10"
 }
