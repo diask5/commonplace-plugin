@@ -32,7 +32,16 @@ This is an exact read-tool allowlist, not a request to disable the host's permis
 system. Host or organization denial rules can still take precedence. The agent
 must not silently add permission settings after a denial.
 
-The real 26 October answer test loaded the MCP tool but was denied by Claude's
-noninteractive policy. No permission file was edited, no allowed-tools override
-was applied, and that answer remains unverified until the owner grants access.
-Independent collection, cloud retrieval and local-file integrity checks passed.
+The initial 26 October answer test was denied by Claude's noninteractive policy.
+After the owner explicitly approved these two tools for this test, a fresh run
+used this exact per-invocation allowlist. Successful search and read receipts were
+verified, and Claude returned the complete known probe marker without being given
+its numeric suffix. There were no permission denials; before/after permission
+checks matched. No saved permission rule was added.
+
+This resolved the permission gate for that test. It does not preapprove future
+sessions. The answer took 87.95 seconds, with an initial resource-list timeout and
+a transient read timeout before success. The harness also hit its process/pipe
+cleanup deadline after Claude emitted its successful final result. These are
+separate startup/transport/lifecycle issues, not a reason to broaden permissions.
+See [the live verification record](ZERO-TO-KNOWLEDGE.md).

@@ -1,0 +1,177 @@
+{
+  "date": "2026-10-26",
+  "specSha256": "1d061a660d1e280c4f33a111fdabb1c5fb8fc52a3aa4cd86ebe4fee5f396091d",
+  "nativeVersion": "0.4.22",
+  "runtimeRevision": 56,
+  "state": "All candidate checks passed; native publication, installed Mac and production update pending",
+  "tests": {
+    "core-before": {
+      "tests": 431,
+      "pass": 431,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 22717.237486,
+      "logSha256": "24b9e3e31954b25f557e43136a7e846713c5c97c7eb269302ca6e1517b6a1a2d"
+    },
+    "core-final": {
+      "tests": 432,
+      "pass": 432,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 39505.101494,
+      "logSha256": "7245bb5ced60e0b18b1b1abbdad0a1100e7aafadf1b13b4110a5493532108b89"
+    },
+    "discovery-after": {
+      "tests": 20,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 5637.701168,
+      "logSha256": "05d8a64e091636aabf1c7d830815a1701d2b4b33bbcc33e7e9916fceb08be84e"
+    },
+    "product-spec": {
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 135160.123343,
+      "logSha256": "ddf99544b75b5ecbbaf7d23e4ed4e612718ced4394339076cc9a87682ea55fe1"
+    },
+    "packaging": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 18027.966249,
+      "logSha256": "b3018213529994e837a9e561380f059e105a0b0885e941fc65dfbf07243e5f88"
+    },
+    "launcher": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 519.014081,
+      "logSha256": "2d4b835c5a106729c2c92be91944c0f7d19b36ea85d4afc622ca5921ae19eb94"
+    },
+    "knowledge": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 18871.931802,
+      "logSha256": "fc95f533b63e7efbcf9aa516fb0fe0e6421d9e031ac19fe8f14c3c39a74831cd"
+    },
+    "attachment-final": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 9883.556083,
+      "logSha256": "992d9c2febb751a6df210dc8a9da477eb4aafa1dff4a1c20de1f6f0e8c56da89"
+    },
+    "plugin-smoke": {
+      "passed": true,
+      "logSha256": "7eff6feb3bba793a0800c87e7bf4e47699a992cd8995a449575d9dd641cd0224"
+    },
+    "mailbox-smoke": {
+      "passed": true,
+      "logSha256": "af5f34cf6f67941abdc05291fa4f1aca210f91cdbce6be5a8ece25e763d6f40d"
+    },
+    "browser-final": {
+      "tests": 127,
+      "pass": 127,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 154205.490277,
+      "logSha256": "d4a1bfc543787b13604db7ac009f3844171486af7e4a2efee23d168a0ac49e82"
+    }
+  },
+  "replay": {
+    "patches": 21,
+    "files": 154,
+    "matched": true
+  },
+  "artifacts": {
+    "meet-proxy": "cbb5bf10a45a46d9d3321e6145906267be3d7433520bc7aaa69c11af6bbb0832",
+    "commonplace": "03318b5e46ecc836bb41c26df12f1b8bc5bf338f9c0605edb063d62877f863ef"
+  },
+  "livePublic": {
+    "origin": "https://34.27.253.220",
+    "at": "2026-10-26T02:53:11.747Z",
+    "screens": [
+      {
+        "width": 1440,
+        "status": 200,
+        "loadingCleared": true,
+        "pageErrors": []
+      },
+      {
+        "width": 390,
+        "status": 200,
+        "loadingCleared": true,
+        "pageErrors": []
+      }
+    ],
+    "checks": [
+      {
+        "googleHelperReady": true,
+        "origin": "https://vertical-web-313417.firebaseapp.com"
+      },
+      {
+        "route": "/context/assets/context-product.mjs",
+        "status": 200,
+        "sourceMatches": true,
+        "sha256": "8456655ee0e826ab0fba427736bf36b3b6760e2a1a23fd0790d7ccfce62a692c"
+      },
+      {
+        "route": "/context/assets/context-native-setup.mjs",
+        "status": 200,
+        "sourceMatches": true,
+        "sha256": "7e3929ab4f148f48bc2141131d4b1b4c639552b78050a9cb5307143354efd9f2"
+      },
+      {
+        "route": "/context/assets/context-space-rules.mjs",
+        "status": 200,
+        "sourceMatches": true,
+        "sha256": "a3547056437d9028f9b1ed48d3415c1e26af90374267dfaa194c0d8e0172603b"
+      },
+      {
+        "route": "/context/assets/context-setup-request.mjs",
+        "status": 200,
+        "sourceMatches": true,
+        "sha256": "fffdaeec0bbc87bc11f8bdafbc68f50e050675c1aa1eea0d700b384159f31100"
+      },
+      {
+        "route": "/mcp",
+        "unauthenticatedStatus": 401
+      },
+      {
+        "route": "/authorize",
+        "status": 303
+      }
+    ],
+    "realSignInCompleted": false,
+    "passed": true
+  },
+  "limitations": [
+    "Fresh Google consent and every native app/OS remain distinct live acceptance checks.",
+    "P1 automatic email/iMessage delivery and personal-agent attachment are not implemented.",
+    "Safe long-document sharing, broader recipient-safe pagination and upstream MCP ingestion remain pending.",
+    "Classifier semantic accuracy is not guaranteed; previous real benchmark had five false withholds in 28 cases.",
+    "Large-account sync and read latency remain performance targets."
+  ],
+  "priorFailedChecks": [
+    "Discovery regression failed before repair.",
+    "Browser attachment assertion expected obsolete 0.4.20; corrected to current packaged version and passed targeted rerun.",
+    "Initial packaged smoke was invoked before extraction completed; rerun passed after packaging."
+  ]
+}

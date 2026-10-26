@@ -2,7 +2,7 @@
   "date": "2026-10-26",
   "nativeVersion": "0.4.21",
   "runtimeRevision": 56,
-  "state": "Production deployed; Mac 0.4.21/runtime56 active; final real assistant answer requires host approval",
+  "state": "Production deployed; Mac 0.4.21/runtime56 active; real assistant answer verified with owner-approved per-run two-tool rule; startup/read/exit latency remains",
   "tests": {
     "core": {
       "tests": 428,
@@ -126,20 +126,31 @@
     "cloudRevision": 5419,
     "accountAndOriginPreserved": true,
     "freshAssistant": {
-      "exitCode": 0,
+      "harnessExitCode": 124,
+      "harnessTimeoutSeconds": 110,
+      "finalResultReceived": true,
+      "finalSubtype": "success",
       "isError": false,
       "toolsUsed": [
-        "ToolSearch",
-        "ToolSearch",
-        "ToolSearch",
-        "ToolSearch",
-        "mcp__plugin_meet-proxy_meet-proxy__search_shared_context"
+        "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context"
       ],
-      "permissionDenials": [
-        "mcp__plugin_meet-proxy_meet-proxy__search_shared_context"
-      ],
-      "durationMs": 22732,
-      "answerVerified": false
+      "permissionDenials": [],
+      "durationMs": 87950,
+      "answerVerified": true,
+      "expectedSuffixSuppliedInPrompt": false,
+      "successfulSearch": true,
+      "successfulRead": true,
+      "readDocumentMatchedSearch": true,
+      "readCitationCount": 5,
+      "ownerApprovedPerRunAllowlist": true,
+      "persistentPermissionsChanged": false,
+      "mcpConnectMs": 177,
+      "resourceListTimeoutMs": 30000,
+      "firstReadError": "Commonplace Agent Auth failed (23).",
+      "readRetrySucceeded": true,
+      "cleanProcessCompletionVerified": false,
+      "evidenceSha256": "6974354cf584a7c8834ea50d32b4b92d399e80887119f6dbd7779d9141fec655"
     },
     "incremental": {
       "checkedAt": 1792978654831,
@@ -148,7 +159,37 @@
       "incrementalMarkerPresent": true,
       "createdByRealNativeSession": true,
       "observedUpperBoundMs": 309947
-    }
+    },
+    "previousAssistantAttempts": [
+      {
+        "exitCode": 0,
+        "isError": false,
+        "toolsUsed": [
+          "ToolSearch",
+          "ToolSearch",
+          "ToolSearch",
+          "ToolSearch",
+          "mcp__plugin_meet-proxy_meet-proxy__search_shared_context"
+        ],
+        "permissionDenials": [
+          "mcp__plugin_meet-proxy_meet-proxy__search_shared_context"
+        ],
+        "durationMs": 22732,
+        "answerVerified": false
+      },
+      {
+        "toolsUsed": [
+          "ToolSearch"
+        ],
+        "answerVerified": false,
+        "failure": "Plugin reported still connecting; no context calls or permission denials."
+      },
+      {
+        "answerVerified": false,
+        "failure": "Literal search pagination timed out and archive revision changed; test deadline reached.",
+        "permissionDenials": []
+      }
+    ]
   },
   "production": {
     "release": "20261026-archive-reads",
@@ -170,7 +211,8 @@
   },
   "limitations": [
     "Fresh Google sign-in and all native app variants are not certified by fixture identities.",
-    "Real Claude context retrieval requires a host-approved exact read-tool rule; no host permissions were changed.",
+    "The real Claude answer passed with an owner-approved exact two-tool per-run allowlist. Future sessions still use their own host permissions.",
+    "The passing answer took 87.95 seconds, after resource-list and initial-read timeouts; the harness cleanup deadline fired after a successful final result. Startup/transport/lifecycle reliability remains open.",
     "The live incremental update arrived within the 310-second observation window; real-time latency needs further performance work.",
     "Supported visible histories/imports only; arbitrary codebases, web-only chats, binary attachments and upstream MCP ingestion are not covered.",
     "Rule-gated sharing is not a perfect classifier."

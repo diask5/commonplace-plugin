@@ -1,6 +1,10 @@
 # Context-sharing MVP rollout — 26 October 2026
 
-Production is running **0.4.20 / runtime 55** with the subsequent web-only
+This is the earlier 0.4.20 rollout record. The subsequent archive/read deployment
+and real Mac test are in [Zero-to-knowledge verification](ZERO-TO-KNOWLEDGE.md);
+the newest release and requirement audit are in [the spec recheck](SPEC-RECHECK.md).
+
+This milestone deployed **0.4.20 / runtime 55** with the subsequent web-only
 [sharing walkthrough update](SHARING-WALKTHROUGH.md), release directory
 `20261026-sharing-walkthrough`. The baseline rollout documented below used
 `20261026-context-0.4.20`. Open https://34.27.253.220/ for the real application.

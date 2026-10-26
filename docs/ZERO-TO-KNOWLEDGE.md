@@ -12,11 +12,20 @@ within 310 seconds of the CLI finishing; this is an upper bound from periodic ch
 not an instantaneous-sync guarantee. All 40 discovered local captures were complete
 at inspection, with no recorded parse errors.
 
-**One live approval gate remains:** a fresh Claude Code session loaded the MCP search tool,
-but Claude's noninteractive host denied `search_shared_context`. Its answer is not
-verified. The owner must approve the read-only search/read tools in Claude Code;
-no permission settings were changed and no substitute answer was supplied. See
-[the exact read permissions](NATIVE-READ-PERMISSIONS.md). Low-latency incremental
+**The real assistant answer is verified:** after the owner explicitly approved a
+per-invocation allowlist for only `search_shared_context` and `read_shared_context`,
+a fresh Claude Code test used both tools successfully and returned the exact probe
+marker. Its numeric suffix was not supplied in the prompt. The successful read
+matched a search result and returned five citations. There were no permission
+denials, and before/after checks found no saved permission changes. See
+[the exact read permissions](NATIVE-READ-PERMISSIONS.md).
+
+**Latency and clean shutdown remain open:** the answer took 87.95 seconds. MCP
+connected in 177 ms, but initial resource listing hit the host's 30-second timeout.
+Indexed search took about 3.8 seconds; the first read failed with a transport timeout
+and a retry succeeded. The host emitted a successful final result, but the test
+harness reached its 110-second process/pipe timeout afterward. This proves the
+answer path, not consistently fast or clean process completion. Incremental
 collection also remains a performance target; the observed live delay is above.
 
 ## What was tested
@@ -31,7 +40,8 @@ collection also remains a performance target; the observed live delay is above.
 | Packaged launcher and distribution integrity | 2/2 launcher; both aliases verified |
 | Packaged stdio and idle mailbox | Passed; host sockets and Google identities are fixtures |
 | Real Mac collection and local mirror | Full document hashes and real probe verified |
-| Fresh real assistant answer | Connected, but blocked by Claude tool approval |
+| Fresh real assistant answer | Exact marker verified through successful search/read; temporary two-tool rule, no saved permission changes |
+| Native startup/read/exit reliability | Resource discovery and first read timed out; final answer succeeded before harness cleanup deadline |
 
 The zero-account journey uses the production browser UI and packaged native modules.
 It covers sign-in, the private setup handoff, five Claude/Codex/child-agent sources,

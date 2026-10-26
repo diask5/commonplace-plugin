@@ -6,11 +6,15 @@ automatic private ingestion, and one-request native plugin/MCP setup. Those late
 instructions supersede the original Agents home and hosted proxy-answer design.
 The original spec remains unchanged in MEET-PROXY-PRODUCT-SPEC.md.
 
+For the latest requirement-by-requirement review and native startup repair, see
+[the spec recheck](SPEC-RECHECK.md). The counts and 0.4.20 rollout below describe
+the earlier MVP milestone; current live evidence is tracked separately.
+
 ## Readiness decision
 
-The current source implements the core context-sharing journey and preserves
-legacy agent-pair conversations. Version 0.4.20 / runtime 55 is published and
-deployed to production. [Rollout details](CONTEXT-MVP-ROLLOUT.md) and installed-host verification are tracked in
+The original MVP milestone implemented the core context-sharing journey and
+preserved legacy agent-pair conversations. Version 0.4.20 / runtime 55 was
+published and deployed; later releases supersede it. [Rollout details](CONTEXT-MVP-ROLLOUT.md) and installed-host verification are tracked in
 `implementation/context-mvp-verification.json`; do not infer them from screenshots.
 
 A complete original-spec claim would be inaccurate: answer-only privacy was

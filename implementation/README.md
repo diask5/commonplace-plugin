@@ -1,11 +1,11 @@
 # MCP adoption source delivery
 
-**Current native release: 0.4.20 / runtime 55.** Apply all 18 patches in the order
-recorded by `sharing-walkthrough-manifest.json` (`applyAfter`, then `patch`).
-The complete chain reproduces 150 changed files exactly. Current tests and rollout
-state: [context MVP verification](context-mvp-verification.json) and
-[readiness audit](../docs/CONTEXT-MVP-READINESS.md). Older source-only statements
-below describe their historical checkpoints.
+**Latest native candidate: 0.4.22 / runtime 56.** Apply all 21 patches in the
+order recorded by `native-discovery-manifest.json` (`applyAfter`, then `patch`).
+Current packaged/installed/deployed state and tests are in
+[the spec recheck](../docs/SPEC-RECHECK.md) and
+[its verification](spec-recheck-verification.json). Older statements below
+preserve historical checkpoints and are not current release claims.
 
 The latest web UI update is [the guided sharing walkthrough](../docs/SHARING-WALKTHROUGH.md).
 Its [verification record](sharing-walkthrough-verification.json) distinguishes
@@ -214,3 +214,12 @@ showed that each file page revalidated the complete archive. Read requests now
 reuse a current authorized snapshot, verify accessed file/index digests, repair
 corruption and still fence new source revisions and expiry. Full reconciliation
 retains whole-archive validation. This is a server-only follow-up to native 0.4.21.
+
+## Local native discovery
+
+Apply `native-discovery.patch` twenty-first. Native resource discovery advertises
+the static context index and document template without fetching the account or
+archive. Explicit reads retain authorization, scope and revision checks. Remote
+and pinned archive resource enumeration is unchanged. The patch adds real stdio
+discovery/closure regressions, packages native 0.4.22, and updates the legacy setup
+release link. The companion remains runtime56; no daemon behavior or schema changes.
