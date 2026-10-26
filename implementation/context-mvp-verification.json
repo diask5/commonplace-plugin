@@ -1,0 +1,412 @@
+{
+  "date": "2026-10-26",
+  "release": "0.4.20",
+  "runtime": 55,
+  "state": "published 0.4.20/runtime55 and deployed; installed-host validation pending",
+  "patch": "context-mvp-completion.patch",
+  "patchSha256": "66d0f0c2924e5ef88213325da81e354311a6754c567cda99c9d7a921aa846978",
+  "replay": {
+    "patches": 17,
+    "incrementalFiles": 29,
+    "allChangedFilesMatch": 150,
+    "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13"
+  },
+  "verification": {
+    "core": {
+      "command": "npm test",
+      "passed": 428,
+      "failed": 0,
+      "log": ".context/spec-readiness/core.log",
+      "logSha256": "fe0cbe8ce32356ba0bd1bb33fff56e66d02aed526ec9e63b3f80c3acb3eab617"
+    },
+    "contextUi": {
+      "command": "npm run test:context-ui",
+      "passed": 70,
+      "failed": 0,
+      "log": ".context/spec-readiness/ui.log",
+      "logSha256": "46c094a2ea5bf34c3309dc560b5653110987f73c14eb17c6777d2ba82a8e8059"
+    },
+    "originalSpec": {
+      "command": "npm run test:spec",
+      "passed": 15,
+      "failed": 0,
+      "log": ".context/spec-readiness/spec-final2.log",
+      "logSha256": "3683cee679a049da13cd3ae3c01d7a1e2a3e9cd006f5c0525a8666def463108b"
+    },
+    "spaceApi": {
+      "command": "node --test tests/space-context*.test.mjs",
+      "passed": 14,
+      "failed": 0,
+      "log": ".context/spec-readiness/space-tests.log",
+      "logSha256": "6c1111ec1f08c6fb360d77718171a760d239bad20af7f0793a6f4f5fad7e37a6"
+    },
+    "legacyUiCorrections": {
+      "command": "node --test tests/ui-browser.test.mjs tests/product-flow-browser.test.mjs",
+      "passed": 10,
+      "failed": 0,
+      "log": ".context/spec-readiness/ui-regression.log",
+      "logSha256": "d88917248ea1fca2aab048d342751be0432ad1df654279c4842a2b4cb13390c1"
+    },
+    "package": {
+      "command": "npm run test:package",
+      "passed": 1,
+      "failed": 0,
+      "log": ".context/spec-readiness/package.log",
+      "logSha256": "fdaba17bd884d40b7dd9a55f5b33b0355f4fa02dd41dfffc9cbd444a8a014bc9"
+    },
+    "packagedLaunchers": {
+      "command": "node --test apps/commonplace/tests/runtime-mcp.test.mjs",
+      "passed": 2,
+      "failed": 0,
+      "log": ".context/spec-readiness/launcher.log",
+      "logSha256": "1934a9672b065001e4f36224a8c36ce5e766a5d4dc0f86e640b19bd15efbffa8"
+    },
+    "deployment": {
+      "command": "npm run test:deployment",
+      "passed": 16,
+      "failed": 0,
+      "log": ".context/spec-readiness/deployment.log",
+      "logSha256": "c0ab9f99c690719c3f9a44ca03a38ad54d18cea5235245f088d12a57a4a4fd97"
+    },
+    "allUi": {
+      "command": "npm run test:ui",
+      "passed": 127,
+      "failed": 0,
+      "skipped": 0,
+      "log": ".context/spec-readiness/all-ui-final.log",
+      "logSha256": "63b3635423e645f8dd0c578258d142ee63a93ec0ff284b92e8c707fce0fd57d5"
+    }
+  },
+  "packagedSmoke": {
+    "plugin": {
+      "passed": true,
+      "log": ".context/spec-readiness/plugin-smoke.log",
+      "logSha256": "de1174d28e53386736179fe50d5198f3770e35adde1e577788f84c7e7dde5a9e"
+    },
+    "mailbox": {
+      "passed": true,
+      "log": ".context/spec-readiness/mailbox-smoke.log",
+      "logSha256": "50420c3811b08c011b45ae852ebaff7b2b60fc757f17afaf5f330483dc715178"
+    }
+  },
+  "artifacts": {
+    "commonplace-0.4.20.zip": {
+      "sha256": "20e51ebbc3480dfbeab53423338ce83abf71644651a4e0a30c8d753fccae3788",
+      "bytes": 230004444
+    },
+    "meet-proxy-0.4.20.zip": {
+      "sha256": "80b70dbe860f69b7717d0a7c69e386e8f993a7339c208c3a81eddf9585daaaa1",
+      "bytes": 230004444
+    },
+    "meet-proxy-server-0.4.20.tgz": {
+      "sha256": "1e74254b321fac2e4dbb7c527410b55ea65f243c695c867128af1bbee097b43e",
+      "bytes": 813204
+    }
+  },
+  "runtimeBundle": {
+    "sha256": "52d281e2e39e75ebfece42c84b9f161a80de664dc5ed47cdf000e7b875a3a337",
+    "files": 153
+  },
+  "screenshots": [
+    {
+      "path": ".context/spec-readiness/screenshots/01-sign-in-1440.png",
+      "sha256": "2061e60146d4762fc494b2a2598795247fe6699a6dc2a9aff35d13ef9980a1b3"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/01-sign-in-390.png",
+      "sha256": "c9dcd5c43a12495155ec746d8910e5afca49d7c05f9c9543ddf404f2d7237c2f"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/02-choose-app-1440.png",
+      "sha256": "50f28a365585bc406b1bfbe5bf34e56f095dfee2237cb9a343657702accdeb09"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/02-choose-app-390.png",
+      "sha256": "f98f07c654ed176815bbced99963162530247240eff481fbca90df2057ac534b"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/03-copy-setup-1440.png",
+      "sha256": "1debe67536cd7d2294d3a505a2fef5c7abb4112f00b45c75fb5e18a8b90be753"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/03-copy-setup-390.png",
+      "sha256": "07ac35d3c562424bb220d8171ce55e6c9750d76b98170cec9f2d45bd39faf447"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/04-messages-1440.png",
+      "sha256": "658f5a81fc64a20fc68dda0dbffc668ceb3eb6478ca94ce629c0ce00090302a8"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/04-messages-390.png",
+      "sha256": "0a80e0a55de7a1dd636278c95024e5b330192d331a4697920145fa3846e5f550"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/05-create-space-1440.png",
+      "sha256": "beffacbeb7f566f0481bce1826d2c816db6c7242c28fcfecd8b425b6fc43d805"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/05-create-space-390.png",
+      "sha256": "c67ba5a8aae9c98a32394227f9060cadd2c82f664c067b38d0e56bd28347497d"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/06-sharing-rules-1440.png",
+      "sha256": "eb9a59fc002d06ac04054395917c62d0bc970bbaa1a19649e4026eca706eb2ed"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/06-sharing-rules-390.png",
+      "sha256": "b2c2825196b186f3e16013d81d664f4851dfb62efb19530143c6b26b7441c6d1"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/07-members-1440.png",
+      "sha256": "163d4b3a5094d2535cfc10e25fca577ae595b8e55706870c915e41929ee021eb"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/07-members-390.png",
+      "sha256": "28c2fee44e90fa871f83a471c95c943db1033055bd3f2bfb627f5dff8ce80810"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/08-accept-invitation-1440.png",
+      "sha256": "37df82c0caf2e5b8017f63c7de26682575ed0eac36ed4c2909b6f2c90521a603"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/08-accept-invitation-390.png",
+      "sha256": "fb60f4c989d3b65ca240fff06b80645a9511f4af642348cc39dc04dad5ae8073"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/09-recipient-context-1440.png",
+      "sha256": "36f3200e53f6c4220464ed1a42529bd101abf90093a571905c9cfbae202af2b1"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/09-recipient-context-390.png",
+      "sha256": "d3764c00d8b4816d9299fb9842f4d2533c8ba3ea7df4813b6728abd5325aac37"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/10-owner-audit-1440.png",
+      "sha256": "0b6715b181e7fc0b7dce6d89d10b2daa1d49b3ed1c22cbe011e101d8d461093f"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/10-owner-audit-390.png",
+      "sha256": "75b2b59119c366371a422036e9dae23a3785385e7ab80e5a0e7b38ad8448e6f9"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/11-expired-sharing-1440.png",
+      "sha256": "493f95a580a72b596ba59256f4771e96329b23dd668bdeb5f819920cc89a686c"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/11-expired-sharing-390.png",
+      "sha256": "7812783661d523c404bb3128d754a82da8d32315b0c7e5e5b7a1d6b7beeafd92"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/12-leave-space-1440.png",
+      "sha256": "aef05ad73b87bb554d590d0804ef9b9f5d257253aef35ff42a72dac928dab851"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/12-leave-space-390.png",
+      "sha256": "3b6426cbe3fa16e4da4a107e5eba6cc71dfa051a6c887de1881d528595e72c04"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/13-context-search-1440.png",
+      "sha256": "6f54b46cf6338a028bc19ff234c3f2086ff51599644e8a6ad19c600917fdaade"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/13-context-search-390.png",
+      "sha256": "e40c78b83e55a58761715e6a998b3dc1c8b01ffc216fcafc217f9b69e876521a"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/14-archive-space-1440.png",
+      "sha256": "04a24a8ed45d1a1fb48a8d675979c18308af33f7c542b9febcab536673fe5003"
+    },
+    {
+      "path": ".context/spec-readiness/screenshots/14-archive-space-390.png",
+      "sha256": "8ff47487d054fd61c96a50fec9071ef3b0ac65681c0708e75291e947173ce552"
+    }
+  ],
+  "gallery": "https://kyle-cloud-w3.conductor.show/review",
+  "classifier": {
+    "model": "pplx-decider-v1.2",
+    "cases": 28,
+    "correct": 23,
+    "falseAllows": 0,
+    "falseWithholds": 5,
+    "providerErrors": 0,
+    "threshold": 0.995,
+    "reportSha256": "7a3074841e7d99e859b22ca4b42fe2ded5d7a97fa203b9578dbc264f8b7cf63e",
+    "limits": "Synthetic sample; not a calibrated privacy guarantee. No real private sources used."
+  },
+  "live": {
+    "release": "20261026-context-0.4.20",
+    "filesVerified": 153,
+    "identityPreserved": true,
+    "identity": {
+      "cp_profiles": {
+        "rows": 71,
+        "sha256": "8e76585a09eeb27a7ebba442f4972b78c1beef69ebd65a483e2d84da097b77a5"
+      },
+      "cp_devices": {
+        "rows": 548,
+        "sha256": "b01157d0fead7d434503dbcf79dba31bb8017e6403ca438459e377f8aa9e4f6d"
+      },
+      "cp_agent_addresses": {
+        "rows": 152,
+        "sha256": "f913656766919fa8a3f8974d18932e6d42f86a8c75b6f84532a50098c6e2f7d5"
+      },
+      "cp_agent_bindings": {
+        "rows": 151,
+        "sha256": "ee7a861e7301c6ce186c0459bb3421e433a93bbbe63eb49d28f68528f5a07aab"
+      },
+      "cp_mail_conversations": {
+        "rows": 7,
+        "sha256": "8f7ddd5fdc39ac498e97a1dfb63f7be7b53ee19e5564c51cef92d29a34b413f3"
+      },
+      "cp_installation_accounts": {
+        "rows": 5,
+        "sha256": "681410cc2a84312fe204b3d276b77339a7902230d163fd4858680d05fc6ed7b3"
+      }
+    },
+    "classifierLoaded": true,
+    "compiledRehearsal": {
+      "passed": true,
+      "candidate": "/opt/commonplace/releases/20261026-context-0.4.20-rehearsal",
+      "checks": [
+        {
+          "route": "/",
+          "status": 200
+        },
+        {
+          "route": "/auth/google.js",
+          "status": 200
+        },
+        {
+          "route": "/context/assets/agent-connections.mjs",
+          "status": 200
+        },
+        {
+          "route": "/.well-known/oauth-protected-resource/mcp",
+          "status": 200
+        },
+        {
+          "route": "/.well-known/agent-configuration",
+          "status": 200
+        },
+        {
+          "route": "/api/agent-auth/sign-in/email",
+          "status": 404
+        },
+        {
+          "route": "/mcp",
+          "status": 401
+        },
+        {
+          "route": "/authorize",
+          "status": 303,
+          "scope": "Actual compiled handler unauthenticated path; no Google identity asserted."
+        }
+      ],
+      "privateProductionDataUsed": false,
+      "productionPointerUnchanged": true
+    },
+    "services": [
+      "active",
+      "active"
+    ],
+    "backup": "/var/lib/commonplace/rollouts/20261026-context-0.4.20-rehearsal/before.sqlite",
+    "classifierProbe": {
+      "providerReachable": true,
+      "syntheticOnly": true,
+      "results": [
+        {
+          "id": "allowed",
+          "probability": 0.9601475787915879,
+          "passed": false,
+          "model": "pplx-decider-v1.2",
+          "latencyMs": 767
+        },
+        {
+          "id": "withheld",
+          "probability": 0.0009369369353365747,
+          "passed": false,
+          "model": "pplx-decider-v1.2",
+          "latencyMs": 235
+        }
+      ]
+    },
+    "deployed": true,
+    "installedHostVerified": false,
+    "activationMode": "code-only after verified backup and full migration/compiled rehearsal; exact existing 45 migration digests verified",
+    "googleAuthenticatedWalkthrough": false,
+    "publicBrowser": {
+      "origin": "https://34.27.253.220",
+      "at": "2026-10-26T00:17:42.344Z",
+      "screens": [
+        {
+          "width": 1440,
+          "status": 200,
+          "loadingCleared": true,
+          "pageErrors": []
+        },
+        {
+          "width": 390,
+          "status": 200,
+          "loadingCleared": true,
+          "pageErrors": []
+        }
+      ],
+      "checks": [
+        {
+          "googleHelperReady": true,
+          "origin": "https://vertical-web-313417.firebaseapp.com"
+        },
+        {
+          "route": "/context/assets/context-product.mjs",
+          "status": 200,
+          "sourceMatches": true,
+          "sha256": "8456655ee0e826ab0fba427736bf36b3b6760e2a1a23fd0790d7ccfce62a692c"
+        },
+        {
+          "route": "/context/assets/context-native-setup.mjs",
+          "status": 200,
+          "sourceMatches": true,
+          "sha256": "2be3e96dbe5715b4f8ebd784c5ae40745edbaf4fef2c93ecb1ac7f83292f24e3"
+        },
+        {
+          "route": "/context/assets/context-space-rules.mjs",
+          "status": 200,
+          "sourceMatches": true,
+          "sha256": "a95249bb7ee0e19722e47dfac6bfd009f57587b99e9da52eb2f1f60d23333340"
+        },
+        {
+          "route": "/context/assets/context-setup-request.mjs",
+          "status": 200,
+          "sourceMatches": true,
+          "sha256": "fffdaeec0bbc87bc11f8bdafbc68f50e050675c1aa1eea0d700b384159f31100"
+        },
+        {
+          "route": "/mcp",
+          "unauthenticatedStatus": 401
+        },
+        {
+          "route": "/authorize",
+          "status": 303
+        }
+      ],
+      "realSignInCompleted": false,
+      "passed": true
+    },
+    "publicBrowserLogSha256": "0d0779a5d7992c0246ee13ec22f475d1b1c59a1db2d70e9dda1b35e4a1722229",
+    "nativeHere": {
+      "loadedVersion": "0.4.14",
+      "runtime": 48,
+      "account": "kyledias@vurbox.com",
+      "automaticDelivery": true,
+      "verification": "existing plugin cached status; not updated/relinked during rollout"
+    }
+  },
+  "remaining": [
+    "Real fresh Google and native host launch/reload walkthrough",
+    "Safe large-document chunking and recipient-safe pagination",
+    "Upstream MCP ingestion",
+    "P1 automatic contact delivery and personal agents"
+  ],
+  "testLimits": "Synthetic Google and host identities in browser/native fixtures; tests overlap and counts must not be summed as distinct coverage.",
+  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.20"
+}

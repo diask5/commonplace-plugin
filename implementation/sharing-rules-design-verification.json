@@ -1,0 +1,64 @@
+{
+  "state": "source and working synthetic preview; not deployed",
+  "checks": {
+    "policySuite": {
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "log": ".context/sharing-rules-design/frozen-check.log"
+    },
+    "browser": {
+      "widths": [
+        320,
+        390,
+        768,
+        1280
+      ],
+      "states": [
+        "compose",
+        "recipient preview"
+      ],
+      "checks": [
+        "axe WCAG 2 A/AA and 2.1 AA",
+        "no horizontal overflow",
+        "44px primary touch targets",
+        "focus restored with prompt intact",
+        "editing clears obsolete approvals",
+        "late results cannot repaint changed rules",
+        "visible provider errors and missing-configuration recovery"
+      ],
+      "screenshots": ".context/sharing-rules-design/final-screenshots"
+    },
+    "livePreview": {
+      "model": "pplx-decider-v1.2",
+      "liveProvider": true,
+      "syntheticOnly": true,
+      "checked": 8,
+      "approved": 2,
+      "errors": 0,
+      "primaryButtonBottom": {
+        "desktop": 819.078125,
+        "phone": 803.953125
+      },
+      "at": "2026-10-25T22:17:11.852Z"
+    },
+    "replay": {
+      "patches": 9,
+      "filesMatched": 4,
+      "passed": true
+    }
+  },
+  "changes": [
+    "Invitation-style SVG arch and context/person tiles",
+    "Centered cream sharing card with terracotta pill actions",
+    "Compose and recipient preview in the same card",
+    "Technical scores and provider details behind a disclosure",
+    "Reduced-motion-aware transitions and responsive spacing"
+  ],
+  "unchanged": [
+    "Classifier prompts and threshold",
+    "Grant and recipient authorization",
+    "Production packages and live permissions"
+  ],
+  "patchSha256": "8cedf75301ec69fe17f7d9accdcb8c7cef2881371f669d619ecaf31a83372f5f"
+}

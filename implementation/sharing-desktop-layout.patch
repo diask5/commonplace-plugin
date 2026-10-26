@@ -1,0 +1,217 @@
+diff --git a/scripts/policy-sharing-page.mjs b/scripts/policy-sharing-page.mjs
+index a1c35cb..16883e0 100644
+--- a/scripts/policy-sharing-page.mjs
++++ b/scripts/policy-sharing-page.mjs
+@@ -9,35 +9,40 @@ export const policyPage = nonce => `<!doctype html>
+ <main class="policy-main"><div class="stage-topline"><a href="/#conversations">← Connections</a><span><span class="draft-dot" aria-hidden="true"></span>Sharing preview</span></div>
+ <section class="share-sheet" id="share-sheet" aria-label="Share context with Zane" data-state="draft">
+   <div class="sheet-topline"><span class="sheet-label">Share with Zane</span><a class="close-sheet" href="/#shared" aria-label="Close sharing">×</a></div>
+-  ${sharingArt}
+-  <section id="compose-view" aria-labelledby="compose-title">
+-    <div class="sharing-copy"><p class="sharing-kicker">A LITTLE CONTEXT</p><h1 id="compose-title">Bring Zane<br>up to speed.</h1><p>The right context, on your terms.<br>Just say what’s okay to share.</p></div>
+-    <form id="rules-form"><div class="prompt-heading"><label for="rules">What can Zane know?</label><button class="text-action" id="reset" type="button">Use example</button></div><textarea id="rules" maxlength="4000" required aria-describedby="field-note" placeholder="Share our project progress and decisions. Keep customer details and finances private."></textarea>
++  <div class="sharing-hero"><div class="sharing-copy"><p class="sharing-kicker">A LITTLE CONTEXT</p><h1 id="compose-title">Bring Zane<br> up to speed.</h1><p>The right context, on your terms.<br> Just say what’s okay to share.</p></div>${sharingArt}</div>
++  <div class="sharing-workspace">
++  <section id="compose-view" aria-labelledby="rules-label">
++    <form id="rules-form"><div class="prompt-heading"><label id="rules-label" for="rules">What can Zane know?</label><button class="text-action" id="reset" type="button">Use example</button></div><textarea id="rules" maxlength="4000" required aria-describedby="field-note" placeholder="Share our project progress and decisions. Keep customer details and finances private."></textarea>
+       <p class="field-note" id="field-note">${lock}<span>We’ll check each excerpt against your rules.</span></p>
+       <button id="test-rules" class="share-primary" disabled><span>Preview for Zane</span>${arrow}</button>
+     </form>
+     <p class="preview-assurance">Sample context · nothing is shared</p>
++    <p id="status" class="status" role="status" aria-live="polite">Opening your preview…</p>
+   </section>
+   <section id="preview-view" aria-labelledby="recipient-title" hidden>
+-    <div class="sharing-copy"><p class="sharing-kicker">THROUGH THEIR EYES</p><h2 id="recipient-title" tabindex="-1">A shared<br>starting point.</h2><p id="preview-caption">Here’s what Zane could read.</p></div>
+-    <div class="preview-person"><span class="person-avatar" aria-hidden="true">Z</span><div><strong>Zane’s view</strong><small>Only context that fits your rules</small></div><span class="match-count" id="match-count"></span></div>
+-    <div id="recipient-view"></div>
+-    <p class="preview-private">${lock} Everything else stays out of this preview.</p>
+-    <div class="preview-actions"><button id="edit-rules" class="share-primary"><span>Refine your rules</span>${arrow}</button></div>
++    <div class="sharing-copy"><p class="sharing-kicker">THROUGH THEIR EYES</p><h2 id="recipient-title" tabindex="-1">What Zane<br> could read</h2><p id="preview-caption">A shared starting point, on your terms.</p></div>
++    <div class="preview-person"><span class="person-avatar" aria-hidden="true">Z</span><div><strong>Zane</strong><small>Design collaborator · sample recipient</small></div><span class="match-count" id="match-count" hidden></span></div>
++    <div class="preview-empty" id="preview-empty"><svg viewBox="0 0 88 88" fill="none" aria-hidden="true"><rect x="15" y="18" width="49" height="59" rx="10" transform="rotate(-12 15 18)" fill="#e7dfef"/><rect x="30" y="10" width="46" height="61" rx="10" fill="#fffdfa" stroke="#d8cce2"/><path d="M42 29h22M42 38h22M42 47h15" stroke="#b8a3c9" stroke-width="2" stroke-linecap="round"/><circle cx="69" cy="66" r="12" fill="#e0e8d7" stroke="#f6f3f9" stroke-width="3"/><path d="m64 66 3 3 6-7" stroke="#70855f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>See it before you share it.</h3><p id="empty-description">Preview your rules to see which excerpts<br> would be available to Zane.</p></div>
++    <div id="recipient-view" tabindex="0" role="region" aria-label="Context permitted for Zane" hidden></div>
++    <p class="preview-private" id="preview-private" hidden>${lock} Everything else stays out of this preview.</p>
++    <div class="preview-actions" id="preview-actions" hidden><button id="edit-rules" class="share-primary"><span>Refine your rules</span>${arrow}</button></div>
+     <p class="preview-assurance">Preview only · nothing has been shared</p>
+   </section>
+-  <p id="status" class="status" role="status" aria-live="polite">Opening your preview…</p>
++  </div>
+ </section>
+ <details class="experiment-details" id="preview-details"><summary><span class="detail-chevron" aria-hidden="true">›</span>About this preview</summary><div class="experiment-copy"><p>This preview uses eight sample excerpts and a sample recipient. Perplexity checks the examples and the rules you write. Your real account context isn’t used, and no one receives access.</p><p>Uncertain or mixed excerpts are left out. Nothing is rewritten. Model scores are estimates; this experiment doesn’t guarantee safe disclosure.</p><p id="provider"></p><div id="audit" aria-label="Your private preview checks"></div></div></details>
+ </main><script type="module" nonce="${nonce}">
+ const el=id=>document.getElementById(id);
+-let initial='',configured=false,version=0,controller=null;
++let initial='',configured=false,version=0,controller=null,step='compose';
++const desktop=matchMedia('(min-width:960px)');
+ const buttonMarkup=el('test-rules').innerHTML;
+ const auditLabels={progress:'Project progress',decision:'Product decisions',mixed:'Mixed customer details',finances:'Private finances','private-title':'Private source title',injection:'Attempted rule override','confidential-neighbor':'Confidential source','other-project':'A different project'};
+ function status(text,error=false){el('status').textContent=text;el('status').dataset.error=String(error);}
+-function clearPreview(){el('recipient-view').replaceChildren();el('audit').replaceChildren();el('match-count').textContent='';}
++function clearPreview(){el('recipient-view').replaceChildren();el('audit').replaceChildren();el('match-count').textContent='';for(const id of ['recipient-view','match-count','preview-actions','preview-private'])el(id).hidden=true;el('preview-empty').hidden=false;el('empty-description').textContent='Preview your rules to see which excerpts would be available to Zane.';}
++function layout(){el('compose-view').hidden=!desktop.matches&&step==='preview';el('preview-view').hidden=!desktop.matches&&step!=='preview';el('share-sheet').dataset.layout=desktop.matches?'workspace':'sheet';}
++desktop.addEventListener('change',()=>{const focused=document.activeElement;layout();if(focused&&focused!==document.body&&!focused.getClientRects().length){if(step==='preview')el('recipient-title').focus();else focusRules();}});
+ function focusRules(){el('rules').focus();el('rules').setSelectionRange(0,0);el('rules').scrollTop=0;}
+-function editor(focus=false){el('compose-view').hidden=false;el('preview-view').hidden=true;el('share-sheet').dataset.state='draft';if(focus)focusRules();}
++function editor(focus=false){el('empty-description').textContent='Preview your rules to see which excerpts would be available to Zane.';step='compose';el('share-sheet').dataset.state='draft';layout();if(focus)focusRules();}
+ function restoreButton(){el('test-rules').disabled=!configured;el('test-rules').innerHTML=buttonMarkup;}
+ function changed(){version++;controller?.abort();clearPreview();restoreButton();editor();status('');}
+ async function setup(){
+@@ -49,8 +54,8 @@ el('reset').onclick=()=>{el('rules').value=initial;changed();focusRules();};
+ el('edit-rules').onclick=()=>{editor(true);status('');};
+ el('rules-form').onsubmit=async event=>{
+  event.preventDefault();if(!configured||el('test-rules').disabled)return;
+- const current=++version;controller=new AbortController();const activeController=controller,timer=setTimeout(()=>activeController.abort(),150000);
+- el('test-rules').disabled=true;el('test-rules').textContent='Finding the right context…';clearPreview();el('share-sheet').dataset.state='checking';status('Checking your rules…');
++ step='compose';layout();const current=++version;controller=new AbortController();const activeController=controller,timer=setTimeout(()=>activeController.abort(),150000);
++ el('test-rules').disabled=true;el('test-rules').textContent='Finding the right context…';clearPreview();el('share-sheet').dataset.state='checking';el('empty-description').textContent='Finding the context that fits your rules…';status('Checking your rules…');
+  try{
+   const response=await fetch('/preview/rules/evaluate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rules:el('rules').value}),signal:controller.signal});
+   const data=await response.json();if(current!==version)return;if(!response.ok)throw Error(data.error||'Could not complete the preview.');
+@@ -60,8 +65,8 @@ el('rules-form').onsubmit=async event=>{
+   for(const item of data.recipientView.excerpts){const article=document.createElement('article');article.className='excerpt';const h=document.createElement('h3'),p=document.createElement('p');h.textContent=item.title;p.textContent=item.text;article.append(h,p);el('recipient-view').append(article);}
+   const count=data.recipientView.excerpts.length;el('match-count').textContent=count+' excerpt'+(count===1?'':'s');
+   if(!count){const p=document.createElement('p');p.className='empty';p.textContent='Nothing in the sample context fits these rules yet. You can refine them and take another look.';el('recipient-view').append(p);}
+-  el('compose-view').hidden=true;el('preview-view').hidden=false;el('share-sheet').dataset.state='preview';status('');el('recipient-title').focus();
++  el('preview-empty').hidden=true;for(const id of ['recipient-view','match-count','preview-actions','preview-private'])el(id).hidden=false;step='preview';layout();el('share-sheet').dataset.state='preview';status('');el('recipient-title').focus();
+  }catch(error){if(current!==version)return;clearPreview();editor();status(error.name==='AbortError'?'This preview took too long. Please try again.':error.message,true);}
+  finally{clearTimeout(timer);if(current===version){restoreButton();if(el('share-sheet').dataset.state==='checking')el('share-sheet').dataset.state='draft';}}
+-};setup();
++};layout();setup();
+ </script></body></html>`;
+diff --git a/scripts/policy-sharing-style.mjs b/scripts/policy-sharing-style.mjs
+index 75cf7fa..cac8915 100644
+--- a/scripts/policy-sharing-style.mjs
++++ b/scripts/policy-sharing-style.mjs
+@@ -12,20 +12,57 @@ export const policySharingCss = `
+ .sheet-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;min-height:44px}.sheet-label{font-size:13px;font-weight:650;letter-spacing:-.2px}
+ .close-sheet{width:40px;min-height:44px;display:grid;place-items:center;border-radius:50%;background:#f2efe9;border:1px solid #eae5dc;text-decoration:none;color:#777065;font-size:21px;font-weight:350}.close-sheet:hover{background:#eae5dc;color:#51483e}
+ .sharing-art{display:block;width:100%;height:auto;max-height:120px;margin:2px 0 14px;overflow:visible}.art-document,.art-person{transition:transform .35s ease}.share-sheet:hover .art-document{transform:translateY(-2px)}.share-sheet:hover .art-person{transform:translateY(2px)}
+-.sharing-copy{text-align:center;margin:0 auto 20px}.sharing-kicker{font:9px/1.6 var(--font-mono);letter-spacing:2px;color:#7b678c;margin:0 0 11px}.sharing-copy h1,.sharing-copy h2{font-size:33px;line-height:1.14;font-weight:650;letter-spacing:-1.3px;margin:0 0 13px}.sharing-copy h2:focus{outline:none}.sharing-copy p{font-size:13px;line-height:1.8;color:#756c60;margin:0}.sharing-copy .sharing-kicker{font-size:9px;line-height:1.6;margin-bottom:11px;color:#7b678c}
++.sharing-hero{display:flex;flex-direction:column-reverse}.sharing-copy{text-align:center;margin:0 auto 20px}.sharing-kicker{font:9px/1.6 var(--font-mono);letter-spacing:2px;color:#7b678c;margin:0 0 11px}.sharing-copy h1,.sharing-copy h2{font-size:33px;line-height:1.14;font-weight:650;letter-spacing:-1.3px;margin:0 0 13px}.sharing-copy h2:focus{outline:none}.sharing-copy p{font-size:13px;line-height:1.8;color:#756c60;margin:0}.sharing-copy .sharing-kicker{font-size:9px;line-height:1.6;margin-bottom:11px;color:#7b678c}
+ .prompt-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}.prompt-heading label{font-size:12px;font-weight:650}.policy-page .text-action{padding:0 4px;min-height:44px;background:transparent;color:#8a4937;font-size:11px;font-weight:550;border:0;border-radius:6px}.policy-page .text-action:hover{background:#f3eee5;color:#713725}
+ .policy-page textarea{height:132px;min-height:112px;max-height:340px;resize:vertical;border:1px solid #d9d0c2;border-radius:13px;background:#fffefa;font-size:14px;line-height:1.8;padding:14px 16px;transition:border-color .15s,box-shadow .15s;scrollbar-width:thin;scrollbar-color:#d7cdbc transparent}.policy-page textarea:focus{border-color:#a695b6;outline:0;box-shadow:0 0 0 3px #eee8f5}.field-note{display:flex;gap:7px;align-items:flex-start;font-size:11px;line-height:1.7;color:#756c60;margin:11px 0 18px}.mini-icon{width:14px;height:14px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+ .policy-page .share-primary{min-height:50px;width:100%;border-radius:999px;background:#b63e27;border:1px solid #b63e27;font-size:13px;font-weight:600;color:#fff;padding:12px 18px;gap:12px}.policy-page .share-primary:hover{background:#a03421;border-color:#a03421;box-shadow:0 3px 10px #b63e2718}.policy-page .share-primary:disabled{opacity:.55;cursor:wait}.share-primary svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+ .preview-assurance{display:flex;align-items:center;justify-content:center;gap:5px;text-align:center;margin:12px 0 0;font-size:10px;color:#7b7165;line-height:1.6}.preview-assurance .mini-icon{width:12px;height:12px;margin:0}
+ .status{font-size:12px;line-height:1.7;color:#696054;text-align:center;margin:12px 0 0;overflow-wrap:anywhere}.status:empty{display:none}.status[data-error=true]{color:#973b27;background:#fcf0e9;border-radius:9px;padding:10px 12px}
+-.preview-person{display:flex;align-items:center;gap:10px;padding:13px 0;border-top:1px solid #e8e2d9;border-bottom:1px solid #e8e2d9;margin-bottom:3px}.person-avatar{display:grid;place-items:center;flex-shrink:0;width:34px;height:34px;border-radius:11px;background:#dde6d1;color:#566644;font-size:16px;font-weight:600}.preview-person strong{font-size:12px;font-weight:600}.preview-person small{display:block;color:#756c60;font-size:10px}.match-count{margin-left:auto;font-size:10px;color:#776386;background:#f0eaf6;border-radius:999px;padding:4px 9px;white-space:nowrap}
++.preview-person{display:flex;align-items:center;gap:10px;padding:13px 0;border-top:1px solid #e8e2d9;border-bottom:1px solid #e8e2d9;margin-bottom:3px}.person-avatar{display:grid;place-items:center;flex-shrink:0;width:34px;height:34px;border-radius:11px;background:#dde6d1;color:#566644;font-size:16px;font-weight:600}.preview-person strong{font-size:12px;font-weight:600}.preview-person small{display:block;color:#756c60;font-size:10px}.match-count{margin-left:auto;font-size:10px;color:#6b537e;background:#f0eaf6;border-radius:999px;padding:4px 9px;white-space:nowrap}
+ .excerpt{padding:17px 0;border-bottom:1px solid #e8e2d9;animation:excerpt-in .3s ease both}.excerpt h3{font-size:12px;line-height:1.6;color:#5c4d6b;font-weight:650;margin-bottom:6px}.excerpt p{font-size:13px;line-height:1.8;color:#5e574d;white-space:pre-wrap;overflow-wrap:anywhere}.excerpt-heading{display:flex;align-items:center;gap:7px}.excerpt-heading .mini-icon{width:13px;height:13px;margin:0}.preview-actions{margin-top:24px}.preview-private{font-size:11px;color:#756c60;text-align:center;line-height:1.8;margin:15px 0 0}.empty{font-size:13px;color:#756c60;line-height:1.8;padding:25px 0;text-align:center}
+ .experiment-details{margin:16px 8px 0;color:#756c60}.experiment-details>summary{min-height:44px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;cursor:pointer;list-style:none}.experiment-details>summary::-webkit-details-marker{display:none}.detail-chevron{transition:transform .2s;display:inline-block;font-size:13px}.experiment-details[open] .detail-chevron{transform:rotate(90deg)}.experiment-copy{font-size:11px;line-height:1.9;padding:8px 12px 12px}.experiment-copy p+p{margin-top:10px}#provider{font-family:var(--font-mono);font-size:10px;color:#7a6b87;margin:12px 0}#audit:empty{display:none}.audit-row{display:grid;grid-template-columns:minmax(0,1fr) 90px 52px;gap:8px;padding:10px 0;border-top:1px solid #e5dfd6;font-size:10px}.audit-row span{overflow-wrap:anywhere}.audit-row span:last-child{text-align:right}.audit-row [data-allow=true]{color:#37634a}
+ .share-sheet[data-state=checking] .art-document{animation:context-float 1.4s ease-in-out infinite alternate}.share-sheet[data-state=checking] .art-person{animation:context-float 1.4s .35s ease-in-out infinite alternate}.share-sheet[data-state=checking] .art-bridge{animation:bridge-pulse .9s ease-in-out infinite alternate}
+ .policy-page :focus-visible{outline:2px solid #9678ae;outline-offset:4px}
+-@keyframes context-float{to{transform:translateY(-5px)}}@keyframes bridge-pulse{to{opacity:.25}}@keyframes excerpt-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
++@keyframes context-float{to{transform:translateY(-5px)}}@keyframes bridge-pulse{to{opacity:.25}}@keyframes excerpt-in{from{transform:translateY(5px)}to{transform:translateY(0)}}
+ @media(min-width:1100px){.policy-main{margin-top:18px}}
+ @media(max-width:600px){.policy-header-inner{padding:12px 18px;gap:4px;flex-wrap:wrap;min-height:78px}.policy-header .brand{font-size:17px}.policy-header .brand svg{width:24px;height:26px}.policy-header .account{width:32px;height:32px}.policy-header nav{order:3;justify-content:center;width:100%;gap:26px;margin-top:6px}.policy-header nav a{font-size:12px}.policy-main{margin:6px 14px 0;padding-bottom:20px}.stage-topline{margin:0 3px 8px;padding:0}.share-sheet{border-radius:23px;padding:16px 22px 20px}.sheet-topline{margin-bottom:0}.sharing-art{max-height:110px;margin:0 0 14px}.sharing-copy{margin-bottom:14px}.sharing-copy h1,.sharing-copy h2{font-size:30px;letter-spacing:-1.2px}.sharing-copy p{font-size:12px}.policy-page textarea{font-size:16px;line-height:1.65;height:140px;padding:12px 13px}.field-note{font-size:10px;margin:10px 0 16px}.experiment-details{margin-top:10px}}
+ @media(max-width:350px){.policy-header nav{gap:20px}.share-sheet{padding-left:17px;padding-right:17px}.sheet-label{font-size:12px}.sharing-copy h1,.sharing-copy h2{font-size:28px}.prompt-heading label{font-size:11px}.match-count{padding:4px 6px}.experiment-copy{padding-left:0;padding-right:0}}
++
++.preview-empty{min-height:240px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px 12px;color:#776982}.preview-empty>svg{width:78px;height:78px;margin-bottom:18px}.preview-empty h3{font-size:15px;letter-spacing:-.3px;color:#61516e;margin:0 0 9px}.preview-empty p{font-size:12px;line-height:1.9;max-width:300px;color:#6f5f7a}
++#recipient-view{scrollbar-width:thin;scrollbar-color:#cfbfdc transparent}#recipient-view:focus-visible{outline-offset:4px;border-radius:4px}
++@media(max-width:959px){.share-sheet[data-state=preview] .sharing-hero .sharing-copy{display:none}.share-sheet[data-state=preview] .sharing-hero .sharing-art{margin-bottom:19px}}
++@media(min-width:960px){
++ .policy-header-inner{max-width:1320px;width:calc(100% - 96px);padding:14px 0}
++ .policy-main{max-width:1320px;width:calc(100% - 96px);margin:22px auto 0;padding-bottom:28px}
++ .stage-topline{padding:0 2px;margin-bottom:12px}.stage-topline>a{font-size:12px}
++ .share-sheet{padding:0;border-radius:24px;overflow:hidden;box-shadow:0 8px 32px -28px #4d3f5e40}
++ .sheet-topline{display:none}
++ .sharing-hero{display:grid;grid-template-columns:minmax(0,1fr) 280px;align-items:center;gap:28px;padding:28px 36px 26px}
++ .sharing-hero>.sharing-copy{margin:0;text-align:left}.sharing-hero .sharing-kicker{font-size:9px;margin-bottom:13px}
++ .sharing-hero h1{font-size:39px;line-height:1.16;letter-spacing:-1.6px;margin-bottom:14px}.sharing-hero h1 br,.sharing-hero p br{display:none}
++ .sharing-hero .sharing-copy>p:last-child{font-size:13px;line-height:1.8}
++ .sharing-hero>.sharing-art{width:280px;max-height:130px;margin:0;justify-self:end}
++ .sharing-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.04fr);border-top:1px solid #e8e2d9;align-items:stretch}
++ #compose-view{padding:25px 36px 29px;min-width:0}
++ .prompt-heading{margin-bottom:14px;min-height:44px}.prompt-heading label{font-size:16px;letter-spacing:-.3px}.policy-page .text-action{font-size:12px}
++ .policy-page textarea{height:230px;min-height:180px;max-height:420px;font-size:14px;line-height:1.85;padding:16px 18px;background:#fffefa}
++ .field-note{font-size:11px;margin:13px 0 24px}
++ .policy-page #test-rules{width:auto;min-width:220px;padding-left:24px;padding-right:24px}
++ #compose-view .preview-assurance{justify-content:flex-start;margin-top:13px;font-size:10px}
++ .status{text-align:left;font-size:12px;margin-top:12px}
++ #preview-view{background:#f5f1f8;border-left:1px solid #e5ddec;padding:25px 32px 27px;min-width:0;display:flex;flex-direction:column}
++ #preview-view>.sharing-copy{text-align:left;margin:9px 0 18px}#preview-view .sharing-kicker,#preview-caption{display:none}
++ #recipient-title{font-size:20px;line-height:1.4;letter-spacing:-.6px;margin:0}#recipient-title br{display:none}
++ .preview-person{padding:0 0 17px;border-top:0;border-bottom:1px solid #e1d8e9;margin:0}.person-avatar{width:38px;height:38px;border-radius:12px}.preview-person strong{font-size:13px}.preview-person small{font-size:11px}.match-count{font-size:11px;padding:4px 10px;background:#eae2f1}
++ .preview-empty{flex:1;min-height:278px;padding:24px 12px}.preview-empty p{font-size:13px}
++ #recipient-view{max-height:clamp(230px,calc(100dvh - 500px),430px);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:0 12px 0 0;margin-top:5px}
++ .excerpt{padding:18px 0;border-bottom-color:#e1d8e9}.excerpt h3{font-size:12px;margin-bottom:7px}.excerpt p{font-size:13px;line-height:1.85}
++ .preview-private{text-align:left;font-size:10px;margin:16px 0 0}
++ .preview-actions{margin:15px 0 0}.policy-page #edit-rules{min-height:44px;width:auto;min-width:0;padding:8px 15px;font-size:12px;background:transparent;color:#776087;border-color:#d7c9e1}.policy-page #edit-rules:hover{background:#eae2f1;border-color:#c2aecf;box-shadow:none}
++ #preview-view>.preview-assurance{justify-content:flex-start;margin-top:12px;font-size:10px;color:#70675d}
++ .experiment-details{margin:12px 2px 0;border-top:0;padding-top:0}.experiment-details>summary{justify-content:flex-start}.experiment-copy{padding-left:0;max-width:720px}
++}
++@media(min-width:1440px){.sharing-hero{padding:30px 42px 28px;grid-template-columns:minmax(0,1fr) 310px}.sharing-hero h1{font-size:43px}.sharing-hero>.sharing-art{width:310px;max-height:140px}#compose-view{padding:28px 42px 32px}#preview-view{padding:28px 38px 30px}.policy-page textarea{height:242px;font-size:15px}.excerpt p{font-size:14px}}
++
+ @media(prefers-reduced-motion:reduce){.policy-page *,.policy-page *::before,.policy-page *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+ `;
+diff --git a/tests/policy-sharing-browser.test.mjs b/tests/policy-sharing-browser.test.mjs
+index 665cec1..67afe67 100644
+--- a/tests/policy-sharing-browser.test.mjs
++++ b/tests/policy-sharing-browser.test.mjs
+@@ -38,13 +38,23 @@ test('rule preview: authenticated synthetic flow, failure recovery and responsiv
+   });
+   await t.test('rules reach the Decisions API; recipient view contains only approved exact excerpts', async () => {
+     if(screenshots)await page.screenshot({path:screenshots+'/compose-desktop.png',fullPage:true,animations:'disabled'});
+-    await page.getByRole('button',{name:'Preview for Zane',exact:true}).click();await page.locator('#preview-view').waitFor();
+-    assert.equal(await page.locator('#compose-view').isVisible(),false);assert.equal(await page.locator('#match-count').innerText(),'2 excerpts');assert.equal(await page.locator('#recipient-title').evaluate(e=>e===document.activeElement),true);
++    await page.getByRole('button',{name:'Preview for Zane',exact:true}).click();await page.waitForFunction(()=>document.getElementById('share-sheet').dataset.state==='preview');
++    assert.equal(await page.locator('#compose-view').isVisible(),true);assert.equal(await page.locator('#match-count').innerText(),'2 excerpts');assert.equal(await page.locator('#recipient-title').evaluate(e=>e===document.activeElement),true);
+     if(screenshots)await page.screenshot({path:screenshots+'/recipient-desktop.png',fullPage:true,animations:'disabled'});
+     assert.equal(await page.locator('#recipient-view article').count(),2);assert.equal(await page.locator('#audit .audit-row').count(),8);
+     assert.doesNotMatch(await page.locator('#recipient-view').innerText(), /avery|budget|confidential|ignore|customer/i);
+     assert.equal(calls.length,8);assert.ok(calls.every(c=>c.questions.share.instructions.includes('Share Project Lumen')));
+   });
++  await t.test('desktop keeps both panes visible and resizing preserves the same draft and results', async()=>{
++    const draft=await page.locator('#rules').inputValue(),excerpts=await page.locator('#recipient-view').innerText(),requestCount=calls.length;
++    for(const width of [1440,390,1024,768,1920,1280]){
++      await page.setViewportSize({width,height:900});await page.waitForFunction(wide=>document.getElementById('share-sheet').dataset.layout===(wide?'workspace':'sheet'),width>=960);
++      assert.equal(await page.locator('#compose-view').isVisible(),width>=960);assert.equal(await page.locator('#preview-view').isVisible(),true);
++      assert.equal(await page.locator('#rules').inputValue(),draft);assert.equal(await page.locator('#recipient-view').innerText(),excerpts);
++      if(width>=960){const left=await page.locator('#compose-view').boundingBox(),right=await page.locator('#preview-view').boundingBox(),frame=await page.locator('#share-sheet').boundingBox();assert.ok(left.x+left.width<=right.x+1);assert.ok(Math.abs(left.y-right.y)<1);assert.ok(frame.width>=Math.min(width*.8,1300));}
++    }
++    assert.equal(calls.length,requestCount,'resizing does not call the classifier again');
++  });
+   await t.test('editing rules clears old approvals immediately', async () => {
+     const previous=await page.locator('#rules').inputValue(),count=calls.length;await page.locator('#edit-rules').click();assert.equal(await page.locator('#rules').inputValue(),previous);assert.equal(calls.length,count);assert.equal(await page.locator('#rules').evaluate(e=>e===document.activeElement&&e.selectionStart===0&&e.scrollTop===0),true);
+     await page.locator('#rules').fill('Share only public release dates for Project Lumen.');assert.equal(await page.locator('#recipient-view article').count(),0);assert.equal(await page.locator('#audit .audit-row').count(),0);
+@@ -58,24 +68,37 @@ test('rule preview: authenticated synthetic flow, failure recovery and responsiv
+   });
+   await t.test('provider outage withholds everything without rendering a successful empty test', async () => {
+     failing=true;await page.locator('#reset').click();await page.locator('#test-rules').click();await page.getByText('We couldn’t finish checking the sample context. Please try again.',{exact:true}).waitFor();
+-    assert.equal(await page.locator('#recipient-view article').count(),0);assert.doesNotMatch(await page.locator('#status').innerText(),/Private provider error/);failing=false;
++    assert.equal(await page.locator('#recipient-view article').count(),0);assert.doesNotMatch(await page.locator('#status').innerText(),/Private provider error/);assert.doesNotMatch(await page.locator('#preview-empty').innerText(),/Finding the context/);failing=false;
+   });
+   await t.test('missing key is explicit and cannot create simulated model results', async () => {
+     configured=false;await page.reload();await page.getByText('Perplexity isn’t connected yet. Add your API key in the workspace, then reload.',{exact:true}).waitFor();assert.equal(await page.locator('#test-rules').isDisabled(),true);assert.equal(await page.locator('#audit .audit-row').count(),0);
+     assert.equal((await page.request.post(endpoint,{headers:{Origin:preview.origin},data:{rules:'Share public updates'}})).status(),503);configured=true;
+   });
+-  for(const width of [320,390,768,1280])await t.test('layout and accessibility at '+width+'px',async()=>{
+-    await page.setViewportSize({width,height:1000});await page.reload();await page.waitForFunction(()=>!document.getElementById('test-rules').disabled);
++  for(const width of [320,390,768,1024,1280,1440,1920])await t.test('layout and accessibility at '+width+'px',async()=>{
++    await page.setViewportSize({width,height:width>=960?900:1000});await page.reload();await page.waitForFunction(()=>!document.getElementById('test-rules').disabled);
+     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+     assert.equal(await page.getByRole('navigation',{name:'Main navigation'}).getByRole('link').count(),3);
+     for(const id of ['test-rules','reset'])assert.ok((await page.locator('#'+id).boundingBox()).height>=44);
+     assert.equal(await page.locator('#preview-details').evaluate(e=>e.open),false);
++    assert.equal(await page.locator('#compose-view').isVisible(),true);assert.equal(await page.locator('#preview-view').isVisible(),width>=960);
++    if(width>=960){assert.equal(await page.locator('#preview-empty').isVisible(),true);const button=await page.locator('#test-rules').boundingBox();assert.ok(button.y+button.height<=900,'desktop primary action fits the viewport');}
+     if(screenshots)await page.screenshot({path:screenshots+'/compose-'+width+'.png',fullPage:true,animations:'disabled'});
+     const a11y=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();assert.deepEqual(a11y.violations,[]);
+-    await page.locator('#test-rules').click();await page.locator('#preview-view').waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
++    await page.locator('#test-rules').click();await page.waitForFunction(()=>document.getElementById('share-sheet').dataset.state==='preview');assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+     const resultA11y=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();assert.deepEqual(resultA11y.violations,[]);
+     await page.locator('#preview-details summary').click();assert.equal(await page.locator('#audit .audit-row').count(),8);await page.locator('#preview-details summary').click();
+     if(screenshots)await page.screenshot({path:screenshots+'/recipient-'+width+'.png',fullPage:true,animations:'disabled'});
+   });
++  await t.test('long desktop previews scroll independently while the rule editor stays available',async()=>{
++    await page.setViewportSize({width:1280,height:800});await page.reload();await page.waitForFunction(()=>!document.getElementById('test-rules').disabled);
++    const entries=Array.from({length:8},(_,i)=>({title:'Project update '+(i+1),text:'Synthetic design progress for the shared project. '.repeat(30)}));
++    await page.route('**/preview/rules/evaluate',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({recipientView:{excerpts:entries},audit:entries.map((_,i)=>({candidateId:'sample-'+i,decision:'allow',probability:.999}))})}));
++    await page.locator('#test-rules').click();await page.waitForFunction(()=>document.getElementById('share-sheet').dataset.state==='preview');
++    assert.equal(await page.locator('#compose-view').isVisible(),true);assert.equal(await page.locator('#recipient-view article').count(),8);
++    assert.ok(await page.locator('#recipient-view').evaluate(e=>e.scrollHeight>e.clientHeight+100));
++    await page.locator('#recipient-view').focus();await page.locator('#recipient-view').press('End');await page.waitForFunction(()=>document.getElementById('recipient-view').scrollTop>100);
++    assert.equal(await page.locator('#rules').isVisible(),true);assert.ok((await page.locator('#test-rules').boundingBox()).width>=200);
++    await page.unroute('**/preview/rules/evaluate');
++  });
+   assert.deepEqual(errors,[]);
+ });

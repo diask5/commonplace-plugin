@@ -1,0 +1,40 @@
+{
+  "name": "Copy setup prompt as the next action",
+  "state": "source and refreshed preview; not released or deployed",
+  "patch": "copy-setup-prompt.patch",
+  "patchSha256": "6798de1bc2ca1816773ba6382d3e9e35d6bdf2c63a5cb3fe2807761c83d7237c",
+  "replay": {
+    "patches": 16,
+    "incrementalFiles": 4,
+    "allChangedFilesMatch": 147,
+    "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13"
+  },
+  "verification": {
+    "command": "node --test tests/context-setup-browser.test.mjs tests/context-product-browser.test.mjs",
+    "passed": 43,
+    "failed": 0,
+    "log": ".context/setup-copy/browser.log",
+    "logSha256": "c06bf45d4c6b583a18f734bd9ee6308236fb009d326de6009d2a07451fba721a",
+    "coverage": [
+      "prominent Copy setup prompt after app selection, above progress",
+      "actual browser clipboard contains the exact prepared request and same handoff",
+      "copying never marks setup complete",
+      "copy action recedes after confirmed native registration",
+      "phone and desktop copy-screen accessibility and overflow",
+      "existing setup expiry, account change, delayed response and retry coverage",
+      "existing context product regression"
+    ]
+  },
+  "screenshots": [
+    {
+      "path": ".context/setup-copy/screenshots/copy-1440.png",
+      "sha256": "261d816af4fa2f6f8d45beb67c069a35d0802ce709d2e5b2bee23720e2fe2233"
+    },
+    {
+      "path": ".context/setup-copy/screenshots/copy-390.png",
+      "sha256": "0ca6b9e28353f340c9817894e3314eb3292be30f052526f4f11b5819d5403a03"
+    }
+  ],
+  "preview": "https://kyle-cloud-w3.conductor.show/preview/sample?view=context",
+  "releaseLimits": "Published 0.4.19 lacks finish_context_setup. Matching plugin/account release and real Mac host launch verification remain pending."
+}

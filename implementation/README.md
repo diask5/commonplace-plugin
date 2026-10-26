@@ -1,5 +1,12 @@
 # MCP adoption source delivery
 
+**Current published/deployed release: 0.4.20 / runtime 55.** Apply all 17 patches in the order
+recorded by `context-mvp-completion-manifest.json` (`applyAfter`, then `patch`).
+The complete chain reproduces 150 changed files exactly. Current tests and rollout
+state: [context MVP verification](context-mvp-verification.json) and
+[readiness audit](../docs/CONTEXT-MVP-READINESS.md). Older source-only statements
+below describe their historical checkpoints.
+
 This repository distributes the plugin. Its implementation checkout
 ([commonplace-session-tests](https://github.com/diask5/commonplace-session-tests)) is separate,
 at `.context/commonplace-source` in this workspace. Because `.context` is ignored,
@@ -23,6 +30,81 @@ the complete implementation delta is also preserved here as a portable Git patch
 The stable source is the complete five-patch chain. RC1/RC2 and the RC3-only build
 are historical artifacts. The current chain reproduces 95 changed files exactly;
 see `source-manifest.json` and each follow-up manifest for digests and order.
+
+## Unreleased context UI follow-up
+
+Apply `context-product-ui.patch` after the five production patches above to
+reproduce the minimal Connections / Context / Shared access top navigation,
+sharing-first home, per-connection picker, account profile, conversation board, context list, sharing sheet and recipient
+invitation preview. Its 19-file
+inventory and baseline hashes are in `context-product-ui-manifest.json`; exact
+verification scope is in `context-product-ui-verification.json`.
+This follow-up is source-only and available as an interactive design preview;
+it does not change the published 0.4.19 ZIPs or production. The original five
+patches still reproduce the production release.
+
+Run `npm run preview:context` for an isolated, labeled sample-data preview of the
+actual app. Run `npm run test:context-ui` for retrieval, responsive accessibility,
+account reset and recovery checks. Sharing uses a document picker and one review sheet with optional expiry
+(default two weeks); link creation and the preview Accept action are disabled.
+Selected-document recipient grants are not implemented or implied.
+
+## Unreleased automatic collection follow-up
+
+Apply `automatic-context-ingestion.patch` **after** `context-product-ui.patch`.
+It repairs large JSON history backfill, includes enabled custom transcript
+folders, groups the unified catalog by source project, reports canonical
+collection status, and adds direct sync setup and live refresh to Context.
+The manifest and verification JSON with the same prefix record its source
+digests, full chain replay and exact checks. No schema migration is required.
+This seventh patch is source-only; published packages and live accounts remain
+unchanged. See [automatic collection](../docs/AUTOMATIC-CONTEXT-COLLECTION.md).
+
+## Unreleased prompt-based sharing experiment
+
+Apply `prompt-based-sharing.patch` after `automatic-context-ingestion.patch`.
+It adds a Perplexity Decisions adapter, a recipient-bound filtering primitive,
+an isolated MCP adapter, a synthetic rule-testing page and a 28-case live-model
+benchmark. Run `npm run test:policy` or `npm run benchmark:policy` in the
+implementation checkout. Configuration and boundaries are documented in
+[prompt-based sharing](../docs/PROMPT-BASED-CONTEXT-SHARING.md).
+This eighth patch changes no live grants or production endpoints. Model accuracy
+must be measured separately from passing fixture tests. Its manifest and
+verification JSON record exactly what was checked.
+
+Apply `sharing-rules-design.patch` next for the invitation-style rule tester:
+illustrated sharing card, compose/recipient-preview steps, mobile spacing and
+disclosed technical details. The four-file manifest and verification with the
+same prefix preserve the UI changes, responsive accessibility checks and a live
+synthetic preview. This ninth patch does not change classifier or grant behavior.
+
+Apply `sharing-desktop-layout.patch` tenth for the full desktop sharing workspace.
+The rule editor and recipient preview stay visible side by side above 960px;
+mobile keeps the compact two-step flow. Its three-file manifest and verification
+record seven-width accessibility checks, breakpoint preservation, long-result
+scrolling and the live synthetic preview. No production permissions change.
+
+Apply `sharing-interactions.patch` eleventh for SVG checking/approval animation,
+reduced-motion states, cancel/Escape, keyboard preview, undo, setup retry and
+request timeouts. Cancellation stops the active provider request and prevents
+later candidate calls. Its seven-file manifest preserves the source changes.
+
+Apply `shared-spaces.patch` twelfth for the latest Spaces / My context navigation.
+It merges Connections and Shared access; adds prompt drafts per space, group
+creation, membership controls, a message composer, explicit text/Markdown file
+uploads and exact-space assistant setup. The real group/document APIs back these
+controls. Uploaded files are shared with group members; private archive rules
+remain drafts and upstream MCP ingestion is not implemented. See the manifest
+and verification JSON for tested scopes, file hashes and full replay evidence.
+
+Apply `message-first-spaces.patch` thirteenth. It adds the compact message-first
+header, per-owner server rules, bounded parallel Decisions checks, owner-private
+audits, shared exchange history, signed MCP/native request tools, invitation links
+and observed native setup/collection state. Its manifest lists every changed file;
+its verification records the full replay and test evidence. It adds four SQLite
+tables on first use. It does not update published ZIPs or production. See
+[message-first spaces](../docs/MESSAGE-FIRST-SPACES.md) for rollout limits and the
+live synthetic provider result, including the first false withholding.
 
 Apply this to a clean checkout of the **implementation repository at the source
 base**, not to this distribution repository. For example, create a detached
@@ -67,3 +149,41 @@ publish, change host permissions, or deploy anything.
 New migrations 0043 and 0044 are additive. A future deployment must back up the
 database, verify existing account/binding preservation and keep the new revocation
 and task-fencing rules on rollback. See the contracts before promoting a release.
+
+## Unreleased automatic desktop setup
+
+Apply `live-context-setup.patch` after `message-first-spaces.patch` (14th patch).
+It replaces the optional sync toggle and manual chat picker with an authenticated,
+single-use native setup handoff, automatic private collection, installation-specific
+progress, and a live setup sheet. It also fixes browser asset inclusion in the
+production overlay. The manifest and verification files with this prefix record
+replay hashes and tests. This is source/preview only; release 0.4.19 is unchanged.
+See [flow and live gates](../docs/LIVE-CONTEXT-SETUP.md).
+
+## Unreleased direct plugin setup
+
+Apply `seamless-plugin-setup.patch` after `live-context-setup.patch` (15th patch).
+Three direct app-launch cards replace selecting an app and then opening it. A
+provider-specific request installs or reuses the plugin and configures MCP, with
+browser identity carried by the existing private handoff. The progress sheet has
+three rows and troubleshooting is secondary. Account changes, stale responses,
+preparation failures and expiry have verified recovery. The matching manifest
+and verification file record exact source hashes and checks. Published 0.4.19
+does not include the handoff tool; this remains source/preview work.
+
+Apply `copy-setup-prompt.patch` after `seamless-plugin-setup.patch` (16th patch).
+After choosing an app, Copy setup prompt appears above live status with clear
+paste-and-send instructions. It returns to troubleshooting after connection.
+The same-prefix manifest and verification record the four-file source change,
+browser/clipboard checks and full chain replay. Release state is unchanged.
+
+## Context MVP completion
+
+Apply `context-mvp-completion.patch` after `copy-setup-prompt.patch` (17th).
+It adds native/remote space management, per-owner expiry with a two-week default,
+member Leave and owner Archive controls, legacy navigation recovery, full current
+journey captures, and 0.4.20/runtime55 packaging. The manifest records 29 incremental
+files; the verification record distinguishes packaged, deployed and installed state.
+No existing migrations are rewritten. `cp_space_policy_limits` is additive on first
+use. Existing profiles, exact native bindings, private scope and pair histories stay
+intact.

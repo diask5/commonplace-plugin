@@ -1,0 +1,151 @@
+{
+  "name": "Direct app launch and combined plugin/MCP setup",
+  "state": "implemented in source and running preview; not packaged, installed or deployed",
+  "patch": "seamless-plugin-setup.patch",
+  "patchSha256": "1b5870405eb5d8630c63cbd52abb48a51476a5e86760d58a7ad7b931e635e774",
+  "replay": {
+    "patches": 15,
+    "incrementalFiles": 9,
+    "allChangedFilesMatch": 147,
+    "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13"
+  },
+  "checks": [
+    {
+      "command": "npm run test:context-ui",
+      "passed": 69,
+      "failed": 0,
+      "skipped": 0,
+      "log": ".context/seamless-install/ui-final.log",
+      "logSha256": "07a1d5f65f822328a443865386789edbb29d361ac458a7060f246ca007584448",
+      "coverage": [
+        "direct app launch, private handoff reuse and existing-chat fallback",
+        "live plugin/MCP, collection and archive states",
+        "delayed cross-app responses and account switch before launch",
+        "preparation wait, failure retry, expiry, offline and empty collection",
+        "fresh sign-in starts setup with private collection included",
+        "sharing rules, messages, group invitations and member controls",
+        "responsive layout, keyboard controls, axe accessibility and reduced motion"
+      ]
+    },
+    {
+      "command": "node --test tests/context-setup-request.test.mjs tests/context-setup.test.mjs",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "log": ".context/seamless-install/native.log",
+      "logSha256": "e9afe238add9e7e7a98dc90ec6f3763938a67ef9b48539cb30c72c812521a3a7",
+      "coverage": [
+        "provider-specific installation and MCP configuration prompts",
+        "signed native handoff with real filesystem transcript collection and authenticated upload",
+        "canonical indexing, search/read and incremental context updates",
+        "account, app, expiry, receiver and disclosure boundaries"
+      ]
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p test_deployment.py",
+      "passed": 16,
+      "failed": 0,
+      "log": ".context/seamless-install/deployment.log",
+      "logSha256": "a3736c1b082b4469163c636f412f3a45b540107dbe261798ca344dc6680dccdc",
+      "coverage": [
+        "browser module included in runtime overlay",
+        "existing backup, rollout and recovery fixtures; no real deployment"
+      ]
+    }
+  ],
+  "setupWidths": [
+    320,
+    390,
+    768,
+    1440,
+    1920
+  ],
+  "screenshots": [
+    {
+      "path": ".context/seamless-install/screenshots/choose-1440.png",
+      "sha256": "dd51552222c939a07373c18b86ab14095fcaff9be0f34676c9e3904171f742ad"
+    },
+    {
+      "path": ".context/seamless-install/screenshots/choose-1920.png",
+      "sha256": "1ecf83ecc29e38000abb28cabe459c05f7b87079a2e69b3ebedd617082753019"
+    },
+    {
+      "path": ".context/seamless-install/screenshots/choose-320.png",
+      "sha256": "6f6391fd0a5e7a628e978a90adb7212f52b4291d0ebe75f8d47b153d81718fee"
+    },
+    {
+      "path": ".context/seamless-install/screenshots/choose-390.png",
+      "sha256": "f98f07c654ed176815bbced99963162530247240eff481fbca90df2057ac534b"
+    },
+    {
+      "path": ".context/seamless-install/screenshots/choose-768.png",
+      "sha256": "3643c154a20514a1569dee08cd093c968ca992ac407bddf49fd4cef2febf523b"
+    },
+    {
+      "path": ".context/seamless-install/screenshots/setup-1440.png",
+      "sha256": "9b31a61ee8e366ff8af56f0809493fb52b3fa6efc3bf170ea50f6341af11b8b6"
+    },
+    {
+      "path": ".context/seamless-install/screenshots/setup-1920.png",
+      "sha256": "ba29104bea565bd240aaf5d1b289f197c071de8cf750ec0614fd2dec3c500bd3"
+    },
+    {
+      "path": ".context/seamless-install/screenshots/setup-320.png",
+      "sha256": "26126e6daea178d14949adc8900a2da1802e6a39a76477f1d29ac7f69edc1e7f"
+    },
+    {
+      "path": ".context/seamless-install/screenshots/setup-390.png",
+      "sha256": "c89d098ee278267336a028e595a2f6ef957465184ac4d66beb23ea3cc3a840f8"
+    },
+    {
+      "path": ".context/seamless-install/screenshots/setup-768.png",
+      "sha256": "6a424ea7ce5f93fefa7ccde2fa80c54ab3fcf9394d1d758be45a60a9a51c78c4"
+    }
+  ],
+  "preview": {
+    "url": "https://kyle-cloud-w3.conductor.show/preview/sample?view=context",
+    "port": 43319,
+    "checked": "restarted server serves three direct app cards, no account-link row, new request module HTTP 200",
+    "data": "isolated sample accounts; not production identity"
+  },
+  "documentation": [
+    {
+      "topic": "codex-mcp",
+      "url": "https://developers.openai.com/codex/mcp/",
+      "error": "HTTP Error 308: Permanent Redirect"
+    },
+    {
+      "topic": "codex-app",
+      "url": "https://developers.openai.com/codex/app/",
+      "error": "HTTP Error 308: Permanent Redirect"
+    },
+    {
+      "topic": "conductor-mcp",
+      "url": "https://conductor.build/docs/reference/mcp",
+      "status": 200,
+      "bytes": 190147
+    },
+    {
+      "topic": "claude-plugins",
+      "url": "https://code.claude.com/docs/en/discover-plugins",
+      "status": 200,
+      "bytes": 575091
+    },
+    {
+      "topic": "claude-desktop",
+      "url": "https://code.claude.com/docs/en/desktop",
+      "status": 200,
+      "bytes": 1429664
+    }
+  ],
+  "remainingGates": [
+    "Publish a new plugin exposing finish_context_setup; published 0.4.19 does not include it.",
+    "Deploy matching account runtime/browser assets and verify real Google/native installation together.",
+    "Verify OS app URL handlers and actual host Send/approval/reload on Mac. Codex and Conductor deep links remain best-effort with clipboard/manual fallback."
+  ],
+  "unchangedBoundaries": [
+    "No account relinking, permission changes, hosted inference or peer private archive access.",
+    "Only actual native registration and installation-specific upload/index receipts advance progress.",
+    "Prior source exclusions remain in force."
+  ]
+}

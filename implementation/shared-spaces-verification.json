@@ -1,0 +1,75 @@
+{
+  "state": "source and interactive local preview; no production deployment",
+  "navigation": [
+    "Spaces",
+    "My context"
+  ],
+  "patch": "shared-spaces.patch",
+  "checks": [
+    {
+      "command": "npm run test:context-ui",
+      "passed": 41,
+      "failed": 0,
+      "log": ".context/connections-spaces/verified-ui-test.log"
+    },
+    {
+      "command": "node --test tests/groups-browser.test.mjs tests/policy-context.test.mjs tests/policy-sharing-browser.test.mjs",
+      "passed": 46,
+      "failed": 0,
+      "log": ".context/connections-spaces/groups-policy-test.log"
+    }
+  ],
+  "browser": {
+    "spaceWidths": [
+      320,
+      390,
+      768,
+      1024,
+      1440,
+      1920
+    ],
+    "rulePreviewWidths": [
+      320,
+      390,
+      768,
+      1024,
+      1280,
+      1440,
+      1920
+    ],
+    "checks": [
+      "overflow",
+      "axe WCAG A/AA",
+      "reduced motion",
+      "draft owner isolation and reload",
+      "idempotent group creation/message/file operations",
+      "file review before explicit upload",
+      "current membership and cross-space refusal",
+      "authentication and same-origin requests",
+      "text rendering without HTML execution",
+      "create/access/file dialogs",
+      "private and shared context separation"
+    ],
+    "screenshots": ".context/connections-spaces/space-screenshots"
+  },
+  "replay": {
+    "patches": 12,
+    "incrementalFiles": 14,
+    "allChangedFilesMatch": 130,
+    "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13"
+  },
+  "implemented": [
+    "real group create/add/remove",
+    "real group posts and history",
+    "explicit UTF-8 .txt/.md/.markdown files up to 16384 bytes in the existing revisioned workspace store",
+    "exact-space native MCP setup request",
+    "per-owner per-space browser-tab rule drafts"
+  ],
+  "notClaimed": [
+    "live Google sign-in or production deployment",
+    "classifier-backed private archive grants",
+    "upstream MCP gateway ingestion",
+    "automatic native host/model delivery from fixture tests"
+  ],
+  "preview": "https://kyle-cloud-w3.conductor.show/preview/sample?view=conversations"
+}

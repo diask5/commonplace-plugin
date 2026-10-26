@@ -1,5 +1,18 @@
 # Meet Proxy Draft v3 compliance
 
+> **Current audit, 26 October 2026:** See [Context MVP readiness](CONTEXT-MVP-READINESS.md)
+> for the original requirements mapped to the owner's later context-sharing instructions,
+> completed gaps, classifier limits and current release evidence. The sections below
+> preserve the original agent-centric milestone; they are not the current home design.
+
+> **Current direction, 25 October 2026:** The owner merged Connections and Shared
+> access into Spaces. The two top links are Spaces and My context. Each space has
+> shared context, a message board, people/access controls, files and assistant
+> setup. Private-library prompt rules remain drafts; explicit uploaded files use
+> actual group membership. The Draft v3 matrix below remains historical. See
+> [Context product direction](CONTEXT-PRODUCT-DIRECTION.md) for current implementation
+> and pending prompt-based access / upstream MCP ingestion. Production remains 0.4.19.
+
 Authoritative document: [Meet Proxy Product Spec](MEET-PROXY-PRODUCT-SPEC.md),
 24 October 2026, Draft v3. This is an unchanged copy of the owner's latest
 attachment, SHA-256 `1d061a660d1e280c4f33a111fdabb1c5fb8fc52a3aa4cd86ebe4fee5f396091d`.
@@ -178,3 +191,40 @@ migrations and fresh web/worker health checks passed. Existing profiles, devices
 agent bindings and thread mappings are preserved. Public phone/desktop pages
 clear loading and open the real Google helper. This does not assert completion
 of a human Google login or installed-host autonomous pair exchange.
+# Later owner amendment: prompt-based sharing experiment
+
+The 25 October request replaces mandatory source picking with natural-language
+sharing rules and per-excerpt Perplexity Decisions checks. The source-only
+[experiment](PROMPT-BASED-CONTEXT-SHARING.md) has real-model benchmark evidence,
+but persistent grants and production routing remain incomplete. Existing product
+readiness claims below do not imply this new sharing flow is live.
+
+
+## Latest override: message-first context spaces (25 October 2026)
+
+The owner requested one compact Messages / My sharing rules / Members header,
+per-person parallel rule checks and seamless native setup. The source follow-up
+now includes persisted opt-in rules, filtered context request APIs/MCP tools,
+owner-only audit projection, real group invitations across sign-in and native
+registration/collection verification. It remains unreleased. See
+[MESSAGE-FIRST-SPACES.md](MESSAGE-FIRST-SPACES.md) and
+[the portable verification](../implementation/message-first-spaces-verification.json).
+Original hosted-agent requirements are not silently reinstated. Large-document
+chunking, upstream MCP ingestion, real Google/native host verification and
+production rollout remain separate gates; a local fixture is not their proof.
+
+### Automatic setup refinement (source only, 25 October)
+
+The owner removed the collection setting from onboarding. The app setup request
+now authorizes automatic private collection; a one-time handoff carries the
+browser identity to the exact native chat. The UI observes plugin/account
+registration, installation-specific receipts and indexed context, with no manual
+chat picker. Context availability remains separate from native delivery proof.
+[Implementation, verification and release gates](LIVE-CONTEXT-SETUP.md).
+
+The next refinement makes each app card launch the complete installation request
+directly. Plugin and MCP setup are combined; the live UI has three steps with no
+separate account-link row. Working installs are reused, app/account response
+races are fenced, and manual copying is a recovery flow. The 15th portable patch
+and `seamless-plugin-setup-verification.json` record the source/preview checks.
+Host approval/reload and OS deep-link verification remain distinct live gates.

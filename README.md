@@ -1,22 +1,27 @@
 # Meet Proxy
 
-**Production 0.4.19 / runtime 54 is live:** [Open Meet Proxy](https://34.27.253.220/#agents).
-The Agents/Inbox flow, phone/tablet layouts, MCP resources, local context files,
-and consent/delivery fixes are deployed. Existing accounts and chat bindings are
-preserved. [Plugin 0.4.19 is published](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.19).
-See the [rollout record](docs/PRODUCTION-ROLLOUT.md) for live verification and host reload steps.
-The [real-account staging site](docs/REAL-ACCOUNT-STAGING.md) remains a separate,
-earlier build.
-The [product-spec demo audit](docs/PRODUCT-SPEC-TEST-REPORT.md) records the full
-ten-user journey, real-model behavior checks, fixes and remaining product gaps.
+Share context with a person, team or project through the assistants you already
+use. **Spaces / My context** is the main navigation. Each space has **Messages /
+My sharing rules / Members**: a shared conversation, your own prompt rules and
+simple membership controls.
 
-The 0.4.19 candidate also includes the earlier native delivery recovery, clearer
-reply validation and macOS history-root fixes. Real installed-host verification
-remains a release gate; see the [native verification record](docs/NATIVE-CODE-VERIFICATION.md).
+**[Production 0.4.20 / runtime 55 is live](https://34.27.253.220/).** This release includes
+the complete context-first UI, one-request native plugin/MCP setup, automatic
+private collection, natural-language space invitations, timed sharing and
+leave/archive controls. See the [current readiness audit](docs/CONTEXT-MVP-READINESS.md)
+and [machine-readable release evidence](implementation/context-mvp-verification.json).
 
-Let someone talk to your agent while you are unavailable. Questions and answers
-live in a private, durable message board that both participants can read. Your
-agent answers within the topic, duration and disclosure limits you authorize.
+[See all 14 desktop and phone flows](https://kyle-cloud-w3.conductor.show/review)
+or [open the interactive preview](https://kyle-cloud-w3.conductor.show/preview/sample?view=conversations).
+These walkthroughs use isolated test identities; they do not prove a fresh Google
+sign-in or native app launch. Both production services are healthy and existing
+account/chat identities are preserved. [Release and live evidence](docs/CONTEXT-MVP-ROLLOUT.md).
+
+Private-library sharing is opt-in per owner and space. Every request checks the
+current rules through Perplexity Decisions; rejected excerpts and classifier
+checks stay private. Approved excerpts become shared history. Explicit uploaded
+files are shared in full. Joining a space never grants unrestricted library access.
+Existing owner retrieval through MCP or local files needs no hosted answering model.
 
 ## Unified context — 0.4.15
 
@@ -43,7 +48,7 @@ and simulated model/host responses. In the implementation repository, run
 
 ## One private cloud workspace
 
-[Download Meet Proxy / Commonplace 0.4.19](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.19)
+[Download Meet Proxy / Commonplace 0.4.20](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.20)
 for a cloud workspace containing supported synced chats, permitted agent-message
 threads, published working context, and previous cloud results. Your cloud agent
 can query the live message board, consult your connected native agents, wait for
@@ -57,7 +62,7 @@ See [personal agents](docs/PERSONAL-AGENTS.md),
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.19**. Enable only one alias. Existing accounts and
+update that alias to **0.4.20**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
@@ -210,3 +215,5 @@ Version 0.4.10 delivers shared-chat messages through the persistent native inbox
 For a customer walkthrough of the local context folder, see [docs/DEMO.md](docs/DEMO.md).
 
 The [product flow and design walkthrough](docs/PRODUCT-FLOW-DESIGN.md) follows Draft v3’s Agents/Inbox and invite/accept journey. The labeled demo is separate from real-account staging; its source is preserved in the fourth incremental patch.
+
+The latest source follow-up adds [automatic collection and live desktop setup](docs/LIVE-CONTEXT-SETUP.md), with a single app sheet, verified account handoff and installation-specific progress. It requires a new plugin release and matching deployment; published 0.4.19 is unchanged.
