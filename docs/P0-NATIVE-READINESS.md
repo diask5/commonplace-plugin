@@ -60,10 +60,16 @@ graceful update. No daemon locks, saved permissions or accounts were reset.
 | Real Claude Code search → read | Passed; actual read returned the exact synthetic marker after two safe revision retries; saved permissions unchanged |
 | Real Codex search → read | Passed; actual host identity, successful search and document read returned the same exact synthetic marker; config unchanged |
 
-The real Google browser flow opened Spaces successfully using an existing Google
-session. Its signed-in account differs from the Mac plugin account. No native
-relink was attempted; the owner must select which account the final desktop
-handoff should use. This is not a fresh-account/consent test.
+The real Google browser flow opened Spaces successfully. After the owner chose
+the existing plugin account, the browser signed in with that same account. The
+production app card prepared the private Claude Desktop request and displayed
+Copy setup prompt as the primary action with explicit paste-and-Send instructions.
+The exact prepared link was opened through macOS Launch Services and Claude
+Desktop became the frontmost app. Browser protocol dispatch alone was not
+confirmed. Final chat registration and collection receipts are waiting for the
+host's Send step; opening an app is not setup completion. macOS rejected
+window inspection with `osascript is not allowed assistive access. (-25211)`.
+No accessibility permission was changed and no alternate UI automation was used.
 
 The public browser checks do not certify Google consent. The native CLI tests do
 not certify an app deep link, an already-open Desktop chat reload, or every fresh
