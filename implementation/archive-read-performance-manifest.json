@@ -1,0 +1,55 @@
+{
+  "name": "Bounded archive reads for first-install mirrors",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "archive-read-performance.patch",
+  "sha256": "6dee8551f28cf013b1cc7bf6d7eb990ec167ee102eb33081b8bc4e997632be3b",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch"
+  ],
+  "state": "Server-only follow-up to native 0.4.21; live status tracked separately",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/archive-index.mjs",
+      "beforeSha256": "533b8ac20169cd810fb2c58fe0a18612ffaa86de532cd206ef2e04bc51d49d6b",
+      "sha256": "75f7383a2bd3a57b9addba60aa84402ef448d8b7c8a1cc890f33aa1127cb842e"
+    },
+    {
+      "path": "apps/commonplace-account/server/archive-tools.mjs",
+      "beforeSha256": "2224e00e3ce5b92186374eb403ed404110702852f6c2962e9a679dde341b9409",
+      "sha256": "db2979aea9577c4410d4dfadf3e3b37eec3b1695c9fbce50477706172842a084"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-archive.mjs",
+      "beforeSha256": "1cf4bc92ed6f640a305f622e716163c06a91b76fcaa12415a27b7354b2de8221",
+      "sha256": "5c662b439466f7f13b6f5a18e0a73f2db905454b1f251c219a19482f81c81073"
+    },
+    {
+      "path": "apps/commonplace-account/server/shared-context.mjs",
+      "beforeSha256": "5ce80342b5a0a1ba12700322ba0bf6800c539ef8317661e89abecf7a0b6ff3ae",
+      "sha256": "3e9234b143dfd8b31cee72963ae7244421e1db406e3e0c6915b370b940da457a"
+    },
+    {
+      "path": "tests/cloud-archive.test.mjs",
+      "beforeSha256": "020f0e9cf374fd61a4d4ee73cb46cf0a0d2360db9196358526345016d68dab66",
+      "sha256": "295d82f5541df7980015dbbe1dc5f3afafa48c9204684246214c79a622127cfd"
+    }
+  ]
+}

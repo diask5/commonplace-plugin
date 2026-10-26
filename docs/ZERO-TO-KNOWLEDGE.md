@@ -56,3 +56,11 @@ Apply `implementation/zero-to-knowledge.patch` nineteenth, after
 reproduces 152 source files. Browser screenshots and detailed logs are saved under
 `.context/zero-to-knowledge/`; summarized portable evidence is in
 `implementation/zero-to-knowledge-verification.json`.
+
+The first production retest found that bounded parallel validation alone did not
+resolve the mirror timeout. The twentieth patch, `archive-read-performance.patch`,
+removes whole-archive reconciliation from each unchanged read request. Read paths
+validate consumed files and indexes, repair corrupt generations on failure, and
+continue checking current revision and authorization expiry. The first real
+assistant retrieval attempt failed because the older companion remained busy;
+that negative result is part of this audit, not a successful retrieval.

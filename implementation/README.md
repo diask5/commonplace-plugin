@@ -208,3 +208,9 @@ validation, adds an empty-account browser/native/context/sharing journey and a
 33 MB interrupted mirror regression, and packages 0.4.21/runtime56. See
 [the audit](../docs/ZERO-TO-KNOWLEDGE.md) and its verification JSON for actual live
 receipts and the distinction between fixture and installed-host evidence.
+
+Apply `archive-read-performance.patch` twentieth. The live large-account test
+showed that each file page revalidated the complete archive. Read requests now
+reuse a current authorized snapshot, verify accessed file/index digests, repair
+corruption and still fence new source revisions and expiry. Full reconciliation
+retains whole-archive validation. This is a server-only follow-up to native 0.4.21.
