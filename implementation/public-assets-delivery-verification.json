@@ -1,0 +1,50 @@
+{
+  "state": "reviewed and packaged; not yet published or live",
+  "nativeVersion": "0.4.26",
+  "runtimeRevision": 59,
+  "nativePackagesUnchanged": true,
+  "serverRelease": "20261026-public-assets",
+  "sourceManifest": "public-assets-delivery-manifest.json",
+  "source": {
+    "patches": 29,
+    "files": 192,
+    "incrementalFiles": 5,
+    "matched": true,
+    "patchSha256": "ae045a7c5149c82c2419dbf586e5917225398d21ae296d8cf97c6463425cd96c"
+  },
+  "runtimeFiles": 157,
+  "publicAssets": 31,
+  "artifacts": {
+    "runtime-update.json": "9d9abce11d278fc3a071abecc316a7f3f449c05539b015965ba8886929bb5714",
+    "runtime-update-manifest.json": "917d077c26568a4ac52380bb9b4f2d06d1f4ae45a1d1542fe202c5c6425b46b1",
+    "runtime-update.sha256": "54548a37a1a3842fbe41b77fe3570ed813fe0a0a25fa01b0141a1840bd128492",
+    "deploy-cloud-update.py": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408",
+    "deploy-public-assets.py": "0644deb59bdb0bfd93e0554488fb317e447dfb38f5ed7ffc11a5db6560bb9d76"
+  },
+  "checks": {
+    "pythonTests": {
+      "passed": 54,
+      "skipped": 1,
+      "reason": "Nginx unavailable in cloud sandbox"
+    },
+    "actualNginxFixture": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "location": "disposable localhost-only VM fixture"
+    },
+    "contextRegressionPassed": 9,
+    "review": "Both review blockers fixed. Real Nginx proves fallback, exact static bytes, query preservation, auth-header clearing, and POST refusal."
+  },
+  "preserved": [
+    "Original main proxy body byte-for-byte",
+    "Private HTML/API routes and authentication",
+    "Native 0.4.26/runtime59 packages and installation",
+    "No database migration or account/permission change"
+  ],
+  "limits": [
+    "Public assets no longer wait on Node once activated; HTML and APIs still do.",
+    "Real model latency and ordinary default-host routing remain open gates.",
+    "No paid infrastructure changes."
+  ]
+}

@@ -270,5 +270,9 @@ runtime and live verification; the failed first benchmark attempts remain intact
 Apply `server-io-recovery.patch` twenty-eighth, after
 `context-timeout-recovery.patch`. It reduces outer SDK throttle commits and reuses
 verified immutable generated documents without changing native 0.4.26/runtime59.
-All 28 patches reproduce 187 files; source/package/live evidence is in
+All 28 patches reproduce 188 files; source/package/live evidence is in
 [the server follow-up](../docs/SERVER-IO-RECOVERY.md).
+
+## Public UI asset delivery
+
+Apply `public-assets-delivery.patch` after `server-io-recovery.patch`. All 29 patches reproduce 192 implementation files exactly. The manifest and verification record track this server-only release; native 0.4.26/runtime59 is unchanged. The guarded installer serves 31 exact public asset paths with app fallback for older releases. See [the delivery record](../docs/PUBLIC-ASSETS-DELIVERY.md).

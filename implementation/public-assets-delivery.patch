@@ -1,0 +1,1143 @@
+diff --git a/apps/commonplace-account/server/context-http.mjs b/apps/commonplace-account/server/context-http.mjs
+index 43901d3..fea51c5 100644
+--- a/apps/commonplace-account/server/context-http.mjs
++++ b/apps/commonplace-account/server/context-http.mjs
+@@ -12,7 +12,7 @@ async function body(request){
+   let value;try{value=JSON.parse(Buffer.concat(chunks).toString());}catch{throw Object.assign(Error('Invalid JSON.'),{status:400});}
+   if(!value||typeof value!=='object'||Array.isArray(value))throw Object.assign(Error('Expected an object.'),{status:400});return value;
+ }
+-const assetTypes={'personal-assistant-setup.mjs':'text/javascript','mcp-resource-source-setup.mjs':'text/javascript','context-setup-request.mjs':'text/javascript','context-space-invitations.mjs':'text/javascript','context-native-setup.mjs':'text/javascript','context-space-rules.mjs':'text/javascript','context-space-files.mjs':'text/javascript','context-spaces.mjs':'text/javascript','context-conversations.mjs':'text/javascript','context-product.mjs':'text/javascript','agent-connections.mjs':'text/javascript','context-search.mjs':'text/javascript','context-coverage.mjs':'text/javascript','groups.mjs':'text/javascript','shared-chats.mjs':'text/javascript','invitations.mjs':'text/javascript','agent-setup.mjs':'text/javascript','social.mjs':'text/javascript','activity.mjs':'text/javascript','manrope-latin.woff2':'font/woff2','manrope-LICENSE.txt':'text/plain','ui.mjs':'text/javascript','work-agent.mjs':'text/javascript','context.mjs':'text/javascript','context.css':'text/css','import-worker.mjs':'text/javascript','export-file.mjs':'text/javascript','chatgpt-format.mjs':'text/javascript','fflate.mjs':'text/javascript','fflate-LICENSE.txt':'text/plain'};
++export const assetTypes={'personal-assistant-setup.mjs':'text/javascript','mcp-resource-source-setup.mjs':'text/javascript','context-setup-request.mjs':'text/javascript','context-space-invitations.mjs':'text/javascript','context-native-setup.mjs':'text/javascript','context-space-rules.mjs':'text/javascript','context-space-files.mjs':'text/javascript','context-spaces.mjs':'text/javascript','context-conversations.mjs':'text/javascript','context-product.mjs':'text/javascript','agent-connections.mjs':'text/javascript','context-search.mjs':'text/javascript','context-coverage.mjs':'text/javascript','groups.mjs':'text/javascript','shared-chats.mjs':'text/javascript','invitations.mjs':'text/javascript','agent-setup.mjs':'text/javascript','social.mjs':'text/javascript','activity.mjs':'text/javascript','manrope-latin.woff2':'font/woff2','manrope-LICENSE.txt':'text/plain','ui.mjs':'text/javascript','work-agent.mjs':'text/javascript','context.mjs':'text/javascript','context.css':'text/css','import-worker.mjs':'text/javascript','export-file.mjs':'text/javascript','chatgpt-format.mjs':'text/javascript','fflate.mjs':'text/javascript','fflate-LICENSE.txt':'text/plain'};
+ export async function contextHttp(request,service,{identity=readBrowserIdentity}={}) {
+   const route=new URL(request.url).pathname;
+   if(route!=='/context'&&!route.startsWith('/context/'))return null;
+diff --git a/scripts/build-runtime-update.py b/scripts/build-runtime-update.py
+index a466e1e..c339fad 100644
+--- a/scripts/build-runtime-update.py
++++ b/scripts/build-runtime-update.py
+@@ -9,9 +9,51 @@ import argparse
+ import base64
+ import hashlib
+ import json
++import re
++import subprocess
+ from pathlib import Path
+ 
+ ROOT = Path(__file__).resolve().parents[1]
++SERVER = ROOT / 'apps/commonplace-account/server'
++ASSET_DIR = 'dist/standalone/account-runtime/context-assets'
++MIME_TYPES = {'text/javascript', 'text/css', 'font/woff2', 'text/plain'}
++BASENAME = re.compile(r'^[A-Za-z0-9][A-Za-z0-9._-]*$')
++
++LOAD_PUBLIC_ASSETS = """
++const base = process.argv[1];
++const {assetTypes} = await import(base + 'context-http.mjs');
++const {uiCss} = await import(base + 'ui-system.mjs');
++process.stdout.write(JSON.stringify({assetTypes, uiCss}));
++"""
++
++
++def load_public_source():
++    """Import the trusted current source so the registry and ui.css are never parsed with regexes."""
++    base = SERVER.as_uri() + '/'
++    result = subprocess.run(['node', '--input-type=module', '-e', LOAD_PUBLIC_ASSETS, base], check=True, capture_output=True, cwd=ROOT)
++    loaded = json.loads(result.stdout)
++    if not isinstance(loaded.get('assetTypes'), dict) or not isinstance(loaded.get('uiCss'), str):
++        raise ValueError('Source must export assetTypes and uiCss.')
++    return loaded['assetTypes'], loaded['uiCss']
++
++
++def public_assets(files, asset_types):
++    """Return the exact public asset contract after validating every advertised file."""
++    assets = {}
++    for name, content_type in sorted({**asset_types, 'ui.css': 'text/css'}.items()):
++        if not BASENAME.fullmatch(name) or name in ('.', '..'):
++            raise ValueError('Unsafe public asset name: ' + name)
++        if content_type not in MIME_TYPES:
++            raise ValueError('Unsupported public asset type for ' + name)
++        path = ASSET_DIR + '/' + name
++        if path not in files:
++            raise ValueError('Public asset is missing from the runtime bundle: ' + name)
++        if name != 'ui.css':
++            source = SERVER / 'context-assets' / name
++            if source.is_symlink() or not source.is_file():
++                raise ValueError('Public asset must be a regular file: ' + name)
++        assets[name] = {'path': path, 'contentType': content_type, 'sha256': hashlib.sha256(files[path]).hexdigest()}
++    return assets
+ 
+ 
+ def build(output):
+@@ -27,6 +69,8 @@ def build(output):
+                 continue
+             name = str(Path(destination) / source.relative_to(directory))
+             files[name] = source.read_bytes()
++    asset_types, ui_css = load_public_source()
++    files[ASSET_DIR + '/ui.css'] = ui_css.encode('utf-8')
+     output.mkdir(parents=True, exist_ok=True)
+     bundle = output / 'runtime-update.json'
+     bundle.write_text(json.dumps({name: base64.b64encode(data).decode() for name, data in files.items()}, sort_keys=True) + '\n')
+@@ -34,6 +78,7 @@ def build(output):
+         'bundle': bundle.name,
+         'sha256': hashlib.sha256(bundle.read_bytes()).hexdigest(),
+         'files': {name: hashlib.sha256(data).hexdigest() for name, data in files.items()},
++        'publicAssets': public_assets(files, asset_types),
+     }
+     (output / 'runtime-update-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+     (output / 'runtime-update.sha256').write_text(manifest['sha256'] + '  ' + bundle.name + '\n')
+diff --git a/scripts/deploy-public-assets.py b/scripts/deploy-public-assets.py
+new file mode 100644
+index 0000000..abff6d0
+--- /dev/null
++++ b/scripts/deploy-public-assets.py
+@@ -0,0 +1,387 @@
++#!/usr/bin/env python3
++"""Install a public-only Nginx include for Commonplace context assets.
++
++Dry-run by default: reads the manifest, release assets and Nginx site file, and
++prints a JSON plan without writing files or running commands.  With --apply (and
++a matching --expected-config-sha256) it writes the generated include, inserts one
++include line directly after the main TLS server's commonplace-files marker, runs
++`nginx -t`, reloads, and rolls both files back if validation or reload fails.
++"""
++import argparse, fcntl, hashlib, json, os, re, stat, subprocess, sys, tempfile, time
++from pathlib import Path
++
++MARKER_LINE = 'include /etc/nginx/commonplace-files.conf;'
++INCLUDE_PATH = '/etc/nginx/commonplace-public-assets.conf'
++INCLUDE_LINE = f'include {INCLUDE_PATH};'
++SITE_LINK = '/etc/nginx/sites-enabled/commonplace'
++RELEASE_ROOT = '/opt/commonplace/current'
++ASSET_SUBDIR = 'dist/standalone/account-runtime/context-assets'
++ALIAS_ROOT = f'{RELEASE_ROOT}/{ASSET_SUBDIR}'
++BACKUP_DIR = '/var/backups/commonplace-public-assets'
++FALLBACK = '@commonplace_public_assets_app'
++HEADER = '# Managed by deploy-public-assets.py; public-only static assets. Do not edit.'
++# Mirrors assetTypes in apps/commonplace-account/server/context-http.mjs plus generated ui.css.
++CANONICAL = {name: 'text/javascript' for name in (
++    'personal-assistant-setup.mjs', 'mcp-resource-source-setup.mjs', 'context-setup-request.mjs',
++    'context-space-invitations.mjs', 'context-native-setup.mjs', 'context-space-rules.mjs',
++    'context-space-files.mjs', 'context-spaces.mjs', 'context-conversations.mjs', 'context-product.mjs',
++    'agent-connections.mjs', 'context-search.mjs', 'context-coverage.mjs', 'groups.mjs', 'shared-chats.mjs',
++    'invitations.mjs', 'agent-setup.mjs', 'social.mjs', 'activity.mjs', 'ui.mjs', 'work-agent.mjs',
++    'context.mjs', 'import-worker.mjs', 'export-file.mjs', 'chatgpt-format.mjs', 'fflate.mjs')}
++CANONICAL.update({'manrope-latin.woff2': 'font/woff2', 'manrope-LICENSE.txt': 'text/plain',
++                  'context.css': 'text/css', 'fflate-LICENSE.txt': 'text/plain', 'ui.css': 'text/css'})
++SAFE_NAME = re.compile(r'^[A-Za-z0-9][A-Za-z0-9._-]*$')
++SHA = re.compile(r'^[0-9a-f]{64}$')
++
++
++class Refusal(Exception):
++    def __init__(self, code, detail=''):
++        super().__init__(code)
++        self.code, self.detail = code, detail
++
++
++def sha256(data):
++    return hashlib.sha256(data).hexdigest()
++
++
++def load_manifest(path, expected_sha):
++    raw = Path(path).read_bytes()
++    if expected_sha and sha256(raw) != expected_sha:
++        raise Refusal('manifest-hash-mismatch')
++    try:
++        assets = json.loads(raw)['publicAssets']
++    except (ValueError, KeyError, TypeError):
++        raise Refusal('manifest-invalid', 'publicAssets missing or unreadable')
++    if not isinstance(assets, dict) or not assets:
++        raise Refusal('manifest-invalid', 'publicAssets must be a non-empty object')
++    out = {}
++    for name, entry in assets.items():
++        if not isinstance(name, str) or not SAFE_NAME.match(name) or name not in CANONICAL:
++            raise Refusal('asset-not-allowlisted', 'a manifest name is outside the canonical public list')
++        if not isinstance(entry, dict) or set(entry) != {'path', 'contentType', 'sha256'}:
++            raise Refusal('manifest-invalid', f'{name}: entry shape')
++        if entry['path'] != f'{ASSET_SUBDIR}/{name}':
++            raise Refusal('asset-path-invalid', name)
++        if entry['contentType'] != CANONICAL[name]:
++            raise Refusal('asset-content-type-invalid', name)
++        if not isinstance(entry['sha256'], str) or not SHA.match(entry['sha256']):
++            raise Refusal('asset-digest-invalid', name)
++        out[name] = entry
++    return out
++
++
++def verify_assets(assets, release_root):
++    """Each asset is a regular file, with no symlink below the release root, inside the asset root, matching its digest."""
++    root = Path(release_root)
++    real_asset_root = os.path.realpath(root / ASSET_SUBDIR)
++    current = root
++    for part in ASSET_SUBDIR.split('/'):
++        current = current / part
++        if current.is_symlink():
++            raise Refusal('asset-root-symlink')
++    for name, entry in sorted(assets.items()):
++        path = root / entry['path']
++        try:
++            info = os.lstat(path)
++        except OSError:
++            raise Refusal('asset-missing', name)
++        if not stat.S_ISREG(info.st_mode):
++            raise Refusal('asset-not-regular-file', name)
++        if os.path.dirname(os.path.realpath(path)) != real_asset_root:
++            raise Refusal('asset-outside-root', name)
++        if sha256(path.read_bytes()) != entry['sha256']:
++            raise Refusal('asset-digest-mismatch', name)
++
++
++def render_include(assets, proxy_body):
++    """proxy_body is the exact text between the braces of the live main-TLS `location /` block."""
++    blocks = [HEADER, '# Exact-match locations only; every other /context path stays on the proxied app.',
++              '# A file missing on disk (e.g. after a rollback) falls back to a copy of the live `location /` block.']
++    for name in sorted(assets):
++        blocks += [
++            f'location = /context/assets/{name} {{',
++            f'    alias {ALIAS_ROOT}/{name};',
++            f'    error_page 404 = {FALLBACK};',
++            '    limit_except GET {',
++            '        deny all;',
++            '    }',
++            '    types { }',
++            f'    default_type {assets[name]["contentType"]};',
++            '    add_header Cache-Control "no-store" always;',
++            '    add_header X-Content-Type-Options "nosniff" always;',
++            '    add_header Referrer-Policy "no-referrer" always;',
++            '    add_header X-Frame-Options "DENY" always;',
++            '}']
++    blocks.append(f'location {FALLBACK} {{{proxy_body}}}')
++    return ('\n'.join(blocks) + '\n').encode()
++
++
++def blank_comments_and_strings(text):
++    """Same-length copy with comments and quoted strings blanked so offsets still match."""
++    out, i, n = [], 0, len(text)
++    while i < n:
++        c = text[i]
++        if c == '#':
++            while i < n and text[i] != '\n':
++                out.append(' '); i += 1
++        elif c in '"\'':
++            q = c; out.append(' '); i += 1
++            while i < n and text[i] != q:
++                out.append('\n' if text[i] == '\n' else ' '); i += 1
++            if i < n:
++                out.append(' '); i += 1
++        else:
++            out.append(c); i += 1
++    return ''.join(out)
++
++
++def extract_proxy_body(text, code, start, end):
++    """Exact body of the single simple `location /` directly inside the server block code[start:end]."""
++    block = code[start:end]
++    found = list(re.finditer(r'(?<![\w@.$/-])location\s+/\s*\{', block))
++    if not found:
++        raise Refusal('proxy-location-missing')
++    if len(found) != 1 or block[:found[0].start()].count('{') - block[:found[0].start()].count('}') != 1:
++        raise Refusal('proxy-location-ambiguous')
++    body_start = start + found[0].end()
++    close = code.find('}', body_start)
++    if close < 0 or '{' in code[body_start:close]:
++        raise Refusal('proxy-location-not-simple')
++    body_code = code[body_start:close]
++    targets = re.findall(r'(?<![\w$-])proxy_pass\s+([^\s;]+)\s*;', body_code)
++    if len(targets) != 1 or len(re.findall(r'\bproxy_pass\b', body_code)) != 1:
++        raise Refusal('proxy-pass-not-single')
++    if not re.match(r'^\w+://(?:[^/\s]+|unix:[^:\s]+)$', targets[0]):
++        raise Refusal('proxy-pass-uri-unsupported')
++    return text[body_start:close]
++
++
++def plan_config(config_bytes):
++    """Return (new_bytes, state, proxy_body); state is 'insert' or 'present'; raise Refusal if ambiguous."""
++    try:
++        text = config_bytes.decode('utf-8')
++    except UnicodeDecodeError:
++        raise Refusal('config-not-utf8')
++    code = blank_comments_and_strings(text)
++    if FALLBACK.lstrip('@') in text:
++        raise Refusal('named-location-exists')
++    marker_re = re.compile(r'(?<![\w./-])include\s+/etc/nginx/commonplace-files\.conf\s*;')
++    markers = list(marker_re.finditer(code))
++    if len(markers) != 1 or text.count('commonplace-files.conf') != 1 or text.count(MARKER_LINE) != 1:
++        raise Refusal('marker-not-unique')
++    marker = markers[0]
++    include_re = re.compile(r'(?<![\w./-])include\s+/etc/nginx/commonplace-public-assets\.conf\s*;')
++    includes = list(include_re.finditer(code))
++    if text.count('commonplace-public-assets') != len(includes) or len(includes) > 1:
++        raise Refusal('include-reference-ambiguous')
++    # innermost enclosing block of the marker must be a server block
++    stack = []
++    for m in re.finditer(r'[{}]', code[:marker.start()]):
++        if m.group() == '{':
++            stack.append(m.start())
++        elif stack:
++            stack.pop()
++    if not stack or not re.search(r'(?:^|[;{}\s])server\s*$', code[:stack[-1]]):
++        raise Refusal('marker-not-in-server-block')
++    depth, end = 1, stack[-1] + 1
++    while end < len(code) and depth:
++        depth += {'{': 1, '}': -1}.get(code[end], 0); end += 1
++    block = code[stack[-1]:end]
++    if not re.search(r'\blisten\s+[^;]*\b443\b[^;]*\bssl\b', block) or not re.search(r'\bssl_certificate\b', block):
++        raise Refusal('marker-not-in-main-tls-server')
++    if includes and (includes[0].start() < marker.end() or text[marker.end():includes[0].start()].strip(' \t\r\n')):
++        raise Refusal('include-misplaced')
++    after = includes[0].end() if includes else marker.end()
++    if not re.match(r'\s*location\s+\^~\s+/downloads/\s*\{', code[after:]) or \
++            not re.search(r'\blocation\s+/\s*\{[^{}]*proxy_pass', code[after:end]):
++        raise Refusal('marker-neighbourhood-unexpected')
++    proxy_body = extract_proxy_body(text, code, stack[-1], end)
++    if includes:
++        return config_bytes, 'present', proxy_body
++    line_start = text.rfind('\n', 0, marker.start()) + 1
++    indent = text[line_start:marker.start()]
++    if indent.strip():
++        raise Refusal('marker-shares-line')
++    nl = text.find('\n', marker.end())
++    if nl < 0 or text[marker.end():nl].strip():
++        raise Refusal('marker-line-unexpected')
++    eol = '\r\n' if text[nl - 1] == '\r' else '\n'
++    insert_at = nl + 1
++    new = text[:insert_at] + indent + INCLUDE_LINE + eol + text[insert_at:]
++    return new.encode(), 'insert', proxy_body
++
++
++def plan_include(path, wanted):
++    try:
++        current = Path(path).read_bytes()
++    except FileNotFoundError:
++        return 'create', None
++    except OSError:
++        raise Refusal('include-unreadable')
++    if current == wanted:
++        return 'unchanged', current
++    if not current.startswith(HEADER.encode() + b'\n'):
++        raise Refusal('include-exists-unmanaged')
++    return 'update', current
++
++
++def atomic_write(path, data, mode, owner=None):
++    directory = os.path.dirname(path)
++    fd, tmp = tempfile.mkstemp(prefix='.public-assets-', dir=directory)
++    try:
++        with os.fdopen(fd, 'wb') as handle:
++            handle.write(data); handle.flush(); os.fsync(handle.fileno())
++            os.fchmod(handle.fileno(), mode)
++            if owner:
++                try:
++                    os.fchown(handle.fileno(), *owner)
++                except PermissionError:
++                    pass
++        os.replace(tmp, path)
++    except BaseException:
++        try: os.unlink(tmp)
++        except OSError: pass
++        raise
++
++
++def run(argv):
++    try:
++        done = subprocess.run(argv, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=60)
++        return done.returncode
++    except (OSError, subprocess.TimeoutExpired):
++        return -1
++
++
++def restore(site, config_original, config_mode, owner, include, include_original, include_mode):
++    state = {}
++    try:
++        atomic_write(site, config_original, config_mode, owner)
++        state['config'] = 'restored' if Path(site).read_bytes() == config_original else 'restore-mismatch'
++    except OSError:
++        state['config'] = 'restore-failed'
++    try:
++        if include_original is None:
++            if os.path.lexists(include):
++                os.unlink(include)
++            state['include'] = 'removed'
++        else:
++            atomic_write(include, include_original, include_mode)
++            state['include'] = 'restored' if Path(include).read_bytes() == include_original else 'restore-mismatch'
++    except OSError:
++        state['include'] = 'restore-failed'
++    return state
++
++
++def execute(a):
++    result = {'mode': 'apply' if a.apply else 'dry-run'}
++    lock = None
++    try:
++        assets = load_manifest(a.manifest, a.expected_manifest_sha256)
++        verify_assets(assets, a.release_root)
++        result['assets'] = sorted(assets)
++        site = os.path.realpath(a.site)
++        config = Path(site).read_bytes()
++        config_hash = sha256(config)
++        result['configSha256'] = config_hash
++        if a.apply and not a.expected_config_sha256:
++            raise Refusal('expected-config-sha256-required')
++        if a.expected_config_sha256 and config_hash != a.expected_config_sha256:
++            raise Refusal('config-stale')
++        new_config, config_state, proxy_body = plan_config(config)
++        include_bytes = render_include(assets, proxy_body)
++        include_state, include_original = plan_include(a.include_path, include_bytes)
++        result.update(configAction=config_state, includeAction=include_state, includeSha256=sha256(include_bytes),
++                      newConfigSha256=sha256(new_config))
++        if config_state == 'present' and include_state == 'unchanged':
++            result['status'] = 'unchanged'
++            return result
++        if not a.apply:
++            result['status'] = 'dry-run'
++            return result
++        os.makedirs(a.backup_dir, mode=0o700, exist_ok=True)
++        os.chmod(a.backup_dir, 0o700)
++        lock = open(os.path.join(a.backup_dir, '.lock'), 'a')
++        try:
++            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
++        except OSError:
++            raise Refusal('another-install-running')
++        if Path(site).read_bytes() != config:
++            raise Refusal('config-stale')
++        try:
++            include_now = Path(a.include_path).read_bytes()
++        except FileNotFoundError:
++            include_now = None
++        if include_now != include_original:
++            raise Refusal('include-stale')
++        info = os.stat(site)
++        config_mode, owner = stat.S_IMODE(info.st_mode), (info.st_uid, info.st_gid)
++        include_mode = stat.S_IMODE(os.stat(a.include_path).st_mode) if include_original is not None else 0o644
++        backup = os.path.join(a.backup_dir, time.strftime('%Y%m%dT%H%M%S') + '-' + config_hash[:12])
++        os.makedirs(backup, mode=0o700)
++        atomic_write(os.path.join(backup, 'site.conf'), config, 0o600)
++        if include_original is not None:
++            atomic_write(os.path.join(backup, 'public-assets.conf'), include_original, 0o600)
++        atomic_write(os.path.join(backup, 'receipt.json'), json.dumps({
++            'site': site, 'siteSha256': config_hash, 'siteMode': oct(config_mode), 'include': a.include_path,
++            'includeSha256': sha256(include_original) if include_original is not None else None}).encode(), 0o600)
++        result['backup'] = backup
++        written = {'include': False, 'config': False}
++        failure = None
++        try:
++            if include_state != 'unchanged':
++                atomic_write(a.include_path, include_bytes, include_mode); written['include'] = True
++            if config_state == 'insert':
++                atomic_write(site, new_config, config_mode, owner); written['config'] = True
++            if run([a.nginx_bin, '-t']) != 0:
++                failure = 'nginx-test-failed'
++            else:
++                result['nginxTest'] = 'passed'
++                if run([a.nginx_bin, '-s', 'reload']) != 0:
++                    failure = 'nginx-reload-failed'
++                else:
++                    result['reload'] = 'sent'
++        except OSError:
++            failure = 'write-failed'
++        if failure:
++            result.update(status='rolled-back', failure=failure,
++                          rollback=restore(site, config, config_mode, owner, a.include_path, include_original, include_mode),
++                          written=written)
++            if failure == 'nginx-reload-failed':
++                result['rollbackReload'] = 'sent' if run([a.nginx_bin, '-s', 'reload']) == 0 else 'failed'
++            if any(v in ('restore-failed', 'restore-mismatch') for v in result['rollback'].values()):
++                result['status'] = 'rollback-incomplete'
++            return result
++        result['status'] = 'applied'
++        return result
++    except Refusal as refusal:
++        result.update(status='refused', reason=refusal.code)
++        if refusal.detail:
++            result['detail'] = refusal.detail
++        return result
++    except OSError as error:
++        result.update(status='refused', reason='io-error', detail=type(error).__name__)
++        return result
++    finally:
++        if lock is not None:
++            lock.close()
++
++
++def main(argv=None):
++    p = argparse.ArgumentParser(description=__doc__)
++    p.add_argument('--manifest', type=Path, required=True, help='build-runtime-update-manifest.json with publicAssets.')
++    p.add_argument('--expected-manifest-sha256', help='Optional digest gate for the manifest file.')
++    p.add_argument('--expected-config-sha256', help='Digest of the current resolved site file; required with --apply.')
++    p.add_argument('--apply', action='store_true', help='Write, test and reload. Default is dry-run.')
++    p.add_argument('--site', default=SITE_LINK)
++    p.add_argument('--include-path', default=INCLUDE_PATH)
++    p.add_argument('--release-root', default=RELEASE_ROOT)
++    p.add_argument('--backup-dir', default=BACKUP_DIR)
++    p.add_argument('--nginx-bin', default='nginx')
++    a = p.parse_args(argv)
++    result = execute(a)
++    print(json.dumps(result, indent=2, sort_keys=True))
++    return 0 if result['status'] in ('dry-run', 'unchanged', 'applied') else 1
++
++
++if __name__ == '__main__':
++    sys.exit(main())
+diff --git a/tests/test_public_assets_deployment.py b/tests/test_public_assets_deployment.py
+new file mode 100644
+index 0000000..99d82e9
+--- /dev/null
++++ b/tests/test_public_assets_deployment.py
+@@ -0,0 +1,561 @@
++import hashlib
++import importlib.util
++import json
++import os
++from pathlib import Path
++import re
++import stat
++import shutil
++import tempfile
++import time
++import unittest
++from unittest.mock import patch
++
++ROOT = Path(__file__).resolve().parents[1]
++spec = importlib.util.spec_from_file_location('deploy_public_assets', ROOT / 'scripts' / 'deploy-public-assets.py')
++dpa = importlib.util.module_from_spec(spec)
++spec.loader.exec_module(dpa)
++
++SITE = """# unrelated header
++server {
++    listen 80;
++    server_name example.test;
++    return 301 https://$host$request_uri;
++}
++server {
++    listen 443 ssl;
++    server_name example.test;
++    ssl_certificate /x/fullchain.pem;
++    add_header Strict-Transport-Security "max-age=1" always;
++    include /etc/nginx/commonplace-files.conf;
++    location ^~ /downloads/ {
++        alias /srv/downloads/;
++    }
++    location / {
++        proxy_pass http://127.0.0.1:3000;
++        proxy_http_version 1.1;
++        proxy_set_header Host $host;
++        proxy_set_header X-Real-IP $remote_addr;
++        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
++        proxy_set_header X-Forwarded-Proto $scheme;
++        proxy_set_header X-Commonplace-Touch-Auth "";
++        proxy_set_header X-Commonplace-Account "";
++        proxy_set_header Authorization "";
++        proxy_read_timeout 60s;
++    }
++}
++server {
++    listen 8443 ssl;
++    server_name staging.test;
++    ssl_certificate /y/fullchain.pem;
++    location / {
++        proxy_pass http://127.0.0.1:4000;
++    }
++}
++"""
++PROXY_BODY = SITE.split('    location / {', 1)[1].split('}\n}', 1)[0]
++INSERTED = SITE.replace('    include /etc/nginx/commonplace-files.conf;\n',
++                        '    include /etc/nginx/commonplace-files.conf;\n    include /etc/nginx/commonplace-public-assets.conf;\n')
++
++
++def digest(data):
++    return hashlib.sha256(data).hexdigest()
++
++
++class Fixture:
++    def __init__(self, test, site=SITE, names=('context-product.mjs', 'ui.css', 'manrope-latin.woff2')):
++        self.tmp = Path(tempfile.mkdtemp())
++        test.addCleanup(lambda: __import__('shutil').rmtree(self.tmp, ignore_errors=True))
++        self.release = self.tmp / 'release'
++        assets_dir = self.release / dpa.ASSET_SUBDIR
++        assets_dir.mkdir(parents=True)
++        self.assets = {}
++        for name in names:
++            body = ('asset ' + name).encode()
++            (assets_dir / name).write_bytes(body)
++            self.assets[name] = {'path': f'{dpa.ASSET_SUBDIR}/{name}', 'contentType': dpa.CANONICAL[name], 'sha256': digest(body)}
++        (assets_dir / 'secret.db').write_bytes(b'private')
++        self.manifest = self.tmp / 'manifest.json'
++        self.write_manifest(self.assets)
++        self.site = self.tmp / 'sites-available-commonplace'
++        self.site.write_text(site)
++        self.site.chmod(0o640)
++        self.link = self.tmp / 'sites-enabled-commonplace'
++        self.link.symlink_to(self.site)
++        self.include = self.tmp / 'commonplace-public-assets.conf'
++        self.backups = self.tmp / 'backups'
++
++    def write_manifest(self, assets):
++        self.manifest.write_text(json.dumps({'files': {}, 'publicAssets': assets}))
++
++    def args(self, *extra, apply=False, config_sha=True):
++        argv = ['--manifest', str(self.manifest), '--site', str(self.link), '--include-path', str(self.include),
++                '--release-root', str(self.release), '--backup-dir', str(self.backups), '--nginx-bin', 'nginx-fake']
++        if config_sha:
++            argv += ['--expected-config-sha256', digest(self.site.read_bytes())]
++        if apply:
++            argv.append('--apply')
++        return argv + list(extra)
++
++    def run(self, *extra, **kw):
++        return self.execute(self.args(*extra, **kw))
++
++    def execute(self, argv):
++        import argparse
++        p = argparse.ArgumentParser()
++        p.add_argument('--manifest'); p.add_argument('--expected-manifest-sha256'); p.add_argument('--expected-config-sha256')
++        p.add_argument('--apply', action='store_true'); p.add_argument('--site'); p.add_argument('--include-path')
++        p.add_argument('--release-root'); p.add_argument('--backup-dir'); p.add_argument('--nginx-bin')
++        return dpa.execute(p.parse_args(argv))
++
++
++class PublicAssetsDeploymentTest(unittest.TestCase):
++    def commands(self, codes=(0, 0)):
++        calls = []
++        queue = list(codes)
++
++        def fake(argv):
++            calls.append(argv)
++            return queue.pop(0) if queue else 0
++        return calls, patch.object(dpa, 'run', side_effect=fake)
++
++    def test_canonical_list_matches_context_http_asset_types(self):
++        source = ROOT / 'apps/commonplace-account/server/context-http.mjs'
++        if not source.exists():
++            self.skipTest('context-http.mjs not present')
++        text = source.read_text()
++        declared = dict(re.findall(r"'([^']+)':'([^']+)'", re.search(r'const assetTypes=\{(.*?)\};', text).group(1)))
++        declared['ui.css'] = 'text/css'
++        self.assertEqual(declared, dpa.CANONICAL)
++
++    def test_dry_run_writes_nothing_and_runs_no_commands(self):
++        fx = Fixture(self)
++        before = SITE.encode()
++        calls, patcher = self.commands()
++        with patcher:
++            result = fx.run()
++        self.assertEqual(result['status'], 'dry-run')
++        self.assertEqual(result['configAction'], 'insert')
++        self.assertEqual(calls, [])
++        self.assertEqual(fx.site.read_bytes(), before)
++        self.assertFalse(fx.include.exists())
++        self.assertFalse(fx.backups.exists())
++
++    def test_apply_requires_expected_config_hash(self):
++        fx = Fixture(self)
++        calls, patcher = self.commands()
++        with patcher:
++            result = fx.run(apply=True, config_sha=False)
++        self.assertEqual((result['status'], result['reason']), ('refused', 'expected-config-sha256-required'))
++        self.assertEqual(calls, [])
++        self.assertFalse(fx.include.exists())
++
++    def test_apply_inserts_one_line_only_and_preserves_everything_else(self):
++        fx = Fixture(self)
++        calls, patcher = self.commands()
++        with patcher:
++            result = fx.run(apply=True)
++        self.assertEqual(result['status'], 'applied')
++        self.assertEqual(fx.site.read_text(), INSERTED)
++        self.assertTrue(fx.link.is_symlink())
++        self.assertEqual(stat.S_IMODE(fx.site.stat().st_mode), 0o640)
++        self.assertEqual(calls, [['nginx-fake', '-t'], ['nginx-fake', '-s', 'reload']])
++        backup = Path(result['backup'])
++        self.assertEqual(backup.parent.stat().st_mode & 0o777, 0o700)
++        self.assertEqual((backup / 'site.conf').read_text(), SITE)
++        self.assertNotIn(SITE, json.dumps(result))
++
++    def test_generated_include_is_exact_public_only(self):
++        fx = Fixture(self)
++        _, patcher = self.commands()
++        with patcher:
++            fx.run(apply=True)
++        text = fx.include.read_text()
++        self.assertEqual(sorted(re.findall(r'location = (/context/assets/\S+) \{', text)),
++                         ['/context/assets/context-product.mjs', '/context/assets/manrope-latin.woff2', '/context/assets/ui.css'])
++        self.assertEqual(re.findall(r'^\s*location\b(?! =)(?! @commonplace_public_assets_app )', text, re.M), [])
++        self.assertEqual(text.count('location @commonplace_public_assets_app {'), 1)
++        self.assertIn(f'alias {dpa.ALIAS_ROOT}/ui.css;', text)
++        self.assertIn('default_type text/css;', text)
++        self.assertIn('default_type font/woff2;', text)
++        for header in ('Cache-Control "no-store"', 'X-Content-Type-Options "nosniff"', 'Referrer-Policy "no-referrer"',
++                       'X-Frame-Options "DENY"'):
++            self.assertEqual(text.count(header), 3)
++        self.assertIn('limit_except GET', text)
++        for forbidden in ('touchauth', 'secret', 'gzip', '/data', 'autoindex', 'root '):
++            self.assertNotIn(forbidden, text)
++        # proxy directives exist only inside the named fallback, never in an asset location
++        for block in re.findall(r'location = /context/assets/\S+ \{.*?\n\}', text, re.S):
++            self.assertNotIn('proxy_', block)
++            self.assertIn('error_page 404 = @commonplace_public_assets_app;', block)
++        self.assertEqual(text.count('error_page 404 ='), 3)
++
++    def test_fallback_clones_complete_proxy_body_exactly(self):
++        fx = Fixture(self)
++        _, patcher = self.commands()
++        with patcher:
++            fx.run(apply=True)
++        text = fx.include.read_text()
++        self.assertTrue(text.endswith('location @commonplace_public_assets_app {' + PROXY_BODY + '}\n'))
++        for line in ('proxy_pass http://127.0.0.1:3000;', 'proxy_set_header X-Commonplace-Touch-Auth "";',
++                     'proxy_set_header X-Commonplace-Account "";', 'proxy_set_header Authorization "";',
++                     'proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;', 'proxy_set_header X-Real-IP $remote_addr;',
++                     'proxy_set_header X-Forwarded-Proto $scheme;', 'proxy_set_header Host $host;'):
++            self.assertIn(line, text)
++        self.assertNotIn('127.0.0.1:4000', text)
++        # private routes and the live config are untouched apart from the single include line
++        self.assertEqual(fx.site.read_text(), INSERTED)
++
++    def test_dry_run_include_hash_depends_on_proxy_body(self):
++        a = Fixture(self).run()
++        b = Fixture(self, site=SITE.replace('proxy_read_timeout 60s;', 'proxy_read_timeout 90s;')).run()
++        self.assertEqual(a['status'], 'dry-run')
++        self.assertNotEqual(a['includeSha256'], b['includeSha256'])
++        self.assertEqual(a['includeSha256'], digest(dpa.render_include(
++            Fixture(self).assets, PROXY_BODY)))
++
++    def test_proxy_location_ambiguity_refused(self):
++        tail = '    location / {\n        proxy_pass http://127.0.0.1:3000;'
++        variants = {
++            'marker-neighbourhood-unexpected': SITE.replace(tail, '    location /app/ {\n        proxy_pass http://127.0.0.1:3000;'),
++            'proxy-location-ambiguous': SITE.replace(tail, '    location / {\n        proxy_pass http://127.0.0.1:3001;\n    }\n' + tail),
++            'proxy-location-not-simple': SITE.replace(tail, tail + '\n        if ($x) { return 403; }'),
++            'proxy-pass-not-single': SITE.replace(tail, tail + '\n        proxy_pass http://127.0.0.1:3001;'),
++            'proxy-pass-uri-unsupported': SITE.replace('proxy_pass http://127.0.0.1:3000;', 'proxy_pass http://127.0.0.1:3000/x/;'),
++            'named-location-exists': SITE.replace('    location / {', '    location @commonplace_public_assets_app { return 502; }\n    location / {', 1),
++        }
++        for reason, config in variants.items():
++            with self.subTest(reason=reason):
++                fx = Fixture(self, site=config)
++                calls, patcher = self.commands()
++                with patcher:
++                    result = fx.run(apply=True)
++                self.assertEqual((result['status'], result['reason']), ('refused', reason))
++                self.assertEqual(calls, [])
++                self.assertFalse(fx.include.exists())
++                self.assertEqual(fx.site.read_text(), config)
++
++    def test_include_changed_after_plan_refused_under_lock(self):
++        fx = Fixture(self)
++        old = dpa.HEADER + '\n# older release\n'
++        fx.include.write_text(old)
++        real = dpa.fcntl.flock
++
++        def racing(handle, op):
++            real(handle, op)
++            fx.include.write_text(dpa.HEADER + '\n# operator edit\n')
++        calls, patcher = self.commands()
++        with patcher, patch.object(dpa.fcntl, 'flock', side_effect=racing):
++            result = fx.run(apply=True)
++        self.assertEqual((result['status'], result['reason']), ('refused', 'include-stale'))
++        self.assertEqual(calls, [])
++        self.assertEqual(fx.include.read_text(), dpa.HEADER + '\n# operator edit\n')
++        self.assertEqual(fx.site.read_text(), SITE)
++        self.assertFalse(fx.backups.exists() and any(p.is_dir() for p in fx.backups.iterdir()))
++
++    def test_include_created_after_plan_refused_under_lock(self):
++        fx = Fixture(self)
++        real = dpa.fcntl.flock
++
++        def racing(handle, op):
++            real(handle, op)
++            fx.include.write_text('unmanaged\n')
++        _, patcher = self.commands()
++        with patcher, patch.object(dpa.fcntl, 'flock', side_effect=racing):
++            result = fx.run(apply=True)
++        self.assertEqual(result['reason'], 'include-stale')
++
++    def test_fallback_rules_per_route_with_local_nginx(self):
++        nginx = shutil.which('nginx')
++        if not nginx:
++            self.skipTest('nginx not installed; no install or network is attempted')
++        import http.server, subprocess, threading, urllib.request, urllib.error, socket
++        seen = []
++
++        class Backend(http.server.BaseHTTPRequestHandler):
++            def do_GET(self):
++                seen.append((self.path, self.headers.get('Authorization'), self.headers.get('X-Commonplace-Touch-Auth'),
++                             self.headers.get('X-Forwarded-Proto')))
++                body = b'app:' + self.path.encode()
++                self.send_response(200); self.send_header('Content-Type', 'text/css; charset=utf-8')
++                self.send_header('Content-Length', str(len(body))); self.end_headers(); self.wfile.write(body)
++
++            def log_message(self, *args):
++                pass
++
++        def free_port():
++            with socket.socket() as s:
++                s.bind(('127.0.0.1', 0)); return s.getsockname()[1]
++        backend = http.server.HTTPServer(('127.0.0.1', 0), Backend)
++        threading.Thread(target=backend.serve_forever, daemon=True).start()
++        self.addCleanup(backend.server_close); self.addCleanup(backend.shutdown)
++        fx = Fixture(self, site=SITE.replace('127.0.0.1:3000', f'127.0.0.1:{backend.server_port}'))
++        _, patcher = self.commands()
++        with patcher:
++            self.assertEqual(fx.run(apply=True)['status'], 'applied')
++        # The disposable nginx worker may drop root to nobody. Public fixtures
++        # need directory traversal just like the real release's 0755 parents.
++        fx.tmp.chmod(0o755)
++        # rollback situation: the release lacks ui.css on disk
++        alias_dir = fx.tmp / 'alias'
++        alias_dir.mkdir()
++        (alias_dir / 'context-product.mjs').write_text('static js')
++        text = fx.include.read_text().replace(dpa.ALIAS_ROOT, str(alias_dir))
++        port = free_port()
++        conf = fx.tmp / 'nginx.conf'
++        conf.write_text(f'''daemon off; pid {fx.tmp}/nginx.pid; error_log {fx.tmp}/error.log;
++events {{}}
++http {{
++    access_log off;
++    client_body_temp_path {fx.tmp}/b; proxy_temp_path {fx.tmp}/p; fastcgi_temp_path {fx.tmp}/f;
++    uwsgi_temp_path {fx.tmp}/u; scgi_temp_path {fx.tmp}/s;
++    server {{
++        listen 127.0.0.1:{port};
++{text}
++        location ^~ /downloads/ {{ return 404; }}
++{('    location / {' + PROXY_BODY.replace('127.0.0.1:3000', '127.0.0.1:%d' % backend.server_port) + '}')}
++    }}
++}}
++''')
++        proc = subprocess.Popen([nginx, '-p', str(fx.tmp), '-c', str(conf)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
++        self.addCleanup(proc.wait); self.addCleanup(proc.terminate)
++        base = f'http://127.0.0.1:{port}'
++        for _ in range(50):
++            try:
++                socket.create_connection(('127.0.0.1', port), 0.1).close(); break
++            except OSError:
++                time.sleep(0.1)
++        present = urllib.request.urlopen(base + '/context/assets/context-product.mjs')
++        self.assertEqual(present.read(), b'static js')
++        self.assertEqual(present.headers['Cache-Control'], 'no-store')
++        absent = urllib.request.urlopen(urllib.request.Request(base + '/context/assets/ui.css?v=7', headers={'Authorization':'synthetic-test-only','X-Commonplace-Touch-Auth':'synthetic-test-only'}))
++        self.assertEqual(absent.read(), b'app:/context/assets/ui.css?v=7')
++        self.assertEqual(absent.status, 200)
++        self.assertEqual(seen[-1][1:], (None, None, 'http'))
++        with self.assertRaises(urllib.error.HTTPError) as caught:
++            urllib.request.urlopen(urllib.request.Request(base + '/context/assets/ui.css', method='POST', data=b'x'))
++        self.assertEqual(caught.exception.code, 403)
++
++    def test_idempotent_second_run_is_unchanged(self):
++        fx = Fixture(self)
++        _, patcher = self.commands()
++        with patcher:
++            fx.run(apply=True)
++        calls, patcher = self.commands()
++        with patcher:
++            result = fx.run(apply=True)
++        self.assertEqual(result['status'], 'unchanged')
++        self.assertEqual(calls, [])
++        self.assertEqual(fx.site.read_text(), INSERTED)
++
++    def test_stale_config_refused(self):
++        fx = Fixture(self)
++        argv = fx.args(apply=True)
++        fx.site.write_text(SITE + '# changed\n')
++        calls, patcher = self.commands()
++        with patcher:
++            result = fx.execute(argv)
++        self.assertEqual((result['status'], result['reason']), ('refused', 'config-stale'))
++        self.assertEqual(calls, [])
++        self.assertFalse(fx.include.exists())
++        self.assertEqual(fx.site.read_text(), SITE + '# changed\n')
++
++    def test_rejects_non_allowlisted_and_private_names(self):
++        for name in ('../../etc/passwd', 'secret.db', '.env', 'context.db', 'a/b.mjs', 'context-product.mjs\nlocation / {',
++                     'CONTEXT.mjs', 'ui.css ', ''):
++            with self.subTest(name=name):
++                fx = Fixture(self)
++                fx.write_manifest({**fx.assets, name: {'path': f'{dpa.ASSET_SUBDIR}/secret.db', 'contentType': 'text/plain',
++                                                       'sha256': digest(b'private')}})
++                calls, patcher = self.commands()
++                with patcher:
++                    result = fx.run(apply=True)
++                self.assertEqual(result['status'], 'refused')
++                self.assertEqual(result['reason'], 'asset-not-allowlisted')
++                self.assertEqual(calls, [])
++                self.assertFalse(fx.include.exists())
++
++    def test_rejects_unsafe_mime_and_path(self):
++        cases = {
++            'asset-content-type-invalid': lambda e: {**e, 'contentType': 'text/html'},
++            'asset-content-type-invalid ': lambda e: {**e, 'contentType': 'text/javascript; charset=utf-8'},
++            'asset-path-invalid': lambda e: {**e, 'path': '../../data/commonplace.db'},
++            'asset-path-invalid ': lambda e: {**e, 'path': '/etc/passwd'},
++            'asset-digest-invalid': lambda e: {**e, 'sha256': 'ABC'},
++            'manifest-invalid': lambda e: {**e, 'extra': 1},
++        }
++        for code, change in cases.items():
++            with self.subTest(code=code):
++                fx = Fixture(self)
++                fx.write_manifest({**fx.assets, 'context-product.mjs': change(fx.assets['context-product.mjs'])})
++                self.assertEqual(fx.run()['reason'], code.strip())
++
++    def test_untrusted_manifest_with_private_file_outside_allowlist_refuses(self):
++        fx = Fixture(self)
++        fx.write_manifest({**fx.assets, 'secret.db': {'path': f'{dpa.ASSET_SUBDIR}/secret.db', 'contentType': 'text/plain',
++                                                      'sha256': digest(b'private')}})
++        result = fx.run(apply=True)
++        self.assertEqual(result['reason'], 'asset-not-allowlisted')
++        self.assertFalse(fx.include.exists())
++        self.assertEqual(fx.site.read_text(), SITE)
++
++    def test_manifest_hash_gate(self):
++        fx = Fixture(self)
++        self.assertEqual(fx.run('--expected-manifest-sha256', '0' * 64)['reason'], 'manifest-hash-mismatch')
++        good = digest(fx.manifest.read_bytes())
++        self.assertEqual(fx.run('--expected-manifest-sha256', good)['status'], 'dry-run')
++
++    def test_asset_file_checks(self):
++        fx = Fixture(self)
++        target = fx.release / fx.assets['ui.css']['path']
++        target.write_bytes(b'tampered')
++        self.assertEqual(fx.run()['reason'], 'asset-digest-mismatch')
++        target.unlink()
++        self.assertEqual(fx.run()['reason'], 'asset-missing')
++        (fx.release / dpa.ASSET_SUBDIR / 'secret.db').rename(fx.tmp / 'private.db')
++        target.symlink_to(fx.tmp / 'private.db')
++        self.assertEqual(fx.run()['reason'], 'asset-not-regular-file')
++
++    def test_asset_root_symlink_refused_but_release_symlink_allowed(self):
++        fx = Fixture(self)
++        alias = fx.tmp / 'current'
++        alias.symlink_to(fx.release)
++        argv = fx.args()
++        argv[argv.index('--release-root') + 1] = str(alias)
++        self.assertEqual(fx.execute(argv)['status'], 'dry-run')
++        inner = fx.release / 'dist/standalone/account-runtime/context-assets'
++        moved = fx.tmp / 'elsewhere'
++        inner.rename(moved)
++        inner.symlink_to(moved)
++        self.assertEqual(fx.execute(argv)['reason'], 'asset-root-symlink')
++
++    def test_duplicate_or_injected_markers_refused(self):
++        marker = '    include /etc/nginx/commonplace-files.conf;\n'
++        variants = {
++            'duplicate': SITE.replace('server {\n    listen 8443 ssl;', 'server {\n' + marker + '    listen 8443 ssl;'),
++            'commented-copy': SITE + '# include /etc/nginx/commonplace-files.conf;\n',
++            'quoted-copy': SITE.replace('# unrelated header', '# x\nadd_header X "include /etc/nginx/commonplace-files.conf;";'),
++            'missing': SITE.replace(marker, ''),
++        }
++        for label, config in variants.items():
++            with self.subTest(label=label):
++                fx = Fixture(self, site=config)
++                calls, patcher = self.commands()
++                with patcher:
++                    result = fx.run(apply=True)
++                self.assertEqual(result['reason'], 'marker-not-unique')
++                self.assertEqual(calls, [])
++                self.assertEqual(fx.site.read_text(), config)
++
++    def test_marker_in_wrong_server_or_wrong_neighbours_refused(self):
++        redirect_only = SITE.replace('    include /etc/nginx/commonplace-files.conf;\n', '').replace(
++            '    return 301 https://$host$request_uri;', '    include /etc/nginx/commonplace-files.conf;\n    return 301 https://$host$request_uri;')
++        reordered = SITE.replace('location ^~ /downloads/', 'location ^~ /other/')
++        for label, config, reason in (('http', redirect_only, 'marker-not-in-main-tls-server'),
++                                      ('neighbours', reordered, 'marker-neighbourhood-unexpected')):
++            with self.subTest(label=label):
++                fx = Fixture(self, site=config)
++                self.assertEqual(fx.run()['reason'], reason)
++
++    def test_foreign_or_misplaced_include_references_refused(self):
++        marker = '    include /etc/nginx/commonplace-files.conf;\n'
++        misplaced = SITE.replace('    location / {', '    include /etc/nginx/commonplace-public-assets.conf;\n    location / {', 1)
++        duplicate = INSERTED.replace('    location / {', '    include /etc/nginx/commonplace-public-assets.conf;\n    location / {', 1)
++        commented = SITE + '# commonplace-public-assets.conf is managed elsewhere\n'
++        for label, config, reason in (('misplaced', misplaced, 'include-misplaced'),
++                                      ('duplicate', duplicate, 'include-reference-ambiguous'),
++                                      ('commented', commented, 'include-reference-ambiguous')):
++            with self.subTest(label=label):
++                fx = Fixture(self, site=config)
++                self.assertEqual(fx.run()['reason'], reason)
++
++    def test_existing_include_handling(self):
++        fx = Fixture(self)
++        fx.include.write_text('location /context { proxy_pass http://elsewhere; }\n')
++        self.assertEqual(fx.run()['reason'], 'include-exists-unmanaged')
++        # managed but stale include: updated, original preserved in backup
++        fx.include.write_text(dpa.HEADER + '\n# older release\n')
++        fx.include.chmod(0o600)
++        _, patcher = self.commands()
++        with patcher:
++            result = fx.run(apply=True)
++        self.assertEqual(result['status'], 'applied')
++        self.assertEqual((Path(result['backup']) / 'public-assets.conf').read_text(), dpa.HEADER + '\n# older release\n')
++        self.assertEqual(stat.S_IMODE(fx.include.stat().st_mode), 0o600)
++
++    def test_present_config_with_changed_assets_updates_include_only(self):
++        fx = Fixture(self, site=INSERTED)
++        _, patcher = self.commands()
++        with patcher:
++            result = fx.run(apply=True)
++        self.assertEqual((result['status'], result['configAction'], result['includeAction']), ('applied', 'present', 'create'))
++        self.assertEqual(fx.site.read_text(), INSERTED)
++
++    def test_rollback_on_nginx_test_failure(self):
++        fx = Fixture(self)
++        calls, patcher = self.commands(codes=(1,))
++        with patcher:
++            result = fx.run(apply=True)
++        self.assertEqual((result['status'], result['failure']), ('rolled-back', 'nginx-test-failed'))
++        self.assertEqual(result['rollback'], {'config': 'restored', 'include': 'removed'})
++        self.assertEqual(calls, [['nginx-fake', '-t']])
++        self.assertEqual(fx.site.read_text(), SITE)
++        self.assertEqual(stat.S_IMODE(fx.site.stat().st_mode), 0o640)
++        self.assertFalse(fx.include.exists())
++
++    def test_rollback_on_reload_failure_restores_previous_include(self):
++        fx = Fixture(self)
++        old = dpa.HEADER + '\n# older release\n'
++        fx.include.write_text(old)
++        calls, patcher = self.commands(codes=(0, 1, 0))
++        with patcher:
++            result = fx.run(apply=True)
++        self.assertEqual((result['status'], result['failure']), ('rolled-back', 'nginx-reload-failed'))
++        self.assertEqual(result['rollback'], {'config': 'restored', 'include': 'restored'})
++        self.assertEqual(result['rollbackReload'], 'sent')
++        self.assertEqual(fx.site.read_text(), SITE)
++        self.assertEqual(fx.include.read_text(), old)
++        self.assertEqual([c[-1] for c in calls], ['-t', 'reload', 'reload'])
++
++    def test_write_failure_rolls_back(self):
++        fx = Fixture(self)
++        real = dpa.atomic_write
++        seen = []
++
++        def flaky(path, data, mode, owner=None):
++            seen.append(str(path))
++            if str(path) == str(fx.site.resolve()) and data != SITE.encode():
++                raise OSError('disk full')
++            return real(path, data, mode, owner)
++        calls, patcher = self.commands()
++        with patcher, patch.object(dpa, 'atomic_write', side_effect=flaky):
++            result = fx.run(apply=True)
++        self.assertEqual((result['status'], result['failure']), ('rolled-back', 'write-failed'))
++        self.assertEqual(calls, [])
++        self.assertEqual(fx.site.read_text(), SITE)
++        self.assertFalse(fx.include.exists())
++
++    def test_unrelated_config_bytes_unchanged_including_crlf(self):
++        crlf = SITE.replace('\n', '\r\n')
++        fx = Fixture(self, site=crlf)
++        fx.site.write_bytes(crlf.encode())
++        _, patcher = self.commands()
++        with patcher:
++            result = fx.run(apply=True)
++        self.assertEqual(result['status'], 'applied')
++        self.assertEqual(fx.site.read_bytes(),
++                         INSERTED.replace('\n', '\r\n').encode())
++
++    def test_main_prints_json_without_config_text(self):
++        fx = Fixture(self)
++        import io
++        out = io.StringIO()
++        with patch('sys.stdout', out):
++            code = dpa.main(fx.args())
++        self.assertEqual(code, 0)
++        self.assertNotIn('proxy_pass', out.getvalue())
++        self.assertEqual(json.loads(out.getvalue())['status'], 'dry-run')
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/tests/test_runtime_public_assets.py b/tests/test_runtime_public_assets.py
+new file mode 100644
+index 0000000..6e5452a
+--- /dev/null
++++ b/tests/test_runtime_public_assets.py
+@@ -0,0 +1,91 @@
++import base64
++import hashlib
++import importlib.util
++import json
++import re
++import subprocess
++import tempfile
++import unittest
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[1]
++SERVER = ROOT / 'apps/commonplace-account/server'
++PREFIX = 'dist/standalone/account-runtime/context-assets/'
++
++
++def load_builder():
++    spec = importlib.util.spec_from_file_location('build_runtime_update', ROOT / 'scripts/build-runtime-update.py')
++    module = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(module)
++    return module
++
++
++def node_json(script):
++    base = SERVER.as_uri() + '/'
++    out = subprocess.run(['node', '--input-type=module', '-e', script, base], check=True, capture_output=True, cwd=ROOT)
++    return json.loads(out.stdout)
++
++
++class RuntimePublicAssetsTest(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.tmp = tempfile.TemporaryDirectory()
++        cls.output = Path(cls.tmp.name)
++        cls.manifest = load_builder().build(cls.output)
++        cls.bundle = json.loads((cls.output / 'runtime-update.json').read_text())
++        cls.source = node_json(
++            "const b=process.argv[1];const {assetTypes}=await import(b+'context-http.mjs');"
++            "const {uiCss}=await import(b+'ui-system.mjs');process.stdout.write(JSON.stringify({assetTypes,uiCss}));")
++
++    @classmethod
++    def tearDownClass(cls):
++        cls.tmp.cleanup()
++
++    def test_existing_manifest_fields_unchanged(self):
++        self.assertEqual({'bundle', 'sha256', 'files', 'publicAssets'}, set(self.manifest))
++        self.assertEqual('runtime-update.json', self.manifest['bundle'])
++        self.assertEqual(hashlib.sha256((self.output / 'runtime-update.json').read_bytes()).hexdigest(), self.manifest['sha256'])
++        self.assertEqual(json.loads((self.output / 'runtime-update-manifest.json').read_text()), self.manifest)
++        for name, digest in self.manifest['files'].items():
++            self.assertEqual(digest, hashlib.sha256(base64.b64decode(self.bundle[name])).hexdigest())
++
++    def test_ui_css_matches_actual_source_bytes(self):
++        data = base64.b64decode(self.bundle[PREFIX + 'ui.css'])
++        self.assertEqual(self.source['uiCss'].encode('utf-8'), data)
++        self.assertEqual(hashlib.sha256(data).hexdigest(), self.manifest['publicAssets']['ui.css']['sha256'])
++
++    def test_all_registered_files_and_ui_css_match_contract(self):
++        types = self.source['assetTypes']
++        self.assertEqual(30, len(types))
++        assets = self.manifest['publicAssets']
++        self.assertEqual(set(types) | {'ui.css'}, set(assets))
++        for name, entry in assets.items():
++            self.assertEqual({'path', 'contentType', 'sha256'}, set(entry))
++            self.assertEqual('text/css' if name == 'ui.css' else types[name], entry['contentType'])
++            if name != 'ui.css':
++                source = SERVER / 'context-assets' / name
++                self.assertTrue(source.is_file() and not source.is_symlink())
++                self.assertEqual(source.read_bytes(), base64.b64decode(self.bundle[entry['path']]))
++
++    def test_paths_mime_and_digests_are_safe(self):
++        for name, entry in self.manifest['publicAssets'].items():
++            self.assertRegex(name, r'^[A-Za-z0-9][A-Za-z0-9._-]*$')
++            self.assertEqual(PREFIX + name, entry['path'])
++            self.assertNotIn('..', entry['path'].split('/'))
++            self.assertIn(entry['contentType'], {'text/javascript', 'text/css', 'font/woff2', 'text/plain'})
++            self.assertRegex(entry['sha256'], r'^[0-9a-f]{64}$')
++            self.assertEqual(entry['sha256'], self.manifest['files'][entry['path']])
++            self.assertEqual(entry['sha256'], hashlib.sha256(base64.b64decode(self.bundle[entry['path']])).hexdigest())
++
++    def test_rejects_unsafe_advertised_names(self):
++        builder = load_builder()
++        files = {PREFIX + 'x': b'x'}
++        for bad in ['../x', 'a/b', '.hidden', '']:
++            with self.assertRaises(ValueError):
++                builder.public_assets({**files, PREFIX + bad: b'x'}, {bad: 'text/plain'})
++        with self.assertRaises(ValueError):
++            builder.public_assets({PREFIX + 'ui.css': b'x'}, {'x': 'application/x-evil'})
++
++
++if __name__ == '__main__':
++    unittest.main()

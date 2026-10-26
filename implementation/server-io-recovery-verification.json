@@ -1,5 +1,5 @@
 {
-  "state": "source reviewed, packaged; not published or deployed",
+  "state": "published and deployed; performance gate remains open",
   "nativeVersion": "0.4.26",
   "runtimeRevision": 59,
   "nativePackagesUnchanged": true,
@@ -48,12 +48,24 @@
     "Outer SDK throttle counters reset on restart and are per process.",
     "At the bounded counter capacity new keys are denied until entries expire.",
     "FTS still fully rebuilds; all prior archive bytes still validate.",
-    "Production latency improvement remains unverified."
+    "Three live health samples improved but remained3.1\u20136.7seconds; fresh real answers took~209seconds and publicbrowser navigation timed out."
   ],
   "baselineHealthSeconds": [
     12.515,
     14.737,
     13.246
   ],
-  "paidInfrastructureChanges": false
+  "paidInfrastructureChanges": false,
+  "productionEvidence": "server-io-production.json",
+  "realBenchmark": "server-io-native-benchmark.json",
+  "healthSecondsAfter": [
+    6.707,
+    3.635,
+    3.14
+  ],
+  "publicBrowserSmoke": {
+    "state": "failed",
+    "reason": "DOM content navigation timed out at 30000ms",
+    "log": ".context/io-followup/public-smoke.log"
+  }
 }
