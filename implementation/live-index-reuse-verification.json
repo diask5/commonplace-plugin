@@ -1,5 +1,5 @@
 {
-  "state": "packaged candidate; not deployed",
+  "state": "published and deployed; real-host benchmark completed with unresolved failures",
   "nativeVersion": "0.4.27",
   "runtimeRevision": 60,
   "serverRelease": "20261026-live-index",
@@ -61,7 +61,24 @@
       "failed": 0,
       "skipped": 0
     },
-    "independentReview": "no blockers; generation-retirement race fixed; process-start stamp added for recycled PID cleanup"
+    "independentReview": "no blockers; generation-retirement race fixed; process-start stamp added for recycled PID cleanup",
+    "publicLiveSmoke": {
+      "state": "passed",
+      "assets": 31,
+      "desktopWidth": 1440,
+      "phoneWidth": 390,
+      "evidence": "live-index-reuse/public-smoke.json",
+      "limits": "Sign-in render took 16.122s desktop and 25.830s phone under collection load; passing page checks do not establish acceptable latency."
+    },
+    "installedHostBenchmark": {
+      "passed": 4,
+      "needsReview": 4,
+      "notStarted": 0,
+      "permissionDenials": 0,
+      "savedConfigurationUnchanged": true,
+      "evidence": "live-index-reuse-native-benchmark.json",
+      "manualReview": "Three Claude answers cited one source found only in search, without a successful supporting read. Codex source-trust could not retrieve an answer after revision restarts/timeouts. No score upgraded."
+    }
   },
   "productionProbe": {
     "scope": "Isolated read-only database diagnostic before deployment; synthetic query against owner archive, no source export or serving-code change",
@@ -79,7 +96,20 @@
     "Whole-archive revision and expiry fences remain; ingestion can still require retry.",
     "Missing, retired, damaged or high-delta bases use the complete fresh index.",
     "Natural-prompt acceptance and default-host routing remain separate open gates.",
-    "Earlier runtime60 benchmark passed 3, fell short on 3, left 2 unstarted. Fresh model evidence is required after deployment.",
-    "No paid infrastructure, native package, account or saved permission changes."
-  ]
+    "No paid infrastructure, native package, account or saved permission changes.",
+    "Latest controlled ordinary-prompt run passed 4/8; citation grounding and retrieval latency remain unresolved."
+  ],
+  "production": {
+    "state": "passed",
+    "release": "20261026-live-index",
+    "filesVerified": 159,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "none; unchanged migration hashes, code-only activation",
+    "previous": "20261026-registration-recovery"
+  },
+  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261026-live-index"
 }

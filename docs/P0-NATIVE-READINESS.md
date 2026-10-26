@@ -1,7 +1,7 @@
 # P0 native and production readiness — 26 October 2026
 
 Current release: [0.4.27/runtime60 registration recovery](REGISTRATION-RECOVERY.md),
-installed and active; server `20261026-registration-recovery` is live. The
+installed and active; server `20261026-live-index` is live ([search update](LIVE-INDEX-REUSE.md)). The
 real-host benchmark remains incomplete (3 passed, 3 fell short, 2 unstarted). The 0.4.24 evidence below remains historical.
 
 The later [ordinary-prompt benchmark](NATURAL-PROMPT-BENCHMARK.md) qualifies the

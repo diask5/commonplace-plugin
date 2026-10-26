@@ -1,0 +1,83 @@
+{
+  "state": "packaged candidate; not deployed",
+  "nativeVersion": "0.4.27",
+  "runtimeRevision": 60,
+  "serverRelease": "20261026-demand-archives",
+  "source": {
+    "patches": 33,
+    "files": 203,
+    "incrementalFiles": 2,
+    "matched": true,
+    "mismatches": [],
+    "patchSha256": "5a03d0c164e684f959a8b47414817193fdb3d9c1f02fde2513b319ec5ddfd4f7",
+    "manifestHashAgreement": {
+      "mcp-adoption-0.4.19-rc.3.patch": "no-standard-manifest",
+      "agent-launch-and-server-check.patch": "no-standard-manifest",
+      "spec-alignment.patch": true,
+      "product-flow-design.patch": true,
+      "production-readiness.patch": true,
+      "context-product-ui.patch": true,
+      "automatic-context-ingestion.patch": true,
+      "prompt-based-sharing.patch": true,
+      "sharing-rules-design.patch": true,
+      "sharing-desktop-layout.patch": true,
+      "sharing-interactions.patch": true,
+      "shared-spaces.patch": true,
+      "message-first-spaces.patch": true,
+      "live-context-setup.patch": true,
+      "seamless-plugin-setup.patch": true,
+      "copy-setup-prompt.patch": true,
+      "context-mvp-completion.patch": true,
+      "sharing-walkthrough.patch": true,
+      "zero-to-knowledge.patch": true,
+      "archive-read-performance.patch": true,
+      "native-discovery.patch": true,
+      "archive-revision-fence.patch": true,
+      "context-completion.patch": true,
+      "p0-native-readiness.patch": true,
+      "seamless-context.patch": true,
+      "deployment-startup-readiness.patch": true,
+      "context-timeout-recovery.patch": true,
+      "server-io-recovery.patch": true,
+      "public-assets-delivery.patch": true,
+      "context-read-performance.patch": true,
+      "registration-recovery.patch": true,
+      "live-index-reuse.patch": true,
+      "demand-archives.patch": true
+    },
+    "sourceScopeFilesNotMatchingReplay": [],
+    "sourceScopeMissingCount": 0
+  },
+  "artifacts": {
+    "runtime-update.json": "9f0f5f4713d90f1bbeee627f2debf1d2c7cab0a0405be68eb5d106e3721b143e",
+    "runtime-update-manifest.json": "40171d3669a2da0a83f3e47e398e840690aab1e2b5050cd27b97d6f93ae3f534",
+    "runtime-update.sha256": "9c92c5541931fcc006413a140cf851e543cdf774c1425ae1af6b5149ea4bee4b",
+    "deploy-cloud-update.py": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408"
+  },
+  "checks": {
+    "fullCore": {
+      "passed": 583,
+      "failed": 0,
+      "skipped": 0
+    },
+    "focusedCloud": 40,
+    "independentReview": "No blocker to removing idle prefetch; claimed jobs prepare current snapshots; web paths maintain their own archive."
+  },
+  "productionDiagnosis": {
+    "state": "read-only aggregate inspection",
+    "cloudTaskStates": {
+      "cancelled": 4,
+      "completed": 19,
+      "failed": 1,
+      "waiting_device": 2
+    },
+    "queuedOrRunning": 0,
+    "interpretation": "The optional worker was eagerly rebuilding its separate archive with no runnable model job. Waiting-device tasks still prepare current context when resumed."
+  },
+  "limits": [
+    "Not deployed; no new performance claim.",
+    "The idle worker no longer prepublishes archive status; web status/read/setup polls or a claimed model task rebuild as needed.",
+    "Native collection, web/MCP retrieval, folder mirroring and authority/expiry checks remain enabled.",
+    "Paid infrastructure and saved permissions unchanged."
+  ]
+}

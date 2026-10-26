@@ -1,10 +1,10 @@
 # Meet Proxy Draft v3 compliance
 
-Latest release: [0.4.27 registration recovery](REGISTRATION-RECOVERY.md).
-Production is `20261026-registration-recovery`; Mac 0.4.27 and runtime60 are
-active. The controlled real-host benchmark passed 3/8 cases; 3 fell short and
+Latest release: [live index reuse](LIVE-INDEX-REUSE.md), with native 0.4.27/runtime60.
+Production is `20261026-live-index`; Mac 0.4.27 and runtime60 are
+active. The preceding controlled real-host benchmark passed 3/8 cases; 3 fell short and
 2 were not started after the Claude test guard stopped its sequence. Search
-timeouts and revision churn remain unresolved. The release passes 572 core regressions, native packaging and both-alias
+timeouts and revision churn remain unresolved. A fresh benchmark is running. The release passes 580 core regressions, native packaging and both-alias
 plugin/mailbox checks. Public desktop/phone sign-in and all 31 UI assets passed
 live checks. These checks do not certify authenticated setup or model behavior.
 

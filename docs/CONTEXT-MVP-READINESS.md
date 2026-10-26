@@ -7,7 +7,7 @@ instructions supersede the original Agents home and hosted proxy-answer design.
 The original spec remains unchanged in MEET-PROXY-PRODUCT-SPEC.md.
 
 Current release: [0.4.27/runtime60 registration recovery](REGISTRATION-RECOVERY.md).
-The native package is installed and active; server `20261026-registration-recovery`
+The native package is installed and active; server `20261026-live-index`
 is live. Historical Google/Desktop acceptance is in [P0 readiness](P0-NATIVE-READINESS.md). The counts, missing features and 0.4.20 rollout below describe the
 earlier MVP milestone and are retained as history. Real Google sign-in and both Desktop handoffs are verified; the P0 record
 separates those receipts from clean-install fixtures and continuing collection.
