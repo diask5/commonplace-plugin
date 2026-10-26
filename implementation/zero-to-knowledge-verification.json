@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-26",
+  "nativeVersion": "0.4.21",
+  "runtimeRevision": 56,
+  "state": "packaged; pending live upgrade and production verification",
+  "tests": {
+    "core": {
+      "tests": 428,
+      "passed": 428,
+      "failed": 0,
+      "logSha256": "8b382216805e04af8d0323c078c3eddfadad48135c6ccad65035f26da8219fde"
+    },
+    "browser": {
+      "tests": 127,
+      "passed": 127,
+      "failed": 0,
+      "logSha256": "81ae401decbe1668d2c4646e36efdab91de2ab77ae33722e9d4464d5d96187f8"
+    },
+    "collector-regression": {
+      "tests": 36,
+      "passed": 36,
+      "failed": 0,
+      "logSha256": "6d69a85213d6c60ba94ae69111ef767f91075c1d63dc0f9901a85476456eaa0f"
+    },
+    "archive-fix": {
+      "tests": 25,
+      "passed": 25,
+      "failed": 0,
+      "logSha256": "0a3dff29c33f7c4f0879b18de8902f44cca83cc3a7e6b77643fbf6b243a49daa"
+    },
+    "core-final": {
+      "tests": 429,
+      "passed": 429,
+      "failed": 0,
+      "logSha256": "df8f637e2b26f555e16c999eaebbd524da98d0cd2fdabf45758138fd82670e2a"
+    },
+    "large-archive": {
+      "tests": 7,
+      "passed": 7,
+      "failed": 0,
+      "logSha256": "7b8d2fd8f392565d8eed01798e7da25eab821055033cff4ffd366f74ea726ffd"
+    },
+    "journey-final": {
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "logSha256": "54d25171941f21cb8fa512a18839eedd94fac685fa3b63f805ea7cfe274d77b3"
+    },
+    "launcher": {
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "logSha256": "a7e89df27d7069e1ce4873213881351ac9c6ddad3779585822ba25ecd6c0d073"
+    },
+    "packaging-final": {
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "logSha256": "14763913637544a9eabec3529d33e9495e1f95588a70a77e7d0be4e8d7dc527d"
+    },
+    "setup-final": {
+      "tests": 20,
+      "passed": 20,
+      "failed": 0,
+      "logSha256": "29fa613176f1b0ab6405f3f12ec6f351f0a11228b11a3188d2d7ea82ded0af55"
+    },
+    "product-spec": {
+      "tests": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    "plugin-smoke": {
+      "passed": true,
+      "logSha256": "9c5189335b28065d70d6868b6de60fdb9e0df16e5fd223637ba7257ede5d4ed8"
+    },
+    "mailbox-smoke": {
+      "passed": true,
+      "logSha256": "4af3e49901ec99fc5ad12a7a358d4988d99c79571c72bb127ad729033d4bffd0"
+    }
+  },
+  "replay": {
+    "patches": 19,
+    "files": 152,
+    "matched": true
+  },
+  "fixtures": [
+    "Google identity and native session identity in isolated end-to-end tests",
+    "Controlled classifier scores; actual indexed retrieval and rule evaluation wiring"
+  ],
+  "liveBeforeFix": {
+    "account": "diaskyle10@gmail.com",
+    "origin": "https://34.27.253.220",
+    "nativeClaudeSessionCreated": true,
+    "automaticCollectedMarkerReadable": true,
+    "archiveDocuments": 292,
+    "archiveCharacters": 34673841,
+    "mirrorReady": false,
+    "snapshotPreparationMs": 11984,
+    "nativeReadTimeoutObserved": true
+  }
+}
