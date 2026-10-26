@@ -1,0 +1,75 @@
+{
+  "version": "0.4.25",
+  "runtime": 58,
+  "runtimeSha256": "52458c164442683b4c3cd0be4ee1cf0c89c519b3cc61c56967c377c97ee491c8",
+  "nativeSha256": "5a1a442b3fed6c73f5adf12047792c447d8fcc5d8a5c3fb1fe7384b67a0c2f0c",
+  "compatibilitySha256": "9939900734dc7d2cb4c2a5e49b670a6830e5ef595f57c89a37528bf1f5cff0e1",
+  "state": "packaged; not yet published, installed or deployed",
+  "source": {
+    "manifest": "seamless-context-manifest.json",
+    "patches": 25,
+    "replayedFiles": 185,
+    "incrementalFiles": 31,
+    "cleanReplayMatched": true
+  },
+  "checks": {
+    "core": {
+      "passed": 527,
+      "failed": 0,
+      "skipped": 0
+    },
+    "ui": {
+      "passed": 135,
+      "failed": 0,
+      "skipped": 0
+    },
+    "originalSpecLifecycle": {
+      "passed": 15,
+      "failed": 0
+    },
+    "packaging": {
+      "bothAliases": true,
+      "passed": true
+    },
+    "extractedFeaturesAndLaunchers": {
+      "passed": 32,
+      "failed": 0
+    },
+    "packagedStdio": {
+      "passed": true,
+      "realHost": false
+    },
+    "packagedMailbox": {
+      "passed": true,
+      "profiles": 6,
+      "googleAndHostFixtures": true
+    },
+    "deployment": {
+      "passed": 16
+    }
+  },
+  "latency": {
+    "fixtureCharacters": 30120400,
+    "fixtureConversations": 400,
+    "productionArchiveSizeReadOnly": {
+      "documents": 332,
+      "characters": 34969530
+    },
+    "limitations": [
+      "Synthetic benchmark host differs from production hardware.",
+      "Live search cap 48 million characters; larger archives use snapshot rebuild.",
+      "Live queries limited to 2 workers and 8 waiting requests per database."
+    ]
+  },
+  "modelBenchmark": {
+    "state": "pending fresh installed-host run",
+    "priorEvidence": "natural-prompt-approved-verification.json"
+  },
+  "notes": [
+    "No persistent host permissions changed.",
+    "Direct Mail/iMessage sends remain P1, deferred.",
+    "Joining never enables private-library sharing.",
+    "Initial core failure exposed snapshot-dependent setup readiness and is fixed.",
+    "Initial packaging failure was outdated runtime57 assertion; updated to58."
+  ]
+}
