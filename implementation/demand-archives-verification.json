@@ -1,5 +1,5 @@
 {
-  "state": "packaged candidate; not deployed",
+  "state": "published and deployed; controlled real-host benchmark complete, gates remain",
   "nativeVersion": "0.4.27",
   "runtimeRevision": 60,
   "serverRelease": "20261026-demand-archives",
@@ -61,7 +61,25 @@
       "skipped": 0
     },
     "focusedCloud": 40,
-    "independentReview": "No blocker to removing idle prefetch; claimed jobs prepare current snapshots; web paths maintain their own archive."
+    "independentReview": "No blocker to removing idle prefetch; claimed jobs prepare current snapshots; web paths maintain their own archive.",
+    "publicLiveSmoke": {
+      "state": "passed",
+      "assets": 31,
+      "evidence": "demand-archives/public-smoke.json",
+      "healthSeconds": 1.464,
+      "desktopSeconds": 6.1,
+      "phoneSeconds": 12.376,
+      "limits": "Single sample, loading still slow; not a general improvement or model reliability claim."
+    },
+    "installedHostBenchmark": {
+      "passed": 5,
+      "guardedStop": 1,
+      "notStarted": 2,
+      "hostPermissionDenials": 0,
+      "savedConfigurationUnchanged": true,
+      "evidence": "demand-archives-native-benchmark.json",
+      "limits": "All four Codex cases and Claude correction passed. Claude synthesis hit the per-test allowlist guard on list_shared_context after four changed/restart replies; its remaining two cases were not started. Not a host denial. No default-host routing claim."
+    }
   },
   "productionDiagnosis": {
     "state": "read-only aggregate inspection",
@@ -75,9 +93,49 @@
     "interpretation": "The optional worker was eagerly rebuilding its separate archive with no runnable model job. Waiting-device tasks still prepare current context when resumed."
   },
   "limits": [
-    "Not deployed; no new performance claim.",
+    "Live; five ordinary-prompt cases passed, one guarded stop, two unstarted. Retrieval latency and revision churn remain open.",
     "The idle worker no longer prepublishes archive status; web status/read/setup polls or a claimed model task rebuild as needed.",
     "Native collection, web/MCP retrieval, folder mirroring and authority/expiry checks remain enabled.",
     "Paid infrastructure and saved permissions unchanged."
-  ]
+  ],
+  "production": {
+    "state": "passed",
+    "release": "20261026-demand-archives",
+    "filesVerified": 159,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "none; unchanged hashes, code-only activation",
+    "previous": "20261026-live-index",
+    "changedFiles": [
+      "dist/standalone/account-runtime/cloud-worker.mjs"
+    ]
+  },
+  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261026-demand-archives",
+  "productionProbe": {
+    "mode": "isolated read-only synthetic query; not serving path",
+    "characters": 35174109,
+    "sections": 7472,
+    "projectionMs": 8953,
+    "freshMs": 17068,
+    "patchedMs": 4984,
+    "readMs": 2,
+    "workerReadMs": 435,
+    "stats": {
+      "reused": 391,
+      "removed": 0,
+      "indexed": 0
+    },
+    "exactEquality": true,
+    "directNativeTransport": {
+      "searchSeconds": 14.1155,
+      "readSeconds": 4.9975,
+      "httpSearchSeconds": 14.0867,
+      "httpReadSeconds": 4.7401,
+      "status": 200
+    },
+    "limits": "Sequential samples after benchmark; earlier stages warm caches, so not interchangeable timings or a general latency guarantee."
+  }
 }
