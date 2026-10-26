@@ -8,10 +8,11 @@ simple membership controls.
 The [production application](https://34.27.253.220/) includes context-sharing
 spaces, one-request native plugin/MCP setup, automatic private collection,
 natural-language invitations, timed rules and leave/archive controls.
-The **0.4.22 / runtime56** native update removes network reads from startup resource
-discovery. See the [current spec recheck](docs/SPEC-RECHECK.md) and
-[machine-readable release evidence](implementation/spec-recheck-verification.json)
-for packaged, installed and production status, test counts and remaining gaps.
+The **0.4.23 / runtime57** update is published. It adds bounded context sharing,
+selected MCP resource ingestion and direct document reads during archive rebuilds.
+P0 production and native-host verification is in progress; see
+[the completion evidence](docs/CONTEXT-COMPLETION.md) for exact packaged,
+installed and live state. P1 email/iMessage delivery is outside this rollout.
 
 [See the desktop and phone walkthrough](https://kyle-cloud-w3.conductor.show/review)
 or [open the interactive preview](https://kyle-cloud-w3.conductor.show/preview/sample?view=conversations).
@@ -52,7 +53,7 @@ and simulated model/host responses. In the implementation repository, run
 
 ## One private cloud workspace
 
-[Download Meet Proxy / Commonplace 0.4.22](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.22)
+[Download Meet Proxy / Commonplace 0.4.23](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.23)
 for a cloud workspace containing supported synced chats, permitted agent-message
 threads, published working context, and previous cloud results. Your cloud agent
 can query the live message board, consult your connected native agents, wait for
@@ -66,7 +67,7 @@ See [personal agents](docs/PERSONAL-AGENTS.md),
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.22**. Enable only one alias. Existing accounts and
+update that alias to **0.4.23**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
