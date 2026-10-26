@@ -1,5 +1,16 @@
 # Meet Proxy Draft v3 compliance
 
+Latest behavioral check: [ordinary-prompt benchmark and approved retest](NATURAL-PROMPT-BENCHMARK.md).
+**Not yet consistently seamless:** the baseline Codex host answered four generic
+context questions correctly, but only three read full sources and one cited them.
+With the owner's exact per-run allowance, space creation/invitation, filtered
+context retrieval and leaving completed. Acceptance chose a blocked browser
+route; two questions missed the space-context tools; the provider rejected the
+private-data case before execution. Claude's metadata call now succeeds, but
+additional file-read approvals and a search timeout still prevented an answer.
+The 58 passing service regressions are separate evidence, not completed model
+flows. Neither benchmark changed deployment or saved permissions.
+
 Current release and acceptance evidence: [P0 native readiness](P0-NATIVE-READINESS.md)
 and [machine-readable verification](../implementation/p0-native-readiness-verification.json).
 **0.4.24/runtime57 is published and installed; production is
@@ -236,3 +247,14 @@ separate account-link row. Working installs are reused, app/account response
 races are fenced, and manual copying is a recovery flow. The 15th portable patch
 and `seamless-plugin-setup-verification.json` record the source/preview checks.
 Host approval/reload and OS deep-link verification remain distinct live gates.
+
+## Seamless-context follow-up (0.4.25 candidate)
+
+The ordinary-prompt failures led to MCP-first source retrieval and space routing,
+connector-generated IDs, bounded retry handling, prioritized changed-chat uploads,
+and live authoritative search while the snapshot builds. Setup readiness now
+requires actual visible canonical content from the selected installation. Existing
+private audience, rule, expiry, host approval and legacy thread boundaries remain.
+The [rollout record and walkthrough](SEAMLESS-CONTEXT.md) separate deterministic
+checks from publication, installation and the fresh model benchmark. Passing
+fixtures alone do not close the natural-prompt acceptance gap.

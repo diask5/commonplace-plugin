@@ -241,3 +241,14 @@ manifest records input/output hashes and order; `context-completion-verification
 records test logs and native/runtime artifact digests. Read [the candidate and
 activation gates](../docs/CONTEXT-COMPLETION.md) before release. Packaged checks are
 not evidence of installed or deployed readiness.
+
+## Seamless context retrieval and setup
+
+Apply `seamless-context.patch` twenty-fifth, after `p0-native-readiness.patch`.
+It adds MCP-first routing, generated request IDs and bounded safe retries,
+authoritative live archive search with post-read fences, prioritized private
+collection and installation-specific canonical readiness. The 31-file incremental
+patch reproduces all 185 changed implementation files with the preceding chain.
+The candidate is 0.4.25/runtime58. See `seamless-context-verification.json` and
+[the rollout record](../docs/SEAMLESS-CONTEXT.md) for the distinction between
+packaged, deployed, installed and real-model-tested state.
