@@ -5,6 +5,10 @@ SHA-256 `1d061a660d1e280c4f33a111fdabb1c5fb8fc52a3aa4cd86ebe4fee5f396091d`.
 This audit uses the owner's later instructions as amendments, not as missing
 features to undo. The original spec remains unchanged.
 
+The later [completion candidate](CONTEXT-COMPLETION.md) implements the remaining
+source/package feature gaps and a direct document-read path. It is not live;
+the production and real-host evidence below remain the last verified baseline.
+
 ## Decision
 
 Do not label the entire spec or every real-user journey complete. The core

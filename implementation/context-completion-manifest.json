@@ -1,0 +1,283 @@
+{
+  "name": "Context completion, native sources and bounded document reads",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "context-completion.patch",
+  "sha256": "c75aa935a18d54e6521ee05c731d235b04370cfb483bd8acead8f3dfae78a64f",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch"
+  ],
+  "state": "0.4.23/runtime57 candidate; packaged and live state tracked separately",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/archive-builder.mjs",
+      "beforeSha256": "be358e0c57e9a6437e8d58c1917e1f2dfa6fd689b32664871ef2cce8a6b1d34a",
+      "sha256": "9dd03fcf48f2f9071bf2294d5152b5ee1b6e437e7a7ff887b73b75f80d48675c"
+    },
+    {
+      "path": "apps/commonplace-account/server/archive-index.mjs",
+      "beforeSha256": "75f7383a2bd3a57b9addba60aa84402ef448d8b7c8a1cc890f33aa1127cb842e",
+      "sha256": "7da7526279013022a30e46a69a4bc7f31d4c63f95c8deb56918d9a971167a366"
+    },
+    {
+      "path": "apps/commonplace-account/server/archive-source.mjs",
+      "beforeSha256": null,
+      "sha256": "43655234d9117f7690e1adfde3e216ae1e885950c96e8ef9e7d38c472d27c0cb"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-archive.mjs",
+      "beforeSha256": "5c662b439466f7f13b6f5a18e0a73f2db905454b1f251c219a19482f81c81073",
+      "sha256": "ac2a7a0615ae535847231218916dcbbd5093aaf040b80ad4b720d4deea6d774c"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-setup.mjs",
+      "beforeSha256": "dd489e68f680e5e0eeccf789bf19dbcb3caa962af49da525e577af1fbb4e42ec",
+      "sha256": "0348087946c6c9f2d067e5c895406d283cc6afb75e8a9e2ef1e582ea7bbfd5a6"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-conversations.mjs",
+      "beforeSha256": "52511f2552d02d5006013bccd324807845a816986cad24cc3272d2ddddd4d022",
+      "sha256": "0f749f9336695b7b828ce4b5a53684db1d6045ff34a1aaf8d6cc2afbf113acb3"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-product.mjs",
+      "beforeSha256": "8456655ee0e826ab0fba427736bf36b3b6760e2a1a23fd0790d7ccfce62a692c",
+      "sha256": "58a52fd448829492be0d77b50ddb01d66d83005b5a6f91af872234688d25264a"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/mcp-resource-source-setup.mjs",
+      "beforeSha256": null,
+      "sha256": "c1822b335c202b2fa98fa4546d92474771c2926552b86d4823529e2e4f76d52a"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/personal-assistant-setup.mjs",
+      "beforeSha256": null,
+      "sha256": "8334986d1151320ad551d9fefbef53dbe54d88f08384b6348ee3a960913b16dc"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-http.mjs",
+      "beforeSha256": "3be7f1ff6cfdbf744d032307d34d0b966b8fd034291efff0231eb77fbdfec062",
+      "sha256": "826d960707890d84f02a0c359ca0ddbef8256b2aa76e371bc76a7661033a57ec"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-style.mjs",
+      "beforeSha256": "ee59e654fab28ebae475bef047a22aa4cc513321605b4b6c26496b4f6289700a",
+      "sha256": "fe2a177fc04156b19247524584e54122065eca457b71f9c997f3094def1e49ef"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-ui.mjs",
+      "beforeSha256": "e8ba76269cf87e909d49f4c0885242c9243724aaf837dc3411cf7b7a5977d669",
+      "sha256": "5bbe63f40fef05f49d905c6f07d4b6270b866cdf8b28195de9c08b131b6a5b18"
+    },
+    {
+      "path": "apps/commonplace-account/server/mcp-adapter.LICENSE.txt",
+      "beforeSha256": "17bb251a218da866de24d5714e6c357d181a281b969a54b0db806f55287d8caa",
+      "sha256": "54879c5274805e5ecbcc9375be8c635624d33fce41fb6723bd86b536455a8038"
+    },
+    {
+      "path": "apps/commonplace-account/server/perplexity-decisions.mjs",
+      "beforeSha256": "26c60a200d80fd3fee1893380805521e0e64ee5ad18f5400fe9f2753aa13f145",
+      "sha256": "b1e4d8dbf31187ac05687fe0b07c9917508229acd41eed60eb192b620b31edc1"
+    },
+    {
+      "path": "apps/commonplace-account/server/policy-context-mcp.mjs",
+      "beforeSha256": "8f115c4b6f7221318e776143b023b881f27806474e133f4d0233dce21a21e91c",
+      "sha256": "a8cde3bdd5a8e85a4dc5821bf71d81bc48469a80b43d5d833ce9683a54998d6e"
+    },
+    {
+      "path": "apps/commonplace-account/server/policy-context.mjs",
+      "beforeSha256": "53274eb64809823d0438fe1db57c7702aaefefbbd7c1f2cd195cbec3f28e74e2",
+      "sha256": "5f617bf6274012edd21f61166f2b93cc0c20097d016c65fff803d71e30613686"
+    },
+    {
+      "path": "apps/commonplace-account/server/remote-mcp.mjs",
+      "beforeSha256": "d3936ffabf4463eb129f21875c1375480b5c9b8c2e4c0930bec50182aafe7948",
+      "sha256": "e6b5029321653dc3e3bb331a8224a133334439d7e0673ff8d2c5081c2122b39d"
+    },
+    {
+      "path": "apps/commonplace-account/server/shared-context.mjs",
+      "beforeSha256": "ad46eed7839ed5fcd8f7fb51bf5d565b7a98273d69b71af35ffc344fa36561ed",
+      "sha256": "93d4184bcceac82987ca3e32485decaa079cd956c3b63d8168e8d47f3d203da3"
+    },
+    {
+      "path": "apps/commonplace-account/server/space-context.mjs",
+      "beforeSha256": "eb4e587e796a4bc15bc6ae5d41085d62fa66a89ec6e516ba3fd9b53e918b5a74",
+      "sha256": "03cf7a8e15d538b0ce331422d73839dd612251fca6f11a7891b5874a64f12bde"
+    },
+    {
+      "path": "apps/commonplace-account/server/unified-context.mjs",
+      "beforeSha256": "33db0e0e6b26ad64797455b4cc9f942a18aa7ca5271cf260c7145412b5ad8718",
+      "sha256": "5b9274fa572c8f62ffd3277d6d84e46036f0d029ea3b58a684ff9c40433c512d"
+    },
+    {
+      "path": "apps/commonplace-account/server/workspace-network.mjs",
+      "beforeSha256": "bf298b7f76d23b6780fa47e991951bddfb326029043f75eb6d6105d9f79aa276",
+      "sha256": "1004b5b71cd32f893d2fe37600791b7e964d56fd8f7fa94803656c8f72305de9"
+    },
+    {
+      "path": "apps/commonplace/server/account-inbox.mjs",
+      "beforeSha256": "e1731b398911e20aeb671ba3a2ec0207f9ef72320f8d929ce826f29a7e04487f",
+      "sha256": "cd343bba13006217b1ab2794936415d5639582bdb875f2155350bbe09bb67ca6"
+    },
+    {
+      "path": "apps/commonplace/server/contact-delivery.mjs",
+      "beforeSha256": null,
+      "sha256": "7e41ad5f03b1a3c49285655f9e8ba4d7fcc1933c55fdfe0f7b3c584ae27dae7e"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "cb868d53b3d7219c74a800eac3d1e50ba2924ff8bbf6b4bd01c880d9441f3305",
+      "sha256": "9351b50d0eec027c286a7887b30180d5c0144b11faa0aa95ef3414a837b4baf1"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-adapter.LICENSE.txt",
+      "beforeSha256": "17bb251a218da866de24d5714e6c357d181a281b969a54b0db806f55287d8caa",
+      "sha256": "54879c5274805e5ecbcc9375be8c635624d33fce41fb6723bd86b536455a8038"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-resource-ingestion.mjs",
+      "beforeSha256": null,
+      "sha256": "81d5ecd142d481aff7ec4c695c94003e86c6c833c6a3abf140b2ed18263b9e23"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-resource-tools.mjs",
+      "beforeSha256": null,
+      "sha256": "0a86ef8521987f1397041f447c2ac4e6224f7ee24a60aef86493a3fe19d270a7"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-resource-transport-source.mjs",
+      "beforeSha256": null,
+      "sha256": "ac04c8e5967360257740910cf7fc6c8a9a93652f02dcdaa7e58bd63767edc964"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-resource-transport.LICENSE.txt",
+      "beforeSha256": null,
+      "sha256": "2b27a12aaf7378e51011e4201e5a93aa6e26e66a1373f9698351196d0b13066f"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-resource-transport.mjs",
+      "beforeSha256": null,
+      "sha256": "6497facf3614634cc8c4263acbfb19af6529aee58d0c5e5399283d65eecbcdd4"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "73a132ac7324d186dc42e7c342134102a7d372be542efb028d7e300d538e4232",
+      "sha256": "c8811b56ed2fe502e6e800c738205a79d592219e9e31ea3416c1fe871ce407ed"
+    },
+    {
+      "path": "apps/commonplace/server/start.mjs",
+      "beforeSha256": "465941db4d61b6e128b0e6316bf441a81249b34da8d46089fe87e333f5917e0e",
+      "sha256": "caa718fe9c5f4ad935a828dbe593b25b963094762738bea33d61ab0339ca9644"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "234da2547bdf4727b0390cf4e32c32033179cfc2124540a1f875b33b4095330c",
+      "sha256": "af86de88ef17f7f50d5de4b6663a6f0d11ed83f7de3649715e1fc48eb6793430"
+    },
+    {
+      "path": "scripts/build-mcp.mjs",
+      "beforeSha256": "ddebb407b93d974cbdc6f80fc67c486a61955f92a37d66988ca00965925bbfb4",
+      "sha256": "99a232095890fc5907b62edd6d61752b08ce07de281c6d3ca7877c34662a6a84"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "a0fa8890474849df912efb9f306ecfd39a466f3ff303dcc4364a496f278cde01",
+      "sha256": "cd09577e6609125ee07ec04eba9bf5f35911c803b22d08c02637791f23e03463"
+    },
+    {
+      "path": "scripts/relay.mjs",
+      "beforeSha256": "89af4824c7a51d6bd1b82a16a99d6c3a3838d73af3dd2663213063cdb253516b",
+      "sha256": "0bb755f66ae4439f5c00fdf92cd90352ec991e9145f046128ba03ad508ee37b4"
+    },
+    {
+      "path": "scripts/smoke-plugin.mjs",
+      "beforeSha256": "f9103fa5da3460194dd7d3354ba7df31afecef24f32faa2658ddcba005540567",
+      "sha256": "241da170f63b30eefeeb939175763645432c9ce8e6d1267b44735c31e03ce916"
+    },
+    {
+      "path": "tests/cloud-archive.test.mjs",
+      "beforeSha256": "93f539cd7e1c78184ec94d20b742e1c79728295f0b6f003da8096ce57f74de97",
+      "sha256": "19e9af4f188bb8cb244cd3a0a47c5ba5ec5ef1d60ddab6ec6f4ba4c8b81e6670"
+    },
+    {
+      "path": "tests/cloud-unified-context.test.mjs",
+      "beforeSha256": "0d4e4904a6e069ce53f0b6f695dd856ed0395767eaa31f1f5e0d2a41da08c86c",
+      "sha256": "2a79e06d667213024fa17fb5e0ba7ea27352cd636a74503f11a57f8a06e6ce47"
+    },
+    {
+      "path": "tests/cloud-workspace.test.mjs",
+      "beforeSha256": "d505c5ed1923600caf47ecbab4ea985c6a93479ae8253ddebb3e8c68d6af682a",
+      "sha256": "ca225bca181cb3cc10d7f0e83aa1d90ea9a23839a0b18ab4bc1ed978c59c1482"
+    },
+    {
+      "path": "tests/contact-delivery.test.mjs",
+      "beforeSha256": null,
+      "sha256": "7160dede14d0d2b5aae0dfd6b51392644e2b3cdd816a5ae4f34f1f2b14af43bf"
+    },
+    {
+      "path": "tests/mcp-resource-ingestion.test.mjs",
+      "beforeSha256": null,
+      "sha256": "fa06bdb060668c6c4dd52f822a8470abd432ae7bc43f4a6f3be24c0136f566a6"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "6cd81421ed47eaf519974d5ffa1796d7196c93e1d7655cea883f91f7548eed52",
+      "sha256": "b127857975d5143165bfd637a243acafe997fe3c6455be84ea3d114197c34754"
+    },
+    {
+      "path": "tests/personal-assistant-setup-browser.test.mjs",
+      "beforeSha256": null,
+      "sha256": "acd4c8c5d340914b5f1c755bcd7a9956ab13b67343e55689fecdd0ebb815dc85"
+    },
+    {
+      "path": "tests/personal-assistant-setup.test.mjs",
+      "beforeSha256": null,
+      "sha256": "5107f87bab3274c02986a2e95faae5bb34abf77c1d2e39613a21765e64472b18"
+    },
+    {
+      "path": "tests/policy-context.test.mjs",
+      "beforeSha256": "570df277412a76931d1677751b3e7cc920d28c718678ce0a8153798b6001d01c",
+      "sha256": "d99b12030319a74ef47151fdc98db04fc488585695e0737738aaec1d42af2e5c"
+    },
+    {
+      "path": "tests/relay.test.mjs",
+      "beforeSha256": "4e590b9af35f04446f460d0c10bdaa5264c545b46ea167ef5a221f38502a642d",
+      "sha256": "7bdc57fc319113054ac68283565a5ac3eff9cc8f2d9349a03afc373c72489dba"
+    },
+    {
+      "path": "tests/space-context-mcp.test.mjs",
+      "beforeSha256": "146e4ad7fb7494c5b31c3871f4d957143060f11eda03ebf74ae26ff2c50c2ee1",
+      "sha256": "0aa993e9a615ef49f711d620b0d83d53c8695991ac6741b827400ff8bc17d396"
+    },
+    {
+      "path": "tests/space-context-pagination.test.mjs",
+      "beforeSha256": null,
+      "sha256": "2483fa0cee13912c301e3fc3746238909ce09fc6796974ad77afb2d304b883b7"
+    },
+    {
+      "path": "tests/space-exchanges-browser.test.mjs",
+      "beforeSha256": "02e54e1de6b3ac964c8895c87f64c6d5e92e313b68e1340efbc8bb32c587a36b",
+      "sha256": "d0bc13731f5fc661afb1735541b54d5d601f0fe013bf3a6878e106d0abea52fe"
+    }
+  ]
+}

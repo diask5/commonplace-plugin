@@ -32,8 +32,7 @@ Native context-space tools create/invite/preview/accept/leave/archive within cur
 account and workspace scope. Joining never enables private-library sharing.
 See [the current readiness audit](docs/CONTEXT-MVP-READINESS.md) and
 `implementation/context-mvp-verification.json` for release state.
-See [live setup](docs/LIVE-CONTEXT-SETUP.md) for release status and evidence. Upstream MCP ingestion and
-safe chunking of large documents remain pending. Current live state and limits are in [the rollout record](docs/CONTEXT-MVP-ROLLOUT.md).
+See [live setup](docs/LIVE-CONTEXT-SETUP.md) for release status and evidence. Upstream MCP ingestion, bounded long-document chunks, compatible-assistant setup and contact adapters are packaged in the unreleased 0.4.23/runtime57 candidate; see [candidate evidence and live gates](docs/CONTEXT-COMPLETION.md). Do not report them installed or live. Current live state and limits are in [the rollout record](docs/CONTEXT-MVP-ROLLOUT.md).
 The [message-first spaces record](docs/MESSAGE-FIRST-SPACES.md) is historical.
 The older document picker remains
 available as a secondary flow while scoped invitation grants are pending. Account profile and settings live behind the avatar. Existing
