@@ -5,12 +5,15 @@ native identity, setup actions or permission changes. Private receipts stay loca
 """
 from pathlib import Path
 import json,os,subprocess,threading,queue,time,sys
-h=Path.home();root=Path(os.environ['MEET_PROXY_BENCHMARK_DIR']);plugin=h/'Library/Application Support/Meet Proxy/plugins/0.4.26'
+h=Path.home();root=Path(os.environ['MEET_PROXY_BENCHMARK_DIR'])
 os.umask(0o077)
 plan=json.loads((root/'plan.json').read_text());projects=[c['project'] for c in plan['cases']]
+version=plan.get('nativeVersion','0.4.26');revision=plan.get('runtimeRevision',59)
+assert version in {'0.4.26','0.4.27'} and revision in {59,60}
+plugin=h/'Library/Application Support/Meet Proxy/plugins'/version
 seeds={key:json.loads((root/'evidence'/key/'result.json').read_text()) for key in ['seed-plan','seed-update']}
 assert all(v['exitCode']==0 and not v['calls'] and not v['stoppedReason'] for v in seeds.values()),'Seed generation did not complete cleanly'
-assert json.loads((h/'.commonplace/runtime.json').read_text())['revision']==59
+assert json.loads((h/'.commonplace/runtime.json').read_text())['revision']==revision
 account=json.loads((h/'.commonplace/account-client.json').read_text())['session']
 assert (account.get('humanAccount') or account.get('account'))['email']=='diaskyle10@gmail.com'
 env=os.environ.copy()
@@ -58,7 +61,7 @@ with (root/'readiness-mcp.stderr.log').open('w') as err,(root/'readiness-receipt
     body=json.dumps(read)
     marker='Planning note, 2026-10-20' if key=='seed-plan' else 'Decision update, 2026-10-25'
     if marker in body and all(project in body for project in projects):found.append(key)
-   result={'ready':len(found)==2,'seedsVisible':found,'runtimeRevision':59,'waitSeconds':round(time.monotonic()-started,2),'method':'real installed MCP search and supporting source reads; optional mirror not required'}
+   result={'ready':len(found)==2,'seedsVisible':found,'runtimeRevision':revision,'waitSeconds':round(time.monotonic()-started,2),'method':'real installed MCP search and supporting source reads; optional mirror not required'}
    (root/'ingestion-ready.json').write_text(json.dumps(result,indent=2)+'\n')
    if result['ready']:break
    time.sleep(15)
