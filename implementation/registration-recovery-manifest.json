@@ -1,0 +1,116 @@
+{
+  "name": "Keep existing context reads independent of new-chat registration and fence archive output",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch"
+  ],
+  "patch": "registration-recovery.patch",
+  "sha256": "fa0ce5998ca6a39d798ea992ee65f2b832a5b3aafe190966cdc6f0725cf40171",
+  "state": "Native 0.4.27/runtime60 and server registration-recovery follow-up; lifecycle evidence is tracked in registration-recovery-verification.json.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/cloud-archive.mjs",
+      "beforeSha256": "b1e809b145e60dc1ea4d5ba89f6b530fe3a897685ce00473257b7fa794c6189f",
+      "sha256": "45897248a1eaa063bb25e91b89d581bb0958f88e747ecdbb5009179eb7a2503b"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-work.mjs",
+      "beforeSha256": "6814b0380d56aedd0752ab8309ab163ec0b783091ff33496f3fb6406ef5489c0",
+      "sha256": "27791e72d1b931da84d0e3bb351a0271b92042d0ef4601c46ae95c70baacbe93"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-worker.mjs",
+      "beforeSha256": "453ab675341d22662290d1ceb71a56b540c7425b81f94ac22dc07e9eb633ace6",
+      "sha256": "b54aaef60ad5063c807b2b899748e81b97a90a79c0e9e587227040e558bfc876"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-setup.mjs",
+      "beforeSha256": "4b9d501885619a968f85f69811daa352f162f56e5d072d66c8e98d73b26157f6",
+      "sha256": "a6d035f5431db260608a32160beda3905ca5747d82df116001dc197ba2f340b1"
+    },
+    {
+      "path": "apps/commonplace-account/server/remote-mcp.mjs",
+      "beforeSha256": "838ed12e1bd3762c726e0b9228fbe7f273a707b58c9882073984bcd5aa9bfe98",
+      "sha256": "c58832170a5b81bea7f925fa88be4a2b8140b58a6476f13c4efe71e61e876d83"
+    },
+    {
+      "path": "apps/commonplace/server/agent-auth-client.mjs",
+      "beforeSha256": "f6dc18fea58b1394bcd008afa0d1c59ac3a2a018cc7712d1bf94400b316a7bde",
+      "sha256": "2ae5ce74b9fbee676677e0bcef16ea95679420989d5f8f7414a5e7e1913513b3"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "094b4b9a3a5b5058b548ee31986511dbc79c2b1ee7be7c564e87b646026d1d04",
+      "sha256": "60ca3a81c12935263f890514a31fc8d1bf5de4575b0befc77357e317d5efefdb"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "03d7eae5f6a07477d697cc7c4e0e3bb0ab25c8908d6a36544925b26c7de36cfd",
+      "sha256": "6bba3460d43f3f1fcaa9801ccf1af21d9b801717c6c5d6ace669b972d9fd006e"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "7b322233ddaf55d8c08ded0a3a047e21bd0ae962979fabc7dea757cbf3154eab",
+      "sha256": "6d801940ead7e22fd32a027ff16ef45e26281e24b64f0382bc7d089e1aee752f"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "0882df59376a6db786a5d3650189045f937cbbb585fadde7b9f002e65541ba43",
+      "sha256": "d3fdb2d3900ac28dc92f3d9e9ef362d407049912baca228868874375d437a6c9"
+    },
+    {
+      "path": "tests/agent-auth-registration-queue.test.mjs",
+      "beforeSha256": null,
+      "sha256": "521da74660eddc70d337247ec5e68c01041da27a13f4ccf168b5775bca7b9b55"
+    },
+    {
+      "path": "tests/archive-short-transaction-authority.test.mjs",
+      "beforeSha256": null,
+      "sha256": "9536507570edb558e13534e0353f4184747d731c5a1751faf17a885f28da9e12"
+    },
+    {
+      "path": "tests/archive-short-transaction.test.mjs",
+      "beforeSha256": null,
+      "sha256": "67558923a3286a87ba7359d010499363fdbe6a194f44d743631ae9c24d63906f"
+    },
+    {
+      "path": "tests/cloud-worker-archive-authority.test.mjs",
+      "beforeSha256": null,
+      "sha256": "cbdd3df21f71f2429912821c5b70f311c544b78d8584e4cd5d81407c08ecd324"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "8efa5d740b7867bd9312ce01d1753a99b1d1c3cda7af43a6c7cd268b1246c81d",
+      "sha256": "578183f5e4c4e61b8c5fc12488ae510f8931362deb66ef7cf16afc3fdc0162bc"
+    }
+  ]
+}

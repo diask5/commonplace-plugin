@@ -280,3 +280,12 @@ Apply `public-assets-delivery.patch` after `server-io-recovery.patch`. All 29 pa
 ## Context read performance
 
 Apply `context-read-performance.patch` after `public-assets-delivery.patch`. All 30 patches reproduce 196 implementation files. This server-only release adds migration 0045 (three indexes), local snapshot verification and archive I/O reductions. A full database backup/rehearsal is required; never use code-only deployment for this migration. See [verification and state](../docs/CONTEXT-READ-PERFORMANCE.md).
+
+## Registration recovery — patch 31
+
+Apply `registration-recovery.patch` after `context-read-performance.patch`.
+All 31 ordered patches reproduce 201 implementation files. Native 0.4.27/runtime60
+keeps existing session requests independent of new-chat registration. Server
+changes shorten archive read transactions and fence stale model outputs inside
+the publication transaction. See [the release record](../docs/REGISTRATION-RECOVERY.md)
+and `registration-recovery-verification.json` for activation and live evidence.
