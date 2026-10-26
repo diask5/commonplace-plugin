@@ -1,5 +1,12 @@
 # Context product direction — 25 October 2026
 
+This document preserves the design's evolution. Current release and acceptance
+status is in [current-source retrieval](CURRENT-SOURCE-READS.md) and
+[spec compliance](SPEC-COMPLIANCE.md): 0.4.28/runtime61 is live and installed;
+0.4.29/runtime62 is a draft candidate. Historical preview/deployment statements
+below are not the current production state. Native setup now includes automatic
+private collection with no sync checkbox, as required by the later owner amendment.
+
 The owner's current instruction supersedes the agent-centric home/onboarding in
 Draft v3. Meet Proxy supplies explicitly authorized context through MCP or a
 local context folder; the existing Claude/Codex application supplies inference.

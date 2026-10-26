@@ -1,13 +1,40 @@
 # Meet Proxy Draft v3 compliance
 
 A packaged 0.4.29/runtime62 page-size guidance candidate addresses observed invalid
-model arguments; it is not live. See
+model arguments. Native and server assets are verified GitHub drafts; it is not live. See
 [the candidate record](../implementation/read-page-guidance-verification.json).
 
 Latest release: [current-source retrieval 0.4.28/runtime61](CURRENT-SOURCE-READS.md), published, installed and active. Server `20261026-current-read` is live; ordinary-prompt verification produced seven clean passes and one correctly surfaced synthetic-name conflict. The separate clean synthesis retest stopped after connection errors and an unapproved diagnostic-tool selection; acceptance gates remain. Earlier records below retain their own release dates.
 
-Latest server release: [demand-built archives](DEMAND-ARCHIVES.md), with native
-0.4.27/runtime60 installed and active. Production is `20261026-demand-archives`.
+## Current P0 acceptance
+
+The owner's Spaces/context-sharing amendments supersede agent-centric screens
+and hosted answering. **P0 is not fully accepted.** Passing service fixtures does
+not close the live model or real-user coverage gaps below.
+
+| Requirement | Verified evidence | Remaining acceptance |
+| --- | --- | --- |
+| Google → Claude/Codex Desktop → automatic private collection | Both real existing-owner Desktop handoffs completed at 0.4.24; exact host identities and installation receipts recorded. 0.4.28/runtime61 is installed and active. | A clean machine/new-account walkthrough has not been completed. Older open chats can require host reload. |
+| Ordinary questions find current context and read supporting sources | 0.4.28: seven clean passes, one correctly surfaced synthetic-name conflict; every final citation matched a successful read. | The uniquely named synthesis replacement failed two reads, then stopped at an unapproved diagnostic selection. Its transport cause and clean answer remain open. |
+| Invite → accept → connected, in natural language | Disposable real-service creation/invitation passed; signed API and browser membership tests pass. | The model acceptance case attempted a denied browser route. Explicit approval for the prepared MCP-only retest is pending. Default-host routing and new cross-person production acceptance are unverified. |
+| Messages first; both sides see exchanges | Deployed Spaces / My context UI, compact Messages / My sharing rules / Members header; browser and signed-service audit checks pass. Both fixture owners saw the same approved exchange. | New cross-person production walkthrough remains unverified. |
+| Private rules govern every context request | Parallel classifier checks, approved-only chunks, private rejection/check views, authority/source/expiry fences and pagination have passing regressions. Real classifier benchmark has zero false allows in its small synthetic sample. | The provider-refused private-data model case is not a classifier pass and is not being retried around the refusal. No claim of universal classifier accuracy. |
+| Either side can revoke access | Service/browser leave, removal, expiry and old-invitation fences pass; model leave revoked stored membership. | The later model question chose unrelated tools; model-path post-removal verification is incomplete. |
+| Host permissions remain authoritative | Saved settings stayed unchanged; host denials and test-tool guards stopped dependent work. | Additional Claude test tools and the MCP-only acceptance route await exact approval. |
+| Production matches reviewed artifacts | 159 files and all three services verified for `20261026-current-read`; public asset/protocol and desktop/phone checks pass. | Further VM diagnostics/deployment wait for completion of the existing-account GCP browser reauthentication already started on the Mac. |
+
+Supporting records: [current retrieval](CURRENT-SOURCE-READS.md),
+[real Desktop setup](P0-NATIVE-READINESS.md),
+[original natural-prompt failures](NATURAL-PROMPT-BENCHMARK.md), and
+[candidate package verification](../implementation/read-page-guidance-verification.json).
+The 0.4.29 draft does not close these gates. The unintended empty ChatGPT space
+still requires owner cleanup. Direct Mail/iMessage sends remain deferred P1;
+proposed details and the old selected-document sharing flow are not new P0 gates.
+
+## Earlier release records
+
+Previous server release: [demand-built archives](DEMAND-ARCHIVES.md), with native
+0.4.27/runtime60. Production then was `20261026-demand-archives`.
 All 159 deployed files match the release; 583 core regressions pass. All 31 public
 assets, protocol checks and desktop/phone sign-in passed. These do not certify
 model behavior or a fresh authenticated setup.

@@ -1,5 +1,5 @@
 {
-  "state": "packaged and verified candidate; not published, installed or deployed",
+  "state": "packaged and verified; native and server GitHub drafts uploaded, not published, installed or deployed",
   "nativeVersion": "0.4.29",
   "runtimeRevision": 62,
   "liveReleaseUnchanged": "0.4.28/runtime61; server 20261026-current-read",
@@ -97,6 +97,85 @@
     "Model behavior with these hints is not yet tested.",
     "No published download or active host was changed.",
     "Final natural-prompt and acceptance tests await exact per-test approvals.",
-    "GCP reauthentication process last known live; two subsequent observations timed out waiting for Mac client. Not restarted or treated as terminal."
-  ]
+    "Existing same-account GCP reauthentication still running with no success/error marker on latest Mac observation. Mac reachable again, runtime61 remains active; no duplicate login started."
+  ],
+  "draftReleases": {
+    "native": {
+      "tag": "meet-proxy-v0.4.29",
+      "draft": true,
+      "url": "https://github.com/diask5/commonplace-plugin/releases/tag/untagged-58c724e79959b1fe163c",
+      "targetCommit": "a389b84f90af444e025fd96ffb0d7c191eb18a3f",
+      "assets": [
+        {
+          "name": "commonplace-0.4.29-build.json",
+          "sha256": "48320a7861f04e3360730104ce5a8bd099111dba12d0bbcc40a83430d6c03d4b",
+          "bytes": 7438,
+          "uploaded": true
+        },
+        {
+          "name": "commonplace-0.4.29.sha256",
+          "sha256": "0ba2d9c6ff5f1be7fe1e5a127d5d53952884a52add7758d346b8c4171356c473",
+          "bytes": 89,
+          "uploaded": true
+        },
+        {
+          "name": "commonplace-0.4.29.zip",
+          "sha256": "4e06ad07deb2218c45603ac56cf0f96b80d907ff438470d2965d6e8ff5d36754",
+          "bytes": 230156763,
+          "uploaded": true
+        },
+        {
+          "name": "meet-proxy-0.4.29-build.json",
+          "sha256": "383808a6dd45aabe8437bce5084bee75af63b140dbd828df346cc822a6dcf482",
+          "bytes": 7436,
+          "uploaded": true
+        },
+        {
+          "name": "meet-proxy-0.4.29.sha256",
+          "sha256": "e0550fb8129c4b9e74725fc876fd0254a7d9c1281a35034a3279a1cc15009a5f",
+          "bytes": 88,
+          "uploaded": true
+        },
+        {
+          "name": "meet-proxy-0.4.29.zip",
+          "sha256": "e6e5def8afdef0f7cd96702c32f9fb90d3085b32b2bafb857bd97adcdaac3192",
+          "bytes": 230156763,
+          "uploaded": true
+        }
+      ]
+    },
+    "server": {
+      "tag": "meet-proxy-server-20261026-read-pages",
+      "draft": true,
+      "url": "https://github.com/diask5/commonplace-plugin/releases/tag/untagged-e9512e7239fe48086e68",
+      "targetCommit": "a389b84f90af444e025fd96ffb0d7c191eb18a3f",
+      "assets": [
+        {
+          "name": "deploy-cloud-update.py",
+          "sha256": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408",
+          "bytes": 12117,
+          "uploaded": true
+        },
+        {
+          "name": "runtime-update-manifest.json",
+          "sha256": "381c5feb8547d2f0c1e57cf19b2a77afebd430548d31277992a9d4ce67181e99",
+          "bytes": 27225,
+          "uploaded": true
+        },
+        {
+          "name": "runtime-update.json",
+          "sha256": "4faf5592d70514b75291aef702f42fc7f32cd7b2a482884f0512826b07815c17",
+          "bytes": 2731381,
+          "uploaded": true
+        },
+        {
+          "name": "runtime-update.sha256",
+          "sha256": "bb496b6b403c7a8f923ff2a7b0201e75547498cf16e4efe75dda0c2cb9937aef",
+          "bytes": 86,
+          "uploaded": true
+        }
+      ]
+    }
+  },
+  "draftVerifiedAt": "2026-10-26T10:42:49.267361+00:00"
 }

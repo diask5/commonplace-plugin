@@ -1,11 +1,16 @@
 # MCP adoption source delivery
 
-**Current published native release: 0.4.24 / runtime57.** Its P0 native
-fix is preserved in `p0-native-readiness.patch`. Apply all 24 patches
-in `p0-native-readiness-manifest.json` order (`applyAfter`, then `patch`).
-The clean replay reproduces 178 implementation files. See
-[P0 live readiness](../docs/P0-NATIVE-READINESS.md) for release evidence;
-installation and production activation are distinct from packaging.
+**Current published, installed and active native release: 0.4.28 / runtime61.**
+Server `20261026-current-read` is live. Apply the 34 patches listed in
+`current-read-manifest.json` order (`applyAfter`, then `patch`) to reproduce its
+203 implementation files. See [current release evidence](../docs/CURRENT-SOURCE-READS.md).
+
+Candidate **0.4.29 / runtime62** adds patch 35, `read-page-guidance.patch`.
+Its native and server assets are verified GitHub drafts; it is not published,
+installed or deployed. Use `read-page-guidance-manifest.json` for that candidate's
+full ordered chain. Installation and production activation remain distinct from
+packaging. The sections below preserve historical milestones and their original
+release states; they do not override this current release record.
 
 The latest web UI update is [the guided sharing walkthrough](../docs/SHARING-WALKTHROUGH.md).
 Its [verification record](sharing-walkthrough-verification.json) distinguishes

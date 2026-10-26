@@ -2,11 +2,12 @@
 
 Latest release: [current-source retrieval 0.4.28/runtime61](CURRENT-SOURCE-READS.md), published, installed and active. Server `20261026-current-read` is live; ordinary-prompt verification produced seven clean passes and one correctly surfaced synthetic-name conflict. The separate clean synthesis retest stopped after connection errors and an unapproved diagnostic-tool selection; acceptance gates remain. Earlier records below retain their own release dates.
 
-Current release: [0.4.27/runtime60 registration recovery](REGISTRATION-RECOVERY.md),
-installed and active; server `20261026-demand-archives` is live ([server update](DEMAND-ARCHIVES.md)). The
-latest completed real-host benchmark passed 4/8, with citation grounding and timeouts
-still unresolved. The current release passed five cases, hit one test allowlist guard and left two
-unstarted; no host denial or saved-permission change. The 0.4.24 evidence below remains historical.
+Previous release: [0.4.27/runtime60 registration recovery](REGISTRATION-RECOVERY.md)
+with server `20261026-demand-archives` ([server update](DEMAND-ARCHIVES.md)).
+The earlier live-index benchmark passed 4/8. The separate demand-built benchmark
+passed five cases, hit one test allowlist guard and left two unstarted; no host
+denial or saved-permission change. Both are superseded by the 0.4.28 evidence
+above, with their original failures preserved. The 0.4.24 evidence below is historical.
 
 The later [ordinary-prompt benchmark](NATURAL-PROMPT-BENCHMARK.md) qualifies the
 behavioral readiness claim: retrieval works without naming tools, but host
