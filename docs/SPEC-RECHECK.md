@@ -5,9 +5,9 @@ SHA-256 `1d061a660d1e280c4f33a111fdabb1c5fb8fc52a3aa4cd86ebe4fee5f396091d`.
 This audit uses the owner's later instructions as amendments, not as missing
 features to undo. The original spec remains unchanged.
 
-The later [completion candidate](CONTEXT-COMPLETION.md) implements the remaining
-source/package feature gaps and a direct document-read path. It is not live;
-the production and real-host evidence below remain the last verified baseline.
+The later [completion update](CONTEXT-COMPLETION.md) is live. Current 0.4.24
+publication, installation, production and native-host evidence are in
+[P0 live readiness](P0-NATIVE-READINESS.md). The 0.4.22 state below is historical.
 
 ## Decision
 

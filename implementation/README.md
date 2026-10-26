@@ -1,10 +1,10 @@
 # MCP adoption source delivery
 
-**Current published native release: 0.4.23 / runtime57.** The 0.4.24 P0
-native candidate is preserved in `p0-native-readiness.patch`. Apply all 24 patches
+**Current published native release: 0.4.24 / runtime57.** Its P0 native
+fix is preserved in `p0-native-readiness.patch`. Apply all 24 patches
 in `p0-native-readiness-manifest.json` order (`applyAfter`, then `patch`).
 The clean replay reproduces 178 implementation files. See
-[the completion record](../docs/CONTEXT-COMPLETION.md) for release evidence;
+[P0 live readiness](../docs/P0-NATIVE-READINESS.md) for release evidence;
 installation and production activation are distinct from packaging.
 
 The latest web UI update is [the guided sharing walkthrough](../docs/SHARING-WALKTHROUGH.md).

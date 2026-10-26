@@ -1,8 +1,8 @@
 # Automatic context setup — 25 October 2026
 
 This describes the original setup implementation. It shipped in 0.4.20 and is
-included in the current **0.4.22 / runtime56** release and production runtime.
-The [current spec recheck](SPEC-RECHECK.md) records installation, deployment and
+included in the current **0.4.24 / runtime57** release and production runtime.
+The [current P0 readiness record](P0-NATIVE-READINESS.md) records installation, deployment and
 actual read receipts. Earlier validation and release prerequisites below are
 historical; fresh Google consent and every native app launch remain separate
 live acceptance checks.

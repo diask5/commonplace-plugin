@@ -1,21 +1,14 @@
-# Context completion candidate — 26 October 2026
+# Context completion — 26 October 2026
 
-**0.4.23 / runtime57 is packaged and verified locally. It is not installed or
-activated in production.** The last verified live release remains
-`20261026-revision-fence`, with native 0.4.22 / runtime56. Release state, hashes
-and evidence are in [the verification record](../implementation/context-completion-verification.json).
-Source is merged in [PR #16](https://github.com/diask5/commonplace-plugin/pull/16).
-The [0.4.23 release is a draft](https://github.com/diask5/commonplace-plugin/releases/tag/untagged-696ffde76f485897f6fc).
-The [Draft v3 recheck](SPEC-RECHECK.md) remains the requirement-by-requirement
-baseline; this document records the remaining feature work against it.
+**The completion features are live.** Version 0.4.23 was published, installed
+and deployed as `20261026-context-completion`. The subsequent
+[0.4.24 P0 update](P0-NATIVE-READINESS.md) is published, installed and deployed as
+`20261026-native-p0-final`; the Mac companion is running runtime57.
+The earlier Mac binding block was resolved. Current receipts and remaining
+real-host gates are in [the P0 verification record](../implementation/p0-native-readiness-verification.json).
+The [Draft v3 recheck](SPEC-RECHECK.md) remains the historical requirement map.
 
-Conductor's `RunLocalCommand` rejected the compile-only Mac check with:
-“No authorized Mac is bound to this chat. Send a message from the Mac you want
-to use.” No command ran. This blocks the authorized Mac installation/live
-retrieval checks and the deployment path using that Mac's Google Cloud account.
-No alternate tool or agent was used to bypass this host decision.
-
-## Completed in this candidate
+## Implemented completion features
 
 | Gap | Implemented behavior | Evidence and limits |
 | --- | --- | --- |
@@ -24,7 +17,7 @@ No alternate tool or agent was used to bypass this host decision.
 | Upstream MCP resources | Explicitly selected native source → official MCP resources/list/read → signed canonical capture → private archive → cited retrieval. | Real loopback HTTP and signed relay tests cover capture, exclusion/restore, disappearance/reappearance, unchanged-content receipts, restart and lost acknowledgments. Public HTTPS and numeric loopback HTTP supported. No arbitrary tools, stdio launch, OAuth to upstream sources, binary imports, template expansion or legacy SSE-only endpoints. No real external provider has been connected. |
 | Source setup | Full-width name/URL fields, optional authentication collapsed, prominent Copy setup prompt and explicit paste/Send instruction. | Browser never submits the endpoint or bearer environment-variable name to the account service. Native tools own configuration and receipts. `sync_mcp_resource_source` returns promptly while capture runs; `list_mcp_resource_sources` distinguishes running from completed. The native runtime must remain online. |
 | P1 compatible personal assistants | Three-step remote MCP/OAuth connection: copy URL, add connection/sign in, search and read. | Real DCR/PKCE, read-only tool filtering and cited retrieval in isolated account tests. This supports compatible MCP assistants; it does not certify every app, native wake, message delivery or chat-history collection. |
-| P1 Contacts/email/iMessage invitation delivery | Owner-requested exact recipient/channel/text; ambiguous Contacts matches require selection; Mail compose/submit and Messages submit; durable nonce prevents duplicate or uncertain retries. | Packaged adapter tests pass. Actual AppleScript compilation, TCC approval, Mail/Messages execution and delivery remain unverified. No real contact messages were sent. Link fallback remains available; submitted never means received. |
+| P1 Contacts/email/iMessage invitation delivery | Owner-requested exact recipient/channel/text; ambiguous Contacts matches require selection; Mail compose/submit and Messages submit; durable nonce prevents duplicate or uncertain retries. | Packaged adapter tests pass. All three static AppleScripts compiled successfully on the Mac. TCC approval, Mail/Messages execution and delivery remain unverified and deferred as P1. No real contact messages were sent. Link fallback remains available; submitted never means received. |
 | Shutdown reliability | Shared context work is tracked before its first asynchronous step; relay shutdown waits for handlers and archive work before closing SQLite. | Deterministic held-warmup/restart regressions and exact extracted package reruns pass. The previous failure was a real temporary-directory teardown race, followed by skipped cleanup hooks that leaked a listener. Logs retain the failure. |
 
 The product stays **Spaces / My context**, with **Messages / My sharing rules /
@@ -61,7 +54,11 @@ zero false allows and seven false withholds**, with no provider errors; provider
 p50 was 133 ms and p95 228 ms. This small sample is not a privacy guarantee or a
 reason to lower the threshold. No private account source text was used.
 
-## Activation sequence
+## Historical candidate activation sequence
+
+Publication, backup, installation and deployment are now complete. Follow the
+[P0 record](P0-NATIVE-READINESS.md) for current real-host acceptance; the sequence
+below describes the original candidate plan.
 
 1. Restore this chat's authorized Mac binding by sending a message from Conductor
    on that Mac. Compile the static AppleScripts without executing or sending them.
