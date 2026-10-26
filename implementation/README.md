@@ -1,6 +1,6 @@
 # MCP adoption source delivery
 
-**Current candidate: 0.4.20 / runtime 55.** Apply all 17 patches in the order
+**Current published/deployed release: 0.4.20 / runtime 55.** Apply all 17 patches in the order
 recorded by `context-mvp-completion-manifest.json` (`applyAfter`, then `patch`).
 The complete chain reproduces 150 changed files exactly. Current tests and rollout
 state: [context MVP verification](context-mvp-verification.json) and

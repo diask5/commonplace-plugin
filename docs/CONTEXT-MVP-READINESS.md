@@ -9,8 +9,8 @@ The original spec remains unchanged in MEET-PROXY-PRODUCT-SPEC.md.
 ## Readiness decision
 
 The current source implements the core context-sharing journey and preserves
-legacy agent-pair conversations. Version 0.4.20 / runtime 55 is prepared for
-release. Production promotion and installed-host verification are tracked in
+legacy agent-pair conversations. Version 0.4.20 / runtime 55 is published and
+deployed to production. [Rollout details](CONTEXT-MVP-ROLLOUT.md) and installed-host verification are tracked in
 `implementation/context-mvp-verification.json`; do not infer them from screenshots.
 
 A complete original-spec claim would be inaccurate: answer-only privacy was
@@ -55,6 +55,9 @@ A fresh real `pplx-decider-v1.2` run evaluated 28 synthetic cases. At the unchan
 errors. Median provider latency was 159 ms, p95 576 ms in this small run.
 These scores are not calibrated probabilities or production privacy guarantees.
 No real account's private source text was submitted for this benchmark.
+The production VM also reached the provider using its configured key; a two-case
+probe withheld both a permitted example (score 0.9601) and a disallowed one.
+This reinforces the false-withholding limit rather than proving perfect answers.
 
 The gate currently considers up to six complete matching documents and withholds
 documents longer than 8,000 characters. Safe long-document chunking and broader

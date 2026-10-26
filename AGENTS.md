@@ -33,8 +33,8 @@ account and workspace scope. Joining never enables private-library sharing.
 See [the current readiness audit](docs/CONTEXT-MVP-READINESS.md) and
 `implementation/context-mvp-verification.json` for release state.
 See [live setup](docs/LIVE-CONTEXT-SETUP.md) for release status and evidence. Upstream MCP ingestion and
-safe chunking of large documents remain pending. Source-only release state and
-limits are in [message-first spaces](docs/MESSAGE-FIRST-SPACES.md).
+safe chunking of large documents remain pending. Current live state and limits are in [the rollout record](docs/CONTEXT-MVP-ROLLOUT.md).
+The [message-first spaces record](docs/MESSAGE-FIRST-SPACES.md) is historical.
 The older document picker remains
 available as a secondary flow while scoped invitation grants are pending. Account profile and settings live behind the avatar. Existing
 assistants read authorized context through MCP or the local folder. See
