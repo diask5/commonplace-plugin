@@ -8,12 +8,11 @@ simple membership controls.
 The [production application](https://34.27.253.220/) includes context-sharing
 spaces, one-request native plugin/MCP setup, automatic private collection,
 natural-language invitations, timed rules and leave/archive controls.
-The **0.4.26 / runtime59** release adds accurate timeout recovery to MCP-first
-retrieval, automatic request IDs, prioritized collection and clearer setup progress.
-See [the timeout follow-up](docs/TIMEOUT-RECOVERY.md) for live activation and
-remaining benchmark limits. The
-[rollout record](docs/SEAMLESS-CONTEXT.md) tracks production activation, installed
-versions and fresh ordinary-prompt results separately. Earlier real Google,
+The **0.4.27 / runtime60** release prevents existing-chat lookups from waiting
+behind unrelated registration and adds archive consistency protections.
+The server release `20261026-registration-recovery` is live. See
+[the release evidence](docs/REGISTRATION-RECOVERY.md) for installation, activation
+and ordinary-prompt benchmark results. Earlier real Google,
 Claude Desktop and Codex Desktop handoffs remain documented in
 [P0 readiness](docs/P0-NATIVE-READINESS.md). Direct Mail/iMessage sends remain P1.
 
@@ -56,7 +55,7 @@ and simulated model/host responses. In the implementation repository, run
 
 ## One private cloud workspace
 
-[Download Meet Proxy / Commonplace 0.4.26](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.26)
+[Download Meet Proxy / Commonplace 0.4.27](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.27)
 for a cloud workspace containing supported synced chats, permitted agent-message
 threads, published working context, and previous cloud results. Your cloud agent
 can query the live message board, consult your connected native agents, wait for
@@ -70,7 +69,7 @@ See [personal agents](docs/PERSONAL-AGENTS.md),
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.26**. Enable only one alias. Existing accounts and
+update that alias to **0.4.27**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate

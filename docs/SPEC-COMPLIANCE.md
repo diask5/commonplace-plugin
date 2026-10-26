@@ -1,11 +1,17 @@
 # Meet Proxy Draft v3 compliance
 
-Latest release: [0.4.26 rollout and current limitations](TIMEOUT-RECOVERY.md).
-Production is `20261026-read-performance` ([read performance](CONTEXT-READ-PERFORMANCE.md); query indexes improved, requests remain slow, real-model benchmark incomplete; earlier [delivery checks](PUBLIC-ASSETS-DELIVERY.md)); Mac 0.4.26 files are installed,
-and runtime59 is active after the approved graceful restart.
-The new default-host benchmark still fails invitation routing and caused an
-unintended empty ChatGPT space. It is not an end-to-end pass. Production latency
-also remains an open readiness issue. See the current verification record for
+Latest release: [0.4.27 registration recovery](REGISTRATION-RECOVERY.md).
+Production is `20261026-registration-recovery`; Mac 0.4.27 and runtime60 are
+active. The controlled real-host benchmark passed 3/8 cases; 3 fell short and
+2 were not started after the Claude test guard stopped its sequence. Search
+timeouts and revision churn remain unresolved. The release passes 572 core regressions, native packaging and both-alias
+plugin/mailbox checks. Public desktop/phone sign-in and all 31 UI assets passed
+live checks. These checks do not certify authenticated setup or model behavior.
+
+Default-host invitation routing, host-denied browser acceptance, production
+retrieval latency and cleanup of an unintended empty ChatGPT space remain open.
+Earlier failures remain in their original records; see
+[verification](../implementation/registration-recovery-verification.json) for
 published, deployed, installed and model-tested states.
 
 The following paragraph records the preceding 0.4.24 behavioral baseline.

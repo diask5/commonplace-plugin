@@ -1,0 +1,85 @@
+{
+  "state": "packaged candidate; not deployed",
+  "nativeVersion": "0.4.27",
+  "runtimeRevision": 60,
+  "serverRelease": "20261026-live-index",
+  "source": {
+    "patches": 32,
+    "files": 203,
+    "incrementalFiles": 7,
+    "matched": true,
+    "mismatches": [],
+    "patchSha256": "a931c2e8ba4838c60ce7ce2e0a3bf6666168c029ba7158652249937a2cacdb89",
+    "manifestHashAgreement": {
+      "mcp-adoption-0.4.19-rc.3.patch": "no-standard-manifest",
+      "agent-launch-and-server-check.patch": "no-standard-manifest",
+      "spec-alignment.patch": true,
+      "product-flow-design.patch": true,
+      "production-readiness.patch": true,
+      "context-product-ui.patch": true,
+      "automatic-context-ingestion.patch": true,
+      "prompt-based-sharing.patch": true,
+      "sharing-rules-design.patch": true,
+      "sharing-desktop-layout.patch": true,
+      "sharing-interactions.patch": true,
+      "shared-spaces.patch": true,
+      "message-first-spaces.patch": true,
+      "live-context-setup.patch": true,
+      "seamless-plugin-setup.patch": true,
+      "copy-setup-prompt.patch": true,
+      "context-mvp-completion.patch": true,
+      "sharing-walkthrough.patch": true,
+      "zero-to-knowledge.patch": true,
+      "archive-read-performance.patch": true,
+      "native-discovery.patch": true,
+      "archive-revision-fence.patch": true,
+      "context-completion.patch": true,
+      "p0-native-readiness.patch": true,
+      "seamless-context.patch": true,
+      "deployment-startup-readiness.patch": true,
+      "context-timeout-recovery.patch": true,
+      "server-io-recovery.patch": true,
+      "public-assets-delivery.patch": true,
+      "context-read-performance.patch": true,
+      "registration-recovery.patch": true,
+      "live-index-reuse.patch": true
+    },
+    "sourceScopeFilesNotMatchingReplay": [],
+    "sourceScopeMissingCount": 0
+  },
+  "artifacts": {
+    "runtime-update.json": "95e3307d9849886409a15d9e8a187aed24c688f920c92be251c2077755e62544",
+    "runtime-update-manifest.json": "1112df73ee46fd0c4817fb95dcff8d24cccf00a92c558f4197396aec82872503",
+    "runtime-update.sha256": "7a34760ca76cd0b3f8f770cc9be9512e34958bbde95c27c835ef7fe53fcaa20b",
+    "deploy-cloud-update.py": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408"
+  },
+  "checks": {
+    "focusedInitial": 21,
+    "additionalIndexTests": 8,
+    "fullCore": {
+      "passed": 580,
+      "failed": 0,
+      "skipped": 0
+    },
+    "independentReview": "no blockers; generation-retirement race fixed; process-start stamp added for recycled PID cleanup"
+  },
+  "productionProbe": {
+    "scope": "Isolated read-only database diagnostic before deployment; synthetic query against owner archive, no source export or serving-code change",
+    "characters": 35125918,
+    "sections": 7387,
+    "projectionMs": 2005,
+    "freshIndexMs": 8242,
+    "patchedIndexMs": 4500,
+    "reusedDocuments": 372,
+    "updatedDocuments": 1,
+    "exactOutputEquality": true,
+    "limits": "Single sequential sample, old helper lifecycle version; not an end-to-end latency or reliability claim."
+  },
+  "limits": [
+    "Whole-archive revision and expiry fences remain; ingestion can still require retry.",
+    "Missing, retired, damaged or high-delta bases use the complete fresh index.",
+    "Natural-prompt acceptance and default-host routing remain separate open gates.",
+    "Earlier runtime60 benchmark passed 3, fell short on 3, left 2 unstarted. Fresh model evidence is required after deployment.",
+    "No paid infrastructure, native package, account or saved permission changes."
+  ]
+}
