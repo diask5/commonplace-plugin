@@ -103,7 +103,7 @@
     "native": {
       "tag": "meet-proxy-v0.4.29",
       "draft": true,
-      "url": "https://github.com/diask5/commonplace-plugin/releases/tag/untagged-58c724e79959b1fe163c",
+      "url": "https://github.com/diask5/commonplace-plugin/releases/tag/untagged-a38f7f64a47a971ce1c3",
       "targetCommit": "a389b84f90af444e025fd96ffb0d7c191eb18a3f",
       "assets": [
         {
@@ -147,7 +147,7 @@
     "server": {
       "tag": "meet-proxy-server-20261026-read-pages",
       "draft": true,
-      "url": "https://github.com/diask5/commonplace-plugin/releases/tag/untagged-e9512e7239fe48086e68",
+      "url": "https://github.com/diask5/commonplace-plugin/releases/tag/untagged-c60a2c5d1e216386ea96",
       "targetCommit": "a389b84f90af444e025fd96ffb0d7c191eb18a3f",
       "assets": [
         {
@@ -177,5 +177,5 @@
       ]
     }
   },
-  "draftVerifiedAt": "2026-10-26T10:42:49.267361+00:00"
+  "draftVerifiedAt": "2026-10-26T10:45:52.292654+00:00"
 }
