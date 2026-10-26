@@ -1,7 +1,7 @@
 # Automatic context setup — 25 October 2026
 
 This describes the original setup implementation. It shipped in 0.4.20 and is
-included in the current **0.4.24 / runtime57** release and production runtime.
+included in the current **0.4.26 / runtime59** plugin; the [public asset release](PUBLIC-ASSETS-DELIVERY.md) records the current server runtime.
 The [current P0 readiness record](P0-NATIVE-READINESS.md) records installation, deployment and
 actual read receipts. Earlier validation and release prerequisites below are
 historical; fresh Google consent and every native app launch remain separate

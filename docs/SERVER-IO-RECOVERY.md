@@ -21,11 +21,11 @@ seven of eight documents with output identical to a cold rebuild. Corruption,
 writable files, removal and source authority changes retain their checks. FTS is
 still rebuilt and all source bytes still validate; this does not remove all I/O.
 
-**State: reviewed and packaged; not yet published or live.** All 536 core tests,
+**State: published and live at `20261026-io-recovery`.** All 536 core tests,
 nine focused review checks and the independent source review pass. All 28 ordered
-patches reproduce 187 files exactly. The complete runtime bundle has 156 files
+patches reproduce 188 files exactly. The complete runtime bundle has 156 files
 matching source. These results establish correctness and reduced writes in
-fixtures; production latency still needs a before/after measurement.
+fixtures. Live health improved from 12.5–14.7 seconds to 3.1–6.7 seconds in three samples, but remains slow. A subsequent public browser smoke timed out at 30 seconds waiting for DOM content; that attempt did not pass.
 
 The [verification record](../implementation/server-io-recovery-verification.json)
 tracks activation and results. [0.4.26's native benchmark](TIMEOUT-RECOVERY.md)
@@ -33,3 +33,5 @@ retains one follow-up pass, one partial citation result and one reconnect/timeou
 failure; no failed first attempt is erased. No paid infrastructure change has been
 made. Default-host invitation routing and the unintended empty Briar Review
 space remain open items.
+
+The fresh installed-host follow-up completed both questions with real searches and source reads. Codex passed; Claude correctly answered the unknown-time question, but one citation only had a search excerpt rather than a completed full read. Both took about 209 seconds. Receipts show repeated archive-revision restarts and one timeout; the strict citation and performance gates remain open. See [sanitized benchmark](../implementation/server-io-native-benchmark.json) and [deployment evidence](../implementation/server-io-production.json).

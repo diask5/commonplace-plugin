@@ -7,7 +7,9 @@ problem. Both now map to a timeout message that explicitly preserves sign-in.
 Other errors, host denials and attacker-appended text keep their original meaning.
 This change does not increase request deadlines or fix production capacity.
 
-The follow-up is published and live at `20261026-timeout-recovery`. All 156
+The native follow-up was published and activated at `20261026-timeout-recovery`.
+The later [server-only public asset release](PUBLIC-ASSETS-DELIVERY.md) is now live;
+its native plugin remains 0.4.26/runtime59. All 156
 server files match the bundle; all three services are active and migrations are
 unchanged. Seven public UI asset checks and desktop/phone browser checks pass.
 The Mac has 0.4.26 installed and runtime59 active, with account, bindings and

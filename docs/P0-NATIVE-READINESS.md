@@ -1,12 +1,14 @@
 # P0 native and production readiness — 26 October 2026
 
+Current: native 0.4.26/runtime59 and [server public asset release](PUBLIC-ASSETS-DELIVERY.md).
+
 The later [ordinary-prompt benchmark](NATURAL-PROMPT-BENCHMARK.md) qualifies the
 behavioral readiness claim: retrieval works without naming tools, but host
 approvals, full-source verification and citations are not yet consistently
 seamless. The installation and deployment evidence below remains valid; coached
 search/read tests must not be treated as proof of ordinary-prompt reliability.
 
-**0.4.24 / runtime57 is published, installed and verified in both Desktop apps. Production is
+**Historical 0.4.24 / runtime57 baseline: published, installed and verified in both Desktop apps. Production was
 `20261026-native-p0-final` at https://34.27.253.220/.** The completion features
 from 0.4.23 are live. This record supersedes the older candidate and blocked-Mac
 statements; the original Draft v3 remains unchanged.
