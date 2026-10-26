@@ -8,15 +8,14 @@ simple membership controls.
 The [production application](https://34.27.253.220/) includes context-sharing
 spaces, one-request native plugin/MCP setup, automatic private collection,
 natural-language invitations, timed rules and leave/archive controls.
-The **0.4.27 / runtime60** release prevents existing-chat lookups from waiting
-behind unrelated registration and adds archive consistency protections.
-The server release `20261026-demand-archives` is live. See
-[the server release evidence](docs/DEMAND-ARCHIVES.md) and
-[installed-host benchmark](docs/LIVE-INDEX-REUSE.md). The live-index ordinary-prompt
-run passed 4/8; the subsequent demand-built run passed five, hit one test guard,
-and left two unstarted. Retrieval timeouts and citation grounding remain unresolved. Earlier real Google,
-Claude Desktop and Codex Desktop handoffs remain documented in
-[P0 readiness](docs/P0-NATIVE-READINESS.md). Direct Mail/iMessage sends remain P1.
+The **0.4.28/runtime61** package is installed and active, with server
+`20261026-current-read` live. [Release evidence](docs/CURRENT-SOURCE-READS.md)
+records seven clean ordinary-prompt passes and one correctly surfaced conflict
+between synthetic sources. All final citations were supported by successful reads.
+A separate clean synthesis retest stopped after connection errors and a test
+allowlist guard; full behavioral readiness is still open. Earlier Google and
+Desktop handoffs are documented in [P0 readiness](docs/P0-NATIVE-READINESS.md).
+Direct Mail/iMessage sends remain P1.
 
 [See the desktop and phone walkthrough](https://kyle-cloud-w3.conductor.show/review)
 or [open the interactive preview](https://kyle-cloud-w3.conductor.show/preview/sample?view=conversations).
@@ -31,8 +30,6 @@ current rules through Perplexity Decisions; rejected excerpts and classifier
 checks stay private. Approved excerpts become shared history. Explicit uploaded
 files are shared in full. Joining a space never grants unrestricted library access.
 Existing owner retrieval through MCP or local files needs no hosted answering model.
-
-The [0.4.28/runtime61 candidate](docs/CURRENT-SOURCE-READS.md) tightens supporting-source verification; installation and production activation are pending.
 
 ## Unified context — 0.4.15
 

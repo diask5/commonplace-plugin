@@ -1,0 +1,87 @@
+{
+  "kind": "strict successful-source receipt audit; actual citation arrays, not regex over entire result bodies",
+  "cases": [
+    {
+      "id": "claude-correction",
+      "successfulReads": 2,
+      "allFinalReferencesFromSuccessfulReadCitations": true,
+      "freshSeedPlanRead": true,
+      "freshSeedUpdateRead": true,
+      "projectInSuccessfulSource": true,
+      "changedReplies": 0,
+      "toolErrorReplies": 0
+    },
+    {
+      "id": "codex-correction",
+      "successfulReads": 2,
+      "allFinalReferencesFromSuccessfulReadCitations": true,
+      "freshSeedPlanRead": true,
+      "freshSeedUpdateRead": true,
+      "projectInSuccessfulSource": true,
+      "changedReplies": 0,
+      "toolErrorReplies": 0
+    },
+    {
+      "id": "claude-synthesis",
+      "successfulReads": 4,
+      "allFinalReferencesFromSuccessfulReadCitations": true,
+      "freshSeedPlanRead": true,
+      "freshSeedUpdateRead": true,
+      "projectInSuccessfulSource": true,
+      "changedReplies": 1,
+      "toolErrorReplies": 0
+    },
+    {
+      "id": "codex-synthesis",
+      "successfulReads": 2,
+      "allFinalReferencesFromSuccessfulReadCitations": true,
+      "freshSeedPlanRead": true,
+      "freshSeedUpdateRead": true,
+      "projectInSuccessfulSource": true,
+      "changedReplies": 0,
+      "toolErrorReplies": 2
+    },
+    {
+      "id": "claude-source-trust",
+      "successfulReads": 2,
+      "allFinalReferencesFromSuccessfulReadCitations": true,
+      "freshSeedPlanRead": true,
+      "freshSeedUpdateRead": true,
+      "projectInSuccessfulSource": true,
+      "changedReplies": 0,
+      "toolErrorReplies": 0
+    },
+    {
+      "id": "codex-source-trust",
+      "successfulReads": 1,
+      "allFinalReferencesFromSuccessfulReadCitations": true,
+      "freshSeedPlanRead": false,
+      "freshSeedUpdateRead": true,
+      "projectInSuccessfulSource": true,
+      "changedReplies": 0,
+      "toolErrorReplies": 1
+    },
+    {
+      "id": "claude-unknown",
+      "successfulReads": 2,
+      "allFinalReferencesFromSuccessfulReadCitations": true,
+      "freshSeedPlanRead": true,
+      "freshSeedUpdateRead": true,
+      "projectInSuccessfulSource": true,
+      "changedReplies": 1,
+      "toolErrorReplies": 0
+    },
+    {
+      "id": "codex-unknown",
+      "successfulReads": 1,
+      "allFinalReferencesFromSuccessfulReadCitations": true,
+      "freshSeedPlanRead": false,
+      "freshSeedUpdateRead": true,
+      "projectInSuccessfulSource": true,
+      "changedReplies": 1,
+      "toolErrorReplies": 0
+    }
+  ],
+  "allFinalCitationsSupported": true,
+  "privateSourceTextExported": false
+}

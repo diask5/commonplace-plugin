@@ -1,0 +1,61 @@
+{
+  "kind": "real installed hosts and real owner archive; process-isolated tool surface",
+  "collectedAt": 1793009290.591069,
+  "scoringRevision": 2,
+  "cases": [
+    {
+      "id": "claude-synthesis",
+      "host": "claude",
+      "state": "review",
+      "checks": {
+        "completed": false,
+        "searched": true,
+        "readSupportingContext": false,
+        "noPermissionDenials": true,
+        "savedConfigurationUnchanged": true,
+        "citationsMatchRetrievedSources": false,
+        "latestDate": false,
+        "correctOwner": false,
+        "changeReason": false
+      },
+      "elapsedSeconds": 24.33,
+      "tools": [
+        "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__setup_status"
+      ],
+      "final": "",
+      "evidenceSha256": "c770010a75bed52a1c6a383d408960bd1d48bb5d8e0a51c03affaa3d3ab64fad",
+      "visibleToolIntervals": [
+        {
+          "name": "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+          "seconds": 6.498
+        },
+        {
+          "name": "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+          "seconds": 5.165
+        },
+        {
+          "name": "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+          "seconds": 5.674
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Not a default-host app-routing benchmark.",
+    "Not a new Google/Desktop GUI onboarding walkthrough.",
+    "Deterministic rubric checked against private visible tool receipts; no hidden reasoning used."
+  ],
+  "complete": true,
+  "runFinished": true,
+  "notStarted": 0,
+  "passed": 0,
+  "needsReview": 1,
+  "failureDiagnosis": {
+    "reads": "Two read_shared_context calls returned Commonplace Agent Auth failed (connection unavailable).",
+    "guard": "setup_status outside existing process tool allowance; no host denial and no permission change.",
+    "next": "Diagnose transport independently; diagnostics allowance and acceptance retest require pending owner approval."
+  }
+}
