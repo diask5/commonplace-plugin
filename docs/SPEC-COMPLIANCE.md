@@ -1,5 +1,15 @@
 # Meet Proxy Draft v3 compliance
 
+Latest release: [0.4.25 rollout and current limitations](SEAMLESS-CONTEXT.md).
+Production is `20261026-seamless-context-final`; Mac 0.4.25 files are installed,
+and runtime58 is active after the approved graceful restart.
+The new default-host benchmark still fails invitation routing and caused an
+unintended empty ChatGPT space. It is not an end-to-end pass. Production latency
+also remains an open readiness issue. See the current verification record for
+published, deployed, installed and model-tested states.
+
+The following paragraph records the preceding 0.4.24 behavioral baseline.
+
 Latest behavioral check: [ordinary-prompt benchmark and approved retest](NATURAL-PROMPT-BENCHMARK.md).
 **Not yet consistently seamless:** the baseline Codex host answered four generic
 context questions correctly, but only three read full sources and one cited them.
@@ -11,7 +21,7 @@ additional file-read approvals and a search timeout still prevented an answer.
 The 58 passing service regressions are separate evidence, not completed model
 flows. Neither benchmark changed deployment or saved permissions.
 
-Current release and acceptance evidence: [P0 native readiness](P0-NATIVE-READINESS.md)
+Previous release and acceptance evidence: [P0 native readiness](P0-NATIVE-READINESS.md)
 and [machine-readable verification](../implementation/p0-native-readiness-verification.json).
 **0.4.24/runtime57 is published and installed; production is
 `20261026-native-p0-final`.** The prior Mac access block is resolved. Existing

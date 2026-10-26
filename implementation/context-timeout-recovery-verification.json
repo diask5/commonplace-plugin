@@ -1,0 +1,35 @@
+{
+  "version": "0.4.26",
+  "runtime": 59,
+  "state": "packaged and checked; not yet published, installed or deployed",
+  "sourceManifest": "context-timeout-recovery-manifest.json",
+  "checks": {
+    "core": 527,
+    "focusedSetupUI": 6,
+    "extractedFeatures": 34,
+    "extractedExactErrors": 3,
+    "packagingBothAliases": true,
+    "packagedStdio": true,
+    "packagedMailboxSixProfiles": true
+  },
+  "hashes": {
+    "meet-proxy-0.4.26.zip": "b76b139ada73d849a13a0354ea4623cf47e940c3be4f032e93821e6f66f17ac5",
+    "commonplace-0.4.26.zip": "d1580f5f9f1b0a89962500874aae54073d9a7e37dcd46eed237b164919af47cb",
+    "runtime-update.json": "1a846f4a3b6116b5fe65298859e92d231abb4c5aca7ed122b5d9f606f2eaa207"
+  },
+  "firstAttempt": "seamless-native-first-attempt.json",
+  "limits": [
+    "Production latency unresolved.",
+    "Default-host invitation routing unpassed.",
+    "Prior host denials are not retried.",
+    "Existing open chats can retain old plugin metadata.",
+    "Briar Review cleanup remains manual."
+  ],
+  "source": {
+    "patches": 27,
+    "files": 185,
+    "incrementalFiles": 9,
+    "matched": true,
+    "patchSha256": "0580c1ccf62e7c4f1e9bd7ea6bdd409b2ddce0fc46310abe90ddf1e1a94ac182"
+  }
+}
