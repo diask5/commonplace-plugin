@@ -32,7 +32,32 @@ Native context-space tools create/invite/preview/accept/leave/archive within cur
 account and workspace scope. Joining never enables private-library sharing.
 See [the current readiness audit](docs/CONTEXT-MVP-READINESS.md) and
 `implementation/context-mvp-verification.json` for release state.
-See [live setup](docs/LIVE-CONTEXT-SETUP.md) for release status and evidence. Native 0.4.27/runtime60 is published and server release `20261026-demand-archives` is live; see [demand-built archives](docs/DEMAND-ARCHIVES.md) and `implementation/demand-archives-verification.json`. Mac 0.4.27 and runtime60 are active, with account and saved permissions unchanged; the preceding controlled ordinary-prompt benchmark passed 3 cases, fell short on 3, and left 2 unstarted. The next controlled run passed 4/8; three Claude cases lacked successful reads for every citation and one Codex case timed out. The demand-built run passed five cases, hit one test allowlist guard and left two unstarted; see `implementation/demand-archives-native-benchmark.json`. Timeouts and revision churn are not cleared. Candidate 0.4.28/runtime61 is packaged but not yet activated; see [current-source retrieval](docs/CURRENT-SOURCE-READS.md). Prior real-host failures remain in [read performance](docs/CONTEXT-READ-PERFORMANCE.md) and [timeout recovery](docs/TIMEOUT-RECOVERY.md). Production latency and default-host invitation routing remain open gates; an unintended empty ChatGPT space from the earlier benchmark still awaits owner cleanup. Do not call all flows seamless. Existing open host chats can retain an older loaded plugin until reloaded. See [P0 live readiness](docs/P0-NATIVE-READINESS.md) and `implementation/p0-native-readiness-verification.json` for verified real Google/Claude Desktop/Codex Desktop handoff receipts and remaining clean-install/coverage limits. Direct Mail/iMessage sends are P1 and deferred. Installation, cached identity and fixtures do not prove a completed real-user walkthrough.
+Current release is **0.4.28/runtime61**, published, installed and active on the Mac.
+Server `20261026-current-read` is live. See [current-source retrieval](docs/CURRENT-SOURCE-READS.md)
+and `implementation/current-read-verification.json` for exact source, package,
+installation and production evidence. Existing open chats can retain older loaded
+plugins until host reload. Account and saved permissions are preserved.
+
+The current ordinary-prompt run has seven clean passes and one correctly reported
+synthetic name conflict; every final citation has a successful source read. The
+separate uniquely named synthesis retest hit two connection-unavailable reads then
+a harness guard on setup_status. See `implementation/current-read-native-benchmark.json`
+and `current-read-synthesis-retest.json`. No host denial or permission change.
+Additional per-test diagnostic tools and the previously blocked MCP-only acceptance
+retest await approval. Production SSH needs existing-account Google reauthentication;
+a browser login has been started on the Mac. Prior runs remain in
+[read performance](docs/CONTEXT-READ-PERFORMANCE.md), [timeout recovery](docs/TIMEOUT-RECOVERY.md),
+[live-index reuse](docs/LIVE-INDEX-REUSE.md) and [demand-built archives](docs/DEMAND-ARCHIVES.md).
+The live-index run passed 4/8; demand-built passed five, hit one test allowlist
+guard and left two unstarted. Production retrieval reliability and default-host
+invitation routing remain open. The unintended empty ChatGPT space still awaits
+owner cleanup. Do not call all flows seamless.
+
+See [live setup](docs/LIVE-CONTEXT-SETUP.md), [P0 live readiness](docs/P0-NATIVE-READINESS.md)
+and `implementation/p0-native-readiness-verification.json` for verified real
+Google/Claude Desktop/Codex Desktop handoff receipts and clean-install/coverage
+limits. Direct Mail/iMessage sends are P1 and deferred. Installation, cached
+identity and fixtures do not prove a completed real-user walkthrough.
 The [message-first spaces record](docs/MESSAGE-FIRST-SPACES.md) is historical.
 The older document picker remains
 available as a secondary flow while scoped invitation grants are pending. Account profile and settings live behind the avatar. Existing

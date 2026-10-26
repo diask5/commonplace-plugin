@@ -1,6 +1,6 @@
 # Context MVP readiness — 26 October 2026
 
-Latest candidate: [current-source retrieval 0.4.28/runtime61](CURRENT-SOURCE-READS.md). Packaged; live and installed verification pending. The production and historical records below retain their own release dates.
+Latest release: [current-source retrieval 0.4.28/runtime61](CURRENT-SOURCE-READS.md), published, installed and active. Server `20261026-current-read` is live; ordinary-prompt verification produced seven clean passes and one correctly surfaced synthetic-name conflict. The separate clean synthesis retest stopped after connection errors and an unapproved diagnostic-tool selection; acceptance gates remain. Earlier records below retain their own release dates.
 
 This audit compares the attached 24 October Draft v3 with the owner's later
 instructions: context-first Spaces, prompt rules, messages first, group sharing,

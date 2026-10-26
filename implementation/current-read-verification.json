@@ -1,5 +1,5 @@
 {
-  "state": "packaged and verified; publication, deployment and Mac activation pending",
+  "state": "published, deployed, installed and active; ordinary-prompt evidence improved but P0 acceptance gates remain",
   "nativeVersion": "0.4.28",
   "runtimeRevision": 61,
   "serverRelease": "20261026-current-read",
@@ -81,16 +81,163 @@
       "cancelled": 0
     },
     "packagedPluginSmoke": "passed actual stdio/signed HTTP/local relay; identity and host simulated",
-    "packagedMailboxSmoke": "passed six empty profiles, exact receiver, offline backlog, retry deduplication; Google and host test doubles"
+    "packagedMailboxSmoke": "passed six empty profiles, exact receiver, offline backlog, retry deduplication; Google and host test doubles",
+    "publicLiveSmoke": {
+      "state": "passed",
+      "assets": 31,
+      "screens": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "seconds": 5.842,
+          "googleButtonVisible": true,
+          "overflow": false,
+          "errors": []
+        },
+        {
+          "name": "phone",
+          "width": 390,
+          "seconds": 5.628,
+          "googleButtonVisible": true,
+          "overflow": false,
+          "errors": []
+        }
+      ],
+      "protocols": [
+        {
+          "path": "/healthz",
+          "method": "get",
+          "status": 200,
+          "seconds": 5.019
+        },
+        {
+          "path": "/.well-known/oauth-authorization-server",
+          "method": "get",
+          "status": 200,
+          "seconds": 3.716
+        },
+        {
+          "path": "/.well-known/agent-configuration",
+          "method": "get",
+          "status": 200,
+          "seconds": 4.013
+        },
+        {
+          "path": "/mcp",
+          "method": "post",
+          "status": 401,
+          "seconds": 1.795
+        },
+        {
+          "path": "/context/assets/ui.css",
+          "method": "post",
+          "status": 403,
+          "seconds": 0.03
+        }
+      ],
+      "evidence": "current-read/public-smoke.json",
+      "limits": "Public sign-in only; one latency sample, not fresh authenticated setup or a general speed guarantee."
+    },
+    "installedHostBenchmark": {
+      "completed": 8,
+      "automatedPassed": 8,
+      "cleanPasses": 7,
+      "sourceCollisionCases": 1,
+      "hostPermissionDenials": 0,
+      "savedConfigurationUnchanged": true,
+      "allFinalCitationsFromSuccessfulReads": true,
+      "retrievalReadinessSeconds": 29.83,
+      "caseDurationSeconds": [
+        46.0,
+        102.97
+      ],
+      "evidence": "current-read-native-benchmark.json",
+      "receiptAudit": "current-read-receipt-audit.json",
+      "separateSynthesisRetest": {
+        "state": "guarded stop",
+        "tool": "mcp__plugin_meet-proxy_meet-proxy__setup_status",
+        "reads": "two connection-unavailable errors",
+        "hostPermissionDenials": 0,
+        "evidence": "current-read-synthesis-retest.json"
+      },
+      "limits": "Controlled tool surface, not default-host routing or fresh GUI setup; first run includes synthetic name collision."
+    }
   },
   "limits": [
-    "No installed-host or live performance claim yet.",
-    "One fresh-search retry is admitted only after a changed attempt under six seconds; this is not a hard twelve-second deadline.",
-    "Unchanged global revision/expiry checks can still withhold during continuous collection.",
-    "Host permission gates and prior model failures remain open."
+    "Seven clean ordinary-prompt passes; one correctly reported source conflict. Clean replacement remains unverified after connection errors and a harness guard.",
+    "One fresh-search retry is admitted only after a changed attempt under six seconds; no hard twelve-second deadline.",
+    "Three oversized-page validation errors recovered; changed/restart replies and latency remain visible.",
+    "Exact additional Claude diagnostics allowance and previously denied browser-to-MCP acceptance retest need owner approval; no saved permissions changed.",
+    "Default-host routing and new cross-person production acceptance remain unverified. Fresh-account/clean-machine coverage is separate from existing-owner handoffs.",
+    "Direct Mail/iMessage is deferred P1."
   ],
   "preservedFailures": [
     "current-read-focused.log: native guidance apostrophe syntax fixed before final checks.",
     "current-read-extracted.log: verification started before extraction completed; rerun waits for completed extraction."
-  ]
+  ],
+  "production": {
+    "state": "passed",
+    "release": "20261026-current-read",
+    "filesVerified": 159,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "none; unchanged hashes, code-only activation",
+    "previous": "20261026-demand-archives"
+  },
+  "releases": {
+    "native": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.28",
+    "server": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261026-current-read",
+    "sourceCommit": "dfea660b147b294df804c1cc14ba9424a949a911",
+    "mergeCommit": "2bbf6cac36fe9ee6915f1ca95174b472c732969c"
+  },
+  "installation": {
+    "state": "passed",
+    "version": "0.4.28",
+    "runtimeRevision": 61,
+    "zipSha256": "fdb5855405e7fba819177e59c77411e0c60e483f5ea4a6114f7846f3dee2af1d",
+    "accountPreserved": true,
+    "savedPermissionsPreserved": true,
+    "codexOnlyPluginPathsChanged": true,
+    "claudePluginManagerUpdated": true,
+    "normalActivation": {
+      "state": "failed",
+      "reason": "Old cached 0.4.15 launcher restarted runtime49 during the handoff; first attempt preserved."
+    },
+    "controlledActivation": {
+      "state": "passed",
+      "previousRevision": 49,
+      "activeRevision": 61,
+      "oldProcessStoppedGracefully": true,
+      "temporarilyPausedPluginProcesses": 8,
+      "allStillExistingPausedProcessesResumed": true,
+      "hostAppsUntouched": true
+    },
+    "evidenceLocation": "Mac ~/.commonplace-code-verification/current-read-0.4.28; activation-result.json preserves failed normal attempt, runtime61-controlled-result.json is successful activation"
+  },
+  "diagnostics": {
+    "existingCompanion": {
+      "searchSeconds": 4.5674,
+      "readSeconds": 1.8039,
+      "httpStatuses": [
+        200,
+        200
+      ],
+      "sourceTextReturned": true,
+      "changed": false,
+      "limits": "Independent later transport sample; does not repair the failed model retest."
+    },
+    "publicHealth": {
+      "status": 200,
+      "ready": true,
+      "seconds": 0.795
+    },
+    "productionSSH": {
+      "state": "reauthentication required",
+      "error": "Reauthentication failed; cannot prompt during non-interactive execution.",
+      "recovery": "Same existing GCP account browser reauthentication started on Mac; awaiting completion."
+    }
+  }
 }

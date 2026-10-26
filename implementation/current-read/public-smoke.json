@@ -1,0 +1,286 @@
+{
+  "origin": "https://34.27.253.220",
+  "release": "20261026-current-read",
+  "startedAt": "2026-10-26T09:54:56.638Z",
+  "assets": [
+    {
+      "name": "activity.mjs",
+      "status": 200,
+      "seconds": 0.299,
+      "sha256": "abbcf74dc467c5722efe6b6a173a44df600f8ac47e9f7b2e6d6dd49a1f94fb11",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "agent-connections.mjs",
+      "status": 200,
+      "seconds": 0.185,
+      "sha256": "cb0d159a3a6689bcf043b14bb58efbbaa973a23587dc9153b20503b16844941c",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "agent-setup.mjs",
+      "status": 200,
+      "seconds": 0.035,
+      "sha256": "d6c56c96c66180d02f132cf25ec36b7a2ece0fea56374a7c8a01ea742816e07c",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "chatgpt-format.mjs",
+      "status": 200,
+      "seconds": 0.207,
+      "sha256": "e49538bd5f24f4885eec3e392f09484554c7cf2025c8537ba09bd9ce186ad6a0",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "context-conversations.mjs",
+      "status": 200,
+      "seconds": 0.035,
+      "sha256": "0f749f9336695b7b828ce4b5a53684db1d6045ff34a1aaf8d6cc2afbf113acb3",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "context-coverage.mjs",
+      "status": 200,
+      "seconds": 0.031,
+      "sha256": "34a53385cb2634c4fb3d767aeaf1062dafc6e4bcd44cc84fdb701fd297c6e07b",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "context-native-setup.mjs",
+      "status": 200,
+      "seconds": 0.182,
+      "sha256": "38073c0af2d94bcc03837f42c747642ee9b2346d62f8e8d4ec5da6c8eea40600",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "context-product.mjs",
+      "status": 200,
+      "seconds": 0.038,
+      "sha256": "eed686c7d7ed69a2cf7869f27436632d8c05fec5ef2cf8a377cc3cd393ff715f",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "context-search.mjs",
+      "status": 200,
+      "seconds": 0.031,
+      "sha256": "5caf48ed67f7d17bda715994d92b744093a98465a96d61dae4f306cc6405f0d5",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "context-setup-request.mjs",
+      "status": 200,
+      "seconds": 0.179,
+      "sha256": "fffdaeec0bbc87bc11f8bdafbc68f50e050675c1aa1eea0d700b384159f31100",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "context-space-files.mjs",
+      "status": 200,
+      "seconds": 0.03,
+      "sha256": "d1e0875d4dcc5ccf3f77aa94d9c903d06fe607e9f45626943e4e9d90a2dc10f5",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "context-space-invitations.mjs",
+      "status": 200,
+      "seconds": 0.03,
+      "sha256": "9f897d4bbecd1b0af1f0cda217185b503e8b37f0b10015da3b10f4e1c3fdd27f",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "context-space-rules.mjs",
+      "status": 200,
+      "seconds": 0.186,
+      "sha256": "a3547056437d9028f9b1ed48d3415c1e26af90374267dfaa194c0d8e0172603b",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "context-spaces.mjs",
+      "status": 200,
+      "seconds": 0.031,
+      "sha256": "e0966dd4c27a57044775055b90ae3aa9e7a2b0d79232bcdc39d08e47982656e1",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "context.css",
+      "status": 200,
+      "seconds": 0.03,
+      "sha256": "99f116e0c7212ce79d3ac2f048b934a4ff1e412f4436ac65287500b8eec4490b",
+      "contentType": "text/css"
+    },
+    {
+      "name": "context.mjs",
+      "status": 200,
+      "seconds": 0.188,
+      "sha256": "3edef940424cb646fbdcb8080650b4e29345ce2d8f3bb471615cb9dff35070a0",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "export-file.mjs",
+      "status": 200,
+      "seconds": 0.029,
+      "sha256": "52c48be5d2fb31396daf0cbf98d23840f3a808ed083b921cca36d36edd8d54cb",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "fflate-LICENSE.txt",
+      "status": 200,
+      "seconds": 0.029,
+      "sha256": "805f6cb28bb8b6d3a0badd83c93bccd9671fa01a3b4b92b7042b0743325ac243",
+      "contentType": "text/plain"
+    },
+    {
+      "name": "fflate.mjs",
+      "status": 200,
+      "seconds": 0.218,
+      "sha256": "8cc1f687e0159e977addb6b85e274dbd11e622cf151f4fcb7b85d49622ea43e7",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "groups.mjs",
+      "status": 200,
+      "seconds": 0.03,
+      "sha256": "6cb17305665bb57d758ba664e9413da73cdebafdee23fac5e03a09be1c089d7a",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "import-worker.mjs",
+      "status": 200,
+      "seconds": 0.189,
+      "sha256": "129818f04c4e74c5c87ec1cadf2ebf722eba507d97e1bc689b12588ca7008276",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "invitations.mjs",
+      "status": 200,
+      "seconds": 0.031,
+      "sha256": "8de6ca18154858f6b05a137cdc64570135a6cb311f759e65f8d13115f49ba602",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "manrope-LICENSE.txt",
+      "status": 200,
+      "seconds": 0.03,
+      "sha256": "d826ab6583b12c26807d8716a545bdbbb672df04f48608a364ba9efdbe501c30",
+      "contentType": "text/plain"
+    },
+    {
+      "name": "manrope-latin.woff2",
+      "status": 200,
+      "seconds": 0.189,
+      "sha256": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972",
+      "contentType": "font/woff2"
+    },
+    {
+      "name": "mcp-resource-source-setup.mjs",
+      "status": 200,
+      "seconds": 0.029,
+      "sha256": "c1822b335c202b2fa98fa4546d92474771c2926552b86d4823529e2e4f76d52a",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "personal-assistant-setup.mjs",
+      "status": 200,
+      "seconds": 0.03,
+      "sha256": "8334986d1151320ad551d9fefbef53dbe54d88f08384b6348ee3a960913b16dc",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "shared-chats.mjs",
+      "status": 200,
+      "seconds": 0.19,
+      "sha256": "a88f61432b9cf3ccfe54b513ea993938a616ecb6e2cff2932521ffcfb98a3054",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "social.mjs",
+      "status": 200,
+      "seconds": 0.031,
+      "sha256": "23af95ada977c9f0e9c2037bd2224489b31afc4cb5fb9afcb66caf54d6a6f862",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "ui.css",
+      "status": 200,
+      "seconds": 0.03,
+      "sha256": "ccdd614fa7c90742900a5005f87ea8db70d374b0a804b7250b4eae20db189507",
+      "contentType": "text/css"
+    },
+    {
+      "name": "ui.mjs",
+      "status": 200,
+      "seconds": 0.187,
+      "sha256": "128781007dc31a0d04a852c059d1093d83a74ddc897fe2e2b04475a14fefd76e",
+      "contentType": "text/javascript"
+    },
+    {
+      "name": "work-agent.mjs",
+      "status": 200,
+      "seconds": 0.031,
+      "sha256": "447b65c5f83495271ee55000ca46e2476fd184dee5f167db48c08e392cf5efc7",
+      "contentType": "text/javascript"
+    }
+  ],
+  "protocols": [
+    {
+      "path": "/healthz",
+      "method": "get",
+      "status": 200,
+      "seconds": 5.019
+    },
+    {
+      "path": "/.well-known/oauth-authorization-server",
+      "method": "get",
+      "status": 200,
+      "seconds": 3.716
+    },
+    {
+      "path": "/.well-known/agent-configuration",
+      "method": "get",
+      "status": 200,
+      "seconds": 4.013
+    },
+    {
+      "path": "/mcp",
+      "method": "post",
+      "status": 401,
+      "seconds": 1.795
+    },
+    {
+      "path": "/context/assets/ui.css",
+      "method": "post",
+      "status": 403,
+      "seconds": 0.03
+    }
+  ],
+  "screens": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "seconds": 5.842,
+      "googleButtonVisible": true,
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "name": "phone",
+      "width": 390,
+      "seconds": 5.628,
+      "googleButtonVisible": true,
+      "overflow": false,
+      "errors": []
+    }
+  ],
+  "errors": [],
+  "authorize": {
+    "status": 303,
+    "redirect": "/signin-with-chatgpt"
+  },
+  "head": {
+    "status": 200,
+    "bytes": 0
+  },
+  "privateSourceStatus": 404,
+  "finishedAt": "2026-10-26T09:55:30.987Z",
+  "state": "passed"
+}
