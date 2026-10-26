@@ -1,15 +1,24 @@
 # Meet Proxy Draft v3 compliance
 
-The [26 October recheck](SPEC-RECHECK.md) maps every P0 and the remaining P1/P2
-items to the owner's current context-sharing design, current tests and live gaps.
-The current product is Spaces / My context; sharing rules are implemented.
-Do not use the historical source-only milestones below as today's release status.
-Current release evidence is in
-[`spec-recheck-verification.json`](../implementation/spec-recheck-verification.json).
-Native 0.4.22 is published and installed; `20261026-revision-fence` is live.
-Actual Claude search/read succeeded across a retry with unchanged saved
-permissions. Intermittent read timeouts, fresh-user/all-host acceptance and
-the documented P1/context feature gaps prevent an all-complete claim.
+The [26 October recheck](SPEC-RECHECK.md) maps P0/P1/P2 to the owner's current
+context-sharing design. The [completion candidate](CONTEXT-COMPLETION.md) closes
+the source/package gaps for upstream MCP resources, bounded long-document sharing,
+compatible assistants and contact adapters; it also removes archive rebuilds from
+the direct document-read path. Final core 489/489, UI 129/129, lifecycle 15/15 and
+extracted feature/launcher 32/32 checks pass. Exact evidence and artifact hashes:
+[`context-completion-verification.json`](../implementation/context-completion-verification.json).
+
+**0.4.23/runtime57 is a verified candidate, not installed or live.** The last
+verified production state remains native 0.4.22/runtime56 and
+`20261026-revision-fence`. Conductor reports no authorized Mac bound to this chat,
+blocking Mac checks and the existing deployment path. Actual contact delivery,
+a real external MCP provider, fresh Google consent and Codex Desktop acceptance
+remain unverified. The real classifier benchmark still falsely withheld seven
+of 32 synthetic cases. Do not claim all goals are complete in production.
+
+The product remains Spaces / My context. The historical milestones below are
+preserved for provenance; their old home/layout, test counts and feature gaps do
+not override current owner instructions or the completion candidate record.
 
 ## Historical implementation milestones
 

@@ -227,3 +227,17 @@ release link. The companion remains runtime56; no daemon behavior or schema chan
 Apply `archive-revision-fence.patch` twenty-second. Stale paged reads return a
 revision restart before joining an archive rebuild. The post-preparation revision
 check remains. This server-only update preserves native 0.4.22 ZIPs and schema.
+
+
+## Context completion candidate
+
+Apply `context-completion.patch` twenty-third, after `archive-revision-fence.patch`.
+It adds bounded Unicode-safe sharing chunks and approved-only continuation,
+explicit native MCP resource ingestion, contact invitation adapters, compatible
+MCP assistant setup, direct canonical document reads and drained archive shutdown.
+The candidate is native 0.4.23/runtime57; current public marketplace remains 0.4.22.
+All 23 patches reproduce 174 files exactly; this patch changes 50 files. Its
+manifest records input/output hashes and order; `context-completion-verification.json`
+records test logs and native/runtime artifact digests. Read [the candidate and
+activation gates](../docs/CONTEXT-COMPLETION.md) before release. Packaged checks are
+not evidence of installed or deployed readiness.
