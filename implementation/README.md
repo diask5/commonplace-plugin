@@ -1,11 +1,15 @@
 # MCP adoption source delivery
 
-**Current published/deployed release: 0.4.20 / runtime 55.** Apply all 17 patches in the order
-recorded by `context-mvp-completion-manifest.json` (`applyAfter`, then `patch`).
+**Current native release: 0.4.20 / runtime 55.** Apply all 18 patches in the order
+recorded by `sharing-walkthrough-manifest.json` (`applyAfter`, then `patch`).
 The complete chain reproduces 150 changed files exactly. Current tests and rollout
 state: [context MVP verification](context-mvp-verification.json) and
 [readiness audit](../docs/CONTEXT-MVP-READINESS.md). Older source-only statements
 below describe their historical checkpoints.
+
+The latest web UI update is [the guided sharing walkthrough](../docs/SHARING-WALKTHROUGH.md).
+Its [verification record](sharing-walkthrough-verification.json) distinguishes
+browser fixtures from live deployment checks.
 
 This repository distributes the plugin. Its implementation checkout
 ([commonplace-session-tests](https://github.com/diask5/commonplace-session-tests)) is separate,
@@ -187,3 +191,11 @@ files; the verification record distinguishes packaged, deployed and installed st
 No existing migrations are rewritten. `cp_space_policy_limits` is additive on first
 use. Existing profiles, exact native bindings, private scope and pair histories stay
 intact.
+
+## Guided sharing walkthrough
+
+Apply `sharing-walkthrough.patch` after `context-mvp-completion.patch` (18th).
+It adds the animated three-stage native setup, prominent next action, responsive
+sharing-rule explanation and clearer invitation screens. Four runtime UI modules
+and three browser-test files change; no backend, schema or native package changes.
+The full chain still reproduces 150 files. Published plugin ZIPs are unchanged.
