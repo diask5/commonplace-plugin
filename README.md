@@ -11,11 +11,15 @@ private collection, natural-language space invitations, timed sharing and
 leave/archive controls. See the [current readiness audit](docs/CONTEXT-MVP-READINESS.md)
 and [machine-readable release evidence](implementation/context-mvp-verification.json).
 
-[See all 14 desktop and phone flows](https://kyle-cloud-w3.conductor.show/review)
+[See the desktop and phone walkthrough](https://kyle-cloud-w3.conductor.show/review)
 or [open the interactive preview](https://kyle-cloud-w3.conductor.show/preview/sample?view=conversations).
 These walkthroughs use isolated test identities; they do not prove a fresh Google
 sign-in or native app launch. Both production services are healthy and existing
 account/chat identities are preserved. [Release and live evidence](docs/CONTEXT-MVP-ROLLOUT.md).
+
+The latest [sharing walkthrough update](docs/SHARING-WALKTHROUGH.md) is live:
+animated setup guidance, a clear copy/paste next step, and simpler sharing rules
+and invitations. Native plugin 0.4.20 is unchanged.
 
 Private-library sharing is opt-in per owner and space. Every request checks the
 current rules through Perplexity Decisions; rejected excerpts and classifier

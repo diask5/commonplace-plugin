@@ -1,6 +1,8 @@
 # Context-sharing MVP rollout — 26 October 2026
 
-Production is running **0.4.20 / runtime 55**, release directory
+Production is running **0.4.20 / runtime 55** with the subsequent web-only
+[sharing walkthrough update](SHARING-WALKTHROUGH.md), release directory
+`20261026-sharing-walkthrough`. The baseline rollout documented below used
 `20261026-context-0.4.20`. Open https://34.27.253.220/ for the real application.
 The main navigation is Spaces / My context; every space has Messages, My sharing
 rules and Members. The original agent-pair surface remains at `/work-agent#agents`.
@@ -80,5 +82,5 @@ updating the website does not reload every native host.
 
 See [the current spec comparison](CONTEXT-MVP-READINESS.md) and
 [machine-readable evidence](../implementation/context-mvp-verification.json).
-[All 14 desktop and phone screens](https://kyle-cloud-w3.conductor.show/review)
+[The desktop and phone walkthrough](https://kyle-cloud-w3.conductor.show/review)
 use the actual UI with clearly labeled test identities and controlled providers.
