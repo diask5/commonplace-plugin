@@ -1,18 +1,25 @@
 # Meet Proxy Draft v3 compliance
 
-Latest release: [live index reuse](LIVE-INDEX-REUSE.md), with native 0.4.27/runtime60.
-Production is `20261026-live-index`; Mac 0.4.27 and runtime60 are
-active. The preceding controlled real-host benchmark passed 3/8 cases; 3 fell short and
-2 were not started after the Claude test guard stopped its sequence. Search
-timeouts and revision churn remain unresolved. A fresh benchmark is running. The release passes 580 core regressions, native packaging and both-alias
-plugin/mailbox checks. Public desktop/phone sign-in and all 31 UI assets passed
-live checks. These checks do not certify authenticated setup or model behavior.
+Latest candidate: [current-source retrieval 0.4.28/runtime61](CURRENT-SOURCE-READS.md). Packaged; live and installed verification pending. The production and historical records below retain their own release dates.
 
-Default-host invitation routing, host-denied browser acceptance, production
-retrieval latency and cleanup of an unintended empty ChatGPT space remain open.
-Earlier failures remain in their original records; see
-[verification](../implementation/registration-recovery-verification.json) for
-published, deployed, installed and model-tested states.
+Latest server release: [demand-built archives](DEMAND-ARCHIVES.md), with native
+0.4.27/runtime60 installed and active. Production is `20261026-demand-archives`.
+All 159 deployed files match the release; 583 core regressions pass. All 31 public
+assets, protocol checks and desktop/phone sign-in passed. These do not certify
+model behavior or a fresh authenticated setup.
+
+The completed live-index ordinary-prompt benchmark passed 4/8. Three Claude
+answers cited a source found only in search without a successful supporting read;
+one Codex case could not retrieve an answer after restarts/timeouts. Receipt checks
+confirmed these gaps; correct facts alone do not satisfy grounding. The demand-built release passed five cases, hit one test allowlist guard and left
+two unstarted. [Completed model evidence](../implementation/live-index-reuse-native-benchmark.json).
+
+Default-host invitation routing, the host-denied acceptance case and production
+retrieval latency remain open. Cleanup of the unintended empty ChatGPT space still
+awaits its owner. Cross-person live acceptance is not certified by fixture users;
+fresh-account/clean-machine coverage is separate from the verified existing-owner
+Google/Desktop handoffs. Direct Mail/iMessage delivery stays deferred P1.
+Earlier failures remain in their original records.
 
 The following paragraph records the preceding 0.4.24 behavioral baseline.
 

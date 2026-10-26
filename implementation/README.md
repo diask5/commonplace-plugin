@@ -289,3 +289,13 @@ keeps existing session requests independent of new-chat registration. Server
 changes shorten archive read transactions and fence stale model outputs inside
 the publication transaction. See [the release record](../docs/REGISTRATION-RECOVERY.md)
 and `registration-recovery-verification.json` for activation and live evidence.
+
+## Current-source retrieval — patch 34
+
+Apply `current-read.patch` after `demand-archives.patch` (33), which follows
+`live-index-reuse.patch` (32). All 34 patches reproduce 203 implementation files.
+Native 0.4.28/runtime61 requires supporting reads for every citation and pins only
+source continuation pages. Server fresh searches may retry one fast changed result
+under unchanged authority, revision and expiry fences. See
+[current-source retrieval](../docs/CURRENT-SOURCE-READS.md) and its verification
+record for package, installation, deployment and live-model states.

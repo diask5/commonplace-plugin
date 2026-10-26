@@ -1,8 +1,12 @@
 # P0 native and production readiness — 26 October 2026
 
+Latest candidate: [current-source retrieval 0.4.28/runtime61](CURRENT-SOURCE-READS.md). Packaged; live and installed verification pending. The production and historical records below retain their own release dates.
+
 Current release: [0.4.27/runtime60 registration recovery](REGISTRATION-RECOVERY.md),
-installed and active; server `20261026-live-index` is live ([search update](LIVE-INDEX-REUSE.md)). The
-real-host benchmark remains incomplete (3 passed, 3 fell short, 2 unstarted). The 0.4.24 evidence below remains historical.
+installed and active; server `20261026-demand-archives` is live ([server update](DEMAND-ARCHIVES.md)). The
+latest completed real-host benchmark passed 4/8, with citation grounding and timeouts
+still unresolved. The current release passed five cases, hit one test allowlist guard and left two
+unstarted; no host denial or saved-permission change. The 0.4.24 evidence below remains historical.
 
 The later [ordinary-prompt benchmark](NATURAL-PROMPT-BENCHMARK.md) qualifies the
 behavioral readiness claim: retrieval works without naming tools, but host
