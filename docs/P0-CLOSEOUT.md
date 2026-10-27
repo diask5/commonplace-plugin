@@ -7,22 +7,23 @@ The original Draft v3 and the owner's later Spaces amendments remain the contrac
 ## Release state
 
 27 October: 0.4.31/runtime64 artifacts are published, runtime64 is active on the
-Mac, and corrected server `20261027-context-guidance-r2` is live. Permanent native
-registry installation is being verified. Two real native CLI synthesis checks
+Mac, and corrected server `20261027-context-guidance-r2` is live. Claude and Codex
+permanent installations are 0.4.31, with two postdeployment installed-package reads
+verified in [installed receipts](../implementation/p0-installed-release-verification.json). Two real native CLI synthesis checks
 pass with strict successful-read grounding. [Current receipts](../implementation/p0-live-release-verification.json)
-supersede the historical staging table below. The original transport failure
+update the release table below. The original transport failure
 cause and the broader real-person/clean-setup/default-host gates remain open.
 
 | Build | State |
 | --- | --- |
-| 0.4.28/runtime61; server `20261026-current-read` | Published, installed and active; current production baseline. |
+| 0.4.28/runtime61; server `20261026-current-read` | Previous published baseline retained; superseded by 0.4.31/server-r2. |
 | 0.4.29/runtime62 page-size guidance | Packaged; native/server GitHub draft assets uploaded. Not published, installed or deployed. |
 | 0.4.30/runtime63, patches 36–37 | Locally packaged and verified; includes page-size guidance and bounded transport diagnostics. Not uploaded, published, installed or deployed. 0.4.29 draft assets unchanged. |
-| Scope and retrieval guidance, patches 38–39 | Distinct cloud model regressions pass 3/3 spaces and 8/8 retrieval. Now included in local 0.4.31; absent from live releases. |
-| 0.4.31/runtime64, patches 40–41 | Packaged with patches 38–39, page-size guidance, diagnostics and recoverable remote archive input errors. Both aliases/server uploaded as verified GitHub drafts; ten downloads match local hashes. Not published, installed or deployed. [Evidence](P0-READY-CANDIDATE.md). |
+| Scope and retrieval guidance, patches 38–39 | Distinct cloud model regressions pass 3/3 spaces and 8/8 retrieval. Published, installed and deployed with 0.4.31/server-r2. |
+| 0.4.31/runtime64, patches 40–41 | Packaged with patches 38–39, page-size guidance, diagnostics and recoverable remote archive input errors. Both native aliases published and permanently installed; corrected server-r2 deployed using patch42. Original server draft remains unchanged. [Evidence](P0-READY-CANDIDATE.md). |
 
-The 27 October [live acceptance handoff](P0-LIVE-ACCEPTANCE.md) records the staged
-artifacts, independent review, draft PR #37 and pending owner inputs. The earlier
+The 27 October [live acceptance handoff](P0-LIVE-ACCEPTANCE.md) records published
+artifacts, independent review, merged PR #37 and remaining owner inputs. The earlier
 Mac execution denial was superseded by explicit owner authorization; GCP sign-in
 was completed and verified. A real second participant and separate clean test profile are still
 needed to close their respective gates.
@@ -35,7 +36,12 @@ generic failed-read message still does not prove an HTTP 503 or expired sign-in.
 See [the delta verification](../implementation/transport-diagnostics-verification.json)
 and [the prior diagnosis](../implementation/current-read-connection-diagnosis.json).
 
-## 1. Establish the failed-read cause
+## 1. Diagnostic execution record
+
+The sequence below was executed on 27 October after access was reopened. The
+historical error could not be identified from retained logs and did not recur
+in the successful current reads. Diagnostics are now installed; do not repeat
+login or rollout solely to close an unconfirmed historical cause.
 
 1. Finish the existing same-account GCP browser reauthentication on the Mac;
    do not start a duplicate login or replace the connected account. Obtain host
@@ -60,7 +66,7 @@ and [the prior diagnosis](../implementation/current-read-connection-diagnosis.js
    correct answer alone does not pass. Include the page-size guidance candidate
    in the reviewed rollout and record whether it changes model behavior.
 
-The earlier Mac request timed out without execution. The latest resumed request
+Before renewed authorization, the earlier Mac request timed out without execution. A resumed request
 returned “The user denied local command execution.” No retry or alternate local
 path was used. The owner directed this benchmark to new Conductor cloud sessions.
 
@@ -106,9 +112,13 @@ after registration. Identify partial collection and any unsupported sources.
 Existing-owner handoffs, cached identity and fixture onboarding do not replace
 this coverage. If no clean environment is available, leave this gate open.
 
-## 4. Release and accept against receipts
+## 4. Release completed; broader acceptance remains
 
-After the cause is understood and a candidate is verified, publish/install/deploy
+The release, native installation and live server checks below are complete for
+0.4.31/server-r2. Do not relabel the remaining real-person, clean-environment or
+default-host gates as passed.
+
+With a reviewed candidate and verified current behavior, publish/install/deploy
 the reviewed artifacts through the authorized release flow, preserve accounts
 and permissions, reload older host sessions where required, and verify exact
 artifact hashes and service health. Re-run only the affected acceptance paths

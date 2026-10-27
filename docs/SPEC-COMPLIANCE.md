@@ -3,16 +3,17 @@
 27 October live update: 0.4.31/runtime64 is published, runtime64 is active on the
 Mac, and server `20261027-context-guidance-r2` is live after a tested deployment
 permission correction and verified rollback of the first attempt. Two distinct
-native CLI synthesis checks pass with strict citation grounding. Permanent native
-registry installation is being verified. [Live receipts](../implementation/p0-live-release-verification.json)
+native CLI synthesis checks pass with strict citation grounding. Claude/Codex
+permanent installations are verified at 0.4.31, with two successful installed-package
+source reads after deployment. [Installed receipts](../implementation/p0-installed-release-verification.json). [Live receipts](../implementation/p0-live-release-verification.json)
 supersede the historical staging state below. Real-person sharing/revocation,
 clean Google/Desktop setup and broader default-host acceptance remain open.
 
-Latest staged candidate: [0.4.31/runtime64](P0-READY-CANDIDATE.md) packages the
+Original staging evidence: [0.4.31/runtime64](P0-READY-CANDIDATE.md) packages the
 tested space-routing/source-read guidance, bounded diagnostics and recoverable
 archive input errors. The full core suite passes 594/594. Both aliases and the
-server update are verified GitHub drafts, not published, installed or deployed;
-they do not close live P0 gates. [Staging and remaining inputs](P0-LIVE-ACCEPTANCE.md).
+server update were verified GitHub drafts at that stage. Native aliases are now
+published/installed and corrected server-r2 is live; broader P0 gates stay open. [Staging and remaining inputs](P0-LIVE-ACCEPTANCE.md).
 [Exact evidence](../implementation/p0-ready-candidate-verification.json).
 
 The [P0 closeout checklist](P0-CLOSEOUT.md) orders the remaining live work.
@@ -26,8 +27,7 @@ The failed-read cause is still unknown. The authorized [cloud benchmark](CLOUD-P
 is complete. Baseline routing/grounding failures remain recorded; source-only
 patches 38–39 passed distinct 3/3 space and 8/8 retrieval model regressions. Every
 candidate final citation had a successful same-session source read. These patches
-are absent from the local 0.4.30 packages and all deployed releases; the newer
-local 0.4.31 candidate now includes them.
+are absent from local 0.4.30 packages and now live in 0.4.31/server-r2.
 
 A packaged 0.4.29/runtime62 page-size guidance candidate addresses observed invalid
 model arguments. Native and server assets are verified GitHub drafts; it is not live. See

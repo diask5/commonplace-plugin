@@ -33,8 +33,10 @@ account and workspace scope. Joining never enables private-library sharing.
 See [the current readiness audit](docs/CONTEXT-MVP-READINESS.md) and
 `implementation/context-mvp-verification.json` for release state.
 Current published release is **0.4.31/runtime64**; runtime64 is active on the Mac
-and server `20261027-context-guidance-r2` is live. Permanent native registry
-installation is being verified. See `implementation/p0-live-release-verification.json`.
+and server `20261027-context-guidance-r2` is live. Claude and Codex permanent
+registries now use 0.4.31; two postdeployment installed-package source reads pass.
+See `implementation/p0-installed-release-verification.json` and
+`implementation/p0-live-release-verification.json`.
 The previous 0.4.28/runtime61 and server `20261026-current-read` remain retained.
 See [current-source retrieval](docs/CURRENT-SOURCE-READS.md)
 and `implementation/current-read-verification.json` for exact source, package,
@@ -57,12 +59,13 @@ diagnostics with patches 38–39 and recoverable remote archive input errors
 unchanged; the separately published r2 server uses patch42's permission-preserving
 deployment helper. Its first rollout failed with EACCES under umask077 and safely
 rolled back. The corrected rollout verifies 159 live/readable files and healthy
-services. See [deployment modes](docs/DEPLOYMENT-SOURCE-MODES.md). PR #37 contains
+services. See [deployment modes](docs/DEPLOYMENT-SOURCE-MODES.md). Merged PR #37 contains
 the source and evidence. Original candidate hashes remain unchanged.
 See `implementation/p0-ready-staging-verification.json` and
 [live acceptance](docs/P0-LIVE-ACCEPTANCE.md). The full core suite passes 594/594.
 See `implementation/p0-ready-candidate-verification.json` for exact hashes and
-checks. Installed-native, production and clean-onboarding gates remain open.
+checks. Broader default-host, real-person sharing/revocation and clean-onboarding
+gates remain open; installed retrieval and server rollout checks passed.
 
 The [Conductor cloud benchmark](docs/CLOUD-P0-BENCHMARK.md) is complete.
 Published-0.4.28 synthetic baseline: five clean lifecycle passes, one post-leave
@@ -75,8 +78,8 @@ have supporting reads in the same session. Existing regression suites pass 8/8
 and 26/26. See `implementation/cloud-p0-benchmark-verification.json` for the
 39-patch replay, full catalog, fixture/provenance and host-isolation limits.
 Temporary project settings were restored and all six scored-fixture servers
-stopped. These guidance changes are included in local 0.4.31, absent from local
-0.4.30 packages and live releases. Cloud remote-MCP fixtures do not close installed-native or production
+stopped. These guidance changes are now published, installed and deployed in
+0.4.31/server-r2; they remain absent from local 0.4.30 packages. Cloud remote-MCP fixtures do not close installed-native or production
 acceptance, the Mac failed-read diagnosis, or clean Google/Desktop setup.
 
 The current ordinary-prompt run has seven clean passes and one correctly reported

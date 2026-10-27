@@ -1,13 +1,13 @@
 {
-  "observedAt": "2026-10-27T05:39:05.895Z",
-  "state": "server deployed and artifacts published; permanent native package installation pending",
+  "observedAt": "2026-10-27T05:44:05.660224+00:00",
+  "state": "published, server deployed, native registries installed and runtime64 active; broader acceptance gates open",
   "nativeVersion": "0.4.31",
   "runtimeRevision": 64,
   "serverRelease": "20261027-context-guidance-r2",
   "published": true,
   "serverDeployed": true,
   "nativeCompanionActive": true,
-  "nativeRegistryInstalled": false,
+  "nativeRegistryInstalled": true,
   "serverEvidence": {
     "exit": 0,
     "result": {
@@ -76,12 +76,13 @@
     "Clean Google/Desktop onboarding on a separate environment."
   ],
   "publicHealthAndAsset": {
-    "observedAt": "2026-10-27T05:38:34.657478+00:00",
+    "observedAt": "2026-10-27T05:43:35.149067+00:00",
     "health": {
       "ready": true
     },
     "agentSetupSha256": "e536f1faf1b90cc81f89d6f0661426a795edf351d955d1fdc2bd4ca46a4e112a",
-    "matchesCandidate": true
+    "matchesRelease": true,
+    "probeNote": "First Python check omitted gzip decoding; corrected response decoding succeeded."
   },
   "serverR2DownloadedAssets": [
     {
@@ -170,5 +171,11 @@
         "digest": "sha256:63d97f13912e40b3c22d33afcfcbe1d6b07368fddfc09eec1ca75f75b0da3cac"
       }
     ]
+  },
+  "installedVerification": "p0-installed-release-verification.json",
+  "sourcePullRequest": {
+    "number": 37,
+    "state": "merged",
+    "commit": "e56b8f012897f9d9a429309c15d4b71f683d643e"
   }
 }
