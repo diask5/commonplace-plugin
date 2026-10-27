@@ -1,9 +1,12 @@
 # Live acceptance handoff — 27 October 2026
 
 Release 0.4.31/runtime64 is published and server `20261027-context-guidance-r2`
-is live. Runtime64 is active on the Mac; permanent native registry installation
-is being verified. [PR #37](https://github.com/diask5/commonplace-plugin/pull/37)
-contains the source and evidence. P0 acceptance remains open.
+is live. Runtime64 is active on the Mac, and Claude/Codex permanent installations
+are 0.4.31. [Merged PR #37](https://github.com/diask5/commonplace-plugin/pull/37)
+contains the source and evidence. Two current source reads through the installed
+package passed after deployment; [installed receipts](../implementation/p0-installed-release-verification.json)
+verify registry paths, matching code and final service health. Older chats need a
+host reload to load this version. P0 acceptance remains open.
 [Current receipts](../implementation/p0-live-release-verification.json).
 
 The owner reopened Mac access and completed existing-account GCP sign-in.
@@ -19,13 +22,15 @@ reviewed [deployment-mode correction](DEPLOYMENT-SOURCE-MODES.md) is now live;
 all 159 source files are verified/readable and all services/worker health pass.
 The historical connection-unavailable read cause remains unconfirmed.
 
-## Prepared artifacts
+## Published artifacts and preserved staging evidence
 
 Both aliases and the server update were downloaded from the new drafts. All ten
 download hashes and sizes match local bytes and GitHub's asset digests.
 [Staging receipts](../implementation/p0-ready-staging-verification.json) record
 the exact target commit and artifact hashes. All ten older 0.4.29 asset digests
-and sizes remain unchanged. No marketplace pointer has been promoted.
+and sizes remain unchanged. Both marketplace aliases now point to the published
+0.4.31 artifacts. The corrected server-r2 helper is separately published; the
+original server candidate draft is preserved.
 
 An independent Conductor source/evidence review found no material new blocker in
 patches 40–41. The earlier 594/594 core result and synthetic model regressions
@@ -33,7 +38,7 @@ remain qualified as recorded in [candidate evidence](P0-READY-CANDIDATE.md).
 The public health endpoint returned HTTP 200 and `ready: true` on 27 October;
 this is not an authenticated retrieval or worker-health check.
 
-## Inputs required before live work
+## Inputs still required for remaining acceptance
 
 - Mac execution was explicitly reopened and GCP access restored. The prepared
   [status script](../implementation/p0-ready-staging/mac-readonly-status.py)
@@ -48,7 +53,11 @@ No answer to a pending question is approval. Existing-account GCP reauthenticati
 was completed; the Meet Proxy account was not switched or relinked. No saved
 permission change, production test space or real-person invitation was made.
 
-## Execute once access is available
+## Execution checklist
+
+Steps 1–5 are complete with the limits recorded above. Step 6 has two passing
+process-isolated native checks but still needs the broader default-host walkthrough.
+Steps 7–8 require the owner-selected participant and clean environment.
 
 1. Read current Mac runtime and cached account metadata. Confirm the intended
    Meet Proxy account is `diaskyle10@gmail.com`; do not relink on mismatch.

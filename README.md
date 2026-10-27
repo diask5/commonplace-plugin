@@ -8,7 +8,7 @@ simple membership controls.
 The [production application](https://34.27.253.220/) includes context-sharing
 spaces, one-request native plugin/MCP setup, automatic private collection,
 natural-language invitations, timed rules and leave/archive controls.
-The latest release is **0.4.31/runtime64**, with server
+The latest release is **0.4.31/runtime64**, installed for Claude and Codex, with server
 `20261027-context-guidance-r2` live. Two real native CLI synthesis checks passed
 after runtime64 activation; every final citation had a successful source read.
 The original failed runs remain preserved, and the historical connection-error

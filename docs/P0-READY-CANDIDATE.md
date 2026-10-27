@@ -4,7 +4,9 @@
 and corrected server `20261027-context-guidance-r2` is live. Two distinct native
 CLI synthesis checks pass. [Live receipts](../implementation/p0-live-release-verification.json)
 supersede the staging state below; original candidate bytes and evidence remain
-unchanged. Permanent native registry installation is being verified.
+unchanged. Claude/Codex permanent installations are verified at 0.4.31;
+[installed receipts](../implementation/p0-installed-release-verification.json) include
+two current source reads after deployment. Older chats need a host reload.
 
 **Original staging snapshot; P0 remains open.** Both aliases
 and the server update were uploaded on 27 October and all ten assets were
@@ -12,7 +14,7 @@ downloaded and hash-checked. They are not published, installed or deployed. Curr
 production remains 0.4.28/runtime61 with server `20261026-current-read`. Existing
 0.4.29 draft assets and local 0.4.30 artifacts are unchanged.
 
-[Draft PR #37](https://github.com/diask5/commonplace-plugin/pull/37) contains the
+[Merged PR #37](https://github.com/diask5/commonplace-plugin/pull/37) contains the
 source and evidence. [Staging receipts](../implementation/p0-ready-staging-verification.json)
 record exact draft URLs and hashes. An independent source/evidence review found
 no material new blocker. Follow [live acceptance](P0-LIVE-ACCEPTANCE.md) for the
