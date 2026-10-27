@@ -1,0 +1,250 @@
+{
+  "observedAt": "2026-10-26T23:33:46.527110+00:00",
+  "state": "locally packaged candidate verified for installed-host acceptance; P0 remains open",
+  "nativeVersion": "0.4.31",
+  "runtimeRevision": 64,
+  "uploaded": false,
+  "published": false,
+  "installed": false,
+  "deployed": false,
+  "liveReleaseUnchanged": "0.4.28/runtime61; server 20261026-current-read",
+  "existingDraftsAndPackagesUnchanged": [
+    "0.4.29/runtime62 uploaded drafts",
+    "0.4.30/runtime63 local packages"
+  ],
+  "changes": [
+    "includes reviewed patches38/39 for owner-selected space routing and successful-read citations",
+    "three exact remote archive validation/lookup errors now return fixed result.isError correction replies",
+    "includes page-size guidance and bounded native stderr diagnostics",
+    "version bump and new regression included in standard npm test"
+  ],
+  "source": {
+    "patches": 41,
+    "files": 204,
+    "incrementalFiles": 7,
+    "matched": true,
+    "mismatches": [],
+    "patchSha256": "644313765867487b0c218759507b47cad911a27c38e569d527ae120013446fe1",
+    "manifestHashAgreement": {
+      "mcp-adoption-0.4.19-rc.3.patch": "no-standard-manifest",
+      "agent-launch-and-server-check.patch": "no-standard-manifest",
+      "spec-alignment.patch": true,
+      "product-flow-design.patch": true,
+      "production-readiness.patch": true,
+      "context-product-ui.patch": true,
+      "automatic-context-ingestion.patch": true,
+      "prompt-based-sharing.patch": true,
+      "sharing-rules-design.patch": true,
+      "sharing-desktop-layout.patch": true,
+      "sharing-interactions.patch": true,
+      "shared-spaces.patch": true,
+      "message-first-spaces.patch": true,
+      "live-context-setup.patch": true,
+      "seamless-plugin-setup.patch": true,
+      "copy-setup-prompt.patch": true,
+      "context-mvp-completion.patch": true,
+      "sharing-walkthrough.patch": true,
+      "zero-to-knowledge.patch": true,
+      "archive-read-performance.patch": true,
+      "native-discovery.patch": true,
+      "archive-revision-fence.patch": true,
+      "context-completion.patch": true,
+      "p0-native-readiness.patch": true,
+      "seamless-context.patch": true,
+      "deployment-startup-readiness.patch": true,
+      "context-timeout-recovery.patch": true,
+      "server-io-recovery.patch": true,
+      "public-assets-delivery.patch": true,
+      "context-read-performance.patch": true,
+      "registration-recovery.patch": true,
+      "live-index-reuse.patch": true,
+      "demand-archives.patch": true,
+      "current-read.patch": true,
+      "read-page-guidance.patch": true,
+      "transport-diagnostics.patch": true,
+      "cloud-closeout-runtime.patch": true,
+      "scope-preserving-space-routing.patch": true,
+      "remote-retrieval-guidance.patch": true,
+      "remote-archive-errors.patch": true,
+      "p0-ready-candidate.patch": true
+    },
+    "sourceScopeFilesNotMatchingReplay": [],
+    "sourceScopeMissingCount": 0
+  },
+  "nativeArtifacts": {
+    "meet-proxy": {
+      "sha256": "968f1157f0942c660eb5325cb287cfb70f54be2da0b8d7334d004eb7ad944c33",
+      "bytes": 230158380,
+      "localArtifact": ".context/release-ready/native/meet-proxy-0.4.31.zip",
+      "buildReport": "p0-ready-candidate/meet-proxy-0.4.31-build.json"
+    },
+    "commonplace": {
+      "sha256": "84251b519af967146f5111303c1211d12a9a82d51b81d32e326f94929a0e2a05",
+      "bytes": 230158380,
+      "localArtifact": ".context/release-ready/native/commonplace-0.4.31.zip",
+      "buildReport": "p0-ready-candidate/commonplace-0.4.31-build.json"
+    }
+  },
+  "serverArtifacts": {
+    "runtime-update.json": {
+      "sha256": "255688ceb2220b0adb035fe2e4f4f31ed20f0494fac5cc8530c64e3bce64dfa1",
+      "bytes": 2736845,
+      "localArtifact": ".context/release-ready/server/runtime-update.json"
+    },
+    "runtime-update-manifest.json": {
+      "sha256": "740d30390ba1954b3d32a641671692c6f3fc843bd8701055eb90341f0fc9bda1",
+      "bytes": 27225,
+      "localArtifact": ".context/release-ready/server/runtime-update-manifest.json"
+    },
+    "runtime-update.sha256": {
+      "sha256": "63d97f13912e40b3c22d33afcfcbe1d6b07368fddfc09eec1ca75f75b0da3cac",
+      "bytes": 86,
+      "localArtifact": ".context/release-ready/server/runtime-update.sha256"
+    },
+    "deploy-cloud-update.py": {
+      "sha256": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408",
+      "bytes": 12117,
+      "localArtifact": ".context/release-ready/server/deploy-cloud-update.py"
+    }
+  },
+  "serverFilesVerified": 159,
+  "serverChangedFilesFromLive": [
+    "dist/standalone/account-runtime/archive-tools.mjs",
+    "dist/standalone/account-runtime/context-assets/agent-setup.mjs",
+    "dist/standalone/account-runtime/remote-mcp.mjs"
+  ],
+  "checks": {
+    "focused": {
+      "tests": 34,
+      "pass": 34,
+      "fail": 0,
+      "skipped": 0,
+      "todo": 0,
+      "evidence": "p0-ready-candidate/focused.log"
+    },
+    "authorityRegressions": {
+      "tests": 57,
+      "pass": 57,
+      "fail": 0,
+      "skipped": 0,
+      "todo": 0,
+      "evidence": "p0-ready-candidate/authority-regressions.log"
+    },
+    "fullCore": {
+      "tests": 594,
+      "pass": 594,
+      "fail": 0,
+      "skipped": 0,
+      "todo": 0,
+      "evidence": "p0-ready-candidate/core-regressions.log"
+    },
+    "bothAliasPackageIntegrity": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0,
+      "todo": 0,
+      "evidence": "p0-ready-candidate/package-integrity.log"
+    },
+    "extractedLaunchers": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "todo": 0,
+      "evidence": "p0-ready-candidate/launchers.log"
+    },
+    "packagedNativeIdentity": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "todo": 0,
+      "evidence": "p0-ready-candidate/native-identity.log"
+    },
+    "extractedArchiveErrors": {
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0,
+      "todo": 0,
+      "evidence": "p0-ready-candidate/extracted-errors.log"
+    },
+    "actualPackagedPluginSmoke": {
+      "passed": true,
+      "localContextFolder": true,
+      "linkedAgentPairs": true,
+      "legacyDelegationsAfterLinking": true,
+      "actualPackagedStdio": true,
+      "firstCatalog": true,
+      "signedHttp": true,
+      "freshAccounts": 2,
+      "duplicatePosts": 0,
+      "codexHookDeliveredOnce": true,
+      "subscriptionReceivedAnswer": true,
+      "requesterAccessFlow": true,
+      "ownerHandoffFlow": true,
+      "privateBriefingSeparated": true,
+      "symmetricAudit": true,
+      "revokeAndExpiryEnforced": true,
+      "nativeHostVerified": false,
+      "relayOrigin": "http://127.0.0.1:37331",
+      "productionTouched": false
+    },
+    "extractedServer": {
+      "passed": true,
+      "node": "v24.22.1",
+      "migrations": 46,
+      "checks": [
+        "/.well-known/oauth-authorization-server",
+        "/.well-known/oauth-protected-resource/mcp",
+        "/.well-known/agent-configuration",
+        "/api/agent-auth/agent-configuration",
+        "unauthenticated routes denied",
+        "unrelated auth route denied",
+        "PKCE token exchange",
+        "authenticated tool listing",
+        "resource listing and read",
+        "read-only token rejects write",
+        "foreign origin denied",
+        "compiled authorize route retained (placeholder)"
+      ],
+      "scope": "Extracted runtime and isolated dependencies over real local HTTP; disposable synthetic profile. Google/compiled authorization page/native host not exercised.",
+      "dependencyTree": "reused installed repository dependencies via explicit symlink"
+    }
+  },
+  "beforeFix": {
+    "desiredChecks": 3,
+    "failed": 3,
+    "passedControls": 2,
+    "evidence": "p0-ready-candidate/archive-errors-before.log"
+  },
+  "priorModelEvidence": {
+    "spacePassed": 3,
+    "retrievalPassed": 8,
+    "record": "cloud-p0-benchmark-verification.json",
+    "scope": "previous source-overlay Conductor runs; not a new model run on this package"
+  },
+  "preservedPreparationAttempts": [
+    "First pre-fix test launch used a missing report directory and did not execute; corrected before reproduction.",
+    "First extracted-test copy had mismatched import quotes; parse failed before tests, preserved in extracted-errors-first-attempt.log; corrected copy passed5/5.",
+    "Patch40 exporter initially wrote its manifest under patch39 filename; original patch39 manifest restored byte-for-byte from clean HEAD, correct patch40 saved separately, and all final41 hashes verified."
+  ],
+  "permissions": {
+    "macRetried": false,
+    "alternateMacPath": false,
+    "productionMutations": false,
+    "savedPermissionsChanged": false,
+    "newAgentsCreated": false,
+    "externalMessagesSent": false
+  },
+  "limits": [
+    "Real Mac connection-unavailable failure cause remains unknown.",
+    "Latest Mac execution was denied; no retry or alternate local route. Existing-account GCP reauthentication remains unverified.",
+    "Native metadata, account identities and Google/host boundaries in smoke tests are synthetic.",
+    "Extracted server reuses installed dependency tree and a compiled authorization placeholder.",
+    "Installed-native default routing, real second-person production sharing/revocation and clean Google/Desktop onboarding remain open.",
+    "No universal model reliability, multi-page/cold-start model coverage or installed/deployed fix is claimed."
+  ],
+  "nextSteps": "docs/P0-CLOSEOUT.md"
+}

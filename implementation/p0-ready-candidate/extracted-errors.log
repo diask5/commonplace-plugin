@@ -1,0 +1,13 @@
+✔ an unknown documentId is reported recoverably (285.566585ms)
+✔ a read offset past the end of a document is reported recoverably (248.420716ms)
+✔ an empty search phrase is reported recoverably (290.039636ms)
+✔ schema violations, stale revisions and scope refusals already report recoverably (227.826132ms)
+✔ only exact archive input errors become correction replies (6.334688ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1234.496182

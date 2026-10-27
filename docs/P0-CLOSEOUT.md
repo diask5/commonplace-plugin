@@ -11,7 +11,8 @@ The original Draft v3 and the owner's later Spaces amendments remain the contrac
 | 0.4.28/runtime61; server `20261026-current-read` | Published, installed and active; current production baseline. |
 | 0.4.29/runtime62 page-size guidance | Packaged; native/server GitHub draft assets uploaded. Not published, installed or deployed. |
 | 0.4.30/runtime63, patches 36–37 | Locally packaged and verified; includes page-size guidance and bounded transport diagnostics. Not uploaded, published, installed or deployed. 0.4.29 draft assets unchanged. |
-| Scope and retrieval guidance, patches 38–39 | Source-only. Distinct cloud model regressions pass 3/3 spaces and 8/8 retrieval; absent from all packaged/live releases. |
+| Scope and retrieval guidance, patches 38–39 | Distinct cloud model regressions pass 3/3 spaces and 8/8 retrieval. Now included in local 0.4.31; absent from live releases. |
+| 0.4.31/runtime64, patches 40–41 | Locally packaged with patches 38–39, page-size guidance, diagnostics and recoverable remote archive input errors. Not uploaded, published, installed or deployed. [Evidence](P0-READY-CANDIDATE.md). |
 
 The diagnostic delta preserves one bounded, allowlisted exception category and
 any valid status supplied by the original exception on local stderr. It excludes
@@ -34,6 +35,9 @@ and [the prior diagnosis](../implementation/current-read-connection-diagnosis.js
    distinct version with new hashes, verify the package, then install it for an
    authorized native test. Do not overwrite the reviewed 0.4.29 assets under their
    existing hashes. Capture only the bounded stderr diagnostic.
+   The later 0.4.31/runtime64 candidate already combines this delta with the tested
+   routing/read guidance and remote archive error fix; prefer its reviewed artifacts
+   to the older local 0.4.30 package for subsequent authorized acceptance.
 4. Choose a behavioral fix from the observed failure and verify its regression.
    Do not infer an authentication repair or add retries from the generic wrapper
    error. Reconcile uncertain writes before any write retry.

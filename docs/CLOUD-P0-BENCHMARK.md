@@ -1,5 +1,10 @@
 # Conductor cloud P0 benchmark — 26 October 2026
 
+Later packaging: [0.4.31/runtime64](P0-READY-CANDIDATE.md) now includes the guidance
+below and fixes the three characterized remote archive input errors. It remains
+local and uninstalled. The benchmark results and original failures below are
+unchanged; they are not model runs against the new package.
+
 The owner authorized the prepared benchmark in new Conductor cloud sessions after
 the latest Mac command was denied. No Mac retry, production mutation, real-person
 invitation, paid model fallback or saved global permission change was made.
@@ -61,17 +66,19 @@ and the limits of the remote catalog.
 
 ## Release and evidence boundaries
 
-The guidance changes are **source-only**, absent from the locally packaged
-0.4.30/runtime63 diagnostics candidate, the uploaded 0.4.29 drafts and live
-0.4.28. No guidance fix is claimed as installed or deployed.
+At benchmark completion, the guidance changes were source-only. They remain
+absent from the local 0.4.30/runtime63 diagnostics candidate, uploaded 0.4.29 drafts
+and live 0.4.28, and are now included in local 0.4.31. No guidance fix is claimed
+as installed or deployed.
 
 The remote catalog differs from the filtered native plugin catalog. Synthetic
 profiles, warmed local archives and loopback invitations cannot prove clean
 Google/Desktop setup, real cross-person delivery or production latency. The
 Mac connection-unavailable cause remains unknown. A separately observed invalid
-archive-argument reporting issue returns JSON-RPC -32603 instead of a recoverable
-tool reply; its desired behavior remains unimplemented (three TODO assertions),
-and it does not establish the Mac failure cause.
+archive-argument reporting issue returned JSON-RPC -32603 instead of a recoverable
+tool reply; its three original TODO assertions are preserved. The later 0.4.31
+candidate implements and tests fixed correction replies for those exact failures;
+this does not establish the Mac failure cause.
 
 Temporary project configuration restricts these disposable sessions. Claude
 reported a host-selected bypass mode; no bypass flag or mode change was requested.

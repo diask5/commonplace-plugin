@@ -231,5 +231,15 @@
       "scopeCandidate": "0006c41c3d87c39baf7c9c0f0eb3f6a69a93e1cd4894ef2a8fbbe71256584f84",
       "retrievalCandidate": "3ff26beabb6db25b81201a7827c9a795101818378bfc097351703d327f1e486a"
     }
+  },
+  "laterPackaging": {
+    "nativeVersion": "0.4.31",
+    "runtimeRevision": 64,
+    "record": "p0-ready-candidate-verification.json",
+    "uploaded": false,
+    "published": false,
+    "installed": false,
+    "deployed": false,
+    "originalResultsUnchanged": true
   }
 }

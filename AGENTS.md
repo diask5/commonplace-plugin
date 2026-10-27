@@ -48,19 +48,26 @@ deployed. See `implementation/cloud-closeout-runtime-verification.json` for
 package, smoke and independent review evidence. Diagnostics do not fix or identify
 the failed-read cause, change permissions, or close live acceptance.
 
+The newer [0.4.31/runtime64 candidate](docs/P0-READY-CANDIDATE.md) combines the
+diagnostics with patches 38–39 and recoverable remote archive input errors
+(patches 40–41). Both aliases and the server update are locally packaged; none
+is uploaded, published, installed or deployed. The full core suite passes 594/594.
+See `implementation/p0-ready-candidate-verification.json` for exact hashes and
+checks. Installed-native, production and clean-onboarding gates remain open.
+
 The [Conductor cloud benchmark](docs/CLOUD-P0-BENCHMARK.md) is complete.
 Published-0.4.28 synthetic baseline: five clean lifecycle passes, one post-leave
 scope-routing failure (no context leaked), and two retrieval routing failures;
 Claude also cited one search-only source. Original failures and six unstarted
-retrieval cases remain preserved. Source-only patches 38–39 clarify owner-selected
+retrieval cases remain preserved. Patches 38–39 clarify owner-selected
 space routing and successful-read requirements. Distinct candidate runs passed
 3/3 space cases and 8/8 retrieval cases across Claude/Codex; all final citations
 have supporting reads in the same session. Existing regression suites pass 8/8
 and 26/26. See `implementation/cloud-p0-benchmark-verification.json` for the
 39-patch replay, full catalog, fixture/provenance and host-isolation limits.
 Temporary project settings were restored and all six scored-fixture servers
-stopped. These guidance changes are absent from local 0.4.30 packages and live
-releases. Cloud remote-MCP fixtures do not close installed-native or production
+stopped. These guidance changes are included in local 0.4.31, absent from local
+0.4.30 packages and live releases. Cloud remote-MCP fixtures do not close installed-native or production
 acceptance, the Mac failed-read diagnosis, or clean Google/Desktop setup.
 
 The current ordinary-prompt run has seven clean passes and one correctly reported

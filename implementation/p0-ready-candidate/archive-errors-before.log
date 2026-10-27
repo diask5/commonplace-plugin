@@ -1,0 +1,66 @@
+✖ an unknown documentId is reported recoverably (291.09763ms)
+✖ a read offset past the end of a document is reported recoverably (228.308259ms)
+✖ an empty search phrase is reported recoverably (194.501193ms)
+✔ schema violations, stale revisions and scope refusals already report recoverably (205.696455ms)
+✔ only exact archive input errors become correction replies (5.66897ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 2
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1147.680461
+
+✖ failing tests:
+
+test at tests/remote-archive-errors.test.mjs:57:1
+✖ an unknown documentId is reported recoverably (291.09763ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(recoverable(reply))
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/remote-archive-errors.test.mjs:60:37)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/remote-archive-errors.test.mjs:64:1
+✖ a read offset past the end of a document is reported recoverably (228.308259ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(recoverable(reply))
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/remote-archive-errors.test.mjs:67:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/remote-archive-errors.test.mjs:73:1
+✖ an empty search phrase is reported recoverably (194.501193ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(recoverable(await call('archive_search',{query:'   '})))
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/remote-archive-errors.test.mjs:75:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

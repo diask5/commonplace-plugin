@@ -1,0 +1,10 @@
+✔ Codex transport identity requires matching host fields and cannot replace an established chat (2.913021ms)
+✔ actual native stdio binds per-call Codex metadata before setup and rejects later missing or foreign identity (195.199327ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 263.945404

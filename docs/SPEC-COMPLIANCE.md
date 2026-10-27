@@ -1,5 +1,11 @@
 # Meet Proxy Draft v3 compliance
 
+Latest local candidate: [0.4.31/runtime64](P0-READY-CANDIDATE.md) packages the
+tested space-routing/source-read guidance, bounded diagnostics and recoverable
+archive input errors. The full core suite passes 594/594. It is not uploaded,
+published, installed or deployed and does not close live P0 gates.
+[Exact evidence](../implementation/p0-ready-candidate-verification.json).
+
 The [P0 closeout checklist](P0-CLOSEOUT.md) orders the remaining live work.
 The transport diagnostic delta preserves a bounded failure category without
 changing retries, authentication, public errors or permissions; 15 focused tests
@@ -11,7 +17,8 @@ The failed-read cause is still unknown. The authorized [cloud benchmark](CLOUD-P
 is complete. Baseline routing/grounding failures remain recorded; source-only
 patches 38–39 passed distinct 3/3 space and 8/8 retrieval model regressions. Every
 candidate final citation had a successful same-session source read. These patches
-are absent from the local 0.4.30 packages and all deployed releases.
+are absent from the local 0.4.30 packages and all deployed releases; the newer
+local 0.4.31 candidate now includes them.
 
 A packaged 0.4.29/runtime62 page-size guidance candidate addresses observed invalid
 model arguments. Native and server assets are verified GitHub drafts; it is not live. See
