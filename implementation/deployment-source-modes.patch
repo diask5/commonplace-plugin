@@ -1,0 +1,111 @@
+diff --git a/scripts/deploy-cloud-update.py b/scripts/deploy-cloud-update.py
+index e171603..798c07e 100644
+--- a/scripts/deploy-cloud-update.py
++++ b/scripts/deploy-cloud-update.py
+@@ -8,6 +8,28 @@ import argparse,base64,hashlib,json,os,shutil,sqlite3,subprocess,tarfile,time,ur
+ from contextlib import closing
+ from pathlib import Path
+ 
++def write_runtime_file(destination, content):
++    """Replace candidate code without changing a previous release's hardlinks.
++
++    A private deployment runner may use umask 077. Runtime source still needs
++    its existing read mode (or 0644 for a new module) for the service account.
++    Database snapshots and private rollout evidence retain their own modes.
++    """
++    missing = []
++    parent = destination.parent
++    while not parent.exists():
++        missing.append(parent)
++        parent = parent.parent
++    for parent in reversed(missing):
++        parent.mkdir(mode=0o755)
++        parent.chmod(0o755)
++    mode = destination.stat().st_mode & 0o777 if destination.exists() else 0o644
++    if destination.exists() or destination.is_symlink():
++        destination.unlink()
++    with destination.open('xb') as target:
++        target.write(content)
++    destination.chmod(mode)
++
+ def verify_dependencies(archive_path, expected):
+     if not expected or hashlib.sha256(archive_path.read_bytes()).hexdigest() != expected:
+         raise ValueError('Dependency archive checksum mismatch.')
+@@ -150,9 +172,8 @@ def main():
+     assert shutil.disk_usage(previous.parent).free>=dependency_bytes+256*1024*1024,'Insufficient release-volume space for isolated dependencies.'
+     shutil.copytree(previous,target,copy_function=os.link,symlinks=True)
+     for relative,encoded in files.items():
+-        dest=target/relative;dest.parent.mkdir(parents=True,exist_ok=True)
+-        if dest.exists():dest.unlink()
+-        dest.write_bytes(base64.b64decode(encoded,validate=True))
++        dest=target/relative
++        write_runtime_file(dest, base64.b64decode(encoded,validate=True))
+     if a.dependencies:
+         install_dependencies(a.dependencies,target/'dist/standalone/account-runtime')
+     rollout=Path('/var/lib/commonplace/rollouts')/a.release;rollout.mkdir(mode=0o700)
+diff --git a/tests/test_deployment.py b/tests/test_deployment.py
+index 5f24a14..441f301 100644
+--- a/tests/test_deployment.py
++++ b/tests/test_deployment.py
+@@ -26,6 +26,39 @@ overlay_builder = module('build_production_overlay', 'build-production-overlay.p
+ 
+ 
+ class DeploymentTest(unittest.TestCase):
++    def test_runtime_files_remain_readable_under_restrictive_umask(self):
++        original = self.root / 'original.mjs'
++        original.write_bytes(b'old source')
++        original.chmod(0o644)
++        candidate = self.root / 'candidate.mjs'
++        os.link(original, candidate)
++        previous_umask = os.umask(0o077)
++        try:
++            deploy.write_runtime_file(candidate, b'new source')
++            deploy.write_runtime_file(self.root / 'nested/assets/new.mjs', b'new module')
++        finally:
++            os.umask(previous_umask)
++        self.assertEqual(candidate.stat().st_mode & 0o777, 0o644)
++        self.assertEqual((self.root / 'nested/assets/new.mjs').stat().st_mode & 0o777, 0o644)
++        self.assertEqual((self.root / 'nested').stat().st_mode & 0o777, 0o755)
++        self.assertEqual((self.root / 'nested/assets').stat().st_mode & 0o777, 0o755)
++        self.assertEqual(original.read_bytes(), b'old source')
++        self.assertEqual(original.stat().st_mode & 0o777, 0o644)
++        self.assertNotEqual(original.stat().st_ino, candidate.stat().st_ino)
++
++    def test_runtime_write_does_not_follow_an_inherited_file_symlink(self):
++        original = self.root / 'original.mjs'
++        original.write_bytes(b'old source')
++        original.chmod(0o640)
++        candidate = self.root / 'candidate.mjs'
++        candidate.symlink_to(original)
++        deploy.write_runtime_file(candidate, b'new source')
++        self.assertFalse(candidate.is_symlink())
++        self.assertEqual(candidate.read_bytes(), b'new source')
++        self.assertEqual(candidate.stat().st_mode & 0o777, 0o640)
++        self.assertEqual(original.read_bytes(), b'old source')
++        self.assertEqual(original.stat().st_mode & 0o777, 0o640)
++
+     def test_http_wait_accepts_slow_valid_startup_after_connection_refusal(self):
+         elapsed = [0]
+         attempts = []
+@@ -282,6 +315,21 @@ class DeploymentTest(unittest.TestCase):
+         self.assertEqual(audit['migrations'], 'unchanged')
+         self.assertIsNone(audit['backup'])
+ 
++    def test_code_only_deploy_from_private_runner_keeps_runtime_service_readable(self):
++        previous, current, database, bundle = self.code_only_fixture()
++        runtime_file = 'dist/standalone/account-runtime/runtime.mjs'
++        (previous / runtime_file).chmod(0o644)
++        before = database.read_bytes()
++        previous_umask = os.umask(0o077)
++        try:
++            self.code_only_run(bundle)
++        finally:
++            os.umask(previous_umask)
++        self.assertEqual((current / runtime_file).stat().st_mode & 0o777, 0o644)
++        self.assertEqual((previous / runtime_file).stat().st_mode & 0o777, 0o644)
++        self.assertEqual((previous / runtime_file).read_text(), 'previous version')
++        self.assertEqual(database.read_bytes(), before)
++
+     def test_code_only_rejects_an_unapplied_or_changed_database_schema(self):
+         previous, current, database, bundle = self.code_only_fixture()
+         with sqlite3.connect(database) as db:

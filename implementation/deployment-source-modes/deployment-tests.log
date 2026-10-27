@@ -1,0 +1,17 @@
+...Activating the release and checking both services.
+.{"release": "20261020-candidate", "health": "ready", "worker": "ready", "backup": null, "migrations": "unchanged"}
+Activating the release and checking both services.
+...{"release": "20261020-candidate", "health": "ready", "worker": "ready", "backup": null, "migrations": "unchanged"}
+Activating the release and checking both services.
+...Activating the release and checking both services.
+........Backing up and verifying the live database.
+Rehearsing migrations and checking database integrity.
+.....{"previous": "/tmp/tmp4nfjahm8/opt/commonplace/releases/20261019-before", "candidate": "/tmp/tmp4nfjahm8/opt/commonplace/releases/20261020-prepared", "activated": false, "migrations": "rehearsed", "bundleSha256": "d1606862a10b44edc89b05429b23d5bb747d0a64a279687801073b9a39381c40", "dependenciesSha256": "6868a90fb017455da8f0e1aec50ecb63f4931e16270f65241e0014e9edd08072", "backup": "/tmp/tmp4nfjahm8/var/lib/commonplace/rollouts/20261020-prepared/before.sqlite"}
+Backing up and verifying the live database.
+Rehearsing migrations and checking database integrity.
+Activating the release and checking both services.
+...........s.......................
+----------------------------------------------------------------------
+Ran 58 tests in 0.802s
+
+OK (skipped=1)

@@ -1,0 +1,53 @@
+{
+  "observedAt": "2026-10-27T05:36:11.573Z",
+  "state": "tested and independently reviewed deployment-helper correction; live retry pending",
+  "patchNumber": 42,
+  "patch": "deployment-source-modes.patch",
+  "deployerSha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
+  "originalDeployerSha256": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408",
+  "runtimeBundleUnchanged": true,
+  "nativeZipsUnchanged": true,
+  "diagnosis": {
+    "exit": 0,
+    "result": {
+      "currentRelease": "20261026-current-read",
+      "baselineMode": "0o644",
+      "failedCandidateMode": "0o600",
+      "services": [
+        "active",
+        "active",
+        "active"
+      ],
+      "workerHeartbeatAgeSeconds": 1.8
+    }
+  },
+  "firstDeploymentFailure": {
+    "exit": 0,
+    "result": {
+      "state": "failed",
+      "errorType": "CalledProcessError",
+      "finishedAt": 1793079141.4818783,
+      "currentRelease": "20261026-current-read",
+      "elapsedSeconds": 157.7,
+      "boundedStartupErrors": [
+        "Commonplace failed to start Error: EACCES: permission denied, open '/[long-value].mjs'",
+        "commonplace.service: Failed with result 'exit-code'."
+      ]
+    }
+  },
+  "tests": {
+    "run": 58,
+    "pass": 57,
+    "skip": 1,
+    "failed": 0,
+    "behavioralBefore": "deploy.main regression against original helper fails: mode0600 instead of0644",
+    "beforeHelperTests": "two earlier AttributeErrors are not behavioral reproduction"
+  },
+  "replay": {
+    "patches": 42,
+    "files": 204,
+    "matched": true
+  },
+  "review": "deployment-source-modes/independent-review.md",
+  "notHistoricalMacReadCause": true
+}
