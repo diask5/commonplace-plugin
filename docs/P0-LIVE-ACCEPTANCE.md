@@ -1,9 +1,23 @@
 # Live acceptance handoff — 27 October 2026
 
-Release preparation is complete through verified GitHub drafts and draft
-[PR #37](https://github.com/diask5/commonplace-plugin/pull/37). P0 acceptance is
-still open. The candidate is 0.4.31/runtime64; current live evidence remains
-0.4.28/runtime61 and server `20261026-current-read`.
+Release 0.4.31/runtime64 is published and server `20261027-context-guidance-r2`
+is live. Runtime64 is active on the Mac; permanent native registry installation
+is being verified. [PR #37](https://github.com/diask5/commonplace-plugin/pull/37)
+contains the source and evidence. P0 acceptance remains open.
+[Current receipts](../implementation/p0-live-release-verification.json).
+
+The owner reopened Mac access and completed existing-account GCP sign-in.
+The first native candidate attempts failed because runtime61 could not complete
+its update. Old loaded plugin launchers then raced a graceful restart; a controlled
+handoff recovered runtime64 with account/settings preserved. Two distinct native
+CLI synthesis checks pass, and a stricter independent receipt check verifies all
+final citations against successful current source reads. These remain isolated
+process tests, not a new Desktop GUI or default-host full-catalog walkthrough.
+
+The first server activation failed with EACCES and rolled back. The separately
+reviewed [deployment-mode correction](DEPLOYMENT-SOURCE-MODES.md) is now live;
+all 159 source files are verified/readable and all services/worker health pass.
+The historical connection-unavailable read cause remains unconfirmed.
 
 ## Prepared artifacts
 
@@ -21,19 +35,18 @@ this is not an authenticated retrieval or worker-health check.
 
 ## Inputs required before live work
 
-- The owner must explicitly reopen Mac execution after the prior denial. A
-  read-only request is pending for current runtime/account metadata, the existing
-  GCP sign-in, and relevant server error metadata. The prepared
+- Mac execution was explicitly reopened and GCP access restored. The prepared
   [status script](../implementation/p0-ready-staging/mac-readonly-status.py)
-  prints selected nonsecret fields only. It has not run on the Mac.
+  prints selected nonsecret fields only. Token-aware process inspection corrected
+  the first check's self-matching login heuristic; current access is verified.
 - The owner must select the real second participant and the intended native
   chats. That person must sign in and explicitly accept their invitation.
 - Clean setup needs a separate authorized Mac or macOS user profile. Do not
   reset the working installation or present cached sign-in as new onboarding.
 
-No answer to a pending question is approval. No new login, account switch,
-permission change, production space, invitation or local execution occurred in
-this staging step.
+No answer to a pending question is approval. Existing-account GCP reauthentication
+was completed; the Meet Proxy account was not switched or relinked. No saved
+permission change, production test space or real-person invitation was made.
 
 ## Execute once access is available
 

@@ -1,5 +1,13 @@
 # Meet Proxy Draft v3 compliance
 
+27 October live update: 0.4.31/runtime64 is published, runtime64 is active on the
+Mac, and server `20261027-context-guidance-r2` is live after a tested deployment
+permission correction and verified rollback of the first attempt. Two distinct
+native CLI synthesis checks pass with strict citation grounding. Permanent native
+registry installation is being verified. [Live receipts](../implementation/p0-live-release-verification.json)
+supersede the historical staging state below. Real-person sharing/revocation,
+clean Google/Desktop setup and broader default-host acceptance remain open.
+
 Latest staged candidate: [0.4.31/runtime64](P0-READY-CANDIDATE.md) packages the
 tested space-routing/source-read guidance, bounded diagnostics and recoverable
 archive input errors. The full core suite passes 594/594. Both aliases and the

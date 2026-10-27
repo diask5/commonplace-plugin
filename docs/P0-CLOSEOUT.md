@@ -6,6 +6,13 @@ The original Draft v3 and the owner's later Spaces amendments remain the contrac
 
 ## Release state
 
+27 October: 0.4.31/runtime64 artifacts are published, runtime64 is active on the
+Mac, and corrected server `20261027-context-guidance-r2` is live. Permanent native
+registry installation is being verified. Two real native CLI synthesis checks
+pass with strict successful-read grounding. [Current receipts](../implementation/p0-live-release-verification.json)
+supersede the historical staging table below. The original transport failure
+cause and the broader real-person/clean-setup/default-host gates remain open.
+
 | Build | State |
 | --- | --- |
 | 0.4.28/runtime61; server `20261026-current-read` | Published, installed and active; current production baseline. |
@@ -16,8 +23,8 @@ The original Draft v3 and the owner's later Spaces amendments remain the contrac
 
 The 27 October [live acceptance handoff](P0-LIVE-ACCEPTANCE.md) records the staged
 artifacts, independent review, draft PR #37 and pending owner inputs. The earlier
-Mac execution denial remains in force; renewed read-only access was requested,
-not assumed. A real second participant and separate clean test profile are also
+Mac execution denial was superseded by explicit owner authorization; GCP sign-in
+was completed and verified. A real second participant and separate clean test profile are still
 needed to close their respective gates.
 
 The diagnostic delta preserves one bounded, allowlisted exception category and

@@ -22,5 +22,7 @@ reproduces all 204 changed source files. Native ZIPs and the runtime bundle are
 unchanged; the corrected helper is a distinct server-r2 artifact with a new hash.
 
 [Exact evidence](../implementation/deployment-source-modes-verification.json).
-Original failed artifacts and logs remain intact. Live retry evidence will be
-recorded separately before any successful-rollout claim.
+Original failed artifacts and logs remain intact. The corrected live retry is
+verified in [release receipts](../implementation/p0-live-release-verification.json):
+all 159 files match and are service-readable, all three services are active, and
+the worker heartbeat is fresh. The previous release remains available.

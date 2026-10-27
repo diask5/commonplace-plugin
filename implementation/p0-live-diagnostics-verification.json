@@ -1,0 +1,142 @@
+{
+  "observedAt": "2026-10-27T05:22:00.316Z",
+  "scope": "Renewed owner-authorized Mac diagnostics; no production activation",
+  "records": {
+    "macDiagnosticResult": {
+      "runtimeRevision": 61,
+      "installedAliases": {
+        "meet-proxy": [
+          "0.4.28"
+        ],
+        "commonplace": []
+      },
+      "cachedMeetProxyEmail": "diaskyle10@gmail.com",
+      "expectedMeetProxyAccountMatches": true,
+      "gcloudStatus": "cached_account_list_only",
+      "cachedGcloudActiveAccounts": [
+        "kyledias@vurbox.com"
+      ],
+      "existingGcloudLoginProcess": true,
+      "liveAuthenticationVerified": false,
+      "mutations": false
+    },
+    "gcpPreflight": {
+      "existingGcloudLoginPids": [],
+      "signInEvidenceFiles": [
+        "gcp-reauth-start.json",
+        "gcp-reauth.private.log"
+      ],
+      "gcpReadExit": 1,
+      "gcpErrorCategory": "reauthentication_required"
+    },
+    "gcpLoginStart": {
+      "reauthStarted": true,
+      "account": "kyledias@vurbox.com",
+      "pid": 72797,
+      "meetProxyAccountUnchanged": true
+    },
+    "macCandidateStage": {
+      "candidateDownloaded": true,
+      "sha256": "968f1157f0942c660eb5325cb287cfb70f54be2da0b8d7334d004eb7ad944c33",
+      "diagnosticModulesExtracted": 2,
+      "installed": false,
+      "activated": false
+    },
+    "productionMetadata": {
+      "gcpReadExit": 0,
+      "instance": {
+        "name": "commonplace",
+        "status": "RUNNING"
+      },
+      "sshExit": 0,
+      "server": {
+        "currentRelease": "20261026-current-read",
+        "services": {
+          "commonplace": "active",
+          "commonplace-runtime": "active",
+          "commonplace-backup.timer": "active"
+        },
+        "journalExit": 0,
+        "logCategoryCounts": {
+          "other": 88
+        },
+        "boundedErrorMetadata": [],
+        "heartbeatReadError": "OperationalError"
+      }
+    },
+    "productionProxyMetadata": {
+      "exit": 0,
+      "metadata": {
+        "workerHeartbeatAgeSeconds": 0.5,
+        "historicalProxyErrorCategories": {},
+        "proxyTimeoutDirectives": [
+          "proxy_read_timeout 75s;",
+          "proxy_read_timeout 180s;",
+          "proxy_read_timeout 75s;",
+          "proxy_read_timeout 75s;"
+        ]
+      }
+    },
+    "nativeDiagnostic": {
+      "exit": 0,
+      "result": {
+        "kind": "read-only signed companion diagnostic",
+        "installedVersion": "0.4.28",
+        "diagnosticCodeVersion": "0.4.31",
+        "http": [
+          {
+            "milliseconds": 14471,
+            "status": 200
+          },
+          {
+            "milliseconds": 4238,
+            "status": 200
+          },
+          {
+            "milliseconds": 3174,
+            "status": 200
+          }
+        ],
+        "reads": [
+          {
+            "milliseconds": 4537,
+            "hasText": true,
+            "changed": false,
+            "restart": false,
+            "textCharacters": 1774,
+            "nextOffset": null
+          },
+          {
+            "milliseconds": 3205,
+            "hasText": true,
+            "changed": false,
+            "restart": false,
+            "textCharacters": 2055,
+            "nextOffset": null
+          }
+        ],
+        "search": {
+          "milliseconds": 14736,
+          "results": 3,
+          "changed": false,
+          "revision": 6205
+        }
+      },
+      "boundedStderr": []
+    },
+    "nativeRetestStart": {
+      "started": true,
+      "pid": 75413,
+      "candidateVersion": "0.4.31",
+      "loadedPerProcess": true,
+      "savedConfigurationChanged": false,
+      "originalResultsPreserved": true
+    }
+  },
+  "notes": [
+    "First process-presence heuristic matched its own shell; token-aware second check found no existing login and is the authoritative result.",
+    "Server heartbeat initially lacked read permission; a subsequent authorized sudo read measured 0.5 seconds.",
+    "Current signed synthetic reads succeeded. Historical transport failure cause remains unknown; no auth repair is claimed for Meet Proxy.",
+    "GCP reauthentication completed on the pre-existing cloud account, distinct from the unchanged Meet Proxy account."
+  ]
+}

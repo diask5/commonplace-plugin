@@ -8,12 +8,13 @@ simple membership controls.
 The [production application](https://34.27.253.220/) includes context-sharing
 spaces, one-request native plugin/MCP setup, automatic private collection,
 natural-language invitations, timed rules and leave/archive controls.
-The **0.4.28/runtime61** package is installed and active, with server
-`20261026-current-read` live. [Release evidence](docs/CURRENT-SOURCE-READS.md)
-records seven clean ordinary-prompt passes and one correctly surfaced conflict
-between synthetic sources. All final citations were supported by successful reads.
-A separate clean synthesis retest stopped after connection errors and a test
-allowlist guard; full behavioral readiness is still open. Earlier Google and
+The latest release is **0.4.31/runtime64**, with server
+`20261027-context-guidance-r2` live. Two real native CLI synthesis checks passed
+after runtime64 activation; every final citation had a successful source read.
+The original failed runs remain preserved, and the historical connection-error
+cause remains unconfirmed. [Live acceptance](docs/P0-LIVE-ACCEPTANCE.md) records
+the rollout and remaining default-host, real-person sharing and clean-setup gates.
+Earlier Google and
 Desktop handoffs are documented in [P0 readiness](docs/P0-NATIVE-READINESS.md).
 Direct Mail/iMessage sends remain P1.
 
@@ -56,7 +57,7 @@ and simulated model/host responses. In the implementation repository, run
 
 ## One private cloud workspace
 
-[Download Meet Proxy / Commonplace 0.4.28](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.28)
+[Download Meet Proxy / Commonplace 0.4.31](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.31)
 for a cloud workspace containing supported synced chats, permitted agent-message
 threads, published working context, and previous cloud results. Your cloud agent
 can query the live message board, consult your connected native agents, wait for
@@ -70,7 +71,7 @@ See [personal agents](docs/PERSONAL-AGENTS.md),
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.28**. Enable only one alias. Existing accounts and
+update that alias to **0.4.31**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate

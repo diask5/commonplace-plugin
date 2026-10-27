@@ -2,6 +2,7 @@
 import json
 import pathlib
 import shutil
+import shlex
 import subprocess
 
 home = pathlib.Path.home()
@@ -34,7 +35,15 @@ if gcloud:
     except subprocess.TimeoutExpired:
         gcloud_status = 'account_list_timeout'
 processes = subprocess.run(['ps', '-axo', 'command='], capture_output=True, text=True, timeout=5).stdout
-login_present = any('gcloud' in line and 'auth login' in line for line in processes.splitlines())
+login_present = False
+for line in processes.splitlines():
+    try:
+        tokens = shlex.split(line)
+    except ValueError:
+        continue
+    is_gcloud = any(pathlib.Path(token).name in ('gcloud', 'gcloud.py') for token in tokens[:3])
+    if is_gcloud and any(tokens[i:i + 2] == ['auth', 'login'] for i in range(len(tokens) - 1)):
+        login_present = True
 print(json.dumps({
     'runtimeRevision': runtime.get('revision'),
     'installedAliases': installed,

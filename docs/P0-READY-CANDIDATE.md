@@ -1,6 +1,12 @@
 # 0.4.31/runtime64 candidate — 26 October 2026
 
-**Packaged and staged as verified GitHub drafts; P0 remains open.** Both aliases
+27 October update: native artifacts are published, runtime64 is active on the Mac,
+and corrected server `20261027-context-guidance-r2` is live. Two distinct native
+CLI synthesis checks pass. [Live receipts](../implementation/p0-live-release-verification.json)
+supersede the staging state below; original candidate bytes and evidence remain
+unchanged. Permanent native registry installation is being verified.
+
+**Original staging snapshot; P0 remains open.** Both aliases
 and the server update were uploaded on 27 October and all ten assets were
 downloaded and hash-checked. They are not published, installed or deployed. Current
 production remains 0.4.28/runtime61 with server `20261026-current-read`. Existing
