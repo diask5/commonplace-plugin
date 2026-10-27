@@ -12,7 +12,13 @@ The original Draft v3 and the owner's later Spaces amendments remain the contrac
 | 0.4.29/runtime62 page-size guidance | Packaged; native/server GitHub draft assets uploaded. Not published, installed or deployed. |
 | 0.4.30/runtime63, patches 36–37 | Locally packaged and verified; includes page-size guidance and bounded transport diagnostics. Not uploaded, published, installed or deployed. 0.4.29 draft assets unchanged. |
 | Scope and retrieval guidance, patches 38–39 | Distinct cloud model regressions pass 3/3 spaces and 8/8 retrieval. Now included in local 0.4.31; absent from live releases. |
-| 0.4.31/runtime64, patches 40–41 | Locally packaged with patches 38–39, page-size guidance, diagnostics and recoverable remote archive input errors. Not uploaded, published, installed or deployed. [Evidence](P0-READY-CANDIDATE.md). |
+| 0.4.31/runtime64, patches 40–41 | Packaged with patches 38–39, page-size guidance, diagnostics and recoverable remote archive input errors. Both aliases/server uploaded as verified GitHub drafts; ten downloads match local hashes. Not published, installed or deployed. [Evidence](P0-READY-CANDIDATE.md). |
+
+The 27 October [live acceptance handoff](P0-LIVE-ACCEPTANCE.md) records the staged
+artifacts, independent review, draft PR #37 and pending owner inputs. The earlier
+Mac execution denial remains in force; renewed read-only access was requested,
+not assumed. A real second participant and separate clean test profile are also
+needed to close their respective gates.
 
 The diagnostic delta preserves one bounded, allowlisted exception category and
 any valid status supplied by the original exception on local stderr. It excludes

@@ -1,0 +1,9 @@
+{
+  "observedAt": "2026-10-27T04:06:27.330846+00:00",
+  "kind": "anonymous public health only",
+  "installedReadFailureResolved": false,
+  "status": 200,
+  "contentEncoding": "gzip",
+  "ready": true,
+  "seconds": 5.151
+}

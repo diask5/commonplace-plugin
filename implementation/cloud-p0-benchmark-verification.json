@@ -236,10 +236,11 @@
     "nativeVersion": "0.4.31",
     "runtimeRevision": 64,
     "record": "p0-ready-candidate-verification.json",
-    "uploaded": false,
+    "uploaded": true,
     "published": false,
     "installed": false,
     "deployed": false,
-    "originalResultsUnchanged": true
+    "originalResultsUnchanged": true,
+    "stagingRecord": "p0-ready-staging-verification.json"
   }
 }

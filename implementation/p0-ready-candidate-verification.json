@@ -246,5 +246,13 @@
     "Installed-native default routing, real second-person production sharing/revocation and clean Google/Desktop onboarding remain open.",
     "No universal model reliability, multi-page/cold-start model coverage or installed/deployed fix is claimed."
   ],
-  "nextSteps": "docs/P0-CLOSEOUT.md"
+  "nextSteps": "docs/P0-CLOSEOUT.md",
+  "laterStaging": {
+    "record": "p0-ready-staging-verification.json",
+    "uploaded": true,
+    "published": false,
+    "installed": false,
+    "deployed": false,
+    "originalPackagingSnapshotUnchanged": true
+  }
 }

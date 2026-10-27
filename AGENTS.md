@@ -50,8 +50,11 @@ the failed-read cause, change permissions, or close live acceptance.
 
 The newer [0.4.31/runtime64 candidate](docs/P0-READY-CANDIDATE.md) combines the
 diagnostics with patches 38–39 and recoverable remote archive input errors
-(patches 40–41). Both aliases and the server update are locally packaged; none
-is uploaded, published, installed or deployed. The full core suite passes 594/594.
+(patches 40–41). Both aliases and the server update are packaged and uploaded as
+separate verified GitHub drafts; none is published, installed or deployed. All ten
+downloaded assets match their hashes. Draft PR #37 contains the source and evidence.
+See `implementation/p0-ready-staging-verification.json` and
+[live acceptance](docs/P0-LIVE-ACCEPTANCE.md). The full core suite passes 594/594.
 See `implementation/p0-ready-candidate-verification.json` for exact hashes and
 checks. Installed-native, production and clean-onboarding gates remain open.
 

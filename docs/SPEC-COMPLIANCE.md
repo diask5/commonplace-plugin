@@ -1,9 +1,10 @@
 # Meet Proxy Draft v3 compliance
 
-Latest local candidate: [0.4.31/runtime64](P0-READY-CANDIDATE.md) packages the
+Latest staged candidate: [0.4.31/runtime64](P0-READY-CANDIDATE.md) packages the
 tested space-routing/source-read guidance, bounded diagnostics and recoverable
-archive input errors. The full core suite passes 594/594. It is not uploaded,
-published, installed or deployed and does not close live P0 gates.
+archive input errors. The full core suite passes 594/594. Both aliases and the
+server update are verified GitHub drafts, not published, installed or deployed;
+they do not close live P0 gates. [Staging and remaining inputs](P0-LIVE-ACCEPTANCE.md).
 [Exact evidence](../implementation/p0-ready-candidate-verification.json).
 
 The [P0 closeout checklist](P0-CLOSEOUT.md) orders the remaining live work.

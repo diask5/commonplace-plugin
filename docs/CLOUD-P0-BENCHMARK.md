@@ -1,8 +1,8 @@
 # Conductor cloud P0 benchmark — 26 October 2026
 
 Later packaging: [0.4.31/runtime64](P0-READY-CANDIDATE.md) now includes the guidance
-below and fixes the three characterized remote archive input errors. It remains
-local and uninstalled. The benchmark results and original failures below are
+below and fixes the three characterized remote archive input errors. It is now
+staged as verified GitHub drafts, unpublished and uninstalled. The benchmark results and original failures below are
 unchanged; they are not model runs against the new package.
 
 The owner authorized the prepared benchmark in new Conductor cloud sessions after

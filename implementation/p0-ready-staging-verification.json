@@ -1,0 +1,193 @@
+{
+  "observedAt": "2026-10-27T04:08:06.408782+00:00",
+  "state": "uploaded drafts verified by download; not published, installed or deployed",
+  "nativeVersion": "0.4.31",
+  "runtimeRevision": 64,
+  "uploaded": true,
+  "published": false,
+  "installed": false,
+  "deployed": false,
+  "releaseDrafts": [
+    {
+      "tag": "meet-proxy-v0.4.31",
+      "url": "https://github.com/diask5/commonplace-plugin/releases/tag/untagged-a29054c7f66c4a0f8c79",
+      "targetCommit": "422e687fc022a291e914237db656074088d3dd8d",
+      "isDraft": true,
+      "assets": [
+        {
+          "name": "commonplace-0.4.31-build.json",
+          "bytes": 7438,
+          "sha256": "cab18a59c9e0524546d631856162e165f7e51f30f3ab2c2130fad235f64a5cf4",
+          "githubDigestMatches": true,
+          "downloadMatchesLocal": true
+        },
+        {
+          "name": "commonplace-0.4.31.sha256",
+          "bytes": 89,
+          "sha256": "74584c9ab4203a459edf2ba51995a896fc057437a6ba3becfc9e2b305938d3fb",
+          "githubDigestMatches": true,
+          "downloadMatchesLocal": true
+        },
+        {
+          "name": "commonplace-0.4.31.zip",
+          "bytes": 230158380,
+          "sha256": "84251b519af967146f5111303c1211d12a9a82d51b81d32e326f94929a0e2a05",
+          "githubDigestMatches": true,
+          "downloadMatchesLocal": true
+        },
+        {
+          "name": "meet-proxy-0.4.31-build.json",
+          "bytes": 7436,
+          "sha256": "93ffafb406c51a53d21cd8a01752a9770f4c89242c61e32dd63839fd23e8f605",
+          "githubDigestMatches": true,
+          "downloadMatchesLocal": true
+        },
+        {
+          "name": "meet-proxy-0.4.31.sha256",
+          "bytes": 88,
+          "sha256": "e9250d3b73634ddd0ac4ec9bc3daf2462266efb0cfc16256af3a19ab25acf9b9",
+          "githubDigestMatches": true,
+          "downloadMatchesLocal": true
+        },
+        {
+          "name": "meet-proxy-0.4.31.zip",
+          "bytes": 230158380,
+          "sha256": "968f1157f0942c660eb5325cb287cfb70f54be2da0b8d7334d004eb7ad944c33",
+          "githubDigestMatches": true,
+          "downloadMatchesLocal": true
+        }
+      ]
+    },
+    {
+      "tag": "meet-proxy-server-20261027-p0-candidate",
+      "url": "https://github.com/diask5/commonplace-plugin/releases/tag/untagged-4a652d5d4dd23e4debb9",
+      "targetCommit": "422e687fc022a291e914237db656074088d3dd8d",
+      "isDraft": true,
+      "assets": [
+        {
+          "name": "deploy-cloud-update.py",
+          "bytes": 12117,
+          "sha256": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408",
+          "githubDigestMatches": true,
+          "downloadMatchesLocal": true
+        },
+        {
+          "name": "runtime-update-manifest.json",
+          "bytes": 27225,
+          "sha256": "740d30390ba1954b3d32a641671692c6f3fc843bd8701055eb90341f0fc9bda1",
+          "githubDigestMatches": true,
+          "downloadMatchesLocal": true
+        },
+        {
+          "name": "runtime-update.json",
+          "bytes": 2736845,
+          "sha256": "255688ceb2220b0adb035fe2e4f4f31ed20f0494fac5cc8530c64e3bce64dfa1",
+          "githubDigestMatches": true,
+          "downloadMatchesLocal": true
+        },
+        {
+          "name": "runtime-update.sha256",
+          "bytes": 86,
+          "sha256": "63d97f13912e40b3c22d33afcfcbe1d6b07368fddfc09eec1ca75f75b0da3cac",
+          "githubDigestMatches": true,
+          "downloadMatchesLocal": true
+        }
+      ]
+    }
+  ],
+  "sourceCommit": "422e687fc022a291e914237db656074088d3dd8d",
+  "pullRequest": "https://github.com/diask5/commonplace-plugin/pull/37",
+  "pullRequestDraft": true,
+  "githubChecks": "No checks reported; local/extracted checks remain the recorded test evidence.",
+  "priorPackagingEvidence": "p0-ready-candidate-verification.json",
+  "olderDraftAssetsUnchanged": [
+    {
+      "name": "commonplace-0.4.29-build.json",
+      "sha256": "48320a7861f04e3360730104ce5a8bd099111dba12d0bbcc40a83430d6c03d4b",
+      "unchanged": true
+    },
+    {
+      "name": "commonplace-0.4.29.sha256",
+      "sha256": "0ba2d9c6ff5f1be7fe1e5a127d5d53952884a52add7758d346b8c4171356c473",
+      "unchanged": true
+    },
+    {
+      "name": "commonplace-0.4.29.zip",
+      "sha256": "4e06ad07deb2218c45603ac56cf0f96b80d907ff438470d2965d6e8ff5d36754",
+      "unchanged": true
+    },
+    {
+      "name": "meet-proxy-0.4.29-build.json",
+      "sha256": "383808a6dd45aabe8437bce5084bee75af63b140dbd828df346cc822a6dcf482",
+      "unchanged": true
+    },
+    {
+      "name": "meet-proxy-0.4.29.sha256",
+      "sha256": "e0550fb8129c4b9e74725fc876fd0254a7d9c1281a35034a3279a1cc15009a5f",
+      "unchanged": true
+    },
+    {
+      "name": "meet-proxy-0.4.29.zip",
+      "sha256": "e6e5def8afdef0f7cd96702c32f9fb90d3085b32b2bafb857bd97adcdaac3192",
+      "unchanged": true
+    },
+    {
+      "name": "deploy-cloud-update.py",
+      "sha256": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408",
+      "unchanged": true
+    },
+    {
+      "name": "runtime-update-manifest.json",
+      "sha256": "381c5feb8547d2f0c1e57cf19b2a77afebd430548d31277992a9d4ce67181e99",
+      "unchanged": true
+    },
+    {
+      "name": "runtime-update.json",
+      "sha256": "4faf5592d70514b75291aef702f42fc7f32cd7b2a482884f0512826b07815c17",
+      "unchanged": true
+    },
+    {
+      "name": "runtime-update.sha256",
+      "sha256": "bb496b6b403c7a8f923ff2a7b0201e75547498cf16e4efe75dda0c2cb9937aef",
+      "unchanged": true
+    }
+  ],
+  "publicHealth": {
+    "observedAt": "2026-10-27T04:06:27.330846+00:00",
+    "kind": "anonymous public health only",
+    "installedReadFailureResolved": false,
+    "status": 200,
+    "contentEncoding": "gzip",
+    "ready": true,
+    "seconds": 5.151
+  },
+  "independentReview": {
+    "session": "077a37d6-e280-4dce-87ee-65c0f98354ed",
+    "result": "no material new blocker",
+    "report": "p0-ready-staging/independent-review.md",
+    "sourceEvidenceOnly": true
+  },
+  "permissions": {
+    "macExecutionRetried": false,
+    "productionMutations": false,
+    "savedPermissionsChanged": false,
+    "accountRelinked": false,
+    "realPersonInvitationSent": false
+  },
+  "pendingOwnerInputs": [
+    "Explicitly reopen read-only Mac diagnostics after earlier denial",
+    "Select a real sharing-test participant and intended native chats",
+    "Provide a separate authorized Mac/macOS profile for clean setup"
+  ],
+  "openGates": [
+    "Installed-Mac read failure cause",
+    "Active candidate in both native hosts",
+    "Production sharing and revocation with real explicit acceptance",
+    "Clean Google/Desktop onboarding"
+  ],
+  "preparationAttempts": [
+    "Artifact hash recheck initially used unavailable Python hashlib.file_digest; corrected to streaming SHA-256 before verification.",
+    "First anonymous health read did not decode gzip. Corrected decoding returned HTTP 200 and ready:true. No product failure was inferred."
+  ],
+  "nextSteps": "../docs/P0-LIVE-ACCEPTANCE.md"
+}

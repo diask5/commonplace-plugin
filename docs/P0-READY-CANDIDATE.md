@@ -1,9 +1,16 @@
 # 0.4.31/runtime64 candidate — 26 October 2026
 
-**Locally packaged for native acceptance; P0 remains open.** Neither alias nor
-the server update has been uploaded, published, installed or deployed. Current
+**Packaged and staged as verified GitHub drafts; P0 remains open.** Both aliases
+and the server update were uploaded on 27 October and all ten assets were
+downloaded and hash-checked. They are not published, installed or deployed. Current
 production remains 0.4.28/runtime61 with server `20261026-current-read`. Existing
 0.4.29 draft assets and local 0.4.30 artifacts are unchanged.
+
+[Draft PR #37](https://github.com/diask5/commonplace-plugin/pull/37) contains the
+source and evidence. [Staging receipts](../implementation/p0-ready-staging-verification.json)
+record exact draft URLs and hashes. An independent source/evidence review found
+no material new blocker. Follow [live acceptance](P0-LIVE-ACCEPTANCE.md) for the
+remaining steps and pending owner inputs.
 
 ## Changes in this candidate
 
@@ -25,7 +32,7 @@ unstarted cases and previous release records remain intact.
 
 ## Evidence
 
-[Machine-readable verification](../implementation/p0-ready-candidate-verification.json)
+[Original local packaging verification](../implementation/p0-ready-candidate-verification.json)
 records exact package/server hashes and a 41-patch replay reproducing all 204
 changed source files. The full core suite passes **594/594**, with zero skips or
 TODOs. The new integration tests reproduce the three failures before the fix,
