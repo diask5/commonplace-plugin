@@ -1,0 +1,5 @@
+Server candidate for Meet Proxy 0.4.31/runtime64. It includes selected-space routing and successful-source-read guidance, plus fixed recoverable MCP replies for three reviewed archive input/lookup errors. All other failures retain their existing error path. No schema, authorization, source-fence or permission relaxation is included.
+
+The 159-file runtime update changes three files from live server 20261026-current-read. The full core suite passes 594/594, the extracted server passes local OAuth/resource/scope checks, and all five archive error regressions pass against its extracted artifact. The authorization-page check uses a placeholder; real Google and native hosts were not exercised.
+
+Draft only, not deployed or published. The installed-Mac read failure still needs live diagnosis. Deployment must pin the observed baseline, verify the bundle checksum and migration bytes, preserve accounts/data, and verify service health and a new worker heartbeat. Follow docs/P0-CLOSEOUT.md; these artifacts do not close live acceptance.

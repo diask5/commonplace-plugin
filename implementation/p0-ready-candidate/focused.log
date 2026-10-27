@@ -1,0 +1,43 @@
+✔ Agent Auth diagnostics retain only allowlisted categories and supplied status (3.034159ms)
+✔ diagnostic reporting writes one bounded JSON line and cannot mask a failure (0.295749ms)
+✔ real AgentConnection reports before synthetic status wrapping and never retries (58.13434ms)
+✔ safe error decoding preserves exact approved messages across API envelopes only (0.299363ms)
+2026-10-26T23:28:06.883Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ signed native acceptance exposes static legacy recovery while preserving the private mandate (1819.964273ms)
+✔ modern HTTP discovery is inert; tools validate before activation and use structured output (74.809507ms)
+✔ stdio 2026-07-28 discovers without activation and calls a tool (10.495602ms)
+✔ stdio 2025-11-25 discovers without activation and calls a tool (16.694879ms)
+✔ stdio 2025-06-18 discovers without activation and calls a tool (4.162718ms)
+✔ stdio 2025-03-26 discovers without activation and calls a tool (3.447874ms)
+✔ stdio 2024-11-05 discovers without activation and calls a tool (3.280894ms)
+✔ Resources reuse authorized reads, pin revisions, and reject substituted scopes and traversal (12.172246ms)
+✔ native resource discovery stays local while explicit reads still authorize and pin context (6.956605ms)
+✔ Tasks use each request capability, preserve fallback, map application failure, and deduplicate input (59.469664ms)
+✔ rollout flags keep ordinary tools available and disable extension advertisement (4.447583ms)
+✔ user-selected prompts validate arguments and never activate tools (9.145387ms)
+✔ modern rollback rejects modern requests and preserves legacy HTTP and stdio (9.481812ms)
+✔ official SDK HTTP client negotiates modern and validates structured results (40.468848ms)
+✔ official SDK HTTP client negotiates legacy rollback and validates structured results (32.917812ms)
+✔ HTTP caller metadata never invokes the native stdio identity hook (2.786172ms)
+✔ authenticated remote MCP supports modern and legacy; each task operation enforces owner and scope (266.296847ms)
+✔ OAuth rejects redirect, resource, PKCE and replay substitutions before granting access (151.229501ms)
+✔ an unknown documentId is reported recoverably (349.178686ms)
+✔ a read offset past the end of a document is reported recoverably (314.102264ms)
+✔ an empty search phrase is reported recoverably (297.38731ms)
+✔ schema violations, stale revisions and scope refusals already report recoverably (255.706989ms)
+✔ only exact archive input errors become correction replies (9.131773ms)
+✔ native new requests omit IDs; uncertain transport retry reuses the durable creation receipt (172.259527ms)
+✔ native uncertain context request retries the exact shared exchange, without another classifier run (168.317465ms)
+✔ denials, changed accounts and exhausted retries never become fresh writes (1.448599ms)
+✔ timeout has actionable wording; actual authorization failures retain their meaning (0.293779ms)
+✔ MCP-first discovery keeps scope and write approvals explicit (1.642637ms)
+✔ real OAuth MCP accepts nonce-free requests, returns retry IDs and replays once (185.04722ms)
+✔ a timeout returns promptly and the next identical nonce-free retry reuses its uncertain ID (1.078631ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1959.178901

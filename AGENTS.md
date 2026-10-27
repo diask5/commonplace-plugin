@@ -32,22 +32,71 @@ Native context-space tools create/invite/preview/accept/leave/archive within cur
 account and workspace scope. Joining never enables private-library sharing.
 See [the current readiness audit](docs/CONTEXT-MVP-READINESS.md) and
 `implementation/context-mvp-verification.json` for release state.
-Current release is **0.4.28/runtime61**, published, installed and active on the Mac.
-Server `20261026-current-read` is live. See [current-source retrieval](docs/CURRENT-SOURCE-READS.md)
+Current published release is **0.4.31/runtime64**; runtime64 is active on the Mac
+and server `20261027-context-guidance-r2` is live. Permanent native registry
+installation is being verified. See `implementation/p0-live-release-verification.json`.
+The previous 0.4.28/runtime61 and server `20261026-current-read` remain retained.
+See [current-source retrieval](docs/CURRENT-SOURCE-READS.md)
 and `implementation/current-read-verification.json` for exact source, package,
 installation and production evidence. Candidate 0.4.29/runtime62 is packaged with
 native/server GitHub drafts uploaded, not published, installed or deployed; `implementation/read-page-guidance-verification.json`
 records its page-size guidance and preserved bounds. Existing open chats can retain older loaded
 plugins until host reload. Account and saved permissions are preserved.
 
+The [P0 closeout checklist](docs/P0-CLOSEOUT.md) records the remaining execution
+order. Patch 36 adds bounded transport diagnostics only; 15 focused tests pass.
+It is now included in locally packaged 0.4.30/runtime63 (patch 37), while uploaded
+0.4.29 assets remain unchanged. The new candidate is not published, installed or
+deployed. See `implementation/cloud-closeout-runtime-verification.json` for
+package, smoke and independent review evidence. Diagnostics do not fix or identify
+the failed-read cause, change permissions, or close live acceptance.
+
+The newer [0.4.31/runtime64 candidate](docs/P0-READY-CANDIDATE.md) combines the
+diagnostics with patches 38–39 and recoverable remote archive input errors
+(patches 40–41). Both aliases are now published. The original server draft remains
+unchanged; the separately published r2 server uses patch42's permission-preserving
+deployment helper. Its first rollout failed with EACCES under umask077 and safely
+rolled back. The corrected rollout verifies 159 live/readable files and healthy
+services. See [deployment modes](docs/DEPLOYMENT-SOURCE-MODES.md). PR #37 contains
+the source and evidence. Original candidate hashes remain unchanged.
+See `implementation/p0-ready-staging-verification.json` and
+[live acceptance](docs/P0-LIVE-ACCEPTANCE.md). The full core suite passes 594/594.
+See `implementation/p0-ready-candidate-verification.json` for exact hashes and
+checks. Installed-native, production and clean-onboarding gates remain open.
+
+The [Conductor cloud benchmark](docs/CLOUD-P0-BENCHMARK.md) is complete.
+Published-0.4.28 synthetic baseline: five clean lifecycle passes, one post-leave
+scope-routing failure (no context leaked), and two retrieval routing failures;
+Claude also cited one search-only source. Original failures and six unstarted
+retrieval cases remain preserved. Patches 38–39 clarify owner-selected
+space routing and successful-read requirements. Distinct candidate runs passed
+3/3 space cases and 8/8 retrieval cases across Claude/Codex; all final citations
+have supporting reads in the same session. Existing regression suites pass 8/8
+and 26/26. See `implementation/cloud-p0-benchmark-verification.json` for the
+39-patch replay, full catalog, fixture/provenance and host-isolation limits.
+Temporary project settings were restored and all six scored-fixture servers
+stopped. These guidance changes are included in local 0.4.31, absent from local
+0.4.30 packages and live releases. Cloud remote-MCP fixtures do not close installed-native or production
+acceptance, the Mac failed-read diagnosis, or clean Google/Desktop setup.
+
 The current ordinary-prompt run has seven clean passes and one correctly reported
 synthetic name conflict; every final citation has a successful source read. The
 separate uniquely named synthesis retest hit two connection-unavailable reads then
 a harness guard on setup_status. See `implementation/current-read-native-benchmark.json`
 and `current-read-synthesis-retest.json`. No host denial or permission change.
-Additional per-test diagnostic tools and the previously blocked MCP-only acceptance
-retest await approval. Production SSH needs existing-account Google reauthentication;
-a browser login has been started on the Mac. Prior runs remain in
+The owner authorized the exact additional diagnostic and disposable MCP acceptance
+test tools, then directed execution to new Conductor cloud sessions. The latest Mac
+command was explicitly denied at that point. On 27 October the owner explicitly
+reopened this Mac, completed the existing GCP account sign-in, and directed repair.
+The supported native candidate tests exposed an active-work upgrade guard and
+old loaded launchers racing a graceful restart. A controlled handoff now runs
+runtime64 with the account and saved permissions preserved. Two distinct
+Claude/Codex synthesis checks pass with every final citation supported by a
+successful current source read. See `implementation/p0-live-native-verification.json`.
+Standalone nested model CLIs failed authentication before product tool calls;
+actual Conductor-native sessions completed the separate synthetic benchmark.
+Production SSH was verified after existing-account Google reauthentication. The
+historical connection-unavailable read cause remains unconfirmed. Prior runs remain in
 [read performance](docs/CONTEXT-READ-PERFORMANCE.md), [timeout recovery](docs/TIMEOUT-RECOVERY.md),
 [live-index reuse](docs/LIVE-INDEX-REUSE.md) and [demand-built archives](docs/DEMAND-ARCHIVES.md).
 The live-index run passed 4/8; demand-built passed five, hit one test allowlist

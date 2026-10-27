@@ -1,0 +1,16 @@
+test_code_only_deploy_from_private_runner_keeps_runtime_service_readable (deployment_tests.DeploymentTest) ... Activating the release and checking both services.
+FAIL
+
+======================================================================
+FAIL: test_code_only_deploy_from_private_runner_keeps_runtime_service_readable (deployment_tests.DeploymentTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "tests/test_deployment.py", line 328, in test_code_only_deploy_from_private_runner_keeps_runtime_service_readable
+    self.assertEqual((current / runtime_file).stat().st_mode & 0o777, 0o644)
+AssertionError: 384 != 420
+
+----------------------------------------------------------------------
+Ran 1 test in 0.011s
+
+FAILED (failures=1)
+{"release": "20261020-candidate", "health": "ready", "worker": "ready", "backup": null, "migrations": "unchanged"}

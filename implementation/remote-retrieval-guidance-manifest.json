@@ -1,0 +1,59 @@
+{
+  "name": "Ground remote context answers in successful source reads",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch"
+  ],
+  "patch": "remote-retrieval-guidance.patch",
+  "sha256": "e442f1b42d4aa5576870823fd62c9e1214a1866001bf0c68ef2145c9cf4366e3",
+  "state": "Source-only instruction guidance; not in local0.4.30 packages, installed native runtime or production. See cloud-p0-benchmark-verification.json for regression evidence.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/archive-tools.mjs",
+      "beforeSha256": "72a354e91c62dbc1023a6f0948517b1d79ad83adb463e11a9a77369a05c404cb",
+      "sha256": "3d5c234c9b4fcb84ccc91ecf34085bbc5f757a81158278c3e09047be16e17ba0"
+    },
+    {
+      "path": "apps/commonplace-account/server/remote-mcp.mjs",
+      "beforeSha256": "b201f5d4a8d6a489c1d8122fdb2b0f99d630fb9c165b9e392bff477a86fa6e61",
+      "sha256": "52dabbd4532da6ace3e6af34227f57984224aedb3646a945c13bd067711b6ab6"
+    }
+  ]
+}

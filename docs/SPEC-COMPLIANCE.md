@@ -1,5 +1,34 @@
 # Meet Proxy Draft v3 compliance
 
+27 October live update: 0.4.31/runtime64 is published, runtime64 is active on the
+Mac, and server `20261027-context-guidance-r2` is live after a tested deployment
+permission correction and verified rollback of the first attempt. Two distinct
+native CLI synthesis checks pass with strict citation grounding. Permanent native
+registry installation is being verified. [Live receipts](../implementation/p0-live-release-verification.json)
+supersede the historical staging state below. Real-person sharing/revocation,
+clean Google/Desktop setup and broader default-host acceptance remain open.
+
+Latest staged candidate: [0.4.31/runtime64](P0-READY-CANDIDATE.md) packages the
+tested space-routing/source-read guidance, bounded diagnostics and recoverable
+archive input errors. The full core suite passes 594/594. Both aliases and the
+server update are verified GitHub drafts, not published, installed or deployed;
+they do not close live P0 gates. [Staging and remaining inputs](P0-LIVE-ACCEPTANCE.md).
+[Exact evidence](../implementation/p0-ready-candidate-verification.json).
+
+The [P0 closeout checklist](P0-CLOSEOUT.md) orders the remaining live work.
+The transport diagnostic delta preserves a bounded failure category without
+changing retries, authentication, public errors or permissions; 15 focused tests
+pass. It is now packaged in **0.4.30/runtime63**, with both-alias integrity, extracted
+launcher and actual stdio/signed-HTTP smoke checks. It remains unpublished,
+uninstalled and undeployed; uploaded 0.4.29 assets are unchanged. See
+[package verification](../implementation/cloud-closeout-runtime-verification.json).
+The failed-read cause is still unknown. The authorized [cloud benchmark](CLOUD-P0-BENCHMARK.md)
+is complete. Baseline routing/grounding failures remain recorded; source-only
+patches 38–39 passed distinct 3/3 space and 8/8 retrieval model regressions. Every
+candidate final citation had a successful same-session source read. These patches
+are absent from the local 0.4.30 packages and all deployed releases; the newer
+local 0.4.31 candidate now includes them.
+
 A packaged 0.4.29/runtime62 page-size guidance candidate addresses observed invalid
 model arguments. Native and server assets are verified GitHub drafts; it is not live. See
 [the candidate record](../implementation/read-page-guidance-verification.json).
@@ -15,13 +44,13 @@ not close the live model or real-user coverage gaps below.
 | Requirement | Verified evidence | Remaining acceptance |
 | --- | --- | --- |
 | Google → Claude/Codex Desktop → automatic private collection | Both real existing-owner Desktop handoffs completed at 0.4.24; exact host identities and installation receipts recorded. 0.4.28/runtime61 is installed and active. | A clean machine/new-account walkthrough has not been completed. Older open chats can require host reload. |
-| Ordinary questions find current context and read supporting sources | 0.4.28: seven clean passes, one correctly surfaced synthetic-name conflict; every final citation matched a successful read. | The uniquely named synthesis replacement failed two reads, then stopped at an unapproved diagnostic selection. Its transport cause and clean answer remain open. |
-| Invite → accept → connected, in natural language | Disposable real-service creation/invitation passed; signed API and browser membership tests pass. | The model acceptance case attempted a denied browser route. Explicit approval for the prepared MCP-only retest is pending. Default-host routing and new cross-person production acceptance are unverified. |
+| Ordinary questions find current context and read supporting sources | 0.4.28: seven clean passes, one correctly surfaced synthetic-name conflict; every final citation matched a successful read. | The uniquely named synthesis replacement failed two reads, then stopped at an unapproved diagnostic selection. Its transport cause and clean installed-host answer remain open. The separate source-overlay cloud candidate passed 8/8; this does not replace the installed retest. |
+| Invite → accept → connected, in natural language | Disposable real-service creation/invitation passed; signed API and browser membership tests pass. | The model acceptance case attempted a denied browser route. The authorized disposable Conductor MCP acceptance retest passed, with persisted membership and no private-sharing opt-in. Default-host routing and new cross-person production acceptance are unverified. |
 | Messages first; both sides see exchanges | Deployed Spaces / My context UI, compact Messages / My sharing rules / Members header; browser and signed-service audit checks pass. Both fixture owners saw the same approved exchange. | New cross-person production walkthrough remains unverified. |
 | Private rules govern every context request | Parallel classifier checks, approved-only chunks, private rejection/check views, authority/source/expiry fences and pagination have passing regressions. Real classifier benchmark has zero false allows in its small synthetic sample. | The provider-refused private-data model case is not a classifier pass and is not being retried around the refusal. No claim of universal classifier accuracy. |
-| Either side can revoke access | Service/browser leave, removal, expiry and old-invitation fences pass; model leave revoked stored membership. | The later model question chose unrelated tools; model-path post-removal verification is incomplete. |
-| Host permissions remain authoritative | Saved settings stayed unchanged; host denials and test-tool guards stopped dependent work. | Additional Claude test tools and the MCP-only acceptance route await exact approval. |
-| Production matches reviewed artifacts | 159 files and all three services verified for `20261026-current-read`; public asset/protocol and desktop/phone checks pass. | Further VM diagnostics/deployment wait for completion of the existing-account GCP browser reauthentication already started on the Mac. |
+| Either side can revoke access | Service/browser leave, removal, expiry and old-invitation fences pass; model leave revoked stored membership. | The later model question chose unrelated tools; the baseline cloud run also posted into an unrelated space after leave. The source-only scope candidate now passes 3/3, including no request after missing-space discovery; installed/production model acceptance remains open. |
+| Host permissions remain authoritative | Saved settings stayed unchanged; host denials and test-tool guards stopped dependent work. | Exact additional test allowances were authorized; no saved/global permission changes. The latest Mac command was denied, and work moved to Conductor cloud. |
+| Production matches reviewed artifacts | 159 files and all three services verified for `20261026-current-read`; public asset/protocol and desktop/phone checks pass. | Further VM diagnostics/deployment remain unverified after the denied Mac command; existing-account GCP reauthentication was previously pending. |
 
 Supporting records: [current retrieval](CURRENT-SOURCE-READS.md),
 [real Desktop setup](P0-NATIVE-READINESS.md),

@@ -1,0 +1,62 @@
+{
+  "name": "Preserve service-readable source modes under a private deployment runner",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch"
+  ],
+  "patch": "deployment-source-modes.patch",
+  "sha256": "03c4e56034ee3f5046fa0d0a5c4f153d68706d2ddd26e3f0e12571b59db336b2",
+  "state": "Source fix tested; corrected deployment helper separately staged; original candidate assets unchanged.",
+  "files": [
+    {
+      "path": "scripts/deploy-cloud-update.py",
+      "beforeSha256": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408",
+      "sha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32"
+    },
+    {
+      "path": "tests/test_deployment.py",
+      "beforeSha256": "851e80426afec854c99b35a9616e9df546d9f6dae08854169472a808a6e39e11",
+      "sha256": "4fda44181a95446ae7b1dafdd9b529f14b29e057911c63484cce604c63f5572f"
+    }
+  ]
+}

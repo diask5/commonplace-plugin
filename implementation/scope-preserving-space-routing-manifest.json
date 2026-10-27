@@ -1,0 +1,73 @@
+{
+  "name": "Preserve the owner-selected space when routing context requests",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch"
+  ],
+  "patch": "scope-preserving-space-routing.patch",
+  "sha256": "23807a86670a3dbf051bcf8b0a3bfbb321f49932318a579654074f2c3a16f28b",
+  "state": "Source-only instruction guidance; not in local0.4.30 packages, installed native runtime or production. See cloud-p0-benchmark-verification.json for regression evidence.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/remote-mcp.mjs",
+      "beforeSha256": "e88855b0854e8ee10d17d6ac3d90fce9e92ebf8dae75c724b806f0226396719b",
+      "sha256": "b201f5d4a8d6a489c1d8122fdb2b0f99d630fb9c165b9e392bff477a86fa6e61"
+    },
+    {
+      "path": "apps/commonplace/plugin/commonplace/skills/context/SKILL.md",
+      "beforeSha256": "62db511f2b83e79bedb474d247ebd9453395f70bf7157f828f689c202da2b3de",
+      "sha256": "48a1bfe18e25084cf85f964493b8df3add12dab3dc72026b3873f1786920cdb9"
+    },
+    {
+      "path": "apps/commonplace/plugin/commonplace/skills/meet-proxy/SKILL.md",
+      "beforeSha256": "233d4a012d38f9f44c163592f692c003db092c8d1ba763236692e19cbae484aa",
+      "sha256": "0673d1ed9130aa7633de574d30500d36a6a14d9e35791db76bb9fcf0355f41f3"
+    },
+    {
+      "path": "apps/commonplace/server/account-inbox.mjs",
+      "beforeSha256": "b4a7a5053250658826ad20eb2d2600302decd446eeb4e5f5a07a564a8cd471f4",
+      "sha256": "890261c9ee2c7ba8504e758f44b8ac253bd63c467fe7e5f584f25b398197fbc9"
+    },
+    {
+      "path": "apps/commonplace/server/plugin-surface.mjs",
+      "beforeSha256": "bdd06c91379189cc985f52c0ea944941f5b9cd1e762537631bd35d3e3a70b71d",
+      "sha256": "8e008c0b2e8f022e12ab7ee3244b3b217624522194ee2b788a8428ace0aed09a"
+    }
+  ]
+}

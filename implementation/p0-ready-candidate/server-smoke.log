@@ -1,0 +1,21 @@
+2026-10-26T23:29:27.245Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+{
+  "passed": true,
+  "node": "v24.22.1",
+  "migrations": 46,
+  "checks": [
+    "/.well-known/oauth-authorization-server",
+    "/.well-known/oauth-protected-resource/mcp",
+    "/.well-known/agent-configuration",
+    "/api/agent-auth/agent-configuration",
+    "unauthenticated routes denied",
+    "unrelated auth route denied",
+    "PKCE token exchange",
+    "authenticated tool listing",
+    "resource listing and read",
+    "read-only token rejects write",
+    "foreign origin denied",
+    "compiled authorize route retained (placeholder)"
+  ],
+  "scope": "Extracted runtime and isolated dependencies over real local HTTP; disposable synthetic profile. Google/compiled authorization page/native host not exercised."
+}
