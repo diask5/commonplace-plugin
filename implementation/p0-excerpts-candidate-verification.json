@@ -1,0 +1,199 @@
+{
+  "observedAt": "2026-10-28T18:03:22.679032+00:00",
+  "version": "0.4.32",
+  "runtimeRevision": 65,
+  "state": "published; server deployed; native runtime65 active from verified extracted package; permanent registries and live sharing acceptance pending",
+  "patches": [
+    43,
+    44,
+    45
+  ],
+  "replay": {
+    "patches": 45,
+    "changedFiles": 206,
+    "mismatches": [],
+    "matched": true,
+    "patch44Sha256": "ce34aa558e059a9c5f551f7205ae8e5ac52e64afc76dfc2eed016c212fae67a3",
+    "patch45Sha256": "43f868af9cc7c859715fe83cdde3741727dc350af01fa235f94fe80f162d9251"
+  },
+  "tests": {
+    "core": {
+      "passed": 604,
+      "failed": 0,
+      "skipped": 0
+    },
+    "focused": {
+      "passed": 45,
+      "failed": 0
+    },
+    "bothAliasPackageIntegrity": "passed",
+    "packagedStdioSignedHttpSmoke": "passed; Google and host sockets are test doubles",
+    "extractedServerHttpOAuthReadOnlyChecks": "passed; disposable synthetic profile and placeholder compiled authorization page"
+  },
+  "artifacts": {
+    "native": [
+      {
+        "name": "commonplace-0.4.32-build.json",
+        "sha256": "5fa6ac4fe48970d8403dea2143de1bfade34338ba777529e090f4fbafe7850f3",
+        "bytes": 7438
+      },
+      {
+        "name": "commonplace-0.4.32.sha256",
+        "sha256": "44e06a1d72e064716be1c7b5c2e538ef2ba02eefeec8561e6e05991e2fcafb0a",
+        "bytes": 89
+      },
+      {
+        "name": "commonplace-0.4.32.zip",
+        "sha256": "7427dc36b04e7edc2ef557fef1fe86120939d81c6e2196d3d0cb4f384c75131a",
+        "bytes": 230158579
+      },
+      {
+        "name": "meet-proxy-0.4.32-build.json",
+        "sha256": "5581ca9d0de8ee847d857898fbf01b49298237e4a80bb95e9271633a91d13156",
+        "bytes": 7436
+      },
+      {
+        "name": "meet-proxy-0.4.32.sha256",
+        "sha256": "567029e47db1ef55ddc4ef0bfbceacb2f13b35b033627a0053d410c570e7a55c",
+        "bytes": 88
+      },
+      {
+        "name": "meet-proxy-0.4.32.zip",
+        "sha256": "c0c4b7daa73329f7a988ed7320efe6fcb1262fc7c9ced8faf00ed0153de87d13",
+        "bytes": 230158579
+      }
+    ],
+    "server": [
+      {
+        "name": "deploy-cloud-update.py",
+        "sha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
+        "bytes": 12916
+      },
+      {
+        "name": "runtime-update-manifest.json",
+        "sha256": "37cee075496b8cd626476bcbd7c56414a053d03d39f456e10e83bd2c5dd7d285",
+        "bytes": 27225
+      },
+      {
+        "name": "runtime-update.json",
+        "sha256": "657861559d1eef9b21cb17370edbe1bb37e03d164f06b00b7cd2b9cfd192ff55",
+        "bytes": 2739049
+      },
+      {
+        "name": "runtime-update.sha256",
+        "sha256": "8f0bbd2b7de37f1b36b0efb552915d19b0f1c03dd1d67bfed7060c761de4dc34",
+        "bytes": 86
+      }
+    ]
+  },
+  "realProviderDiagnostic": {
+    "syntheticState": true,
+    "realProvider": true,
+    "threshold": 0.995,
+    "checks": {
+      "latestPublicAnswerShared": true,
+      "privateFinanceWithheld": true,
+      "confidentialPublicLookingWithheld": true,
+      "recipientAuditAbsent": true
+    },
+    "state": "shared",
+    "scores": [
+      {
+        "sourceKind": "Private Larkspur Beacon finance",
+        "probability": 0.0006257735794393038,
+        "passed": false,
+        "model": "pplx-decider-v1.2"
+      },
+      {
+        "sourceKind": "Larkspur Beacon confidential schedule",
+        "probability": 0.0678289478167855,
+        "passed": false,
+        "model": "pplx-decider-v1.2"
+      },
+      {
+        "sourceKind": "Larkspur Beacon confidential schedule",
+        "probability": 0.05471182012839548,
+        "passed": false,
+        "model": "pplx-decider-v1.2"
+      },
+      {
+        "sourceKind": "Larkspur Beacon signup flow",
+        "probability": 0.8644627147331112,
+        "passed": false,
+        "model": "pplx-decider-v1.2"
+      },
+      {
+        "sourceKind": "Larkspur Beacon signup flow",
+        "probability": 0.8827662233832402,
+        "passed": false,
+        "model": "pplx-decider-v1.2"
+      },
+      {
+        "sourceKind": "Larkspur Beacon signup flow",
+        "probability": 0.9287332310657894,
+        "passed": false,
+        "model": "pplx-decider-v1.2"
+      },
+      {
+        "sourceKind": "Larkspur Beacon signup flow",
+        "probability": 0.9950851001709461,
+        "passed": true,
+        "model": "pplx-decider-v1.2"
+      }
+    ]
+  },
+  "limits": [
+    "Live sharing acceptance has not yet run with this candidate.",
+    "One real-provider sample barely exceeded 0.995; no universal classifier accuracy claim.",
+    "Existing-account setup does not prove clean-machine onboarding.",
+    "Two owner-selected accounts do not prove independent-human participation.",
+    "Previous failed runs and released assets remain unchanged."
+  ],
+  "logs": {
+    "core-tests.log": "b27c90d87c36c74a80e4ae4e6686c0f6d16a03ca7fabdafce08f29d07c83e870",
+    "excerpt-focused.log": "06ae542ade26448b99364687878cc0e4fea32218e72b8c61d6eb70d343da8c8b",
+    "package-integrity.log": "b91ef8edb3f2819c09251f17eb0f34de75b28c1fd58aada37a399a86b9f4c9a9",
+    "packaged-smoke.log": "cc5cc8a51a4f6bd3df969899ec3a93ef6b65df8cf5413caaa58c911d37f3f7e6",
+    "server-smoke.log": "d7de22243f71e13d8e426850f05237d9d15b9dceeb04f79ee9da5a8ed0070cfc"
+  },
+  "published": true,
+  "serverDeployed": true,
+  "nativeRuntimeActive": true,
+  "nativeRegistryInstalled": false,
+  "serverRelease": "20261028-native-excerpts",
+  "serverVerification": {
+    "filesVerified": 159,
+    "serviceReadableFiles": 159,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "unchanged",
+    "previous": "20261027-context-guidance-r2"
+  },
+  "nativeActivation": {
+    "previousRevision": 64,
+    "activeRevision": 65,
+    "guardedRestart": true,
+    "accountAndPermissionsPreserved": true,
+    "temporarilyPausedPluginProcesses": 12,
+    "allResumed": true
+  },
+  "nativeSourceRead": {
+    "runtime": 65,
+    "revision": 6356,
+    "characters": 1594,
+    "citations": 4,
+    "nextOffset": null,
+    "currentDatePresent": true,
+    "hostEnvelopePresent": false
+  },
+  "liveSharingFirstAttempt": {
+    "state": "unavailable",
+    "excerpts": 0,
+    "ownerAuditReason": "request_stopped",
+    "collectorMigrationActive": true,
+    "cause": "not yet established"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "observedAt": "2026-10-28T18:03:22.679032+00:00",
+  "patchOrder": 44,
+  "state": "packaged in 0.4.32/runtime65; live acceptance pending",
+  "behavior": [
+    "Exact stored visible message bodies, never parsed headers",
+    "Whole conversation remains private classifier context",
+    "Whole serialized projection and revision checked against archive",
+    "No thresholds, permissions, rules, tool schemas or migrations changed"
+  ],
+  "tests": {
+    "core": {
+      "passed": 604,
+      "failed": 0,
+      "skipped": 0
+    },
+    "focused": {
+      "passed": 45,
+      "failed": 0
+    },
+    "bothAliasPackageIntegrity": "passed",
+    "packagedStdioSignedHttpSmoke": "passed; Google and host sockets are test doubles",
+    "extractedServerHttpOAuthReadOnlyChecks": "passed; disposable synthetic profile and placeholder compiled authorization page"
+  },
+  "realProviderDiagnostic": {
+    "syntheticState": true,
+    "realProvider": true,
+    "threshold": 0.995,
+    "checks": {
+      "latestPublicAnswerShared": true,
+      "privateFinanceWithheld": true,
+      "confidentialPublicLookingWithheld": true,
+      "recipientAuditAbsent": true
+    },
+    "state": "shared",
+    "scores": [
+      {
+        "sourceKind": "Private Larkspur Beacon finance",
+        "probability": 0.0006257735794393038,
+        "passed": false,
+        "model": "pplx-decider-v1.2"
+      },
+      {
+        "sourceKind": "Larkspur Beacon confidential schedule",
+        "probability": 0.0678289478167855,
+        "passed": false,
+        "model": "pplx-decider-v1.2"
+      },
+      {
+        "sourceKind": "Larkspur Beacon confidential schedule",
+        "probability": 0.05471182012839548,
+        "passed": false,
+        "model": "pplx-decider-v1.2"
+      },
+      {
+        "sourceKind": "Larkspur Beacon signup flow",
+        "probability": 0.8644627147331112,
+        "passed": false,
+        "model": "pplx-decider-v1.2"
+      },
+      {
+        "sourceKind": "Larkspur Beacon signup flow",
+        "probability": 0.8827662233832402,
+        "passed": false,
+        "model": "pplx-decider-v1.2"
+      },
+      {
+        "sourceKind": "Larkspur Beacon signup flow",
+        "probability": 0.9287332310657894,
+        "passed": false,
+        "model": "pplx-decider-v1.2"
+      },
+      {
+        "sourceKind": "Larkspur Beacon signup flow",
+        "probability": 0.9950851001709461,
+        "passed": true,
+        "model": "pplx-decider-v1.2"
+      }
+    ]
+  },
+  "limitations": [
+    "Live sharing acceptance has not yet run with this candidate.",
+    "One real-provider sample barely exceeded 0.995; no universal classifier accuracy claim.",
+    "Existing-account setup does not prove clean-machine onboarding.",
+    "Two owner-selected accounts do not prove independent-human participation.",
+    "Previous failed runs and released assets remain unchanged."
+  ]
+}
