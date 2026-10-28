@@ -29,8 +29,8 @@ Recording and host limits:
 - Claude's automatic review denied `finish_context_setup` as “Data Exfiltration.”
   The owner was asked to approve that exact action in the host; it was not retried
   or substituted through another tool.
-- The owner was separately asked to clear the Chrome capture permission. These
-  two approvals remain pending; the earlier Google verification was completed.
+- The earlier Chrome capture block is resolved as described below. Claude setup
+  approval remains pending; Google verification was already completed.
 - All recording processes are finished or failed. Temporary sharing is paused;
   the space and membership remain for the pending native handoff.
 
@@ -59,3 +59,23 @@ walkthrough, not a replacement deliverable. It still needs full privacy/media QA
 no new public video link is claimed. Google device verification is already complete
 and must not be requested again to resolve the unrelated host blocks. See
 `implementation/full-video-retake-verification.json` for the exact interim state.
+
+On the owner’s report that no recording prompt was visible, Settings showed
+Conductor already enabled and `CGPreflightScreenCaptureAccess()` returned true.
+The unchanged recorder then completed a five-second Chrome capture and four new
+browser takes. No permission setting was edited, no reset was used and no
+alternative capture route was substituted. The earlier failure is preserved;
+its specific cause is not established. No further macOS approval is currently
+needed for this recorder.
+
+The new footage shows the existing 14-day rule being enabled and saved, a private
+request from the selected second account, the owner-only audit, and sharing being
+paused afterward. The full-sentence request matched no sources (zero audit
+entries), so it is not a classifier privacy pass. A separately recorded shorter
+query matched four candidates; all four scored below threshold, with no provider
+error or shared excerpt. The signed recipient view excludes private checks.
+The saved policy is paused at revision 5 with a 14-day duration. All five new
+recordings finalized successfully. Hashes and durations are in the verification
+file; footage remains on the Mac pending transfer and editing. This does not
+complete browser acceptance, useful public sharing, native handoff/messaging or
+revocation footage. `finish_context_setup` remains blocked pending Claude approval.

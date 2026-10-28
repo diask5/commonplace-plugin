@@ -46,8 +46,12 @@ but still withholds every public excerpt; the
 private query completes with all four candidates withheld. Its earlier source-change
 and deadline stops remain preserved. Demo sharing is paused. The full replacement
 video is unfinished: Claude blocked `finish_context_setup` as Data Exfiltration,
-and macOS refused Chrome capture. Owner approvals remain pending; neither gate
-was bypassed. See [bounded classification](docs/BOUNDED-CLASSIFICATION.md) and
+and the earlier Chrome capture failed. A later Settings/read-only permission check
+showed recording already enabled; the unchanged recorder completed a five-second
+check and four real browser takes without permission edits. Claude setup approval
+remains pending. Recorded private-topic checks withhold all four candidates; a
+full-sentence query matched none and is not counted as a privacy pass. Sharing is
+paused again. No host gate was bypassed. See [bounded classification](docs/BOUNDED-CLASSIFICATION.md) and
 [the recording status](docs/FULL-VIDEO-RETAKE.md). The prior
 `20261028-sharing-diagnostics` release remains retained.
 

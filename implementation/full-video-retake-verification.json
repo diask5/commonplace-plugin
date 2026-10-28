@@ -1,18 +1,20 @@
 {
   "date": "2026-10-28",
-  "state": "incomplete; native chapters in editing",
+  "state": "incomplete; native and selected browser flows recorded",
   "fullReplacementComplete": false,
   "googleDeviceVerification": "completed by owner; do not repeat sign-in",
   "actualRecordedFlows": [
     "Claude Desktop ordinary note entry",
     "Claude Desktop changed-date note entry",
-    "different existing Claude chat retrieves source and answers corrected date"
+    "different existing Claude chat retrieves source and answers corrected date",
+    "browser fourteen-day rule enable and save",
+    "recipient private-topic request with four scored withhold decisions",
+    "owner-only audit and paused sharing"
   ],
   "notYetFullyRecorded": [
     "browser invitation acceptance",
     "native handoff and message delivery in new space",
     "rules and useful public request",
-    "private withholding",
     "membership removal and blocked follow-up"
   ],
   "blocks": [
@@ -27,8 +29,10 @@
       "action": "Chrome window capture",
       "host": "macOS",
       "reason": "The user declined TCCs for application, window, display capture",
-      "ownerHostApprovalPending": true,
-      "alternateCaptureUsed": false
+      "ownerHostApprovalPending": false,
+      "alternateCaptureUsed": false,
+      "resolved": true,
+      "resolution": "Settings already showed Conductor enabled; CGPreflightScreenCaptureAccess returned true. The same unchanged recorder completed a five-second capture and four subsequent selected browser takes. No permission setting or capture route was changed."
     }
   ],
   "nativeSetupReadOnlyRecheck": "Existing native transcript contains denied tool result and no later finish_context_setup attempt.",
@@ -67,5 +71,75 @@
   "sharingPaused": true,
   "previousVideosPreserved": true,
   "sameTwoSelectedAccounts": true,
-  "independentHumanOrCleanMachineProof": false
+  "independentHumanOrCleanMachineProof": false,
+  "recordingRecovery": {
+    "date": "2026-10-28",
+    "permissionEnabledInSettings": true,
+    "preflightPassed": true,
+    "agentChangedPermissionSettings": false,
+    "sameRecorder": true,
+    "previousDenialPreserved": true,
+    "files": [
+      {
+        "file": "08-permission-check.mp4",
+        "seconds": 5.055,
+        "bytes": 468007,
+        "sha256": "c1a808540e344a5d3c17f5c9e9b8ee0bf542b6ca450bb521b17eb1d56990eb95"
+      },
+      {
+        "file": "09-rules-live.mp4",
+        "seconds": 41.42,
+        "bytes": 3590952,
+        "sha256": "21e862ff779eb251f76f8fbd73048fbd2970e2355a6c1e8496e7a6c98960ada3"
+      },
+      {
+        "file": "10-private-request-live.mp4",
+        "seconds": 61.01166666666666,
+        "bytes": 3147411,
+        "sha256": "c332c206e71ac967771a6c0649fb3fe427e9c545ed8af29f616f9032e541dbfb"
+      },
+      {
+        "file": "11-private-source-query.mp4",
+        "seconds": 53.685,
+        "bytes": 2702054,
+        "sha256": "9c2aa69f1b2e9f07c940b2cc956cce271d72d6a968feaadef200a298d1f5744b"
+      },
+      {
+        "file": "12-owner-checks-and-pause.mp4",
+        "seconds": 22.476666666666667,
+        "bytes": 1858976,
+        "sha256": "d835ce5afdeeeccb6d13a885bdbaaecafcd8b5a2aa688e5cbe42ce327a7bce8a"
+      }
+    ],
+    "allRecordersFinished": true,
+    "location": "Mac: Movies/Meet Proxy Desktop Demo/e2e; not yet transferred or included in a published video"
+  },
+  "recordedPrivateRequests": [
+    {
+      "requestId": "52011cb436ea9cfadee4a53a",
+      "query": "What is the Juniper Lantern private budget and audit marker?",
+      "state": "no_context",
+      "auditEntries": 0,
+      "excerpts": 0,
+      "meaning": "No matching sources; not a classifier privacy pass."
+    },
+    {
+      "requestId": "26e506bcbd3283259c10f3f0",
+      "query": "Juniper Lantern private budget and audit marker",
+      "state": "no_context",
+      "auditEntries": 4,
+      "belowThreshold": 4,
+      "excerpts": 0,
+      "providerErrors": 0,
+      "recipientHasPrivateChecks": false
+    }
+  ],
+  "afterState": {
+    "policyRevision": 5,
+    "sharingEnabled": false,
+    "durationDays": 14,
+    "policyReadStatus": 200,
+    "recipientReadStatus": 200,
+    "membershipRetainedForNativeHandoff": true
+  }
 }

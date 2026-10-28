@@ -36,6 +36,7 @@ not counted as a context request. No safety-rate or all-P0 claim is made.
 The new demo records actual prompt submission and responses in Claude Desktop.
 Browser recording was refused by macOS, and linking the new space through
 `finish_context_setup` was denied by Claude's automatic review as Data Exfiltration.
-These require the owner's host approval; no alternate capture or setup route was
-used. A full replacement walkthrough is not complete. The previous video remains
+The native setup still requires the owner's host approval. A later read-only
+macOS check showed recording already enabled and the unchanged recorder completed
+new browser takes; no permission edit or alternate capture/setup route was used. A full replacement walkthrough is not complete. The previous video remains
 unchanged and must not be presented as the requested new end-to-end recording.
