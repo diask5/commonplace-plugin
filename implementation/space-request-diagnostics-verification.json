@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-28",
+  "state": "packaged",
+  "serverRelease": "20261028-sharing-diagnostics",
+  "previousServerRelease": "20261028-private-titles",
+  "serverFiles": 159,
+  "bundleSha256": "54688663032ba01fa84260697d1a661664c60ff55141864edbb4e9c6376b8627",
+  "nativeVersion": "0.4.32",
+  "nativeArtifactsChanged": false,
+  "coreTests": {
+    "passed": 607,
+    "failed": 0
+  },
+  "replay": {
+    "patches": 47,
+    "changedFiles": 206,
+    "mismatches": [],
+    "matched": true,
+    "patch47Sha256": "39c5bd18a61ead0b1ab321b7107bcd6c87fccd32bc92de6434cdca75a7871359"
+  },
+  "extractedServerSmoke": {
+    "passed": true,
+    "syntheticProfile": true,
+    "compiledAuthorize": "placeholder"
+  },
+  "diagnostics": {
+    "audience": "source owner only",
+    "fields": [
+      "phase",
+      "deadlineReached",
+      "sourceRevisionChanged",
+      "authorityChanged"
+    ],
+    "meaning": "Observations at stop, not inferred causes. No content, exception text, IDs, secrets or provider bodies."
+  },
+  "unchanged": [
+    "Deadline",
+    "Classifier model, prompt and threshold",
+    "Authority/source/expiry fences",
+    "Recipient response",
+    "Native artifacts and saved permissions"
+  ],
+  "liveAcceptance": "pending"
+}

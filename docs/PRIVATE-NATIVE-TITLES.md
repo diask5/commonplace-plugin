@@ -22,6 +22,14 @@ patches replay exactly across 206 files. The extracted server passes HTTP/OAuth,
 resource, read-only write-refusal and origin checks using a synthetic profile.
 The compiled authorization page in that smoke test is a placeholder.
 
-Server `20261028-private-titles` is packaged; live acceptance is pending.
+Server `20261028-private-titles` is published and deployed. All 159 files are
+verified/readable and all three services are healthy. A signed request from the
+second selected account shares the current public answer at 0.996158 without
+the private title. Three other requests returned `unavailable`, including two
+private-content requests; their generic `request_stopped` audit does not establish
+the cause or a successful privacy check. An owner-only production diagnostic
+classified all 12 private-query candidates and withheld all, but that does not
+replace the failing signed request path. Bounded request diagnostics are being
+prepared as patch 47.
 [Exact evidence](../implementation/private-native-titles-verification.json).
 Earlier failures, source-overlay benchmarks and recordings remain preserved.

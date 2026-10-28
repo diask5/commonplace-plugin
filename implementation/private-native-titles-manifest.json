@@ -50,7 +50,7 @@
   ],
   "patch": "private-native-titles.patch",
   "sha256": "f1458043ac1107e213f8062d8da4dba25b4ddf032da36d24f5f69d470e249a16",
-  "state": "Server candidate packaged and verified; not yet published or deployed. Native 0.4.32/runtime65 unchanged.",
+  "state": "Published and deployed as server 20261028-private-titles. Native 0.4.32/runtime65 unchanged. One live public sharing pass; intermittent unavailable requests remain open.",
   "files": [
     {
       "path": "apps/commonplace-account/server/space-context.mjs",

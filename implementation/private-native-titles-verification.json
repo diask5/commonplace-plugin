@@ -1,6 +1,6 @@
 {
   "date": "2026-10-28",
-  "state": "packaged",
+  "state": "published and deployed",
   "serverRelease": "20261028-private-titles",
   "previousServerRelease": "20261028-native-excerpts",
   "nativeVersion": "0.4.32",
@@ -241,8 +241,8 @@
   "limitations": [
     "Real-provider samples on selected synthetic content are not calibrated safety or reliability estimates.",
     "Confidential-title sample was withheld at 0.994216, close to threshold.",
-    "Live public sharing remains pending candidate deployment.",
-    "Independent-human and clean-machine acceptance remain open."
+    "Independent-human and clean-machine acceptance remain open.",
+    "One live public request succeeded. Three live requests returned unavailable, including two private requests; these are not classifier privacy passes. The cause remains unconfirmed."
   ],
   "extractedServerSmoke": {
     "passed": true,
@@ -251,5 +251,76 @@
     "oauthPkce": true,
     "readOnlyWriteRefusal": true,
     "foreignOriginDenied": true
+  },
+  "deployment": {
+    "state": "passed",
+    "release": "20261028-private-titles",
+    "filesVerified": 159,
+    "serviceReadableFiles": 159,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "unchanged; verified code-only activation",
+    "previous": "20261028-native-excerpts",
+    "finishedAt": 1793212705.2169557
+  },
+  "liveAttempts": [
+    {
+      "file": "title-fixed-public.private.json",
+      "at": "2026-10-28T18:38:49.455Z",
+      "action": "space-request",
+      "status": 200,
+      "result": {
+        "id": "c9ece7491902c4c8b3d30974",
+        "state": "unavailable",
+        "excerpts": []
+      }
+    },
+    {
+      "file": "title-fixed-warm-public.private.json",
+      "at": "2026-10-28T18:40:55.646Z",
+      "action": "space-request",
+      "status": 200,
+      "result": {
+        "id": "dd440dd1783731586ddb6c1e",
+        "state": "shared",
+        "excerpts": [
+          {
+            "title": "Shared excerpt",
+            "text": "**Larkspur Beacon: current plan (updated October 28, 2026)**\n\n- **What:** A signup flow that works fully from the keyboard\n- **Owner:** Eden Hart\n- **Pilot date:** November 12, 2026. This replaces the November 5 date.\n- **Why it moved:** The keyboard accessibility review needs another week.\n- **Still open:** The exact start time and timezone haven't been decided."
+          }
+        ]
+      }
+    },
+    {
+      "file": "title-fixed-private.private.json",
+      "at": "2026-10-28T18:41:49.093Z",
+      "action": "space-request",
+      "status": 200,
+      "result": {
+        "id": "bf56f02225509df276963637",
+        "state": "unavailable",
+        "excerpts": []
+      }
+    },
+    {
+      "file": "title-fixed-warm-private.private.json",
+      "at": "2026-10-28T18:43:19.815Z",
+      "action": "space-request",
+      "status": 200,
+      "result": {
+        "id": "d4986c925685e182f3f2e9e4",
+        "state": "unavailable",
+        "excerpts": []
+      }
+    }
+  ],
+  "requesterAudit": {
+    "status": 200,
+    "events": 5,
+    "sharedExcerptMatches": true,
+    "privateChecksAbsent": true
   }
 }
