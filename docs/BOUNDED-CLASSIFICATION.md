@@ -26,7 +26,8 @@ and a placeholder compiled authorization page.
 Server `20261028-bounded-classification` is published and deployed. All 159 files
 are verified and readable; all three services are healthy and migrations are
 unchanged. Native 0.4.32/runtime65 is unchanged. The same short query completed
-with all 26 candidates classified, but none passed the unchanged 0.995 cutoff.
+with 26 audit entries: 20 scored below the unchanged 0.995 cutoff and six
+were withheld after provider HTTP 429. These are not 26 successful classifications.
 The highest public-source score was 0.991195. This is evidence of completion,
 not a useful-sharing pass. Public withholding remains a usability gap. An
 incidental plain message caused by the post-rollout form reset is retained and

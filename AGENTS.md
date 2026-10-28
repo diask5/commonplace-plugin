@@ -41,7 +41,8 @@ classifier prompt/model, permission, deadline or authority fence changed.
 The 610-test core suite and exact 48-patch replay pass. Patch 48 batches source
 classification under the existing eight-provider-call ceiling, with unchanged
 threshold, model, prompt, deadline and privacy fences. The fresh Juniper Lantern
-query now completes all 26 checks but still withholds every public excerpt; the
+query completes with 26 audit entries (20 below threshold, six provider HTTP 429)
+but still withholds every public excerpt; the
 private query completes with all four candidates withheld. Its earlier source-change
 and deadline stops remain preserved. Demo sharing is paused. The full replacement
 video is unfinished: Claude blocked `finish_context_setup` as Data Exfiltration,
