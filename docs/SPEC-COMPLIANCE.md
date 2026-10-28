@@ -1,5 +1,14 @@
 # Meet Proxy Draft v3 compliance
 
+Later 28 October retake: server `20261028-bounded-classification` is live, with
+610 core tests and the exact 48-patch replay passing. The fresh public query
+completes all 26 classifier checks but shares no excerpt; this remains an open
+usefulness gap. The private query completes with four candidates withheld.
+Native 0.4.32/runtime65 is unchanged. New source-change/deadline observations
+do not explain prior historical failures. The replacement full video is still
+blocked by native setup approval and Chrome capture permission.
+[Current evidence](BOUNDED-CLASSIFICATION.md) · [recording status](FULL-VIDEO-RETAKE.md).
+
 28 October live closeout update: server `20261028-sharing-diagnostics` is live
 with native 0.4.32/runtime65 unchanged. The corrected public excerpt and a
 completed private-withholding request pass with the owner's two selected accounts;

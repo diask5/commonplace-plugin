@@ -1,0 +1,73 @@
+{
+  "name": "Classify bounded source batches under the existing eight-call ceiling",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch",
+    "deployment-source-modes.patch",
+    "visible-transcript-envelopes.patch",
+    "native-message-excerpts.patch",
+    "p0-excerpts-candidate.patch",
+    "private-native-titles.patch",
+    "space-request-diagnostics.patch"
+  ],
+  "patch": "bounded-classification.patch",
+  "sha256": "6016afd28065187174e065e96faed3e69184ea93790d9f255b5fb4792336c777",
+  "state": "Published and deployed as server 20261028-bounded-classification. Native 0.4.32/runtime65 unchanged.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/policy-context.mjs",
+      "beforeSha256": "b57a0717b22d1f43e94a9228816ff3905c6779b234466f85e2315516f378df2a",
+      "sha256": "ea5caa41f763e1df8f09be3018519bf83154518f12e5d835236bdbdeea977402"
+    },
+    {
+      "path": "tests/policy-context.test.mjs",
+      "beforeSha256": "d99b12030319a74ef47151fdc98db04fc488585695e0737738aaec1d42af2e5c",
+      "sha256": "120bad94ac10ba395cced1dc800c2a0b45c19f6cd07bbe9fffa5afbea96ad554"
+    },
+    {
+      "path": "tests/space-context.test.mjs",
+      "beforeSha256": "33adfbc6570ee2b078598be2644d24b9a9e5ae88246436886c78e0b49580ebec",
+      "sha256": "d2e31d380aaaf568f5531b1e365423cb79a836db5148747b6b5f906c58d9ae0c"
+    }
+  ]
+}
