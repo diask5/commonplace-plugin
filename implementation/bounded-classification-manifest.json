@@ -52,7 +52,7 @@
   ],
   "patch": "bounded-classification.patch",
   "sha256": "6016afd28065187174e065e96faed3e69184ea93790d9f255b5fb4792336c777",
-  "state": "Packaged as a server-only candidate; not deployed. Native artifacts unchanged.",
+  "state": "Published and deployed as server 20261028-bounded-classification. Native 0.4.32/runtime65 unchanged.",
   "files": [
     {
       "path": "apps/commonplace-account/server/policy-context.mjs",

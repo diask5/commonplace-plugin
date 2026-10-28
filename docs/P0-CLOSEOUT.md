@@ -1,5 +1,14 @@
 # P0 closeout — 26 October 2026
 
+Later 28 October retake: server `20261028-bounded-classification` is live, with
+610 core tests and the exact 48-patch replay passing. The fresh public query
+completes all 26 classifier checks but shares no excerpt; this remains an open
+usefulness gap. The private query completes with four candidates withheld.
+Native 0.4.32/runtime65 is unchanged. New source-change/deadline observations
+do not explain prior historical failures. The replacement full video is still
+blocked by native setup approval and Chrome capture permission.
+[Current evidence](BOUNDED-CLASSIFICATION.md) · [recording status](FULL-VIDEO-RETAKE.md).
+
 **P0 remains open.** This is the execution order for the outstanding gates in
 [SPEC-COMPLIANCE.md](SPEC-COMPLIANCE.md), not a release or acceptance claim.
 The original Draft v3 and the owner's later Spaces amendments remain the contract.

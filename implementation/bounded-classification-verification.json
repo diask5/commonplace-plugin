@@ -1,6 +1,6 @@
 {
   "date": "2026-10-28",
-  "state": "packaged; not deployed",
+  "state": "published and deployed",
   "serverRelease": "20261028-bounded-classification",
   "nativeVersion": "0.4.32",
   "nativeArtifactsChanged": false,
@@ -66,7 +66,17 @@
     "syntheticProfile": true,
     "compiledAuthorize": "placeholder"
   },
-  "liveRetest": "pending",
+  "liveRetest": {
+    "state": "no_context",
+    "requestId": "8ac599d33ea591e1268df16c",
+    "query": "Juniper Lantern pilot",
+    "checksCompleted": 26,
+    "excerpts": 0,
+    "maximumPublicSourceProbability": 0.9911949440115266,
+    "threshold": 0.995,
+    "meaning": "The same short query completed after bounded classification, but public sharing still withheld all candidates. This is completion evidence, not a useful-sharing pass.",
+    "incidentalMessage": "The first post-rollout form submission was a plain message after the form reset. It is retained and is not counted as a classified request."
+  },
   "video": {
     "fullReplacementComplete": false,
     "nativeSourceAndRetrievalRecorded": true,
@@ -74,5 +84,33 @@
     "nativeSetupBlockedTool": "finish_context_setup",
     "nativeSetupHostReason": "Data Exfiltration",
     "hostApprovalPending": true
+  },
+  "deployment": {
+    "state": "passed",
+    "release": "20261028-bounded-classification",
+    "filesVerified": 159,
+    "serviceReadableFiles": 159,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "unchanged; verified code-only activation",
+    "previous": "20261028-sharing-diagnostics",
+    "finishedAt": 1793225092.5121355
+  },
+  "privateLiveRetest": {
+    "requestId": "bcc391a6303fff85888ad6b0",
+    "state": "no_context",
+    "checksCompleted": 4,
+    "excerpts": 0,
+    "maximumProbability": 0.001943792760378561
+  },
+  "demoState": {
+    "spaceId": "cf4c9dc83edd075b8850c885",
+    "name": "Juniper Lantern live demo",
+    "sharingPaused": true,
+    "membershipRetainedForPendingNativeHandoff": true,
+    "recordersStoppedOrFailed": true
   }
 }

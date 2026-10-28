@@ -23,8 +23,14 @@ failed assertion and successful rerun are retained. All 48 patches replay exactl
 across 206 files. Extracted-server HTTP/OAuth checks pass with synthetic identity
 and a placeholder compiled authorization page.
 
-The candidate is packaged; deployment and live retest are pending. Native
-0.4.32/runtime65 is unchanged. This does not make a safety-rate or all-P0 claim.
+Server `20261028-bounded-classification` is published and deployed. All 159 files
+are verified and readable; all three services are healthy and migrations are
+unchanged. Native 0.4.32/runtime65 is unchanged. The same short query completed
+with all 26 candidates classified, but none passed the unchanged 0.995 cutoff.
+The highest public-source score was 0.991195. This is evidence of completion,
+not a useful-sharing pass. Public withholding remains a usability gap. An
+incidental plain message caused by the post-rollout form reset is retained and
+not counted as a context request. No safety-rate or all-P0 claim is made.
 
 The new demo records actual prompt submission and responses in Claude Desktop.
 Browser recording was refused by macOS, and linking the new space through

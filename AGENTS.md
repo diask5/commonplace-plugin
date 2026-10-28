@@ -34,11 +34,23 @@ See [the current readiness audit](docs/CONTEXT-MVP-READINESS.md) and
 `implementation/context-mvp-verification.json` for release state.
 Current published native release is **0.4.32/runtime65**, installed in both
 permanent registries with runtime65 active on the Mac. Server
-**20261028-sharing-diagnostics** is live; all 159 files/readability and three
+**20261028-bounded-classification** is live; all 159 files/readability and three
 services are verified. Patches 46–47 keep native source titles private and add
 bounded owner-only stopped-request observations. No native package, threshold,
 classifier prompt/model, permission, deadline or authority fence changed.
-The 607-test core suite and exact 47-patch replay pass. One signed public request
+The 610-test core suite and exact 48-patch replay pass. Patch 48 batches source
+classification under the existing eight-provider-call ceiling, with unchanged
+threshold, model, prompt, deadline and privacy fences. The fresh Juniper Lantern
+query now completes all 26 checks but still withholds every public excerpt; the
+private query completes with all four candidates withheld. Its earlier source-change
+and deadline stops remain preserved. Demo sharing is paused. The full replacement
+video is unfinished: Claude blocked `finish_context_setup` as Data Exfiltration,
+and macOS refused Chrome capture. Owner approvals remain pending; neither gate
+was bypassed. See [bounded classification](docs/BOUNDED-CLASSIFICATION.md) and
+[the recording status](docs/FULL-VIDEO-RETAKE.md). The prior
+`20261028-sharing-diagnostics` release remains retained.
+
+The earlier selected-account checks follow. One signed public request
 shares the approved launch answer; a later private request completes with all
 12 candidates withheld. Both selected accounts see the approved history and
 only the owner sees checks. Browser owner removal blocks requests/activity
