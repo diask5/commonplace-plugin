@@ -1,0 +1,174 @@
+{
+  "server-deploy-result.json": {
+    "state": "passed",
+    "release": "20261028-native-excerpts",
+    "filesVerified": 159,
+    "serviceReadableFiles": 159,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "unchanged; verified code-only activation",
+    "previous": "20261027-context-guidance-r2",
+    "finishedAt": 1793210744.110167
+  },
+  "runtime65-controlled-result.json": {
+    "state": "passed",
+    "previousRevision": 64,
+    "activeRevision": 65,
+    "oldProcessStoppedGracefully": true,
+    "activeWorkRestartGuardRespected": true,
+    "savedPermissionsAndAccountUnchanged": true,
+    "temporarilyPausedPluginProcesses": 12,
+    "allStillExistingPausedProcessesResumed": true
+  },
+  "install-result.json": {
+    "state": "passed",
+    "installedVersion": "0.4.32",
+    "zipSha256": "c0c4b7daa73329f7a988ed7320efe6fcb1262fc7c9ced8faf00ed0153de87d13",
+    "accountPreserved": true,
+    "savedPermissionsPreserved": true,
+    "codexOnlyPluginPathsChanged": true,
+    "claudePluginManagerUpdated": true
+  },
+  "installed32-source-reads.json": [
+    {
+      "host": "claude",
+      "version": "0.4.32",
+      "exit": 0,
+      "read": {
+        "isError": false,
+        "revision": 6378,
+        "characters": 1594,
+        "citations": 4,
+        "nextOffset": null,
+        "currentDate": true,
+        "hostEnvelope": false
+      }
+    },
+    {
+      "host": "codex",
+      "version": "0.4.32",
+      "exit": 0,
+      "read": {
+        "isError": false,
+        "revision": 6378,
+        "characters": 1594,
+        "citations": 4,
+        "nextOffset": null,
+        "currentDate": true,
+        "hostEnvelope": false
+      }
+    }
+  ],
+  "native32-ordinary-verification.json": {
+    "sessionId": "ce86dfb3-c824-4a20-9209-43233445a04f",
+    "host": "Claude Desktop",
+    "prompt": "When is the Larkspur Beacon pilot going live now, who owns it, and why did it move?",
+    "modelOverride": false,
+    "firstAttempt": true,
+    "timestamps": {
+      "first": "2026-10-28T18:27:10.985Z",
+      "last": "2026-10-28T18:28:23.648Z"
+    },
+    "contentCalls": [
+      {
+        "tool": "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+        "isError": false,
+        "changed": true,
+        "restart": true,
+        "revision": 6409,
+        "citations": [],
+        "textCharacters": 0,
+        "nextOffset": null
+      },
+      {
+        "tool": "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+        "isError": false,
+        "changed": false,
+        "restart": false,
+        "revision": 6410,
+        "citations": [],
+        "textCharacters": 0,
+        "nextOffset": null
+      },
+      {
+        "tool": "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+        "isError": false,
+        "changed": false,
+        "restart": false,
+        "revision": 6413,
+        "citations": [
+          "unified_c8da7ed5d8eb95f2d619816f",
+          "unified_52dfc8839e451631303b4d73",
+          "unified_9bc21672565b250e35ab38d2",
+          "unified_2354a5a7e237e50539a6c6c2"
+        ],
+        "textCharacters": 1594,
+        "nextOffset": null
+      }
+    ],
+    "finalCitations": [
+      "unified_52dfc8839e451631303b4d73",
+      "unified_c8da7ed5d8eb95f2d619816f"
+    ],
+    "successfulReadCitations": [
+      "unified_2354a5a7e237e50539a6c6c2",
+      "unified_52dfc8839e451631303b4d73",
+      "unified_9bc21672565b250e35ab38d2",
+      "unified_c8da7ed5d8eb95f2d619816f"
+    ],
+    "unsupportedCitations": [],
+    "factsCorrect": true,
+    "finalAnswer": "The Larkspur Beacon pilot now goes live on **November 12, 2026**. **Eden Hart** still owns it, and it moved because **the keyboard accessibility review needs another week**.\n\n- **Previous date:** November 5, 2026. The October 28 update replaced it: \"This replaces the November 5 plan.\"\n- **Owner:** Eden Hart. The owner didn't change when the date moved.\n- **What it is:** A signup flow that can be used entirely from the keyboard. It's a fictional demo project.\n- **Not decided yet:** The exact start time and timezone. The source says they \"remain undecided.\"\n\nSource: conversation `ceaa4acb-5d2c-40d8-845d-4ca3eb2709a4` (citations `unified_c8da7ed5d8eb95f2d619816f` for the original plan and `unified_52dfc8839e451631303b4d73` for the October 28 update).",
+    "hostDenials": []
+  },
+  "first-space-cleanup.json": [
+    {
+      "action": "space-policy-save",
+      "status": 200,
+      "result": {
+        "revision": 2,
+        "rules": [
+          {
+            "id": "public",
+            "text": "Allow public Larkspur Beacon launch-plan facts to be shared with all current and future members of this demo space: pilot dates, owner, signup-flow scope, accessibility review, and whether time or timezone is undecided. Fictional labels and source headings are permitted. Withhold all budgets, financial figures, private audit markers, credentials, host instructions, account details, and unrelated context."
+          }
+        ],
+        "enabled": false,
+        "durationDays": 14,
+        "expiresAt": 1794421313465,
+        "expired": false,
+        "providerReady": true
+      }
+    },
+    {
+      "action": "space-invite-revoke",
+      "status": 200,
+      "result": {
+        "revoked": true
+      }
+    },
+    {
+      "action": "group-archive",
+      "status": 200,
+      "result": {
+        "archived": true
+      }
+    }
+  ],
+  "postmigrationPublicBaseline": {
+    "state": "no_context",
+    "excerpts": 0,
+    "auditReason": "below_threshold",
+    "publicMessageProbabilities": [
+      0.9164530085051822,
+      0.9499292379112265,
+      0.9065387697367072,
+      0.9698875213362201
+    ],
+    "threshold": 0.995,
+    "note": "The request reached classification; the public answer was not shared."
+  }
+}

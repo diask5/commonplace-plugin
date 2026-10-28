@@ -32,9 +32,17 @@ Native context-space tools create/invite/preview/accept/leave/archive within cur
 account and workspace scope. Joining never enables private-library sharing.
 See [the current readiness audit](docs/CONTEXT-MVP-READINESS.md) and
 `implementation/context-mvp-verification.json` for release state.
-Current published release is **0.4.31/runtime64**; runtime64 is active on the Mac
-and server `20261027-context-guidance-r2` is live. Claude and Codex permanent
-registries now use 0.4.31; two postdeployment installed-package source reads pass.
+Current published release is **0.4.32/runtime65**, installed in both permanent
+registries with runtime65 active on the Mac. Server `20261028-native-excerpts`
+is live; 159 files/readability, 604 core tests and two installed-package source
+reads pass. Patches 43–45 exclude host envelopes, recapture visible turns and
+classify exact message bodies with full private context. Thresholds and permissions
+are unchanged. Production sharing requests during recapture returned unavailable;
+useful classifier sharing is not accepted yet. See [release evidence](docs/P0-EXCERPTS-RELEASE.md)
+and `implementation/p0-excerpts-candidate-verification.json`.
+The previous published release is **0.4.31/runtime64**; runtime64 was active on the Mac
+and server `20261027-context-guidance-r2` was live. Claude and Codex permanent
+registries then used 0.4.31; two postdeployment installed-package source reads pass.
 See `implementation/p0-installed-release-verification.json` and
 `implementation/p0-live-release-verification.json`.
 The previous 0.4.28/runtime61 and server `20261026-current-read` remain retained.

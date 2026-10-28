@@ -1,0 +1,67 @@
+diff --git a/apps/commonplace-account/server/space-context.mjs b/apps/commonplace-account/server/space-context.mjs
+index 0caa362..e10c252 100644
+--- a/apps/commonplace-account/server/space-context.mjs
++++ b/apps/commonplace-account/server/space-context.mjs
+@@ -61,13 +61,18 @@ export class SpaceContext extends Groups {
+   const rows=[...new UnifiedContext(this.s).sections(owner,source.id.slice(8))];
+   if(!rows.length||rows.some(r=>r.doc.title!==source.title)||rows.map(r=>r.section.body).join('')!==source.text||this.archiveRevision(owner)!==source.revision)fail(409,'Context changed.');
+   if(rows.some(r=>r.section.messageBody.conflicted))return [];
++  // Source titles can contain internal IDs or confidentiality labels. Keep
++  // them as private evidence, never as the recipient-facing excerpt heading.
++  // Preserve the entire original projection and enforce the existing bound.
++  const context='Private source title: '+JSON.stringify(source.title)+'\n'+source.text;
++  if(context.length>16000)return [];
+   const candidates=[];let offset=0;
+   for(const {section}of rows){
+    const {start,end}=section.messageBody,text=section.body.slice(start,end);
+    // Large bodies retain the existing whole-source chunk path. Do not drop
+    // surrounding context, normalize text, redact, or recursively parse headers.
+    if(text.length>8000)return null;
+-   if(text.trim()&&text.isWellFormed())candidates.push({...source,text,context:source.text,contextComplete:true,sourceOffset:offset+start,sourceEnd:offset+end});
++   if(text.trim()&&text.isWellFormed())candidates.push({...source,title:'Shared excerpt',sourceTitle:source.title,text,context,contextComplete:true,sourceOffset:offset+start,sourceEnd:offset+end});
+    offset+=section.body.length;
+   }
+   return candidates;
+diff --git a/apps/commonplace-account/server/policy-context.mjs b/apps/commonplace-account/server/policy-context.mjs
+index 2d6c0db..2843fed 100644
+--- a/apps/commonplace-account/server/policy-context.mjs
++++ b/apps/commonplace-account/server/policy-context.mjs
+@@ -99,7 +99,7 @@ export class PolicyContext {
+       await check();
+       const allow=checks.every(c=>c.decision==='allow');
+       if(allow){approved.push(candidate);excerpts.push({title:candidate.title,text:candidate.text});}
+-      audit.push({candidateId:candidate.id,title:candidate.title,decision:allow?'allow':'withhold',reason:allow?'above_threshold':checks.find(c=>c.decision!=='allow').reason,probability:checks.some(c=>c.probability===null)?null:Math.min(...checks.map(c=>c.probability)),latencyMs:Math.max(...checks.map(c=>c.latencyMs??0)),inputTokens:checks.every(c=>c.inputTokens!==null)?checks.reduce((n,c)=>n+(c.inputTokens||0),0):null,checks});
++      audit.push({candidateId:candidate.id,title:candidate.sourceTitle??candidate.title,decision:allow?'allow':'withhold',reason:allow?'above_threshold':checks.find(c=>c.decision!=='allow').reason,probability:checks.some(c=>c.probability===null)?null:Math.min(...checks.map(c=>c.probability)),latencyMs:Math.max(...checks.map(c=>c.latencyMs??0)),inputTokens:checks.every(c=>c.inputTokens!==null)?checks.reduce((n,c)=>n+(c.inputTokens||0),0):null,checks});
+     }
+     // Recheck every approved source as well as consent after the whole batch.
+     // No streaming: revocation during a later call fences earlier results.
+diff --git a/tests/space-context-message-excerpts.test.mjs b/tests/space-context-message-excerpts.test.mjs
+index 419c418..273ec4f 100644
+--- a/tests/space-context-message-excerpts.test.mjs
++++ b/tests/space-context-message-excerpts.test.mjs
+@@ -19,10 +19,24 @@ test('native excerpts use exact event bodies, preserve full private context and
+  const f=await fixture(t,texts,({candidate})=>({probability:candidate.text.startsWith('Excerptpilot public launch:')?1:0}));
+  const r=await f.request();assert.equal(r.state,'shared');assert.deepEqual(r.excerpts.map(x=>x.text),[texts[1],texts[3]]);assert.equal(f.calls.length,texts.length);
+  const whole=f.calls[0].candidate.context;
+- for(const {candidate}of f.calls){assert.equal(candidate.context,whole);assert.equal(candidate.contextComplete,true);assert.ok(whole.includes(texts.at(-1)));assert.equal(whole.slice(candidate.sourceOffset,candidate.sourceEnd),candidate.text);assert.ok(texts.includes(candidate.text));}
++ const prefix='Private source title: '+JSON.stringify(f.input.conversation.title)+'\n';
++ for(const {candidate}of f.calls){assert.equal(candidate.context,whole);assert.equal(candidate.contextComplete,true);assert.ok(whole.includes(texts.at(-1)));assert.ok(whole.startsWith(prefix));assert.equal(whole.slice(prefix.length+candidate.sourceOffset,prefix.length+candidate.sourceEnd),candidate.text);assert.ok(texts.includes(candidate.text));assert.equal(candidate.title,'Shared excerpt');}
++ assert.ok(r.excerpts.every(x=>x.title==='Shared excerpt'));assert.doesNotMatch(JSON.stringify(r),/Excerptpilot launch notes/);
+  assert.doesNotMatch(JSON.stringify(r),/\[message|PRIVATE-X|742900|unified-|sourceOffset|contextComplete/);
+  assert.doesNotMatch(JSON.stringify(f.s.board(f.peer,{groupId:f.groupId})),/PRIVATE-X|742900|privateChecks|sourceOffset/);
+  assert.equal(f.s.board(f.owner,{groupId:f.groupId}).events[0].privateChecks.audit.length,texts.length);
++ assert.equal(f.s.board(f.owner,{groupId:f.groupId}).events[0].privateChecks.audit[0].title,f.input.conversation.title);
++});
++test('a confidential source title stays private and still governs every message',async t=>{
++ const f=await fixture(t,['Excerptpilot public launch: November 12.'],({candidate})=>({probability:candidate.context.includes('Confidential internal schedule')?0:1}));
++ f.u.ingest(f.owner,f.device,{...f.input,conversation:{...f.input.conversation,title:'Confidential internal schedule'},revision:2,capturedAt:Date.now()+1});
++ const r=await f.request();assert.equal(r.state,'no_context');assert.equal(f.calls.length,1);assert.ok(f.calls[0].candidate.context.includes('Confidential internal schedule'));assert.equal(f.calls[0].candidate.title,'Shared excerpt');
++ assert.doesNotMatch(JSON.stringify(f.s.board(f.peer,{groupId:f.groupId})),/Confidential internal schedule|sourceTitle/);
++});
++test('title evidence that exceeds the existing context bound withholds instead of truncating',async t=>{
++ const f=await fixture(t,['Excerptpilot '+ 'a'.repeat(7880),'Excerptpilot '+ 'b'.repeat(7880)],()=>({probability:1}));
++ f.u.ingest(f.owner,f.device,{...f.input,conversation:{...f.input.conversation,title:'Private '.repeat(37)},revision:2,capturedAt:Date.now()+1});
++ const r=await f.request();assert.equal(r.state,'no_context');assert.deepEqual(r.excerpts,[]);assert.equal(f.calls.length,0);
+ });
+ test('confidentiality outside a public-looking message remains classifier evidence',async t=>{
+  const f=await fixture(t,['Entire Excerptpilot conversation is confidential; none of it may be disclosed.','Excerptpilot public launch: November 12.'],({candidate})=>({probability:candidate.context.includes('none of it may be disclosed')?0:1}));

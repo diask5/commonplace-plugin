@@ -7,8 +7,8 @@ The original Draft v3 and the owner's later Spaces amendments remain the contrac
 ## Release state
 
 28 October: [0.4.32/runtime65 and exact native excerpts](P0-EXCERPTS-RELEASE.md)
-are published. The server is deployed and runtime65 is active; permanent registry
-updates and live sharing acceptance are in progress. Existing broader gates below
+are published. The server is deployed, runtime65 is active and both permanent
+registries are updated. Live sharing acceptance remains open. Existing broader gates below
 remain open. Earlier release records are preserved.
 
 27 October: 0.4.31/runtime64 artifacts are published, runtime64 is active on the
