@@ -17,7 +17,8 @@ completed real Google verification and accepted the invitation in the browser.
 Both accounts exchanged messages. Owner rules were explicitly enabled, but the
 first public request withheld every candidate, followed by a source-change stop
 and a deadline stop. Patch 48 addresses serialized classification; the subsequent
-public request completed 26 checks but still shared nothing. The private query
+public request completed with 26 audit entries: 20 below threshold and six
+provider HTTP 429. It still shared nothing. The private query
 completed with four withheld candidates. No threshold or sharing rule was relaxed.
 
 Recording and host limits:
@@ -42,3 +43,19 @@ and response in Claude, removal, and a post-removal attempt on camera. Keep priv
 invitation/setup tokens and unrelated chat titles out of published footage. Then
 add Bland narration and annotations over moving footage, verify media and player,
 and publish a full replacement video with its exact coverage and limitations.
+
+A later read-only receipt audit corrected the public-request accounting: 20
+candidates had probabilities below threshold and six returned provider HTTP 429.
+The request finished with 26 audit entries, not 26 successful classifications.
+The release PR #41 is merged; the underlying runtime and threshold are unchanged
+by this evidence correction. The owner policy is still visibly paused in the
+selected browser. Reading the existing native transcript confirms no subsequent
+`finish_context_setup` retry after its denial.
+
+Seven Bland River narration lines are generated for the actual native source and
+retrieval recordings. A 143-second internal chapter edit retains moving footage
+at normal speed, with no frozen-frame padding. This is preparation for the full
+walkthrough, not a replacement deliverable. It still needs full privacy/media QA;
+no new public video link is claimed. Google device verification is already complete
+and must not be requested again to resolve the unrelated host blocks. See
+`implementation/full-video-retake-verification.json` for the exact interim state.

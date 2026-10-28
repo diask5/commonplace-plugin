@@ -2,8 +2,8 @@
 
 Later 28 October retake: server `20261028-bounded-classification` is live, with
 610 core tests and the exact 48-patch replay passing. The fresh public query
-completes all 26 classifier checks but shares no excerpt; this remains an open
-usefulness gap. The private query completes with four candidates withheld.
+completes with 26 audit entries (20 below threshold, six provider HTTP 429)
+but shares no excerpt; useful sharing and provider reliability remain open. The private query completes with four candidates withheld.
 Native 0.4.32/runtime65 is unchanged. New source-change/deadline observations
 do not explain prior historical failures. The replacement full video is still
 blocked by native setup approval and Chrome capture permission.

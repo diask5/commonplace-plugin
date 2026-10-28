@@ -74,8 +74,11 @@
     "excerpts": 0,
     "maximumPublicSourceProbability": 0.9911949440115266,
     "threshold": 0.995,
-    "meaning": "The same short query completed after bounded classification, but public sharing still withheld all candidates. This is completion evidence, not a useful-sharing pass.",
-    "incidentalMessage": "The first post-rollout form submission was a plain message after the form reset. It is retained and is not counted as a classified request."
+    "meaning": "The request completed with 26 audit entries: 20 scored below threshold and six were withheld after provider HTTP 429. No excerpt was shared. This is request completion evidence, not 26 successful classifications or a useful-sharing pass.",
+    "incidentalMessage": "The first post-rollout form submission was a plain message after the form reset. It is retained and is not counted as a classified request.",
+    "checksWithProbability": 20,
+    "belowThreshold": 20,
+    "providerHttp429": 6
   },
   "video": {
     "fullReplacementComplete": false,

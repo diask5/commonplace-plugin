@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-28",
+  "state": "incomplete; native chapters in editing",
+  "fullReplacementComplete": false,
+  "googleDeviceVerification": "completed by owner; do not repeat sign-in",
+  "actualRecordedFlows": [
+    "Claude Desktop ordinary note entry",
+    "Claude Desktop changed-date note entry",
+    "different existing Claude chat retrieves source and answers corrected date"
+  ],
+  "notYetFullyRecorded": [
+    "browser invitation acceptance",
+    "native handoff and message delivery in new space",
+    "rules and useful public request",
+    "private withholding",
+    "membership removal and blocked follow-up"
+  ],
+  "blocks": [
+    {
+      "tool": "finish_context_setup",
+      "host": "Claude Desktop automatic approval review",
+      "reason": "Data Exfiltration",
+      "ownerHostApprovalPending": true,
+      "automaticallyRetried": false
+    },
+    {
+      "action": "Chrome window capture",
+      "host": "macOS",
+      "reason": "The user declined TCCs for application, window, display capture",
+      "ownerHostApprovalPending": true,
+      "alternateCaptureUsed": false
+    }
+  ],
+  "nativeSetupReadOnlyRecheck": "Existing native transcript contains denied tool result and no later finish_context_setup attempt.",
+  "recordingSources": [
+    {
+      "file": "01-new-notes.mp4",
+      "seconds": 65,
+      "bytes": 7254882,
+      "sha256": "c928baf53d5913f40f32b20e2cc380e84afba691b389c784ae7d0e7b351c807d"
+    },
+    {
+      "file": "02-live-retrieval.mp4",
+      "seconds": 78,
+      "bytes": 6159575,
+      "sha256": "cd39d593c39f0243f1e96b3b5fc7cfac3be7632d322e2f9f10c596220bd7017b"
+    }
+  ],
+  "narration": {
+    "provider": "Bland",
+    "voice": "River",
+    "generatedLines": 7,
+    "narratesOnlyRecordedNativeSteps": true
+  },
+  "privacyReview": "Internal edited chapters still require full privacy and media review before publication.",
+  "livePublicRequestCorrection": {
+    "requestId": "8ac599d33ea591e1268df16c",
+    "auditEntries": 26,
+    "belowThreshold": 20,
+    "providerHttp429": 6,
+    "sharedExcerpts": 0
+  },
+  "currentServer": "20261028-bounded-classification",
+  "releasePr": 41,
+  "releaseMergeCommit": "aff6c6869b2e17e1c1e8224c2c39b5879dfe8ef6",
+  "nativeRelease": "0.4.32/runtime65",
+  "sharingPaused": true,
+  "previousVideosPreserved": true,
+  "sameTwoSelectedAccounts": true,
+  "independentHumanOrCleanMachineProof": false
+}
