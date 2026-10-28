@@ -6,7 +6,8 @@ completes with 26 audit entries (20 below threshold, six provider HTTP 429)
 but shares no excerpt; useful sharing and provider reliability remain open. The private query completes with four candidates withheld.
 Native 0.4.32/runtime65 is unchanged. New source-change/deadline observations
 do not explain prior historical failures. The replacement full video is still
-blocked by native setup approval and Chrome capture permission.
+blocked by native setup approval; Chrome capture is now verified without
+permission edits. New browser footage covers rules and private withholding.
 [Current evidence](BOUNDED-CLASSIFICATION.md) · [recording status](FULL-VIDEO-RETAKE.md).
 
 28 October live closeout update: server `20261028-sharing-diagnostics` is live

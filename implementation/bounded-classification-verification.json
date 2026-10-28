@@ -86,7 +86,9 @@
     "chromeCaptureError": "The user declined TCCs for application, window, display capture",
     "nativeSetupBlockedTool": "finish_context_setup",
     "nativeSetupHostReason": "Data Exfiltration",
-    "hostApprovalPending": true
+    "hostApprovalPending": true,
+    "chromeCaptureRecovered": true,
+    "captureRecoveryEvidence": "implementation/full-video-retake-verification.json"
   },
   "deployment": {
     "state": "passed",
