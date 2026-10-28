@@ -49,7 +49,7 @@
   ],
   "patch": "p0-excerpts-candidate.patch",
   "sha256": "43f868af9cc7c859715fe83cdde3741727dc350af01fa235f94fe80f162d9251",
-  "state": "Published in 0.4.32/runtime65; server deployed and native runtime active. Permanent registries and live acceptance pending.",
+  "state": "Published in 0.4.32/runtime65, permanently installed and server deployed. Live sharing acceptance remains open.",
   "files": [
     {
       "path": "scripts/build-plugin.py",

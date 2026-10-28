@@ -2,7 +2,7 @@
   "observedAt": "2026-10-28T18:03:22.679032+00:00",
   "version": "0.4.32",
   "runtimeRevision": 65,
-  "state": "published; server deployed; native runtime65 active from verified extracted package; permanent registries and live sharing acceptance pending",
+  "state": "published, deployed, permanently installed and runtime65 active; production sharing acceptance remains open",
   "patches": [
     43,
     44,
@@ -159,7 +159,7 @@
   "published": true,
   "serverDeployed": true,
   "nativeRuntimeActive": true,
-  "nativeRegistryInstalled": false,
+  "nativeRegistryInstalled": true,
   "serverRelease": "20261028-native-excerpts",
   "serverVerification": {
     "filesVerified": 159,
@@ -195,5 +195,70 @@
     "ownerAuditReason": "request_stopped",
     "collectorMigrationActive": true,
     "cause": "not yet established"
-  }
+  },
+  "nativeInstall": {
+    "version": "0.4.32",
+    "accountPreserved": true,
+    "savedPermissionsPreserved": true,
+    "codexOnlyPluginPathsChanged": true,
+    "claudePluginManagerUpdated": true
+  },
+  "installedSourceReads": [
+    {
+      "host": "claude",
+      "version": "0.4.32",
+      "exit": 0,
+      "read": {
+        "isError": false,
+        "revision": 6378,
+        "characters": 1594,
+        "citations": 4,
+        "nextOffset": null,
+        "currentDate": true,
+        "hostEnvelope": false
+      }
+    },
+    {
+      "host": "codex",
+      "version": "0.4.32",
+      "exit": 0,
+      "read": {
+        "isError": false,
+        "revision": 6378,
+        "characters": 1594,
+        "citations": 4,
+        "nextOffset": null,
+        "currentDate": true,
+        "hostEnvelope": false
+      }
+    }
+  ],
+  "sourcePullRequest": {
+    "number": 39,
+    "state": "merged",
+    "commit": "f348b50207f5b7ea3b5ca07ebb47fabb15c356ea"
+  },
+  "liveSharingAttempts": [
+    {
+      "kind": "public",
+      "id": "d45d4b58fd700addf2fa1ade",
+      "state": "unavailable",
+      "excerpts": 0,
+      "ownerAuditReason": "request_stopped"
+    },
+    {
+      "kind": "current plan",
+      "id": "01f7868040e82761e5c5aef5",
+      "state": "unavailable",
+      "excerpts": 0,
+      "ownerAuditReason": "request_stopped"
+    },
+    {
+      "kind": "private",
+      "id": "9916d065c17724564115707f",
+      "state": "unavailable",
+      "excerpts": 0,
+      "ownerAuditReason": "request_stopped"
+    }
+  ]
 }

@@ -48,7 +48,7 @@
   ],
   "patch": "native-message-excerpts.patch",
   "sha256": "ce34aa558e059a9c5f551f7205ae8e5ac52e64afc76dfc2eed016c212fae67a3",
-  "state": "Published in 0.4.32/runtime65; server deployed and native runtime active. Permanent registries and live acceptance pending.",
+  "state": "Published in 0.4.32/runtime65, permanently installed and server deployed. Live sharing acceptance remains open.",
   "files": [
     {
       "path": "apps/commonplace-account/server/unified-context.mjs",

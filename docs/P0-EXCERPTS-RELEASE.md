@@ -4,8 +4,22 @@ Meet Proxy **0.4.32/runtime65** is published. Server
 **20261028-native-excerpts** is live, with all 159 files verified and readable by
 the service account. The three services are healthy; migrations are unchanged.
 Runtime65 is active on the owner's Mac from the checksum-verified package.
-Permanent plugin registry updates and production sharing acceptance are in progress.
+Both permanent plugin registries are updated. Selected-account sharing acceptance
+passed with the subsequent server fixes below; broader production acceptance remains open.
 This release does not close every P0 gate.
+
+## Subsequent server-only acceptance
+
+Server `20261028-sharing-diagnostics` now supersedes this release's original
+server. Native 0.4.32/runtime65 and its artifacts are unchanged. Patches 46–47
+keep private native titles in classifier evidence and add bounded stopped-request
+observations. A signed public request shared the current plan and a private
+request completed with all 12 candidates withheld. Both accounts saw the approved
+history; owner-only checks were absent for the requester. Owner removal through
+the browser blocked follow-up requests/activity and reuse of the old invitation.
+The temporary space is paused and archived, with invitations revoked.
+Three earlier unavailable requests remain unexplained. See
+[the current evidence and limits](PRIVATE-NATIVE-TITLES.md).
 
 ## Fix
 
@@ -58,3 +72,11 @@ This is distinct from independent-human acceptance and clean-machine Google/nati
 onboarding. Existing open native chats can retain older loaded plugin versions.
 The [recorded walkthrough](CLAUDE-DESKTOP-DEMO.md) retains its original failure and
 has not been relabeled as a successful classifier-sharing demonstration.
+
+Both installed native packages returned the corrected four-turn source with four
+citations at revision 6378. PR #39 is merged. In the live two-account API test,
+member leave blocked subsequent activity and context requests (404); the old
+invitation could not restore membership (403). The requester saw the same three
+request records without owner-only checks. The finished space was paused, its
+invitations revoked, and it was archived. These are API acceptance receipts, not
+a new default-host model routing result.

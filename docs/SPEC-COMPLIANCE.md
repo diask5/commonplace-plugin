@@ -1,10 +1,29 @@
 # Meet Proxy Draft v3 compliance
 
+28 October live closeout update: server `20261028-sharing-diagnostics` is live
+with native 0.4.32/runtime65 unchanged. The corrected public excerpt and a
+completed private-withholding request pass with the owner's two selected accounts;
+both see the approved history while checks remain owner-only. Browser owner
+removal blocks signed requests/activity (404) and old-invitation acceptance (403).
+The temporary space is paused, invitations revoked and archived. Three earlier
+unavailable requests remain unexplained; clean-machine, independent-human and
+broader default-host acceptance remain open. All 607 core tests pass.
+[Evidence and limits](PRIVATE-NATIVE-TITLES.md).
+
+An additional default-mode Claude Desktop run created a space, generated its
+invitation, and archived it through native tools. The second selected account's
+signed acceptance passed; request/old-invitation attempts after archival were
+rejected. [Receipts](../implementation/p0-native-space-lifecycle-verification.json)
+retain the distinction from recipient-host model acceptance.
+[The new narrated footage](P0-LIVE-VIDEO-UPDATE.md) is a separate update to the
+preserved original walkthrough.
+
 28 October follow-up: [0.4.32/runtime65](P0-EXCERPTS-RELEASE.md) packages the
 visible-only collector and exact-message excerpt fixes. The server is deployed,
 runtime65 is active on the Mac, and a corrected four-turn native source read
-passes. Permanent registries and live sharing acceptance are in progress; the
-first production request withheld during recapture and is preserved.
+passes. Both permanent registries are now 0.4.32. This earlier release
+record predates the sharing fixes above; its first unavailable production
+request during recapture is preserved.
 
 28 October walkthrough finding: the real Perplexity classifier withheld a public
 synthetic launch update under both example and explicit sharing rules, because
@@ -57,14 +76,14 @@ not close the live model or real-user coverage gaps below.
 
 | Requirement | Verified evidence | Remaining acceptance |
 | --- | --- | --- |
-| Google → Claude/Codex Desktop → automatic private collection | Both real existing-owner Desktop handoffs completed at 0.4.24; exact host identities and installation receipts recorded. 0.4.31 permanent registries remain installed; runtime65 is now active with a verified four-turn source read. | A clean machine/new-account walkthrough has not been completed. Older open chats can require host reload. |
+| Google → Claude/Codex Desktop → automatic private collection | Both real existing-owner Desktop handoffs completed at 0.4.24; exact host identities and installation receipts recorded. Both permanent registries are 0.4.32; runtime65 returns a verified four-turn source through each installed package. | A clean machine/new-account walkthrough has not been completed. Older open chats can require host reload. |
 | Ordinary questions find current context and read supporting sources | 0.4.28: seven clean passes, one correctly surfaced synthetic-name conflict; every final citation matched a successful read. | The uniquely named synthesis replacement failed two reads, then stopped at an unapproved diagnostic selection. Its historical transport cause remains unconfirmed. Later 0.4.31 installed reads and distinct synthesis checks pass; broader default-host coverage remains open. |
-| Invite → accept → connected, in natural language | Disposable real-service creation/invitation passed; signed API and browser membership tests pass. | The model acceptance case attempted a denied browser route. The authorized disposable Conductor MCP acceptance retest passed, with persisted membership and no private-sharing opt-in. Default-host routing and new cross-person production acceptance are unverified. |
-| Messages first; both sides see exchanges | Deployed Spaces / My context UI, compact Messages / My sharing rules / Members header; browser and signed-service audit checks pass. Both fixture owners saw the same approved exchange. | New cross-person production walkthrough remains unverified. |
+| Invite → accept → connected, in natural language | Ordinary-prompt Claude Desktop creation/invitation and archival pass on the installed release; the selected second account previewed and accepted through the signed production API. Earlier disposable Conductor MCP acceptance also passed. | An earlier model acceptance case attempted a denied browser route. Recipient-host/default-host model acceptance, independent-human acceptance and clean onboarding remain open; API acceptance does not close them. |
+| Messages first; both sides see exchanges | Deployed Spaces / My context UI, compact Messages / My sharing rules / Members header; browser and signed-service audit checks pass. Both fixture owners saw the same approved exchange. The two selected real accounts now see the same approved production excerpt; private checks remain owner-only. | Independent-human/default-host cross-person walkthrough remains unverified; the selected-two-account API/browser path is verified. |
 | Private rules govern every context request | Parallel classifier checks, approved-only chunks, private rejection/check views, authority/source/expiry fences and pagination have passing regressions. Real classifier benchmark has zero false allows in its small synthetic sample. | The provider-refused private-data model case is not a classifier pass and is not being retried around the refusal. No claim of universal classifier accuracy. |
-| Either side can revoke access | Service/browser leave, removal, expiry and old-invitation fences pass; model leave revoked stored membership. | The later model question chose unrelated tools; the baseline cloud run also posted into an unrelated space after leave. The source-only scope candidate now passes 3/3, including no request after missing-space discovery; installed/production model acceptance remains open. |
+| Either side can revoke access | Service/browser leave, removal, expiry and old-invitation fences pass; model leave revoked stored membership. Production owner removal blocks the selected requester's requests/activity (404) and old invitation (403). Native Claude archival blocks signed requests and the old invitation (404). | Earlier model follow-ups chose unrelated tools, including baseline cross-space fallback. The distinct scope candidate passed 3/3. Post-revocation follow-ups through the recipient's default model host remain unverified; the new rejection checks used the signed API. |
 | Host permissions remain authoritative | Saved settings stayed unchanged; host denials and test-tool guards stopped dependent work. | Exact additional test allowances were authorized; no saved/global permission changes. The owner later reopened Mac access. Current upgrades preserve saved permissions and respect the active-work guard. |
-| Production matches reviewed artifacts | 159 readable files and all three services verified for `20261028-native-excerpts`; public health is ready. | Google reauthentication is complete. Permanent native registry update and live sharing acceptance remain in progress. |
+| Production matches reviewed artifacts | 159 readable files and all three services verified for `20261028-native-excerpts`; public health is ready. | Google reauthentication is complete. Both permanent registries are updated. Live sharing acceptance remains open. |
 
 Supporting records: [current retrieval](CURRENT-SOURCE-READS.md),
 [real Desktop setup](P0-NATIVE-READINESS.md),

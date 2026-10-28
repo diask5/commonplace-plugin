@@ -1,0 +1,75 @@
+diff --git a/apps/commonplace-account/server/space-context.mjs b/apps/commonplace-account/server/space-context.mjs
+index e10c252..428fae7 100644
+--- a/apps/commonplace-account/server/space-context.mjs
++++ b/apps/commonplace-account/server/space-context.mjs
+@@ -177,11 +177,13 @@ export class SpaceContext extends Groups {
+    if(this.get("SELECT 1 FROM cp_space_exchanges WHERE contributor=? AND state='checking' AND at>?",contributorId,Date.now()-120000))fail(429,'This library is checking another request. Try again shortly.');
+    this.run("INSERT INTO cp_space_exchanges(id,workspace,requester,contributor,query,payload,state,at) VALUES(?,?,?,?,?,?,'checking',?)",nonce,groupId,owner,contributorId,query,payload,Date.now());
+   });
+-  let capturedRevision=null,capturedExpiry=null;
++  let capturedRevision=null,capturedExpiry=null,phase='authority',stopSignal=null;
++  const initialRevision=this.archiveRevision(contributorId);
+   const authority=()=>this.authority(owner,groupId,contributorId,scope);
+   let policySnapshot;try{policySnapshot=digest(authority());}catch{}
+   try{
+    if(cursor!==undefined)return this.atomic(()=>{
++    phase='continuation';
+     const page=this.get('SELECT * FROM cp_space_context_pages WHERE token=?',cursor),root=page&&this.get('SELECT * FROM cp_space_exchanges WHERE id=?',page.exchange),run=root&&this.get('SELECT * FROM cp_space_context_runs WHERE exchange=?',root.id);
+     if(!page||page.consumed_by||!root||root.workspace!==groupId||root.requester!==owner||root.contributor!==contributorId||root.query!==query||!this.currentRun(owner,root,run))fail(409,'Context unavailable.');
+     const approved=JSON.parse(run.excerpts),excerpts=approved.slice(page.offset,page.offset+CONTEXT_PAGE_SIZE),state=excerpts.length?'shared':'no_context';
+@@ -191,12 +193,14 @@ export class SpaceContext extends Groups {
+     this.run('INSERT INTO cp_space_context_receipts VALUES(?,?,?)',nonce,root.id,nextCursor);
+     return {id:nonce,state,excerpts,...(nextCursor?{nextCursor}:{})};
+    });
+-   const gate=new PolicyContext({decider:this.decider,getAuthority:authority,getCandidates:async(_authority,_query,signal)=>{const rows=await this.candidates(contributorId,query,signal);capturedRevision=this.archiveRevision(contributorId);capturedExpiry=this.archiveExpiry(contributorId);if(!this.archiveCurrent(contributorId,capturedRevision)||rows.some(r=>r.revision!==capturedRevision))fail(409,'Context changed.');return rows;},isCurrent:()=>this.archiveCurrent(contributorId,capturedRevision)&&(!capturedExpiry||capturedExpiry>Date.now())});
++   const gate=new PolicyContext({decider:this.decider,getAuthority:authority,getCandidates:async(_authority,_query,signal)=>{phase='gathering';const rows=await this.candidates(contributorId,query,signal);capturedRevision=this.archiveRevision(contributorId);capturedExpiry=this.archiveExpiry(contributorId);if(!this.archiveCurrent(contributorId,capturedRevision)||rows.some(r=>r.revision!==capturedRevision))fail(409,'Context changed.');phase='classification';return rows;},isCurrent:()=>this.archiveCurrent(contributorId,capturedRevision)&&(!capturedExpiry||capturedExpiry>Date.now())});
+    // All classified work is bounded: 32 chunks, 8 parallel rules per chunk,
+    // 32 sources / 4 search pages / 128k source characters; larger sources use
+    // an indexed 16k relevant window with private prefix/suffix evidence.
+    // Materialize before paging; empty pages never disclose rejected scan work.
+-   const result=await gate.preview({principal:contributorId,grantId:groupId,query,signal:AbortSignal.timeout(Math.min(20000,Math.max(1,this.s.spaceContextOptions?.timeoutMs||20000)))});
++   stopSignal=AbortSignal.timeout(Math.min(20000,Math.max(1,this.s.spaceContextOptions?.timeoutMs||20000)));
++   const result=await gate.preview({principal:contributorId,grantId:groupId,query,signal:stopSignal});
++   phase='commit';
+    return this.atomic(()=>{
+     const a=authority();if(digest(a)!==policySnapshot||!a.active||a.expiresAt<=Date.now())fail(409,'Rules changed.');if(!this.archiveCurrent(contributorId,capturedRevision)||(capturedExpiry&&capturedExpiry<=Date.now()))fail(409,'Context changed.');
+     const approved=result.recipientView.excerpts,excerpts=approved.slice(0,CONTEXT_PAGE_SIZE),state=excerpts.length?'shared':'no_context';
+@@ -209,8 +213,12 @@ export class SpaceContext extends Groups {
+     return {id:nonce,state,excerpts,...(nextCursor?{nextCursor}:{})};
+    });
+   }catch(error){
++   // Owner-only observations, not inferred causes. Never persist exception
++   // messages, provider bodies, source text or identifiers in diagnostics.
++   let authorityChanged=true;try{authorityChanged=digest(authority())!==policySnapshot;}catch{}
++   const diagnostic={phase,deadlineReached:stopSignal?.aborted===true,sourceRevisionChanged:this.archiveRevision(contributorId)!==(capturedRevision??initialRevision),authorityChanged};
+    this.run("UPDATE cp_space_exchanges SET state='unavailable' WHERE id=?",nonce);
+-   this.run('INSERT OR REPLACE INTO cp_space_checks VALUES(?,?,?,?)',nonce,contributorId,JSON.stringify([{decision:'withhold',reason:'request_stopped',checks:[]}]),this.get('SELECT revision FROM cp_space_policies WHERE workspace=? AND owner=?',groupId,contributorId)?.revision||0);
++   this.run('INSERT OR REPLACE INTO cp_space_checks VALUES(?,?,?,?)',nonce,contributorId,JSON.stringify([{decision:'withhold',reason:'request_stopped',checks:[],diagnostic}]),this.get('SELECT revision FROM cp_space_policies WHERE workspace=? AND owner=?',groupId,contributorId)?.revision||0);
+    return {id:nonce,state:'unavailable',excerpts:[]};
+   }
+  }
+diff --git a/tests/space-context-pagination.test.mjs b/tests/space-context-pagination.test.mjs
+index 5b0f03b..9dbc8a5 100644
+--- a/tests/space-context-pagination.test.mjs
++++ b/tests/space-context-pagination.test.mjs
+@@ -104,10 +104,20 @@ test('one deadline covers candidate gathering and classification with no delayed
+   if(stage==='gather')f.p.service.spaceContextOptions.candidates=async(...args)=>{await new Promise(r=>setTimeout(r,80));return original(...args);};
+   else f.p.service.spaceContextOptions.decider.decide=async({signal})=>{assert.ok(signal);await new Promise(r=>setTimeout(r,80));return {probability:1};};
+   const start=Date.now(),r=await f.request();assert.ok(Date.now()-start<75);assert.equal(r.state,'unavailable');assert.deepEqual(r.excerpts,[]);
++  assert.deepEqual(f.s.board(f.owner,{groupId:f.groupId}).events[0].privateChecks.audit[0].diagnostic,{phase:stage==='gather'?'gathering':'classification',deadlineReached:true,sourceRevisionChanged:false,authorityChanged:false});
++  assert.doesNotMatch(JSON.stringify([r,f.s.board(f.peer,{groupId:f.groupId})]),/diagnostic|deadlineReached|classification|gathering|sourceRevisionChanged/);
+   await new Promise(r=>setTimeout(r,100));assert.equal(f.s.board(f.peer,{groupId:f.groupId}).events[0].state,'unavailable');assert.equal(f.state.calls.length,0);
+  }
+ });
+ 
++test('stopped-request observations distinguish changing sources and authority without exposing diagnostics to peers',async t=>{
++ for(const change of ['source','authority']){
++  let f,changed=false;f=await fixture(t,{texts:['Public release'],decide:async()=>{if(!changed){changed=true;if(change==='source')f.s.run('UPDATE cp_cloud_archive_state SET revision=revision+1 WHERE owner=?',f.owner);else f.s.save(f.owner,{groupId:f.groupId,expectedRevision:1,rules,enabled:false});}return {probability:1};}});
++  const r=await f.request();assert.equal(r.state,'unavailable');assert.deepEqual(r.excerpts,[]);
++  assert.deepEqual(f.s.board(f.owner,{groupId:f.groupId}).events[0].privateChecks.audit[0].diagnostic,{phase:'classification',deadlineReached:false,sourceRevisionChanged:change==='source',authorityChanged:change==='authority'});
++  assert.doesNotMatch(JSON.stringify(f.s.board(f.peer,{groupId:f.groupId})),/diagnostic|phase|deadlineReached|authorityChanged|sourceRevisionChanged/);
++ }
++});
+ test('actual very large chats use indexed Unicode-safe windows and preserve private global restrictions',async t=>{
+  const p=await startContextPreview();t.after(()=>p.close());const owner=p.people.ready.owner,peer=p.spaces.maya.id,groupId=p.spaces.launch.id,device=p.work.get('SELECT * FROM cp_devices WHERE owner=? LIMIT 1',owner),unified=new UnifiedContext(p.service),observed=[];
+  for(const confidential of [false,true]){
