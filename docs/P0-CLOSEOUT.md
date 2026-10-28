@@ -4,16 +4,45 @@
 [SPEC-COMPLIANCE.md](SPEC-COMPLIANCE.md), not a release or acceptance claim.
 The original Draft v3 and the owner's later Spaces amendments remain the contract.
 
-## Release state
+## Latest execution
+
+28 October: native 0.4.32/runtime65 remains installed; server
+`20261028-sharing-diagnostics` is live. [Patches 46–47](PRIVATE-NATIVE-TITLES.md)
+repair private-title disclosure and add owner-only failure observations. The
+607-test suite and 47-patch replay pass. Signed public sharing, completed private
+withholding, both-account approved history, owner-only audits, browser owner
+removal, and old-invitation rejection have passed with the owner's two selected
+accounts. The test space is paused, its invitations revoked, and it is archived.
+
+Still open: three earlier unavailable sharing requests have no confirmed cause;
+the first request with the new diagnostics completed, so those observations have
+not yet explained a live stop. Independent-human, clean-machine Google/native
+onboarding, and broader default-host model routing remain separate gates. Do not
+manufacture them by resetting the working Mac or treating API checks as model runs.
+
+The additional ordinary-prompt Claude Desktop check passed native space creation,
+invitation generation and archival without host denial or model overrides. The
+second selected account previewed and accepted through signed API calls. After
+native archival, requests and the old invitation both returned 404. This is
+separate from recipient-host model acceptance.
+[Native lifecycle receipts](../implementation/p0-native-space-lifecycle-verification.json).
+
+[Updated narrated recording](P0-LIVE-VIDEO-UPDATE.md) preserves the original video
+and its failures. It covers actual Desktop source-read review, browser sharing,
+withholding and removal. The later native invitation check has separate receipts
+and is not part of that footage.
+
+## Release history
 
 28 October: [0.4.32/runtime65 and exact native excerpts](P0-EXCERPTS-RELEASE.md)
 are published. The server is deployed, runtime65 is active and both permanent
-registries are updated. Live sharing acceptance remains open. Existing broader gates below
-remain open. Earlier release records are preserved.
+registries are updated. The subsequent server-only sharing and diagnostic fixes
+are recorded above. Broader acceptance gates remain open; earlier release records
+are preserved.
 
-27 October: 0.4.31/runtime64 artifacts are published, runtime64 is active on the
-Mac, and corrected server `20261027-context-guidance-r2` is live. Claude and Codex
-permanent installations are 0.4.31, with two postdeployment installed-package reads
+27 October: 0.4.31/runtime64 artifacts were published, runtime64 was active on the
+Mac, and corrected server `20261027-context-guidance-r2` was live. Claude and Codex
+permanent installations then used 0.4.31, with two postdeployment installed-package reads
 verified in [installed receipts](../implementation/p0-installed-release-verification.json). Two real native CLI synthesis checks
 pass with strict successful-read grounding. [Current receipts](../implementation/p0-live-release-verification.json)
 update the release table below. The original transport failure
@@ -21,6 +50,7 @@ cause and the broader real-person/clean-setup/default-host gates remain open.
 
 | Build | State |
 | --- | --- |
+| 0.4.32/runtime65; server `20261028-sharing-diagnostics` | Current native installation and production server. Patches 43–47, 607 passing core tests, selected-account sharing/revocation and owner-native lifecycle evidence; broader acceptance remains open. |
 | 0.4.28/runtime61; server `20261026-current-read` | Previous published baseline retained; superseded by 0.4.31/server-r2. |
 | 0.4.29/runtime62 page-size guidance | Packaged; native/server GitHub draft assets uploaded. Not published, installed or deployed. |
 | 0.4.30/runtime63, patches 36–37 | Locally packaged and verified; includes page-size guidance and bounded transport diagnostics. Not uploaded, published, installed or deployed. 0.4.29 draft assets unchanged. |
@@ -119,8 +149,8 @@ this coverage. If no clean environment is available, leave this gate open.
 
 ## 4. Release completed; broader acceptance remains
 
-The release, native installation and live server checks below are complete for
-0.4.31/server-r2. Do not relabel the remaining real-person, clean-environment or
+The release, native installation and live server checks are complete for
+0.4.32/runtime65 and server `20261028-sharing-diagnostics`. Do not relabel the remaining real-person, clean-environment or
 default-host gates as passed.
 
 With a reviewed candidate and verified current behavior, publish/install/deploy

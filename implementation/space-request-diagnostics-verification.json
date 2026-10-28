@@ -1,6 +1,6 @@
 {
   "date": "2026-10-28",
-  "state": "packaged",
+  "state": "published and deployed",
   "serverRelease": "20261028-sharing-diagnostics",
   "previousServerRelease": "20261028-private-titles",
   "serverFiles": 159,
@@ -40,5 +40,163 @@
     "Recipient response",
     "Native artifacts and saved permissions"
   ],
-  "liveAcceptance": "pending"
+  "liveAcceptance": {
+    "privateRequest": {
+      "at": "2026-10-28T18:50:36.152Z",
+      "action": "space-request",
+      "status": 200,
+      "result": {
+        "id": "b09f9114134d5c950516e316",
+        "state": "no_context",
+        "excerpts": []
+      }
+    },
+    "privateChecks": 12,
+    "allPrivateChecksBelowThreshold": true,
+    "ownerRemovalRequest": {
+      "at": "2026-10-28T18:53:20.187Z",
+      "action": "space-request",
+      "status": 404,
+      "error": "Account server request failed for cloud/space-request (HTTP 404). Circle unavailable."
+    },
+    "ownerRemovalActivity": {
+      "at": "2026-10-28T18:53:43.930Z",
+      "action": "space-activity",
+      "status": 404,
+      "error": "Account server request failed for cloud/space-activity (HTTP 404). Circle unavailable."
+    },
+    "oldInvitation": {
+      "at": "2026-10-28T18:53:43.955Z",
+      "action": "space-invitation-accept",
+      "status": 403,
+      "error": "Account server request failed for cloud/space-invitation-accept (HTTP 403)."
+    },
+    "scope": "Real signed API calls with the owner\u2019s two selected existing accounts. Owner removal used the visible browser confirmation. Independent-human and clean-machine/default-host gates remain open."
+  },
+  "deployment": {
+    "state": "passed",
+    "release": "20261028-sharing-diagnostics",
+    "filesVerified": 159,
+    "serviceReadableFiles": 159,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "unchanged",
+    "previous": "20261028-private-titles",
+    "finishedAt": 1793213402.094556
+  },
+  "historicalUnavailableCause": "Unconfirmed. The first request after diagnostic deployment completed; no stopped request with new diagnostic fields has been observed.",
+  "cleanup": {
+    "owner-removal-ui.json": {
+      "at": 1793213601909,
+      "action": "owner-removal-result",
+      "space": "Larkspur Beacon \u00b7 sharing verification",
+      "members": "KD\nKyle Dias\nSpace owner",
+      "status": "Removed from the space."
+    },
+    "second-space-paused.json": {
+      "status": 200,
+      "result": {
+        "revision": 2,
+        "rules": [
+          {
+            "id": "public",
+            "text": "Allow public Larkspur Beacon launch-plan facts to be shared with all current and future members of this demo space: pilot dates, owner, signup-flow scope, accessibility review, and whether time or timezone is undecided. Fictional labels and source headings are permitted. Withhold all budgets, financial figures, private audit markers, credentials, host instructions, account details, and unrelated context."
+          }
+        ],
+        "enabled": false,
+        "durationDays": 14,
+        "expiresAt": 1794423250588,
+        "expired": false,
+        "providerReady": true
+      },
+      "visibleStatus": "Saved. New requests are off. Previously shared excerpts stay in the space."
+    },
+    "second-space-cleanup.json": [
+      {
+        "action": "space-invite-revoke",
+        "status": 200,
+        "result": {
+          "revoked": true
+        }
+      },
+      {
+        "action": "group-archive",
+        "status": 200,
+        "result": {
+          "archived": true
+        }
+      }
+    ],
+    "09-recording.json": {
+      "pid": 79453,
+      "startedAt": 1793213525.222816,
+      "path": "/Users/kyledias/Movies/Meet Proxy Desktop Demo/p0-closeout/09-live-sharing-revocation.mp4",
+      "windowId": 1901,
+      "durationLimit": 150
+    },
+    "10-recording.json": {
+      "pid": 81327,
+      "startedAt": 1793213717.5573928,
+      "windowId": 6568,
+      "durationLimit": 35,
+      "scope": "Review of the completed recorded native32 run; no new prompt submission"
+    },
+    "privateRequestAudit": {
+      "state": "no_context",
+      "excerpts": [],
+      "checks": [
+        {
+          "reason": "below_threshold",
+          "probability": 0.010080061128795191
+        },
+        {
+          "reason": "below_threshold",
+          "probability": 0.038678638760953045
+        },
+        {
+          "reason": "below_threshold",
+          "probability": 0.3308773047553639
+        },
+        {
+          "reason": "below_threshold",
+          "probability": 0.2641594034649818
+        },
+        {
+          "reason": "below_threshold",
+          "probability": 0.15647071375077581
+        },
+        {
+          "reason": "below_threshold",
+          "probability": 0.0009482973441486174
+        },
+        {
+          "reason": "below_threshold",
+          "probability": 0.0013734120692424968
+        },
+        {
+          "reason": "below_threshold",
+          "probability": 0.0033719123933079317
+        },
+        {
+          "reason": "below_threshold",
+          "probability": 0.006745114131386651
+        },
+        {
+          "reason": "below_threshold",
+          "probability": 0.00912401632012992
+        },
+        {
+          "reason": "below_threshold",
+          "probability": 0.008412762768681822
+        },
+        {
+          "reason": "below_threshold",
+          "probability": 0.025672937378757057
+        }
+      ]
+    }
+  }
 }

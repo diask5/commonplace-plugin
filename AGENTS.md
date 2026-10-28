@@ -32,14 +32,29 @@ Native context-space tools create/invite/preview/accept/leave/archive within cur
 account and workspace scope. Joining never enables private-library sharing.
 See [the current readiness audit](docs/CONTEXT-MVP-READINESS.md) and
 `implementation/context-mvp-verification.json` for release state.
-Current published release is **0.4.32/runtime65**, installed in both permanent
-registries with runtime65 active on the Mac. Server `20261028-native-excerpts`
-is live; 159 files/readability, 604 core tests and two installed-package source
-reads pass. Patches 43–45 exclude host envelopes, recapture visible turns and
-classify exact message bodies with full private context. Thresholds and permissions
-are unchanged. Production sharing requests during recapture returned unavailable;
-useful classifier sharing is not accepted yet. See [release evidence](docs/P0-EXCERPTS-RELEASE.md)
-and `implementation/p0-excerpts-candidate-verification.json`.
+Current published native release is **0.4.32/runtime65**, installed in both
+permanent registries with runtime65 active on the Mac. Server
+**20261028-sharing-diagnostics** is live; all 159 files/readability and three
+services are verified. Patches 46–47 keep native source titles private and add
+bounded owner-only stopped-request observations. No native package, threshold,
+classifier prompt/model, permission, deadline or authority fence changed.
+The 607-test core suite and exact 47-patch replay pass. One signed public request
+shares the approved launch answer; a later private request completes with all
+12 candidates withheld. Both selected accounts see the approved history and
+only the owner sees checks. Browser owner removal blocks requests/activity
+(404) and the old invitation (403). The test space is paused, invitations revoked
+and archived. Three earlier unavailable requests remain unexplained, not privacy
+passes; reliability and independent-human/clean-machine/default-host gates remain
+open. See [private native titles](docs/PRIVATE-NATIVE-TITLES.md),
+`implementation/space-request-diagnostics-verification.json` and
+[installed release evidence](docs/P0-EXCERPTS-RELEASE.md). The original
+`20261028-native-excerpts` release and prior failures are retained.
+An additional ordinary-prompt Claude Desktop check passed native space creation,
+invitation generation and archival. The selected second account accepted through
+the signed API; after native archival, a request and old invitation were rejected.
+No host denial or private-sharing opt-in occurred. This is not recipient-host model
+or clean-machine acceptance. See `implementation/p0-native-space-lifecycle-verification.json`
+and [the real-footage video update](docs/P0-LIVE-VIDEO-UPDATE.md).
 The previous published release is **0.4.31/runtime64**; runtime64 was active on the Mac
 and server `20261027-context-guidance-r2` was live. Claude and Codex permanent
 registries then used 0.4.31; two postdeployment installed-package source reads pass.

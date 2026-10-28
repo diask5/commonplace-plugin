@@ -51,7 +51,7 @@
   ],
   "patch": "space-request-diagnostics.patch",
   "sha256": "39c5bd18a61ead0b1ab321b7107bcd6c87fccd32bc92de6434cdca75a7871359",
-  "state": "Server candidate packaged and verified; not yet deployed. No native package change.",
+  "state": "Published and deployed as server 20261028-sharing-diagnostics. Native 0.4.32/runtime65 unchanged.",
   "files": [
     {
       "path": "apps/commonplace-account/server/space-context.mjs",
