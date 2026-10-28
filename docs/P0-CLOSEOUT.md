@@ -6,6 +6,11 @@ The original Draft v3 and the owner's later Spaces amendments remain the contrac
 
 ## Release state
 
+28 October: [0.4.32/runtime65 and exact native excerpts](P0-EXCERPTS-RELEASE.md)
+are published. The server is deployed and runtime65 is active; permanent registry
+updates and live sharing acceptance are in progress. Existing broader gates below
+remain open. Earlier release records are preserved.
+
 27 October: 0.4.31/runtime64 artifacts are published, runtime64 is active on the
 Mac, and corrected server `20261027-context-guidance-r2` is live. Claude and Codex
 permanent installations are 0.4.31, with two postdeployment installed-package reads

@@ -1,0 +1,70 @@
+{
+  "recordedAt": "2026-10-28",
+  "patchOrder": 43,
+  "state": "source-only",
+  "packaged": false,
+  "installed": false,
+  "published": false,
+  "deployed": false,
+  "observedIssue": "Claude api-request-blob host records with nested user roles entered private context as visible chat turns.",
+  "changes": [
+    "Reject nonconversation host envelopes before nested roles, including message-array wrappers.",
+    "Reparse existing legacy and canonical sources after format upgrade.",
+    "Reconcile possibly accepted canonical pending revisions without replaying old text.",
+    "Keep visible conversation text and existing account, permissions, source revision and classifier boundaries."
+  ],
+  "tests": {
+    "focusedPass": 64,
+    "fullCorePass": 598,
+    "fullCoreFail": 0,
+    "fullCoreSkipped": 0,
+    "fullCoreLogSha256": "8c5b2900bb29065e27722c1ba041635382b7d9c47bfa6f122648b32a03729e09",
+    "patch42To43Replay": "7/7 exact source hashes"
+  },
+  "diagnostics": {
+    "fullCleanedPublicCandidate": {
+      "diagnosticOnly": true,
+      "production": false,
+      "records": [
+        {
+          "kind": "public",
+          "probability": 0.9939390346513999,
+          "model": "pplx-decider-v1.2",
+          "promptVersion": 3,
+          "latencyMs": 267,
+          "inputTokens": 1105,
+          "threshold": 0.995,
+          "passed": false
+        },
+        {
+          "kind": "private",
+          "probability": 0.0007663833564862636,
+          "model": "pplx-decider-v1.2",
+          "promptVersion": 3,
+          "latencyMs": 113,
+          "inputTokens": 690,
+          "threshold": 0.995,
+          "passed": false
+        }
+      ]
+    },
+    "shortPublicExcerpt": {
+      "diagnosticOnly": true,
+      "production": false,
+      "kind": "exact-native-public-answer-excerpt",
+      "probability": 0.9968134703405663,
+      "model": "pplx-decider-v1.2",
+      "promptVersion": 3,
+      "latencyMs": 249,
+      "inputTokens": 785,
+      "threshold": 0.995,
+      "passed": true
+    }
+  },
+  "limitations": [
+    "No live native installation or recapture after this patch.",
+    "The clean full candidate still fails the unchanged classifier threshold; a short public answer excerpt passes a separate diagnostic, not production acceptance.",
+    "Mac binding was temporarily lost after a native reply, then restored by an owner message. No live patch installation or recapture has since been claimed.",
+    "No classifier threshold or permission setting changed."
+  ]
+}
