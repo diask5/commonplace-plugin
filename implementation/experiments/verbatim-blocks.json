@@ -1,0 +1,23 @@
+{
+  "state": "source-only experiment; not packaged, installed or deployed",
+  "applyAfter": "bounded-classification.patch",
+  "patch": "verbatim-blocks.patch",
+  "sha256": "fd4cb28b9dfb47e5ee3ac8d6dc34c09fdd884a8c3df0e2fc1d3d8d410527c7ac",
+  "focusedTests": {
+    "passed": 52,
+    "failed": 0
+  },
+  "liveDiagnostic": {
+    "sameRecordedSyntheticSource": true,
+    "disclosedToRecipient": false,
+    "simplifiedRecipientLabel": "All current and future members of this space",
+    "threshold": 0.995,
+    "results": {
+      "wholeMessage": 0.9876181514113287,
+      "launchLine": 0.9864666609793633,
+      "ownerLine": 0.9893300922523665,
+      "sharingLine": 0.9286223098866303
+    }
+  },
+  "decision": "Do not ship the segmentation change: the diagnostic did not establish useful public sharing. Keep thresholds, classifier prompt and source context unchanged. Isolate the independently verified full-question discovery fix."
+}

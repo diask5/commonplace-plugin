@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-29",
+  "state": "local server candidate; not published or deployed",
+  "serverRelease": "20261029-question-discovery",
+  "nativeVersion": "0.4.32/runtime65",
+  "nativeArtifactsChanged": false,
+  "coreTests": {
+    "passed": 611,
+    "failed": 0
+  },
+  "replay": {
+    "patches": 49,
+    "changedFiles": 206,
+    "mismatches": [],
+    "matched": true
+  },
+  "serverFiles": 159,
+  "bundleSha256": "8564daa9b9a3894236520c633cc12bd3e5e6a2f02be98e5845cd6c5b9b9b7d44",
+  "changedRuntimeFiles": [
+    "dist/standalone/account-runtime/space-context.mjs"
+  ],
+  "behavior": "After an empty full-question search, remove common question words and retry once within the existing search/page budget and pinned archive revision. Explicit quotes/prefixes and empty meaningful queries do not widen. Original question stays in shared history.",
+  "unchanged": [
+    "classifier model and prompt",
+    "0.995 threshold",
+    "eight-provider-call ceiling",
+    "32 candidate cap",
+    "20-second classification deadline",
+    "whole native-message candidates",
+    "complete private classifier context",
+    "membership, consent, source, expiry and revision fences",
+    "native host permissions"
+  ],
+  "extractedServerSmoke": {
+    "passed": true,
+    "syntheticIdentity": true,
+    "compiledAuthorize": "placeholder"
+  },
+  "liveAcceptance": "pending",
+  "segmentationExperiment": "Preserved separately in implementation/experiments/verbatim-blocks.json; not included in this candidate. Its bounded model diagnostic did not establish useful public sharing."
+}
