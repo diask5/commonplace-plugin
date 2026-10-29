@@ -55,7 +55,7 @@
   ],
   "patch": "cross-host-context-sync.patch",
   "sha256": "8341e4e4b17729d4eb030b0eaf1c11e02aaa02a26d5527003b21c4d6b8587a9b",
-  "state": "Source and server bundle verified; not yet published or deployed. Native 0.4.32/runtime65 unchanged.",
+  "state": "Server published and live as 20261029-cross-host-sync. Native was unchanged at rollout; later catch-up update is separate.",
   "files": [
     {
       "path": "apps/commonplace-account/server/context-assets/context-native-setup.mjs",

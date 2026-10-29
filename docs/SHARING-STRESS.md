@@ -3,7 +3,9 @@
 The context store and classifier are the shared interface. Claude and Codex are
 clients of it. The stress run found working privacy boundaries, inconsistent
 useful sharing, missed natural-language queries, and provider saturation. It also
-found and fixed a consent-resurrection bug **in source only**. This is not an
+found and fixed a consent-resurrection bug in source at the time of this run.
+That fix is now live in [server 20261029-cross-host-sync](CROSS-HOST-CONTEXT-SYNC.md);
+the original stress results below remain unchanged. This is not an
 all-P0 or production-readiness pass.
 
 ## Where the classifier belongs

@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "ssh: connect to host 34.27.253.220 port 22: Operation timed out\r\n\nRecommendation: To check for possible causes of SSH connectivity issues and get\nrecommendations, rerun the ssh command with the --troubleshoot option.\n\ngcloud compute ssh commonplace --project=vertical-web-313417 --zone=us-central1-a --troubleshoot\n\nOr, to investigate an IAP tunneling issue:\n\ngcloud compute ssh commonplace --project=vertical-web-313417 --zone=us-central1-a --troubleshoot --tunnel-through-iap\n\nERROR: (gcloud.compute.ssh) [/usr/bin/ssh] exited with return code [255].\n\n[exited with code 255]"
+    }
+  ]
+}

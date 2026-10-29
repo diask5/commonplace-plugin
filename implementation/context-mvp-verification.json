@@ -430,7 +430,7 @@
     "productionChanged": false
   },
   "crossHostSync20261029": {
-    "state": "Candidate verified; rollout pending",
+    "state": "Server published and live; native backlog follow-up separate",
     "verification": "implementation/cross-host-context-sync-verification.json",
     "liveMacFreshMarkerRead": true,
     "corePassed": 628,
@@ -438,6 +438,14 @@
     "bundlePassed": 23,
     "nativeUnchanged": "0.4.32/runtime65",
     "actualHostOnboardingComplete": false,
+    "allP0Ready": false,
+    "serverRelease": "20261029-cross-host-sync"
+  },
+  "boundedSyncCatchup20261029": {
+    "verification": "implementation/bounded-sync-catchup-verification.json",
+    "version": "0.4.33/runtime66",
+    "state": "Packaged candidate; publication and installation pending",
+    "corePassed": 631,
     "allP0Ready": false
   }
 }

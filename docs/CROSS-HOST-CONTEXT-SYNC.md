@@ -1,7 +1,11 @@
 # Context sync across native and regular chats
 
-29 October 2026: the five-host setup update and server bundle are verified locally.
-Production rollout is pending. Native 0.4.32/runtime65 remains unchanged.
+29 October 2026: the five-host setup update is published and live on server
+`20261029-cross-host-sync`. All 159 deployed files match and are service-readable;
+all three services are active. Public OAuth, MCP authentication, exact asset bytes
+and desktop/phone sign-in checks pass. The prior server release remains retained.
+Native 0.4.32/runtime65 was unchanged at this rollout; the later
+[bounded catch-up fix](BOUNDED-SYNC-CATCHUP.md) addresses an observed long-chat delay.
 
 The setup chooser now offers Claude Code, Claude chat, ChatGPT, Codex and
 Conductor directly. Native setup still prepares one plugin/MCP request and carries

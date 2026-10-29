@@ -1,6 +1,6 @@
 {
   "date": "2026-10-29",
-  "state": "Verified source and server candidate; production rollout pending",
+  "state": "Server published and live; native collection backlog follow-up is separate",
   "patch": {
     "number": 51,
     "path": "cross-host-context-sync.patch",
@@ -18,8 +18,75 @@
     "fileCount": 159,
     "changedFileCount": 6,
     "migrationChanges": false,
-    "published": false,
-    "deployed": false
+    "published": true,
+    "deployed": true,
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261029-cross-host-sync",
+    "deployment": {
+      "state": "passed",
+      "release": "20261029-cross-host-sync",
+      "filesVerified": 159,
+      "serviceReadableFiles": 159,
+      "services": [
+        "active",
+        "active",
+        "active"
+      ],
+      "migrations": "unchanged; verified code-only activation",
+      "previous": "20261029-question-discovery",
+      "finishedAt": 1793252981.2998712
+    },
+    "publicSmoke": {
+      "/healthz": 200,
+      "/.well-known/oauth-authorization-server": 200,
+      "/.well-known/agent-configuration": 200,
+      "authorize": {
+        "status": 303,
+        "redirect": "/signin-with-chatgpt"
+      },
+      "unauthenticatedMcp": 401,
+      "assets": [
+        {
+          "name": "context-product.mjs",
+          "sha256": "eed686c7d7ed69a2cf7869f27436632d8c05fec5ef2cf8a377cc3cd393ff715f"
+        },
+        {
+          "name": "context-conversations.mjs",
+          "sha256": "0f749f9336695b7b828ce4b5a53684db1d6045ff34a1aaf8d6cc2afbf113acb3"
+        },
+        {
+          "name": "context-native-setup.mjs",
+          "sha256": "4d0fdb2041b4741f0ecc8c560c8cadb77e04436327b9be7f7d10c4723bb7bf61"
+        },
+        {
+          "name": "context-setup-request.mjs",
+          "sha256": "ea447e932d0357fe9bf78c76a11eb765acc8e3be3af848aea83349b191cdabce"
+        },
+        {
+          "name": "personal-assistant-setup.mjs",
+          "sha256": "3646b5c1294ab6327d1ca48d5d4aa76c3abacb2b952df7967bdaf62f08e0aea7"
+        },
+        {
+          "name": "mcp-resource-source-setup.mjs",
+          "sha256": "c1822b335c202b2fa98fa4546d92474771c2926552b86d4823529e2e4f76d52a"
+        }
+      ],
+      "screens": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "googleButtonVisible": true,
+          "overflow": false,
+          "errors": []
+        },
+        {
+          "name": "phone",
+          "width": 390,
+          "googleButtonVisible": true,
+          "overflow": false,
+          "errors": []
+        }
+      ]
+    }
   },
   "checks": {
     "core": {
@@ -104,7 +171,8 @@
         "nextCursor": null
       }
     ],
-    "caution": "The earlier empty phrase-search pages had continuation cursors. They were not evidence of missing sync. This was a signed read on the existing Mac account, not model-host or clean-install acceptance."
+    "caution": "The earlier empty phrase-search pages had continuation cursors. They were not evidence of missing sync. This was a signed read on the existing Mac account, not model-host or clean-install acceptance.",
+    "postDeployFirstCheck": "Second marker staged but source still backfilling under runtime65; no successful read at the first check. See bounded-sync-catchup-verification.json for follow-up."
   },
   "changes": [
     "five explicit app choices with native collection versus remote retrieval",
@@ -164,8 +232,24 @@
       "sha256": "7847956af7d19ca7e7e323f3b5f0ea3d728741c6b9915d96613f8c5c7adf7515"
     },
     {
+      "path": "implementation/cross-host-context-sync/deployment-check-1.json",
+      "sha256": "07c9662a04052c5f053662e23cf43714130e56b9ca4b68174962b7fc4adddb12"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/deployment-final.json",
+      "sha256": "78d47c3dd5eee3835efe8dc1da9e9e00d6ad7bec5bd4dc2886cde1a006fc9ada"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/deployment-start.json",
+      "sha256": "e84a2f8c93410ac8ba299e8ff6e10aef0dc3c77ad0d3f618471fd1eccdf2833e"
+    },
+    {
       "path": "implementation/cross-host-context-sync/deployment-tests.log",
       "sha256": "8c70314300eb7566414dd9fb4c3417985a987393975d12cc88323d696e52c3f5"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/direct-ssh-preflight.json",
+      "sha256": "77065fab19fbfebbc699fa3deca5202d0c5fef3ccd46bc4e99ac0d19c48c84aa"
     },
     {
       "path": "implementation/cross-host-context-sync/live-marker.json",
@@ -174,6 +258,18 @@
     {
       "path": "implementation/cross-host-context-sync/native-ui-after.tap",
       "sha256": "632337c1384f4a2fef05d8762607dcee207a88fe0c364300dfef706ae8213774"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/post-deploy-marker-first.json",
+      "sha256": "af077833712020a121717dc982bcfa16058a4d1826f57a8f8655d03a40ea1533"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/public-smoke.json",
+      "sha256": "c235a8f287d2bb56a79386034abf5961655a7e3124481bf86a8bb0e350e710bb"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/public-smoke.log",
+      "sha256": "34afe408bd4669a8b97e8f7dc66b83fcdcb9a347394e1b941062f7cef29e5aa4"
     },
     {
       "path": "implementation/cross-host-context-sync/replay51.json",

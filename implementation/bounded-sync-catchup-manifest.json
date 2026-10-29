@@ -1,0 +1,92 @@
+{
+  "name": "Bounded fair multi-chunk catch-up for long chats; native 0.4.33/runtime66",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch",
+    "deployment-source-modes.patch",
+    "visible-transcript-envelopes.patch",
+    "native-message-excerpts.patch",
+    "p0-excerpts-candidate.patch",
+    "private-native-titles.patch",
+    "space-request-diagnostics.patch",
+    "bounded-classification.patch",
+    "question-discovery.patch",
+    "sharing-stress.patch",
+    "cross-host-context-sync.patch"
+  ],
+  "patch": "bounded-sync-catchup.patch",
+  "sha256": "fdf105d26c4f555d63c0774430f377c9d2652ceb598d46c37dd509f6ac22a91f",
+  "state": "Packaged native 0.4.33/runtime66; not yet published or installed.",
+  "files": [
+    {
+      "path": "apps/commonplace/server/canonical-sync.mjs",
+      "beforeSha256": "c0b2972799cf4fc59459500c04fe79911b6643b561a9c8a0fa69938a48fe2ce3",
+      "sha256": "ac6c91cf450e9f6ade020ba2292def25a20d46a8b2ae8b8597a1bc2ae6af968b"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "17cd75254826ef463ec05aefe968a5a98e7156185d6b63b81d0545b72a2b6c20",
+      "sha256": "5beb5598ec58c4e89fa9f9559a75e9157123d0177a16a113d011373bfaa5c15e"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "27e5ac55c8beb4b5680ad562e4a2360b2181611cd33db24b2b5ceb26f1b4c801",
+      "sha256": "1687ad8d99e2ca0e78217429c0064daf1cc2f16aa5fa383f28c55cfb0a455f71"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "9a39c9b981932cf6bc263c90e3b460cf640b5fc10b3e1419020ddbc1652b06af",
+      "sha256": "a470acb21b114537a0ade7e7fec7581604400c3cb8bef584e6371155986f1a39"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "b04d6da6ada41028771aed7f0854f8cf2b97d794785c77ed832b90cee66e1b27",
+      "sha256": "a9a7e624f7a7ea29d0f8554b58f2bb8aa9b0fce2cb75e9e1895d26fa5d0b0514"
+    },
+    {
+      "path": "tests/seamless-collection.test.mjs",
+      "beforeSha256": "6a47b6a2c4770fc99d61339e544519fcf1269cd067e26eb83dc90ca7a0025a2a",
+      "sha256": "25b5781b67609f211e24415f0009dca403f60cd5a22e53939db9d3af25aff3f1"
+    }
+  ]
+}
