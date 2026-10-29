@@ -1,0 +1,10 @@
+{
+  "activeRevision": 65,
+  "backgroundVersion": "0.4.32",
+  "deferred": {
+    "state": "incomplete",
+    "error": "Commonplace is reconnecting. Your messages remain saved.",
+    "attempt": 1,
+    "at": 1793253883.924649
+  }
+}

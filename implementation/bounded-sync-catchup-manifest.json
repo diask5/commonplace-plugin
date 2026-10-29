@@ -56,7 +56,7 @@
   ],
   "patch": "bounded-sync-catchup.patch",
   "sha256": "fdf105d26c4f555d63c0774430f377c9d2652ceb598d46c37dd509f6ac22a91f",
-  "state": "Packaged native 0.4.33/runtime66; not yet published or installed.",
+  "state": "Native 0.4.33/runtime66 published and installed in both registries; runtime65 remains active while the supported restart guard is busy. Bounded retries scheduled.",
   "files": [
     {
       "path": "apps/commonplace/server/canonical-sync.mjs",

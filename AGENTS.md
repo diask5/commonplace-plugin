@@ -52,14 +52,18 @@ from the live Mac archive after following phrase-search pagination. Regular Clau
 and ChatGPT connections retrieve existing context; they do not collect web-only
 chat history. Server `20261029-cross-host-sync` includes patch 50; all 159 files and three
 services are verified, with public asset/OAuth/desktop/phone checks passing. See [cross-host sync](docs/CROSS-HOST-CONTEXT-SYNC.md).
-Native candidate 0.4.33/runtime66 adds patch 52: progressing long-chat chunks
+Published native 0.4.33/runtime66 adds patch 52: progressing long-chat chunks
 use spare upload slots before ordinary heartbeats, with the same six-upload
 ceiling, atomic capture, exclusions and durable retries. Three new regressions
 fail before/pass after; 631 core tests, both-alias packaging and 52-patch replay
-pass. It is packaged but not yet published or installed. See
+pass. It is published and installed in both registries. Runtime65 remains active:
+the supported restart guard stayed busy; a bounded 12-attempt retry is queued,
+with no forced signals. The second live marker read passed on runtime65 and
+does not prove runtime66 activation. Source PR #45 and distribution PR #46 are
+merged; the default distribution branch remains unchanged. See
 [bounded catch-up](docs/BOUNDED-SYNC-CATCHUP.md).
-Current published native release is **0.4.32/runtime65**, installed in both
-permanent registries with runtime65 active on the Mac. Server
+The previous native release was **0.4.32/runtime65**; runtime65 is still active
+until the supported upgrade guard permits runtime66. Server
 **20261029-cross-host-sync** is live; the prior question-discovery release
 is retained. Patch 49 fixes empty full-question discovery
 within the existing search budget. 611 core tests and the exact 49-patch replay pass.

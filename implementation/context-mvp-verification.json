@@ -444,8 +444,10 @@
   "boundedSyncCatchup20261029": {
     "verification": "implementation/bounded-sync-catchup-verification.json",
     "version": "0.4.33/runtime66",
-    "state": "Packaged candidate; publication and installation pending",
+    "state": "Published and installed; runtime66 activation deferred by active-work guard",
     "corePassed": 631,
-    "allP0Ready": false
+    "allP0Ready": false,
+    "activeRuntime": 65,
+    "automaticRetryScheduled": true
   }
 }
