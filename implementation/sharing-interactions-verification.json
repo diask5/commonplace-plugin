@@ -1,0 +1,35 @@
+{
+  "state": "source and private synthetic preview; no production deployment",
+  "patch": "sharing-interactions.patch",
+  "passed": 45,
+  "failed": 0,
+  "log": ".context/sharing-interactions/verified-check.log",
+  "liveSyntheticPreview": {
+    "at": "2026-10-25T22:36:27.317Z",
+    "model": "pplx-decider-v1.2",
+    "liveProvider": true,
+    "syntheticOnly": true,
+    "checked": 8,
+    "approved": 2,
+    "errors": 0,
+    "pageErrors": []
+  },
+  "replayIncludedIn": {
+    "patches": 12,
+    "incrementalFiles": 14,
+    "allChangedFilesMatch": 130,
+    "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13"
+  },
+  "capabilities": [
+    "state-driven scan and approval SVG",
+    "reduced motion",
+    "cancel/Escape with provider abort",
+    "no later calls after cancellation",
+    "Ctrl/Command+Enter",
+    "undo example",
+    "setup retry preserving text",
+    "setup and evaluation timeouts",
+    "stale and partial results withheld"
+  ],
+  "subsequentChange": "shared-spaces.patch updates the global navigation to Spaces / My context"
+}

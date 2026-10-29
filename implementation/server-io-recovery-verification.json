@@ -1,0 +1,71 @@
+{
+  "state": "published and deployed; performance gate remains open",
+  "nativeVersion": "0.4.26",
+  "runtimeRevision": 59,
+  "nativePackagesUnchanged": true,
+  "serverRelease": "20261026-io-recovery",
+  "sourceManifest": "server-io-recovery-manifest.json",
+  "source": {
+    "patches": 28,
+    "files": 188,
+    "incrementalFiles": 6,
+    "matched": true,
+    "patchSha256": "386d5463e1e42b198f493a0e803cc4b3792dd2ea88896802105fa9b7a561816e"
+  },
+  "runtimeBundleSha256": "de0646fd1fe99c3d9367b6a5548bd4eba1fe43fd16681d967ca0e594abcfbd25",
+  "runtimeFiles": 156,
+  "checks": {
+    "corePassed": 536,
+    "coreFailed": 0,
+    "coreSkipped": 0,
+    "rootFocusedPassed": 9,
+    "independentReview": "no blockers; source-only review"
+  },
+  "measuredFixtureChanges": {
+    "durableCommitsPerTwoRequestToolCall": {
+      "before": 9,
+      "after": 7
+    },
+    "durableDeviceQuotaIncrement": {
+      "before": 2,
+      "after": 2
+    },
+    "documentsAfterOneOfEightChanges": {
+      "reused": 7,
+      "rewritten": 1
+    }
+  },
+  "preserved": [
+    "JTI replay records",
+    "tokens and grants",
+    "durable per-device quotas",
+    "SQLite FULL durability",
+    "current owner/source/revision/expiry fences",
+    "exact rendered bytes and immutable file checks",
+    "atomic archive publication and pinned readers"
+  ],
+  "limits": [
+    "Outer SDK throttle counters reset on restart and are per process.",
+    "At the bounded counter capacity new keys are denied until entries expire.",
+    "FTS still fully rebuilds; all prior archive bytes still validate.",
+    "Three live health samples improved but remained3.1\u20136.7seconds; fresh real answers took~209seconds and publicbrowser navigation timed out."
+  ],
+  "baselineHealthSeconds": [
+    12.515,
+    14.737,
+    13.246
+  ],
+  "paidInfrastructureChanges": false,
+  "productionEvidence": "server-io-production.json",
+  "realBenchmark": "server-io-native-benchmark.json",
+  "healthSecondsAfter": [
+    6.707,
+    3.635,
+    3.14
+  ],
+  "publicBrowserSmoke": {
+    "state": "failed",
+    "reason": "DOM content navigation timed out at 30000ms",
+    "log": ".context/io-followup/public-smoke.log"
+  }
+}

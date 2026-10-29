@@ -1,0 +1,61 @@
+{
+  "name": "Preserve bounded Agent Auth failure categories before status wrapping",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch"
+  ],
+  "patch": "transport-diagnostics.patch",
+  "sha256": "a5dadfd8dcd3a72230512719a7c22636e9cd7f3711c0be4961b7b6b31ecf57a9",
+  "state": "Source-only, unversioned; not packaged, published, installed or deployed. See transport-diagnostics-verification.json.",
+  "files": [
+    {
+      "path": "apps/commonplace/server/account-errors.mjs",
+      "beforeSha256": "cecf04778a2bace7197576d6d07df2edd1b95f4e702129c824a4a338822bf8c4",
+      "sha256": "979c054135feb2797d08e7ced1447374a91d8f0e155e2d8c4706b470515ccfc9"
+    },
+    {
+      "path": "apps/commonplace/server/agent-auth-client.mjs",
+      "beforeSha256": "2ae5ce74b9fbee676677e0bcef16ea95679420989d5f8f7414a5e7e1913513b3",
+      "sha256": "719224c96e74ebb8457c685223a2334a6fcfa8367207df922c7e6f66ca47473a"
+    },
+    {
+      "path": "apps/commonplace/tests/account-errors.test.mjs",
+      "beforeSha256": "8a91fc03e09d02c1ca2d890552826b00d8c84d391a8088671d17585f12ae926c",
+      "sha256": "db3e220b922dea1ad99971bc1bcf71403112dec55c5fb980b4720c9db3c2c11c"
+    }
+  ]
+}

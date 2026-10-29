@@ -1,0 +1,601 @@
+{
+  "date": "2026-10-26",
+  "version": "0.4.24",
+  "runtimeRevision": 57,
+  "release": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.24",
+  "state": {
+    "published": true,
+    "installedClaude": true,
+    "configuredCodex": true,
+    "macCompanionRevision": 57,
+    "production": "20261026-native-p0-final",
+    "allRealUserJourneysCertified": false,
+    "realGoogleAndBothDesktopHandoffsVerified": true
+  },
+  "scope": {
+    "p0": "current amended context-sharing product; P0 shareable links/codes",
+    "p1Deferred": [
+      "Direct Mail/iMessage sends",
+      "Full compatible personal-assistant acceptance"
+    ]
+  },
+  "artifacts": {
+    "meet-proxy": {
+      "archive": "meet-proxy-0.4.24.zip",
+      "sha256": "e6abba18c2bcfeffbf02bc7c976cda41232e59bb5a34ddba233b76c98a7c7885",
+      "bytes": 230151003
+    },
+    "commonplace": {
+      "archive": "commonplace-0.4.24.zip",
+      "sha256": "dc4fc8464ebcfade9bbb0863faff80c1a5619db11791cea376b680c62ee6fa4e",
+      "bytes": 230151003
+    }
+  },
+  "runtimeBundle": {
+    "bundle": "runtime-update.json",
+    "sha256": "b0d3308ebb59df1ad0e4b3a4008b4b318de329378fdb2c0dc899ab6a2102e6da",
+    "files": {
+      "dist/standalone/account-runtime/agent-auth.mjs": "d1f53df2f73c579546a7eb5dc6ad8e86e522b5299258d5213410a86b3740a77a",
+      "dist/standalone/account-runtime/agent-board.mjs": "95512dad13c199a47961bf0231fb5b5aef6e6140c914853e33f68e3eada47b46",
+      "dist/standalone/account-runtime/agent-connections-ui.mjs": "e1d785dfbd732b124c994b353a4646599b94fca4c782d3cd84fe3efd8c2c1ba8",
+      "dist/standalone/account-runtime/agent-connections.mjs": "1640d7439d8a04f347108944ab7583456b91b945274fdba849f9716b8e447c6e",
+      "dist/standalone/account-runtime/agent-history.mjs": "3189c642b236053f9edbc29b5aef358d6c5b65539aeaa2f038f728e44e251071",
+      "dist/standalone/account-runtime/agent-setup-ui.mjs": "14ccca13e2b94de9842c280842d1d240795b8a3692656d020d6d491ad995dd35",
+      "dist/standalone/account-runtime/agent-setup.mjs": "31a4c10967d82d0f194d479f05b2676209912af645c4e2dc346b854ffcb7654a",
+      "dist/standalone/account-runtime/archive-builder.mjs": "9dd03fcf48f2f9071bf2294d5152b5ee1b6e437e7a7ff887b73b75f80d48675c",
+      "dist/standalone/account-runtime/archive-index.mjs": "7da7526279013022a30e46a69a4bc7f31d4c63f95c8deb56918d9a971167a366",
+      "dist/standalone/account-runtime/archive-source.mjs": "43655234d9117f7690e1adfde3e216ae1e885950c96e8ef9e7d38c472d27c0cb",
+      "dist/standalone/account-runtime/archive-tools.mjs": "db2979aea9577c4410d4dfadf3e3b37eec3b1695c9fbce50477706172842a084",
+      "dist/standalone/account-runtime/backup.mjs": "91ea88827587adffcd1ef48d802d484ca8391d84706181b5155fe01a0a422597",
+      "dist/standalone/account-runtime/browser-auth.mjs": "5ae9a1e4d6fe79f7bf7c03836ae28276f89a7342d3b004beafba473a9997bea1",
+      "dist/standalone/account-runtime/browser-login.mjs": "dcea3e756e5de3719a737674da83d80cf8f440c2c6be51c7a1423055a06dd277",
+      "dist/standalone/account-runtime/chat-delivery.mjs": "54a8a794b40008958853386fd5218b0c69f79ef7ee109e0208956ed57922fae4",
+      "dist/standalone/account-runtime/chat-links.mjs": "6870f94dc853e6748607f8f52c0f4f9c62bdfa290797be11fc7961313db5a941",
+      "dist/standalone/account-runtime/chat-setup.mjs": "d64bd8397d1eccc3ee68125b1f9b18babed55c390bc71c380fa1514b1dbef95a",
+      "dist/standalone/account-runtime/chat-wait.mjs": "fbc8ae066079d3ab4b41338cfc37739e792be7d571ba6b91bffdb4a7a58d5a67",
+      "dist/standalone/account-runtime/cloud-archive.mjs": "ac2a7a0615ae535847231218916dcbbd5093aaf040b80ad4b720d4deea6d774c",
+      "dist/standalone/account-runtime/cloud-http.mjs": "1df26924c76c1bc29923ff5219e6b5780fd1e9e01fd048a82195a087b1602f23",
+      "dist/standalone/account-runtime/cloud-network-tools.mjs": "976bb14758a078897b85e1c65d1206049f641d92d49a164918da136331a7e2ce",
+      "dist/standalone/account-runtime/cloud-network.mjs": "a5f7e5b458170c8976fa425b871a9986e6a6dec89e5e22a9e84a89b5fba8bac3",
+      "dist/standalone/account-runtime/cloud-work.mjs": "6814b0380d56aedd0752ab8309ab163ec0b783091ff33496f3fb6406ef5489c0",
+      "dist/standalone/account-runtime/cloud-worker.mjs": "453ab675341d22662290d1ceb71a56b540c7425b81f94ac22dc07e9eb633ace6",
+      "dist/standalone/account-runtime/connection-browser.mjs": "b87b52a04eb23f5e979ef537e27a251fdffd3642640b100fb6150afa95e6b94c",
+      "dist/standalone/account-runtime/connection-entry.mjs": "9a5c5f2c822add0a0a4d9a4c3d812c7fb04eb3344d2cea4ba11821a659c73b64",
+      "dist/standalone/account-runtime/context-assets/activity.mjs": "abbcf74dc467c5722efe6b6a173a44df600f8ac47e9f7b2e6d6dd49a1f94fb11",
+      "dist/standalone/account-runtime/context-assets/agent-connections.mjs": "cb0d159a3a6689bcf043b14bb58efbbaa973a23587dc9153b20503b16844941c",
+      "dist/standalone/account-runtime/context-assets/agent-setup.mjs": "f84610750f1595d7f1767e67a8dc2d5717ea846cd4117a30439765bb7f0cb4fc",
+      "dist/standalone/account-runtime/context-assets/chatgpt-format.mjs": "e49538bd5f24f4885eec3e392f09484554c7cf2025c8537ba09bd9ce186ad6a0",
+      "dist/standalone/account-runtime/context-assets/context-conversations.mjs": "0f749f9336695b7b828ce4b5a53684db1d6045ff34a1aaf8d6cc2afbf113acb3",
+      "dist/standalone/account-runtime/context-assets/context-coverage.mjs": "34a53385cb2634c4fb3d767aeaf1062dafc6e4bcd44cc84fdb701fd297c6e07b",
+      "dist/standalone/account-runtime/context-assets/context-native-setup.mjs": "7e3929ab4f148f48bc2141131d4b1b4c639552b78050a9cb5307143354efd9f2",
+      "dist/standalone/account-runtime/context-assets/context-product.mjs": "58a52fd448829492be0d77b50ddb01d66d83005b5a6f91af872234688d25264a",
+      "dist/standalone/account-runtime/context-assets/context-search.mjs": "5caf48ed67f7d17bda715994d92b744093a98465a96d61dae4f306cc6405f0d5",
+      "dist/standalone/account-runtime/context-assets/context-setup-request.mjs": "fffdaeec0bbc87bc11f8bdafbc68f50e050675c1aa1eea0d700b384159f31100",
+      "dist/standalone/account-runtime/context-assets/context-space-files.mjs": "d1e0875d4dcc5ccf3f77aa94d9c903d06fe607e9f45626943e4e9d90a2dc10f5",
+      "dist/standalone/account-runtime/context-assets/context-space-invitations.mjs": "9f897d4bbecd1b0af1f0cda217185b503e8b37f0b10015da3b10f4e1c3fdd27f",
+      "dist/standalone/account-runtime/context-assets/context-space-rules.mjs": "a3547056437d9028f9b1ed48d3415c1e26af90374267dfaa194c0d8e0172603b",
+      "dist/standalone/account-runtime/context-assets/context-spaces.mjs": "e0966dd4c27a57044775055b90ae3aa9e7a2b0d79232bcdc39d08e47982656e1",
+      "dist/standalone/account-runtime/context-assets/context.css": "99f116e0c7212ce79d3ac2f048b934a4ff1e412f4436ac65287500b8eec4490b",
+      "dist/standalone/account-runtime/context-assets/context.html": "c7d635309c7c55b1ec903d950bc4a976c5fa906e2be4e2bcea8fa4077a2ac2df",
+      "dist/standalone/account-runtime/context-assets/context.mjs": "3edef940424cb646fbdcb8080650b4e29345ce2d8f3bb471615cb9dff35070a0",
+      "dist/standalone/account-runtime/context-assets/export-file.mjs": "52c48be5d2fb31396daf0cbf98d23840f3a808ed083b921cca36d36edd8d54cb",
+      "dist/standalone/account-runtime/context-assets/fflate-LICENSE.txt": "805f6cb28bb8b6d3a0badd83c93bccd9671fa01a3b4b92b7042b0743325ac243",
+      "dist/standalone/account-runtime/context-assets/fflate.mjs": "8cc1f687e0159e977addb6b85e274dbd11e622cf151f4fcb7b85d49622ea43e7",
+      "dist/standalone/account-runtime/context-assets/groups.mjs": "6cb17305665bb57d758ba664e9413da73cdebafdee23fac5e03a09be1c089d7a",
+      "dist/standalone/account-runtime/context-assets/import-worker.mjs": "129818f04c4e74c5c87ec1cadf2ebf722eba507d97e1bc689b12588ca7008276",
+      "dist/standalone/account-runtime/context-assets/invitations.mjs": "8de6ca18154858f6b05a137cdc64570135a6cb311f759e65f8d13115f49ba602",
+      "dist/standalone/account-runtime/context-assets/manrope-LICENSE.txt": "d826ab6583b12c26807d8716a545bdbbb672df04f48608a364ba9efdbe501c30",
+      "dist/standalone/account-runtime/context-assets/manrope-latin.woff2": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972",
+      "dist/standalone/account-runtime/context-assets/mcp-resource-source-setup.mjs": "c1822b335c202b2fa98fa4546d92474771c2926552b86d4823529e2e4f76d52a",
+      "dist/standalone/account-runtime/context-assets/personal-assistant-setup.mjs": "8334986d1151320ad551d9fefbef53dbe54d88f08384b6348ee3a960913b16dc",
+      "dist/standalone/account-runtime/context-assets/shared-chats.mjs": "a88f61432b9cf3ccfe54b513ea993938a616ecb6e2cff2932521ffcfb98a3054",
+      "dist/standalone/account-runtime/context-assets/social.mjs": "23af95ada977c9f0e9c2037bd2224489b31afc4cb5fb9afcb66caf54d6a6f862",
+      "dist/standalone/account-runtime/context-assets/ui.mjs": "128781007dc31a0d04a852c059d1093d83a74ddc897fe2e2b04475a14fefd76e",
+      "dist/standalone/account-runtime/context-assets/work-agent.mjs": "447b65c5f83495271ee55000ca46e2476fd184dee5f167db48c08e392cf5efc7",
+      "dist/standalone/account-runtime/context-http.mjs": "826d960707890d84f02a0c359ca0ddbef8256b2aa76e371bc76a7661033a57ec",
+      "dist/standalone/account-runtime/context-product-style.mjs": "fe2a177fc04156b19247524584e54122065eca457b71f9c997f3094def1e49ef",
+      "dist/standalone/account-runtime/context-product-ui.mjs": "5bbe63f40fef05f49d905c6f07d4b6270b866cdf8b28195de9c08b131b6a5b18",
+      "dist/standalone/account-runtime/context-setup.mjs": "d3650bc063ad40118bcc571cb58b518f09a879d34437710ae108d68e79981109",
+      "dist/standalone/account-runtime/context-store.mjs": "c356ec0a995918b8ad3d433a829871cbdb640bc4d68a7d9a923bc1086f3c6024",
+      "dist/standalone/account-runtime/context-ui.mjs": "a6c216ea23ba09bf219ce6748f74abce53ed4bb5bb699d5a08962f9c023b51df",
+      "dist/standalone/account-runtime/delegations.mjs": "aa6701e0f2c34596e6e141653d90d8ee1d25151bd14739b8ecc1507e3efe457d",
+      "dist/standalone/account-runtime/disclosure.mjs": "7f9987af9da00a22b49513f5a36a5616b423e78c2dad625d6a6005d0a61b03a8",
+      "dist/standalone/account-runtime/groups-ui.mjs": "402497486bbc665db83234ee5de8571097dbb4e3601741b04920c72776d8dbf5",
+      "dist/standalone/account-runtime/groups.mjs": "44afc25001c0c9d1a2a07005d29bd48856833a29fe80b0872a0aa67d31f09bc5",
+      "dist/standalone/account-runtime/invitation-ui.mjs": "f987aceeae52a348a88569e6bca5c97b27360588fc4934809969c2d22a968462",
+      "dist/standalone/account-runtime/mailboxes.mjs": "7d3806c7e0d0372e326ec16612bec52c18e13f69a059d3278b7c93c84cd73232",
+      "dist/standalone/account-runtime/mcp-adapter.LICENSE.txt": "54879c5274805e5ecbcc9375be8c635624d33fce41fb6723bd86b536455a8038",
+      "dist/standalone/account-runtime/mcp-adapter.mjs": "3a9cffaf2f4d638d97d881e52a79164cec37dcb3bdef4a8cf70a843decaf37c8",
+      "dist/standalone/account-runtime/missions.mjs": "051300bb630e5bc416c741db5dbfeee59813362cece5a2008b551bd06e14f82a",
+      "dist/standalone/account-runtime/native-context.mjs": "c673774e8bc3c0bc7cfc93b56a3c67a29420cb24404beec3d2e3ced33c5149aa",
+      "dist/standalone/account-runtime/people-discovery.mjs": "cc338d545a745fe78048c81539838859b8a04082686def5faa06cf0e94246703",
+      "dist/standalone/account-runtime/people-invitations.mjs": "ee71045cf73dd12ebb5e5591fc3bcdfac4d6e77d85563c4802826f13b70f2a43",
+      "dist/standalone/account-runtime/perplexity-decisions.mjs": "b1e4d8dbf31187ac05687fe0b07c9917508229acd41eed60eb192b620b31edc1",
+      "dist/standalone/account-runtime/person-inbox.mjs": "ac1eed80eeca9e31c5940077f09c37fd64594b24d58fa149aa7d6d1568e99ec9",
+      "dist/standalone/account-runtime/policy-context-mcp.mjs": "a8cde3bdd5a8e85a4dc5821bf71d81bc48469a80b43d5d833ce9683a54998d6e",
+      "dist/standalone/account-runtime/policy-context.mjs": "5f617bf6274012edd21f61166f2b93cc0c20097d016c65fff803d71e30613686",
+      "dist/standalone/account-runtime/product-flow-ui.mjs": "fc0f240cf4d2acb8bfd76f98f3696c2ca14c8945d97c2d4013a8c56eb64c2a06",
+      "dist/standalone/account-runtime/proxy-tools.mjs": "0781bc6e22cb77002f490d704bbb298cb9d530e5c2c78d4474bfbde1aa487aa7",
+      "dist/standalone/account-runtime/remote-chat.mjs": "d63a79a49485fd5a4723abb4107ab9aa4b5682628f32ace591e437f539a1d765",
+      "dist/standalone/account-runtime/remote-mcp.mjs": "e6b5029321653dc3e3bb331a8224a133334439d7e0673ff8d2c5081c2122b39d",
+      "dist/standalone/account-runtime/runtime.mjs": "95e0952b0a77c56f35f33c2c06393b090d4c8dc51b9592a6eb6e95f00245e10e",
+      "dist/standalone/account-runtime/service.mjs": "fc31b6c2afa488b098d1ca643f199e34de39648312366915284c1344c0566416",
+      "dist/standalone/account-runtime/session-invitations.mjs": "ce72a0e27882e0453fc0daa81e06a58476b3106c5171b9227b94321a53dbe73c",
+      "dist/standalone/account-runtime/shared-chats.mjs": "6d15ebebe0f0cb3f41793c58b58d7c99efbb93d46038a9977af0f07112e271d0",
+      "dist/standalone/account-runtime/shared-context.mjs": "93d4184bcceac82987ca3e32485decaa079cd956c3b63d8168e8d47f3d203da3",
+      "dist/standalone/account-runtime/social-agents.mjs": "37e148e6b86dcabaacc2e7a71669649da74770c5958522ecb8c105b6b1a9e7a5",
+      "dist/standalone/account-runtime/social-http.mjs": "091fd151ffb920a397d0669397821ec1efcd8743e923cc380717f4b871cb3165",
+      "dist/standalone/account-runtime/social-ui.mjs": "2204fab1035831543f0f19875dccb7ed817e2527a210c9d3ef09ff6d140b518e",
+      "dist/standalone/account-runtime/space-context.mjs": "03cf7a8e15d538b0ce331422d73839dd612251fca6f11a7891b5874a64f12bde",
+      "dist/standalone/account-runtime/space-invitations.mjs": "149c452887dc14f5c138363e7405245afd7b91008958c3be957d9c02807392e2",
+      "dist/standalone/account-runtime/space-management.mjs": "cd68a87545d9aa67d7027f04b74871394302aa0575a2f2f3af0ca3e14c09386b",
+      "dist/standalone/account-runtime/sqlite.mjs": "67ef9a1134dd591c7ed1800dcc0871642e7bbae9780c77e7731e578fbc480e46",
+      "dist/standalone/account-runtime/ssh-workspace.mjs": "1590fc2680d3af596f92a28bbef3b6b64d611f831d8668b8ff0fcc0fd5b20540",
+      "dist/standalone/account-runtime/subscription-runner.mjs": "a5dd3205c4f99929a2049bf65203b6d0c0de5cd8d20e537a7ddf08c45b4bacc7",
+      "dist/standalone/account-runtime/ui-pages.mjs": "4297852bf5874b0162acbf13cc54d8407de621cae13f5c2e5d788a8a9ea727e7",
+      "dist/standalone/account-runtime/ui-system.mjs": "7aeb93f8a891735f9c4d4199e2aea3a4500a9937942fb225565ef9f0c11b862c",
+      "dist/standalone/account-runtime/unified-context.mjs": "5b9274fa572c8f62ffd3277d6d84e46036f0d029ea3b58a684ff9c40433c512d",
+      "dist/standalone/account-runtime/wiki.mjs": "20aa42d84f63da92f83c0dab7f131fd998512415ecb3cc470dbe7ba965fc3854",
+      "dist/standalone/account-runtime/work.mjs": "735206b527bc3f8b3b98f85101976ea558840a2e29457b5db91d3e5018cbe98d",
+      "dist/standalone/account-runtime/workspace-activity.mjs": "2bd49af1b5606e15ae9607340a81cb35b8e9556632a15cf0bafe874dc4e7923e",
+      "dist/standalone/account-runtime/workspace-history.mjs": "a456e419ef0c9052d5821e90ad5b64472089e7a156516c0dac2002241f26f6c1",
+      "dist/standalone/account-runtime/workspace-network.mjs": "1004b5b71cd32f893d2fe37600791b7e964d56fd8f7fa94803656c8f72305de9",
+      "dist/standalone/account-runtime/workspace-people.mjs": "5263fd93cded02f5ca4922da1bf0c7abd185c785d55ee17bdf346b67b85afc56",
+      "dist/standalone/account-runtime/workspace-protocol.mjs": "b31a876578aecba6260b650a5edb31736d34ebe3a56273ca59091d9104f1a6ad",
+      "dist/standalone/account-runtime/workspace-proxy.mjs": "febff7dce1073de83d0ebdf77be3236bf16d5460285a2dd0521ea2b397a2082f",
+      "dist/standalone/account-runtime/workspace-tasks.mjs": "1c63393a6cb269bdc32f8adaa03116ff94bedb66bd13a0f0291ba5fef6867f7b",
+      "dist/standalone/account-runtime/workspace-tools.mjs": "1c93b622d68c88ceaf9509460bed381646ab38a61f9cf19f52282788b0b0d958",
+      "dist/standalone/account-runtime/workspaces.mjs": "8ade21097c607247217ecb594701f53b7fe9dde4f23019ef39aa18170343be8c",
+      "drizzle/0000_colorful_diamondback.sql": "70a75dc614210a225353a264413f6fd4a91e4fdbd153f0c2dd947b17beb07858",
+      "drizzle/0001_numerous_wrecker.sql": "3143df1e03bc51b510535eb511bb7da091cad6c139b481d4692f708bd2b3449c",
+      "drizzle/0002_legal_lady_deathstrike.sql": "7f43242bb799c7c175dd9cad02d0e50b72f9cb34efda1de27290ede44b6655b1",
+      "drizzle/0003_overconfident_mac_gargan.sql": "76644e69f87b89411fe43f5c31ecefc51d1ca9554bac2163690244dfb429e31a",
+      "drizzle/0004_wise_mandarin.sql": "5cc23a87f1be85a712620c6aa99da0c2e7ef28c509a53c96bad44892f2b6dfc1",
+      "drizzle/0005_thin_toro.sql": "d1f94e34c4efb5a31e607a6c0a1b61f3746884a628054dbeeff613e450e266bd",
+      "drizzle/0006_left_lifeguard.sql": "e7d27f1fbb384be8d4b028b36f4fda87d3927040858e5e5012e16d18d1f95b34",
+      "drizzle/0007_medical_vivisector.sql": "9ab66ec1ac1d8243affb6302159b6e2b0a6b75cbebcdcef0df73f908120238d3",
+      "drizzle/0008_tidy_lenny_balinger.sql": "64d7c344705293ef700ff11d8987de3f1a3a20c02427ded4136c6fff8bb816c2",
+      "drizzle/0009_nervous_deathstrike.sql": "bb33a68803835cdca444fb43e5f814abcb14212e87880ea3f5de26979870df0f",
+      "drizzle/0010_unknown_the_renegades.sql": "0d15edbb1573d7f1e6fdf570b760bf1826e783608307f0e2ff4493f87e3da436",
+      "drizzle/0011_fearless_blazing_skull.sql": "19298cb44f9d1dbad2008dd36cbc0e872fdee644c114b0d785687bef14519ed8",
+      "drizzle/0012_classy_meltdown.sql": "fca0ac740507c77be8839f8f5ae4a142f27ca96acc751ab074758d082728c61c",
+      "drizzle/0013_kind_gorilla_man.sql": "cdd40a80543860ebd57a3def1d32f93bb2bc6f7883044e009cc7422d693f232c",
+      "drizzle/0014_elite_guardsmen.sql": "926cb6f54b18fb068a413d447364c03eec61e4dc2d22d5c6395922a41bc8d81d",
+      "drizzle/0015_last_ultimatum.sql": "ef3c9206160a64af22d71ba8f0c9dfead44303ebf735e330f0c071fefa23692a",
+      "drizzle/0016_absurd_lizard.sql": "ff8181b2ed90793af1b79b833ad7eff90fc71927634ce4cef8a8f8cd706e587d",
+      "drizzle/0017_agent_auth.sql": "d19d061855eae8ef56a9a183bf83b8c6466afa2d6b1c5fbc1942593ab9b43c5d",
+      "drizzle/0018_person_inbox.sql": "6451d4146eca38e1a545fb55e7673eac2cbc965485f76d10edb4f63f93aa05ab",
+      "drizzle/0019_desktop_inbox_handoff.sql": "658d4844e3b9a43a1e12ab60b7eacd80bad28380e261576ebb6ab12c9a94e42c",
+      "drizzle/0020_cloud_conversation.sql": "37b8573e70ee0f5155958d89b023f07a4f631adebe1af285e3249ba33b3c3be8",
+      "drizzle/0021_inbox_starts.sql": "defc23653d2404f2bf0eec37ddae4127ba59a35015eb086a30ed5b38ccea7c9e",
+      "drizzle/0022_chat_followups.sql": "99369bc0b9f253b5e8a1e24345da66f79566f7894e028fbae05bbbf3ddbf08b1",
+      "drizzle/0023_session_invitations.sql": "503c3ff584d8b606f7d0b23df99ffd2efc659f23490ddfa18d4669738d40984a",
+      "drizzle/0024_delegations.sql": "c3051a73fe88440b63b64341f81f4a3caa364c414125340e6ce04596f68c58c9",
+      "drizzle/0025_agent_mailboxes.sql": "3db80f1cdfe694778ad84f54c4b94ec412c37b877d032394aa193c90576ea835",
+      "drizzle/0026_cloud_work.sql": "5f762323e8978e73f3d6477464ff4d5d36a18cc27c3092a04aa0a8cf785fc1ad",
+      "drizzle/0027_browser_subscription_login.sql": "db69e52598956da668c4e5ad251d6ddfb12c55f816361d833d9b42c792845936",
+      "drizzle/0028_chatgpt_context.sql": "2caafda564d76ae5e9023a3262995f70cbb9bb8a879ab444ed317112af20015a",
+      "drizzle/0029_retire_browser_context.sql": "d6bc72922475a2682a185fc1c6ecd3c4f75f9634aa6ce8e35a4a4dcb0dfdc16f",
+      "drizzle/0030_cloud_archive.sql": "d7582b73ea7473aab09685af9736821eb9e32020feb5a73969a4490a762d13e2",
+      "drizzle/0031_people_discovery.sql": "937e566b2c1177a0fa4047c77b2fed59325ac0d3e149c233ea85860666772454",
+      "drizzle/0032_people_invitations.sql": "5cae44bc55402bace7efb11ab56576acdf33d9a35d714bfae886f133c673008f",
+      "drizzle/0033_chat_setup_grants.sql": "c6a72cd0674d0cd18300063476762afedf4e8752f967250a432653ee24febaee",
+      "drizzle/0034_shared_chat_authors.sql": "3eea3533ab7019e5a0a0be8c5e56f91e9e8bfa13b4d48633430db60f56ee3a12",
+      "drizzle/0035_groups.sql": "441080e5a663dde0dad7441a5b9382992fbf8da37de540cd10a638c992aa5acc",
+      "drizzle/0036_chat_delivery_receipts.sql": "271c2531902fe5628d796e0b45857042af9f5e5c1a27aa80a83d1ecc499d40f2",
+      "drizzle/0037_agent_history.sql": "b8e5edf506d7e76074630602ebd32b00b6fcbe8b9c978a47a3b0d1a9997b54b9",
+      "drizzle/0038_agent_context.sql": "e118ebfe3001ede570ca6af8c94a3019edc07bd8fe2905d62e9ed200c509ffb5",
+      "drizzle/0039_cloud_workspace.sql": "fd076804296a9a935e577fe3b39741f63d5ec5e65280bbe7f3e2cc80645c354f",
+      "drizzle/0040_unified_context.sql": "7da45388ff4e15cb1e2d50bc8265e851ace77ffd8706ab3baabf873ff9fd808a",
+      "drizzle/0041_atomic_context_captures.sql": "fd9c3ce6460514632e0d86a10b99e49e3063879e60f891d733da38b2a8bd3d55",
+      "drizzle/0042_context_folder.sql": "0dde993bbb66ef0ae02d6f929197fc7ace269c743b5e6f7f7668b32b3ebaa6ca",
+      "drizzle/0043_cloud_task_inputs.sql": "e60af1a60b05d45d1e7645a7fbc0db60b66be3bce4e4e31ff4649cce33cdb1f6",
+      "drizzle/0044_agent_pair_connections.sql": "4fbd92828801255d950a90f3f02573c9e77a2f10c4e9b3c5553266342c3c4d9d"
+    }
+  },
+  "sourceReplay": {
+    "patches": 24,
+    "files": 178,
+    "incrementalFiles": 13,
+    "matched": true,
+    "patchSha256": "b0bd4d61e471f4ea2479bb012da103b7e44001f4c9a482f2258823733b3cd2a3"
+  },
+  "tests": {
+    "core": {
+      "passed": 495,
+      "failed": 0,
+      "skipped": 0
+    },
+    "identityAdapterHostBackground": {
+      "passed": 26,
+      "failed": 0
+    },
+    "extractedIdentityIngestionLauncher": {
+      "passed": 20,
+      "failed": 0
+    },
+    "bothAliasPackaging": "passed",
+    "packagedPlugin": "passed",
+    "sixProfileMailbox": "passed; fixtures, not real Google/OS proof",
+    "unchangedUi": {
+      "passed": 129,
+      "evidence": "context-completion-verification.json"
+    },
+    "unchangedProductLifecycle": {
+      "passed": 15,
+      "evidence": "context-completion-verification.json"
+    }
+  },
+  "production": {
+    "filesVerified": 156,
+    "changedFiles": [
+      "dist/standalone/account-runtime/context-assets/agent-setup.mjs",
+      "dist/standalone/account-runtime/mcp-adapter.mjs"
+    ],
+    "services": {
+      "commonplace": "active",
+      "commonplace-runtime": "active",
+      "nginx": "active"
+    },
+    "worker": "ready",
+    "previous": "20261026-context-completion",
+    "backup": "/var/lib/commonplace/rollouts/20261026-native-p0/before.sqlite",
+    "migrations": "unchanged; exact migration set/applied digests required by code-only deployment",
+    "rehearsal": "isolated redundant full integrity scan cancelled because of slow disk I/O; backup retained; production unaffected until verified code-only activation"
+  },
+  "publicSmoke": {
+    "/healthz": 200,
+    "/.well-known/oauth-authorization-server": 200,
+    "/.well-known/agent-configuration": 200,
+    "authorize": {
+      "status": 303,
+      "redirect": "/signin-with-chatgpt"
+    },
+    "unauthenticatedMcp": 401,
+    "assets": [
+      {
+        "name": "context-product.mjs",
+        "sha256": "58a52fd448829492be0d77b50ddb01d66d83005b5a6f91af872234688d25264a"
+      },
+      {
+        "name": "context-conversations.mjs",
+        "sha256": "0f749f9336695b7b828ce4b5a53684db1d6045ff34a1aaf8d6cc2afbf113acb3"
+      },
+      {
+        "name": "context-native-setup.mjs",
+        "sha256": "7e3929ab4f148f48bc2141131d4b1b4c639552b78050a9cb5307143354efd9f2"
+      },
+      {
+        "name": "context-setup-request.mjs",
+        "sha256": "fffdaeec0bbc87bc11f8bdafbc68f50e050675c1aa1eea0d700b384159f31100"
+      },
+      {
+        "name": "personal-assistant-setup.mjs",
+        "sha256": "8334986d1151320ad551d9fefbef53dbe54d88f08384b6348ee3a960913b16dc"
+      },
+      {
+        "name": "mcp-resource-source-setup.mjs",
+        "sha256": "c1822b335c202b2fa98fa4546d92474771c2926552b86d4823529e2e4f76d52a"
+      }
+    ],
+    "screens": [
+      {
+        "name": "desktop",
+        "width": 1440,
+        "googleButtonVisible": true,
+        "overflow": false,
+        "errors": []
+      },
+      {
+        "name": "phone",
+        "width": 390,
+        "googleButtonVisible": true,
+        "overflow": false,
+        "errors": []
+      }
+    ],
+    "finalRerunPassed": true,
+    "priorAttempt": "Navigation timeout retained in public-smoke-navigation-timeout.log; final rerun passed without product changes."
+  },
+  "nativeInstallation": {
+    "accountAndBindingPreserved": true,
+    "persistentPermissionsChanged": false,
+    "claudeAlias": "meet-proxy@commonplace",
+    "codexOnlyExistingPluginPathsChanged": true,
+    "backgroundVersion": "0.4.24",
+    "codexAppBundleId": "com.openai.codex",
+    "codexAppPath": "/Applications/ChatGPT.app"
+  },
+  "realTests": {
+    "claude": {
+      "exitCode": 0,
+      "isError": false,
+      "toolsUsed": [
+        "ToolSearch",
+        "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context"
+      ],
+      "bothContextToolsUsed": true,
+      "markers": [
+        "MEET_PROXY_KNOWLEDGE_PROBE_20261026_1792976453"
+      ],
+      "permissionDenials": [],
+      "durationMs": 41476,
+      "receipts": [
+        {
+          "tool": "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+          "isError": false,
+          "resultKeys": [
+            [
+              "revision",
+              "asOf",
+              "mode",
+              "results",
+              "nextCursor"
+            ]
+          ],
+          "markerPresent": true
+        },
+        {
+          "tool": "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+          "isError": false,
+          "resultKeys": [
+            [
+              "changed",
+              "revision",
+              "restart"
+            ]
+          ],
+          "markerPresent": false
+        },
+        {
+          "tool": "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+          "isError": false,
+          "resultKeys": [
+            [
+              "changed",
+              "revision",
+              "restart"
+            ]
+          ],
+          "markerPresent": false
+        },
+        {
+          "tool": "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+          "isError": false,
+          "resultKeys": [
+            [
+              "documentId",
+              "title",
+              "kind",
+              "path",
+              "revision",
+              "offset",
+              "text",
+              "citations",
+              "nextOffset",
+              "totalCharacters",
+              "resourceUri"
+            ]
+          ],
+          "markerPresent": true
+        }
+      ],
+      "persistentPermissionsChanged": false,
+      "finalResultReceived": true,
+      "evidenceSha256": "62d43e6efdeb9a4b3fea01b97bf857e961f45cb2e3a63002e4d96ac46b293c7b"
+    },
+    "codex": {
+      "exitCode": 0,
+      "receipts": [
+        {
+          "tool": "setup_status",
+          "status": "completed",
+          "error": null,
+          "nativeChat": [
+            {
+              "verified": true,
+              "delivery": "prompt",
+              "automaticDelivery": false
+            }
+          ],
+          "markerPresent": false
+        },
+        {
+          "tool": "search_shared_context",
+          "status": "completed",
+          "error": null,
+          "nativeChat": [],
+          "markerPresent": true
+        },
+        {
+          "tool": "read_shared_context",
+          "status": "completed",
+          "error": null,
+          "nativeChat": [],
+          "markerPresent": false
+        },
+        {
+          "tool": "read_shared_context",
+          "status": "completed",
+          "error": null,
+          "nativeChat": [],
+          "markerPresent": true
+        }
+      ],
+      "markers": [
+        "MEET_PROXY_KNOWLEDGE_PROBE_20261026_1792976453"
+      ],
+      "configUnchanged": true,
+      "evidenceSha256": "1cf6a7b1d7f8a8b42ca54a76e14d7577ad99c704e11f4c2fa72779381d5358e2"
+    },
+    "googleBrowser": {
+      "state": "Google sign-in returned to live Spaces as the owner-selected account",
+      "usedExistingGoogleSession": true,
+      "freshGoogleConsentVerified": false,
+      "matchesNativeAccount": true,
+      "handoffBlockedPendingOwnerAccountChoice": false,
+      "ownerChoseExistingPluginAccount": true,
+      "realGoogleExistingAccountFlowPassed": true,
+      "accountMatchesPlugin": true
+    },
+    "claudeDesktopSetup": {
+      "state": "registered; context available",
+      "liveBrowserAccountMatchesNative": true,
+      "copyPromptPrimary": true,
+      "pasteAndSendInstructionsVisible": true,
+      "appLaunchRequested": true,
+      "registered": true,
+      "collectionReceiptVerified": true,
+      "macLaunchServicesConfirmed": true,
+      "frontmostBundleId": "com.anthropic.claudefordesktop",
+      "launchMethod": "Exact browser-prepared link passed to macOS open; browser protocol dispatch alone was not confirmed",
+      "uiInspection": {
+        "tool": "osascript via System Events",
+        "state": "denied",
+        "reason": "osascript is not allowed assistive access. (-25211)",
+        "permissionsChanged": false
+      },
+      "latestBrowserStage": "ready",
+      "latestBrowserStatus": "Context is available",
+      "receipt": {
+        "app": "claude",
+        "httpStatus": 200,
+        "accountMatches": true,
+        "linked": true,
+        "version": "0.4.24",
+        "expired": false,
+        "spaceLinked": true,
+        "syncEnabled": true,
+        "chat": {
+          "provider": "Claude",
+          "host": "claude-desktop",
+          "delivery": "native"
+        },
+        "collector": {
+          "state": "scanning",
+          "seenAt": 1792988884273,
+          "files": 59,
+          "online": true
+        },
+        "receipts": {
+          "conversations": 59,
+          "lastReceivedAt": 1792988895262,
+          "partial": true
+        },
+        "searchableConversations": 57
+      },
+      "actualDesktopHostVerified": true,
+      "ownerSentPreparedRequest": true
+    },
+    "codexDesktopSetup": {
+      "state": "registered; context available",
+      "receipt": {
+        "app": "codex",
+        "httpStatus": 200,
+        "accountMatches": true,
+        "linked": true,
+        "version": "0.4.24",
+        "expired": false,
+        "spaceLinked": true,
+        "syncEnabled": true,
+        "chat": {
+          "provider": "Codex",
+          "host": "codex",
+          "delivery": "prompt"
+        },
+        "collector": {
+          "state": "scanning",
+          "seenAt": 1792988884273,
+          "files": 59,
+          "online": true
+        },
+        "receipts": {
+          "conversations": 59,
+          "lastReceivedAt": 1792988895262,
+          "partial": true
+        },
+        "searchableConversations": 57
+      },
+      "registered": true,
+      "collectionReceiptVerified": true,
+      "actualDesktopHostVerified": true,
+      "ownerSentPreparedRequest": true,
+      "macLaunchServicesConfirmed": true,
+      "frontmostBundleId": "com.openai.codex"
+    }
+  },
+  "remainingAcceptance": [
+    "Collection remains partial: 59 installation conversations received, 57 searchable at capture; continue background catch-up and source coverage monitoring",
+    "Fresh empty Google account and zero-install Mac journey are covered by fixtures, not a new real-account/device run",
+    "Two-person production invite/accept/revoke journey has signed integration/browser coverage; no new external production invitation was sent",
+    "Conductor-specific OS launch was not newly tested in this rollout; existing packaged six-profile transport checks passed"
+  ],
+  "logs": {
+    "core-0.4.24-final.log": {
+      "sha256": "e0fe888c4ccab91162322ac1ab27dbc4a48ca6e3a0d97f4041674005082c2a0b",
+      "bytes": 58903
+    },
+    "identity-regression.log": {
+      "sha256": "61578801e45599caa56d2ac30fc80d70dbc4cd77031d876ac0e9706502c2a623",
+      "bytes": 6139
+    },
+    "extracted-0.4.24.log": {
+      "sha256": "95a3831cea2b3ff294fa5f5ceba460862d8256710ecfe76a16f6065949160a23",
+      "bytes": 2907
+    },
+    "package-0.4.24-final.log": {
+      "sha256": "39afc261eab037348ad5879db6d3317338c3158413140af69488b973a8a42e0d",
+      "bytes": 274
+    },
+    "plugin-0.4.24-final.log": {
+      "sha256": "ffeacb6e2387535fd19a01c382433214fb3863361c196358440a496635fdcbe6",
+      "bytes": 819
+    },
+    "mailbox-0.4.24-final.log": {
+      "sha256": "34d97a8a19b27ec94a6cb22bcac3367e65ec0f04ee7aa5a5d8b655a66bf8ae9b",
+      "bytes": 888
+    },
+    "public-smoke-final.log": {
+      "sha256": "4f486b7ef11740700693dfa9c3540c2220db81648bc6b09ba13cbbeaf92d8432",
+      "bytes": 1062
+    },
+    "public-smoke-navigation-timeout.log": {
+      "sha256": "7452244d0ea5e977ebc5fa8729d47bcee5f17d67088503798abce454ed9980c0",
+      "bytes": 339
+    }
+  },
+  "screenshots": {
+    "docs/screenshots/p0-native-readiness/production-desktop.png": {
+      "sha256": "fea7362ecebee5a15902fd6220d7ab4a4a9dc9cc5c6bbccbe96e6ee93c24b32b",
+      "scope": "live public sign-in surface"
+    },
+    "docs/screenshots/p0-native-readiness/production-phone.png": {
+      "sha256": "cc2795af0277b0cc9e2266486a491a019fe5514ab58c1598a4c4ac94d7fd69b8",
+      "scope": "live public sign-in surface"
+    }
+  },
+  "liveSetupUi": {
+    "stage": "ready",
+    "status": "Context is available",
+    "copyPromptRecedesAfterRegistration": true,
+    "desktopVerified": true,
+    "phoneWidth": 390,
+    "phoneOverflow": false,
+    "scope": "real owner account, installation-specific receipts; pre-existing plugin reused; background collection remains partial"
+  },
+  "privateScreenshots": {
+    "desktop-setup-ready.jpg": {
+      "sha256": "e2f80914204028e420055b57d03580e2f63c1ee73d808905c19dd8b65fa195eb",
+      "published": false,
+      "scope": "real signed-in setup; retained privately in workspace and on Mac"
+    },
+    "phone-setup-ready.jpg": {
+      "sha256": "7e591a3c6e9825bb1cf1b8b57298cb518fa8659a01f9c2b302798015063c132d",
+      "published": false,
+      "scope": "real signed-in setup; retained privately in workspace and on Mac"
+    }
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "name": "Context MVP: native invitations, timed sharing, membership exit, full journeys and 0.4.20 packaging",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "context-mvp-completion.patch",
+  "sha256": "66d0f0c2924e5ef88213325da81e354311a6754c567cda99c9d7a921aa846978",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch"
+  ],
+  "state": "packaged candidate 0.4.20/runtime55; deployment recorded separately in context-mvp-verification.json",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/cloud-http.mjs",
+      "beforeSha256": "bc42db359201581e464e72bd542d383c8b012d78f286dd5711e42364e9792a68",
+      "sha256": "1df26924c76c1bc29923ff5219e6b5780fd1e9e01fd048a82195a087b1602f23"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-connections.mjs",
+      "beforeSha256": "3a61d17d2d65c73130808b3004101d6b70f679e23c7ab5bc98333e4cd1dc3422",
+      "sha256": "cb0d159a3a6689bcf043b14bb58efbbaa973a23587dc9153b20503b16844941c"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-setup.mjs",
+      "beforeSha256": "0a7b5290391b38d7559f5f6363bbbea37f67d8fdd863595ca169ab1754bd319e",
+      "sha256": "fdb98b0112e7c7a1921edd51cf99e5b62dc3aa6dae17174ac9d619488a86eaef"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-product.mjs",
+      "beforeSha256": "f324af19d4ade670af9e8abd79ba34af5b07fd41987739f11ad96e255ac64d76",
+      "sha256": "8456655ee0e826ab0fba427736bf36b3b6760e2a1a23fd0790d7ccfce62a692c"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-space-rules.mjs",
+      "beforeSha256": "fc5a3e1cb2a0544af98b465431dcded60a4c078daa876f04efdf78fb01860b6f",
+      "sha256": "a95249bb7ee0e19722e47dfac6bfd009f57587b99e9da52eb2f1f60d23333340"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-spaces.mjs",
+      "beforeSha256": "37ab79649596e4db94cf948d95f3df4d1cf92f5c097c0cb538d88e95149627b2",
+      "sha256": "e0966dd4c27a57044775055b90ae3aa9e7a2b0d79232bcdc39d08e47982656e1"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/social.mjs",
+      "beforeSha256": "b241e4bd287cc02af5478d9abae6a19bef284e2103076997a264a8c0e0e925d1",
+      "sha256": "23af95ada977c9f0e9c2037bd2224489b31afc4cb5fb9afcb66caf54d6a6f862"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-style.mjs",
+      "beforeSha256": "ca2f1b2d03c49ea8598d62263eb3c5067e652745cc760cf49b44f575ca361e51",
+      "sha256": "cfae0e3d22100d39630f940005a55dd3b77f36076f9c4a48b9abffd2836b348a"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-ui.mjs",
+      "beforeSha256": "cd5fe0e51410b721cb73be998426cb6c71d077d3be8289da166b9de04a7a70f1",
+      "sha256": "f2ad764f585a5cab41e22bcf7d649647221fdc10a029a4a1dfa5166ab3e52970"
+    },
+    {
+      "path": "apps/commonplace-account/server/remote-mcp.mjs",
+      "beforeSha256": "f409452e58bae76698ffeb03aa3e07be2691db2fe80b44a0243080a028cb7b02",
+      "sha256": "40a6eaa9cb5567554be528f290a702838c677300c8ad482b96ffacc18c6120b1"
+    },
+    {
+      "path": "apps/commonplace-account/server/space-context.mjs",
+      "beforeSha256": "49e7609034808a8b3aaf87476b9698f937a02daf0dad8ca73c8e12ce37a13281",
+      "sha256": "eb4e587e796a4bc15bc6ae5d41085d62fa66a89ec6e516ba3fd9b53e918b5a74"
+    },
+    {
+      "path": "apps/commonplace-account/server/space-management.mjs",
+      "beforeSha256": null,
+      "sha256": "cd68a87545d9aa67d7027f04b74871394302aa0575a2f2f3af0ca3e14c09386b"
+    },
+    {
+      "path": "apps/commonplace-account/server/ui-pages.mjs",
+      "beforeSha256": "68b5c2c363f0360c9ed76377faa8d095179f66a05a3974153685e9369a57fa19",
+      "sha256": "b7e02a84b7581c83d7d26ef460cf97440245a563f96afa54e39cad9998598ed2"
+    },
+    {
+      "path": "apps/commonplace/plugin/commonplace/skills/meet-proxy/SKILL.md",
+      "beforeSha256": "403baee38f993b048a66f24fb710a0b7423962512cc4be935fa8f481a32d9363",
+      "sha256": "fdff85a7ddb211da29f679ca969e569b52b28ab880571b5f7794b0278867877a"
+    },
+    {
+      "path": "apps/commonplace/server/account-inbox.mjs",
+      "beforeSha256": "d9058ca0a7a6524608870bf581753a35ac7306f44d66ee07df59e0c6c2c1a393",
+      "sha256": "e1731b398911e20aeb671ba3a2ec0207f9ef72320f8d929ce826f29a7e04487f"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "e921915e3c3f662cbfdc538f5314f3d01f5ae29c7a5a17aa4519dbbc2ebd8943",
+      "sha256": "2647bef5be5cace1be6ba9ce51a3688c9e248ba1393465d9977715cf477e08ae"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "64c9d5d5a8b086470a3d6536471bc2b3bca9ce13400fd15a435698d274f7d46d",
+      "sha256": "45f447277d8b57aa4a5971de682cf7d933bf5b23de774379fc858da3122d6868"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "3aa025d3e72880f055e947c7e6ee63c50b292b55bddf314c5dd14d50d613efa2",
+      "sha256": "f3f3d78a9af3b73a6105b485f29d1409dc909ac7bdc28e705f30d44d932f1462"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "3ac6c50c625752119b217eb6ec9a407a27c17cc86c69b1abb3d77c519b8d99b4",
+      "sha256": "d4d282577cf344ac7b6f04d89313e9afedb200a89074818ce48ae4c08cc41278"
+    },
+    {
+      "path": "scripts/preview-context-product.mjs",
+      "beforeSha256": "1ad587cbcb463470bf99f3ba1cabee07f4b46e245043168c154f66a637529d5c",
+      "sha256": "6c20587a6421d7a8ebc8fd02dc14eab88b2f17737c46d52870a11a5790ed88e5"
+    },
+    {
+      "path": "tests/context-readiness-browser.test.mjs",
+      "beforeSha256": null,
+      "sha256": "da48ac22ded4e80dd3142121f801dda41268751c77d0114fcd9e14a502191b0a"
+    },
+    {
+      "path": "tests/context-spaces-browser.test.mjs",
+      "beforeSha256": "e2db1733669981ea65cd5b4a4e18b74b78bef7becbbc83ff672b9e591a15f3b8",
+      "sha256": "e5dc50b59842a92ce93c201832723c8ca3e799c56e33427bc30ab19d756db1d9"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "802d2de11f8393711c31284fcb580335ab842334ee5ce6bd4e17737b15f3e64e",
+      "sha256": "f05163ae9e56d7e7d906b768a585e51d0a8c46bc156d69de379dbf26241f05fe"
+    },
+    {
+      "path": "tests/product-flow-browser.test.mjs",
+      "beforeSha256": "549a94b703965a980b7959bc21200f93ddd9df42f6e41254646fd073255a5d83",
+      "sha256": "1f25818e95899587a5f116ebe7d75dac0397fce98065fe87dbd277e86eef1ebd"
+    },
+    {
+      "path": "tests/product-spec-e2e.test.mjs",
+      "beforeSha256": "1b241554a973d5e12943a4c95f9d0b05ef241b7ea42ded4dabf042e96be47e40",
+      "sha256": "4393b0e68286926738b5c1b5f6b2ae2e225ee6b07cbb87fd982d824dfd7ff44e"
+    },
+    {
+      "path": "tests/space-context-management.test.mjs",
+      "beforeSha256": null,
+      "sha256": "4a1b2f3dc78883c51f913a716851b9fb75769e37894d6431a71ad9fb958f825b"
+    },
+    {
+      "path": "tests/space-context-mcp.test.mjs",
+      "beforeSha256": "352d64f1998e460763c2547d2ac563c0ca7c789c2d50e7965ae9bcc63d91dab9",
+      "sha256": "146e4ad7fb7494c5b31c3871f4d957143060f11eda03ebf74ae26ff2c50c2ee1"
+    },
+    {
+      "path": "tests/space-context.test.mjs",
+      "beforeSha256": "a3fe9595943d8a74e65311b796247d06695ffebe047cfdac749ac0cb9f044540",
+      "sha256": "33adfbc6570ee2b078598be2644d24b9a9e5ae88246436886c78e0b49580ebec"
+    },
+    {
+      "path": "tests/ui-browser.test.mjs",
+      "beforeSha256": "c3e89bd934959d6cfdea395e176df462f0dcfecc78b5d917e30e5dc2304f4ef9",
+      "sha256": "10a70aff9175f1e3635817429e07d8be4394b76f544ea268921b1409b42e94e7"
+    }
+  ]
+}

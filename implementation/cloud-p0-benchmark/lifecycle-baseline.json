@@ -1,0 +1,276 @@
+[
+  {
+    "case": "space-accept",
+    "sessionId": "66ff7f32-9a33-4292-a7d5-67e90fb63d0c",
+    "sessionLink": "conductor://workspace?id=8f9c311b-b0d4-40c3-9457-8d7b152e9262&session=66ff7f32-9a33-4292-a7d5-67e90fb63d0c",
+    "result": "synthetic-pass",
+    "tools": [
+      {
+        "server": "spec",
+        "name": "preview_space_invitation",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 20
+      },
+      {
+        "server": "spec",
+        "name": "accept_space_invitation",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 9
+      }
+    ],
+    "otherCompletedToolTypes": [],
+    "final": "Joined Maya Chen\u2019s **Fern Review** space as a member. Joining does not enable private-library sharing.",
+    "visibleReceiptsSha256": "f05b7a30f745c0e0329789fe847167b2bacc8e6679a008d409b605c3c3fc1b2d",
+    "timing": {
+      "turn.started": "2026-10-26T20:00:25.696Z",
+      "turn.completed": "2026-10-26T20:00:34.199Z"
+    }
+  },
+  {
+    "case": "space-invite",
+    "sessionId": "8c5e21e9-925d-41bd-bd1c-9b71a17e36bf",
+    "sessionLink": "conductor://workspace?id=8f9c311b-b0d4-40c3-9457-8d7b152e9262&session=8c5e21e9-925d-41bd-bd1c-9b71a17e36bf",
+    "result": "synthetic-pass",
+    "tools": [
+      {
+        "server": "spec",
+        "name": "create_context_space",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 14
+      },
+      {
+        "server": "spec",
+        "name": "create_space_invitation",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 8
+      },
+      {
+        "server": "spec",
+        "name": "get_profile",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 5
+      }
+    ],
+    "otherCompletedToolTypes": [],
+    "final": "Created **Briar Review** in the connected account, **Alex Morgan**.\n\n[Generated invite link](<synthetic-loopback-invitation>) \u2014 expires in 14 days.\n\nThe link uses localhost, so it isn\u2019t usable by Maya remotely yet. Nothing was sent to her.",
+    "visibleReceiptsSha256": "28c2336918bbd3bed5fdc5df473bd4c5ad6024beddb7c702dbe304b078d20863",
+    "timing": {
+      "turn.started": "2026-10-26T20:01:20.391Z",
+      "turn.completed": "2026-10-26T20:01:45.575Z"
+    }
+  },
+  {
+    "case": "space-context",
+    "sessionId": "c0b7b2a2-5732-4196-a26e-79fe854681b3",
+    "sessionLink": "conductor://workspace?id=8f9c311b-b0d4-40c3-9457-8d7b152e9262&session=c0b7b2a2-5732-4196-a26e-79fe854681b3",
+    "result": "synthetic-pass",
+    "tools": [
+      {
+        "server": "spec",
+        "name": "archive_search",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 79
+      },
+      {
+        "server": "spec",
+        "name": "list_context_spaces",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 86
+      },
+      {
+        "server": "spec",
+        "name": "read_space_activity",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 6
+      },
+      {
+        "server": "spec",
+        "name": "request_space_context",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 17
+      }
+    ],
+    "otherCompletedToolTypes": [],
+    "final": "Maya\u2019s latest shared Cobalt Launch update says:\n\n- **Launch date:** December 28, 2026\n- **Rollout owner:** Maya\n- **Still undecided:** Exact start time and timezone\n\nThe shared update doesn\u2019t include detailed milestones or dependencies.\n\nSource: \u201cApproved launch update\u201d in the Cobalt Launch space.",
+    "visibleReceiptsSha256": "543ce8c2d08c91794aae7ed3e8bffd201a14113eabe93a630d0be84a15908e76",
+    "timing": {
+      "turn.started": "2026-10-26T20:02:10.621Z",
+      "turn.completed": "2026-10-26T20:02:26.898Z"
+    }
+  },
+  {
+    "case": "space-unknown",
+    "sessionId": "8b0a1a12-d0f0-4098-b017-92f87fb63df3",
+    "sessionLink": "conductor://workspace?id=8f9c311b-b0d4-40c3-9457-8d7b152e9262&session=8b0a1a12-d0f0-4098-b017-92f87fb63df3",
+    "result": "synthetic-pass",
+    "tools": [
+      {
+        "server": "spec",
+        "name": "archive_search",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 59
+      },
+      {
+        "server": "spec",
+        "name": "list_context_spaces",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 6
+      },
+      {
+        "server": "spec",
+        "name": "list_workspaces",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 11
+      },
+      {
+        "server": "spec",
+        "name": "read_space_activity",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 5
+      },
+      {
+        "server": "spec",
+        "name": "request_space_context",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 14
+      }
+    ],
+    "otherCompletedToolTypes": [],
+    "final": "Maya hasn\u2019t chosen an exact hour or timezone yet. The latest approved Cobalt Launch update sets the launch date as **December 28, 2026**, with both still undecided.",
+    "visibleReceiptsSha256": "d536bc0d4e75b621e2585213452000867b2110073f0de5d38110dc0823113e30",
+    "timing": {
+      "turn.started": "2026-10-26T20:02:47.066Z",
+      "turn.completed": "2026-10-26T20:03:04.182Z"
+    }
+  },
+  {
+    "case": "space-leave",
+    "sessionId": "17aca79b-0dd9-401a-9884-a6711e7ea075",
+    "sessionLink": "conductor://workspace?id=8f9c311b-b0d4-40c3-9457-8d7b152e9262&session=17aca79b-0dd9-401a-9884-a6711e7ea075",
+    "result": "synthetic-pass",
+    "tools": [
+      {
+        "server": "spec",
+        "name": "list_workspaces",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 6
+      },
+      {
+        "server": "spec",
+        "name": "list_context_spaces",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 11
+      },
+      {
+        "server": "spec",
+        "name": "get_profile",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 14
+      },
+      {
+        "server": "spec",
+        "name": "leave_context_space",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 6
+      },
+      {
+        "server": "spec",
+        "name": "list_context_spaces",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 6
+      }
+    ],
+    "otherCompletedToolTypes": [],
+    "final": "You\u2019ve left Cobalt Launch. It no longer appears in your spaces.",
+    "visibleReceiptsSha256": "8da9fba9f72189939572fdb062af6fe0be0e43080b614c7df550fa1b6ace6b7b",
+    "timing": {
+      "turn.started": "2026-10-26T20:03:22.341Z",
+      "turn.completed": "2026-10-26T20:03:35.484Z"
+    }
+  },
+  {
+    "case": "space-after-leave",
+    "sessionId": "1448e68c-59d5-4d50-ac71-87e72e8898b3",
+    "sessionLink": "conductor://workspace?id=8f9c311b-b0d4-40c3-9457-8d7b152e9262&session=1448e68c-59d5-4d50-ac71-87e72e8898b3",
+    "result": "routing-failure; context withheld",
+    "tools": [
+      {
+        "server": "spec",
+        "name": "list_context_spaces",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 8
+      },
+      {
+        "server": "spec",
+        "name": "read_space_activity",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 4
+      },
+      {
+        "server": "spec",
+        "name": "archive_search",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 62
+      },
+      {
+        "server": "spec",
+        "name": "request_space_context",
+        "status": "completed",
+        "error": null,
+        "isError": false,
+        "durationMs": 7
+      }
+    ],
+    "otherCompletedToolTypes": [],
+    "final": "I couldn\u2019t retrieve Maya\u2019s latest Cobalt Launch plan: her shared context is currently unavailable, and your archive has no matching plan.",
+    "visibleReceiptsSha256": "4980aee54ab03ca8c118e09b17c68adb86d38679c700405712b57d0354196615",
+    "timing": {
+      "turn.started": "2026-10-26T20:03:45.015Z",
+      "turn.completed": "2026-10-26T20:04:02.753Z"
+    }
+  }
+]

@@ -1,0 +1,181 @@
+diff --git a/apps/commonplace-account/server/archive-index.mjs b/apps/commonplace-account/server/archive-index.mjs
+index 7ff4a3a..aaebfe4 100644
+--- a/apps/commonplace-account/server/archive-index.mjs
++++ b/apps/commonplace-account/server/archive-index.mjs
+@@ -78,9 +78,10 @@ export async function validContextFiles(directory,manifest){
+     });
+   }catch{return false;}
+ }
+-export async function rankedDocuments(directory,terms,input,cursor){
++export async function rankedDocuments(directory,terms,input,cursor,digest){
+   const filename=path.join(directory,'search.sqlite'),stat=await lstat(filename);
+   if(!stat.isFile()||stat.isSymbolicLink())throw Error('Invalid context index.');
++  if(typeof digest!=='string'||await fileDigest(filename)!==digest)throw Error('Archive integrity check failed.');
+   const db=new DatabaseSync(filename,{readOnly:true});
+   try{
+     const where=['search MATCH ?'],args=[terms.map(t=>'"'+t.text+'"'+(t.prefix?'*':'')).join(' AND ')];
+diff --git a/apps/commonplace-account/server/archive-tools.mjs b/apps/commonplace-account/server/archive-tools.mjs
+index 60fdfa7..11d198e 100644
+--- a/apps/commonplace-account/server/archive-tools.mjs
++++ b/apps/commonplace-account/server/archive-tools.mjs
+@@ -45,7 +45,7 @@ export class ArchiveTools {
+     return {text,citations:ids};
+   }
+   async ranked(input,docs,terms){
+-    const cursor=number(input.cursor,0,Number.MAX_SAFE_INTEGER),rows=await rankedDocuments(this.directory,terms,input,cursor),results=[];
++    const cursor=number(input.cursor,0,Number.MAX_SAFE_INTEGER),rows=await rankedDocuments(this.directory,terms,input,cursor,this.manifest.files?.['search.sqlite']),results=[];
+     const allowed=new Set(docs.map(d=>d.id));
+     const escape=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+     const pattern=new RegExp('(?<![\\p{L}\\p{N}\\p{M}])(?:'+terms.map(t=>t.text.split(' ').map(escape).join('[^\\p{L}\\p{N}\\p{M}]+')+(t.prefix?'':'(?![\\p{L}\\p{N}\\p{M}])')).join('|')+')','iu');
+diff --git a/apps/commonplace-account/server/cloud-archive.mjs b/apps/commonplace-account/server/cloud-archive.mjs
+index 383fabc..6d0e142 100644
+--- a/apps/commonplace-account/server/cloud-archive.mjs
++++ b/apps/commonplace-account/server/cloud-archive.mjs
+@@ -117,10 +117,23 @@ export class CloudArchive {
+     // retains per-account coordination and all reader pins.
+     return archiveWorker({database:this.database,directory:this.directory,owner,now:this.now(),pins:[...this.pins.keys()]});
+   }
+-  async prepare(owner){
++  async prepare(owner,{reuseCurrent=false}={}){
+     ownerId(owner);this.work.run('INSERT OR IGNORE INTO cp_cloud_archive_state(owner) VALUES(?)',owner);
+     const needed=this.work.get('SELECT revision FROM cp_cloud_archive_state WHERE owner=?',owner).revision;
+-    let snapshot=await this.refresh(owner);
++    // Read requests validate the specific bytes they consume. Rechecking every
++    // section of an unchanged archive for every file page made initial mirrors
++    // time out indefinitely. Full reconciliation still validates all files.
++    let snapshot;
++    if(reuseCurrent&&!this.locks.has(owner)){
++      try{
++        const candidate=await this.current(owner);
++        if(candidate?.manifest.revision===needed&&(!candidate.manifest.expiresAt||candidate.manifest.expiresAt>this.now())){
++          const stats=await Promise.all(['','sections','manifest.json'].map(n=>lstat(path.join(candidate.directory,n))));
++          if(stats.every((s,i)=>!s.isSymbolicLink()&&(i===2?s.isFile():s.isDirectory())&&(s.mode&(i===2?0o004:0o005))===(i===2?0o004:0o005)))snapshot=candidate;
++        }
++      }catch{}
++    }
++    if(!snapshot||this.locks.has(owner))snapshot=await this.refresh(owner);
+     if(snapshot.manifest.revision<needed||(snapshot.manifest.expiresAt&&snapshot.manifest.expiresAt<=this.now()))snapshot=await this.refresh(owner);
+     if(snapshot.manifest.expiresAt&&snapshot.manifest.expiresAt<=this.now())throw Error('Archive authorization changed; retry.');
+     // Pin before another reconciliation can retire this generation.
+diff --git a/apps/commonplace-account/server/shared-context.mjs b/apps/commonplace-account/server/shared-context.mjs
+index e2774da..95e4cac 100644
+--- a/apps/commonplace-account/server/shared-context.mjs
++++ b/apps/commonplace-account/server/shared-context.mjs
+@@ -1,6 +1,7 @@
+ import path from 'node:path';
+ import {open,lstat} from 'node:fs/promises';
+ import {constants} from 'node:fs';
++import {createHash} from 'node:crypto';
+ import {CloudWork} from './cloud-work.mjs';
+ import {CloudArchive,archiveWorker} from './cloud-archive.mjs';
+ import {UnifiedContext} from './unified-context.mjs';
+@@ -37,7 +38,7 @@ export async function sharedContext(service,owner,method,input){
+  // retains its database connection. Coordinate builds and snapshot pins by
+  // that connection; separate request caches would delete each other's builds.
+  const archive=archiveFor(service);
+- const snapshot=await archive.prepare(owner);
++ const snapshot=await archive.prepare(owner,{reuseCurrent:true});
+  try{
+   // Snapshot revisions protect multi-page reads from silently mixing versions.
+   if(input.revision!==undefined&&input.revision!==snapshot.manifest.revision)return {changed:true,revision:snapshot.manifest.revision,restart:true};
+@@ -47,6 +48,11 @@ export async function sharedContext(service,owner,method,input){
+   if(method==='archive-manifest')return mirrorManifest(snapshot,args);
+   if(method==='archive-files')return await mirrorFiles(snapshot,args);
+   return await archiveWorker({directory:snapshot.directory,query:{method:method.replace('archive-','archive_'),input:args}});
++ }catch(error){
++  // A damaged requested file fails closed. Reconcile before the next attempt;
++  // do not return unchecked bytes or an unverified search index.
++  if(error.message==='Archive integrity check failed.')await archive.refresh(owner);
++  throw error;
+  }finally{await snapshot.release();}
+ }
+ // Local context folders replicate the published projection file by file. Only
+@@ -79,6 +85,8 @@ async function mirrorFiles(snapshot,input){
+   if((await lstat(file)).isSymbolicLink())throw invalid('Invalid context file.');
+   const handle=await open(file,constants.O_RDONLY|constants.O_NOFOLLOW);
+   let text;try{const stat=await handle.stat();if(!stat.isFile()||stat.size>64_000_000)throw invalid('Invalid context file.');text=await handle.readFile('utf8');}finally{await handle.close();}
++  const digest=request.path==='INDEX.md'?m.files?.['INDEX.md']:known.get(request.path).digest;
++  if(createHash('sha256').update(text).digest('hex')!==digest)throw Error('Archive integrity check failed.');
+   if(offset>text.length)throw invalid('Invalid file offset.');
+   const limit=Math.min(FILE_SLICE,budget),slice=text.slice(offset,offset+limit);budget-=slice.length;
+   files.push({path:request.path,offset,text:slice,nextOffset:offset+slice.length<text.length?offset+slice.length:null,totalCharacters:text.length,digest:request.path==='INDEX.md'?m.files?.['INDEX.md']||null:known.get(request.path).digest});
+diff --git a/scripts/deploy-context-compression.py b/scripts/deploy-context-compression.py
+new file mode 100644
+index 0000000..b692622
+--- /dev/null
++++ b/scripts/deploy-context-compression.py
+@@ -0,0 +1,26 @@
++#!/usr/bin/env python3
++from pathlib import Path
++import hashlib,json,subprocess
++paths={p.resolve() for directory in ['/etc/nginx/sites-enabled','/etc/nginx/conf.d'] for p in Path(directory).glob('*') if p.is_file()}
++needle='proxy_pass http://127.0.0.1:3000;'
++matches=[p for p in paths if needle in p.read_text()]
++assert len(matches)==1,'Expected one production proxy configuration'
++p=matches[0];before=p.read_bytes();text=before.decode()
++assert text.count(needle)==1,'Ambiguous production proxy'
++assert 'proxy_set_header Accept-Encoding' not in text,'Inspect existing encoding policy'
++after=text.replace(needle,'# Context responses must not use CPU-heavy default Brotli compression.\n        proxy_set_header Accept-Encoding gzip;\n        '+needle).encode()
++backup=Path('/var/lib/commonplace/rollouts/zero-knowledge-nginx-before.conf')
++backup.parent.mkdir(parents=True,exist_ok=True)
++assert not backup.exists(),'Backup already exists; inspect prior attempt'
++backup.write_bytes(before);backup.chmod(0o600)
++try:
++ p.write_bytes(after)
++ subprocess.run(['nginx','-t'],check=True,capture_output=True)
++ subprocess.run(['systemctl','reload','nginx'],check=True)
++except:
++ p.write_bytes(before)
++ subprocess.run(['nginx','-t'],check=True,capture_output=True)
++ subprocess.run(['systemctl','reload','nginx'],check=True)
++ raise
++print(json.dumps({'config':str(p),'beforeSha256':hashlib.sha256(before).hexdigest(),'sha256':hashlib.sha256(after).hexdigest(),'validated':True,'reloaded':True,'upstreamEncoding':'gzip'}))
++
+diff --git a/tests/cloud-archive.test.mjs b/tests/cloud-archive.test.mjs
+index 1a78b71..41f8e0e 100644
+--- a/tests/cloud-archive.test.mjs
++++ b/tests/cloud-archive.test.mjs
+@@ -227,14 +227,15 @@ test('index and readable files rebuild after upgrades or damage, and updates rem
+ 
+ test('concurrent HTTP service wrappers share archive builds and preserve searchable snapshots',async t=>{
+   const f=await fixture(t);f.native('shared-request','Orchid context remains readable');
+-  let release,started=0;
++  let release,started=0,signalStarted;
++  const ready=new Promise(resolve=>{signalStarted=resolve;});
+   const gate=new Promise(resolve=>{release=resolve;}),materialize=CloudArchive.prototype.materialize;
+-  t.mock.method(CloudArchive.prototype,'materialize',async function(owner){started++;await gate;return materialize.call(this,owner);});
++  t.mock.method(CloudArchive.prototype,'materialize',async function(owner){started++;signalStarted();await gate;return materialize.call(this,owner);});
+   const services=Array.from({length:3},()=>new AccountService(f.db,f.service.origin));
+   const pending=Promise.all(services.map(service=>sharedContext(service,f.owner,'archive-search',{query:'Orchid'})));
+   // The production runtime recreates these wrappers on a persistent DB. All
+   // requests must await one builder instead of clearing each other's staging.
+-  await new Promise(resolve=>setImmediate(resolve));const builds=started;release();
++  await ready;const builds=started;release();
+   const pages=await pending;
+   assert.equal(builds,1);assert.ok(pages.every(p=>p.results.length===1));
+   assert.equal(new Set(pages.map(p=>p.revision)).size,1);
+@@ -268,3 +269,24 @@ test('sync prewarms the context index without rebuilding unchanged snapshots',as
+   assert.equal(await readFile(path.join(directory,'current.json'),'utf8'),pointer);
+   assert.equal((await sharedContext(f.service,f.owner,'archive-search',{query:'Searchable'})).results.length,1);
+ });
++
++test('paged HTTP reads reuse current snapshots, verify accessed bytes and observe source changes',async t=>{
++ const f=await fixture(t);f.native('read-fast','Verified reader evidence');
++ let builds=0;const materialize=CloudArchive.prototype.materialize;
++ t.mock.method(CloudArchive.prototype,'materialize',function(owner){builds++;return materialize.call(this,owner);});
++ const head=await sharedContext(f.service,f.owner,'archive-manifest',{}),doc=head.documents[0];
++ for(let i=0;i<3;i++){
++  const page=await sharedContext(new AccountService(f.db,f.service.origin),f.owner,'archive-files',{revision:head.revision,paths:[doc.path]});assert.match(page.files[0].text,/Verified reader evidence/);
++ }
++ assert.equal(builds,1,'file pages do not validate every unrelated section again');
++ const root=path.join(f.dir,'context-snapshots',f.owner),pointer=JSON.parse(await readFile(path.join(root,'current.json'),'utf8')),directory=path.join(root,pointer.generation);
++ const file=path.join(directory,doc.path);await chmod(file,0o644);await writeFile(file,'Injected unverified bytes');
++ await assert.rejects(sharedContext(f.service,f.owner,'archive-files',{revision:head.revision,paths:[doc.path]}),/integrity/);
++ const fixed=await sharedContext(f.service,f.owner,'archive-files',{revision:head.revision,paths:[doc.path]});assert.match(fixed.files[0].text,/Verified reader evidence/);
++ const nextPointer=JSON.parse(await readFile(path.join(root,'current.json'),'utf8')),index=path.join(root,nextPointer.generation,'search.sqlite');await chmod(index,0o644);await writeFile(index,'invalid index');
++ await assert.rejects(sharedContext(f.service,f.owner,'archive-search',{query:'Verified'}),/integrity/);
++ assert.equal((await sharedContext(f.service,f.owner,'archive-search',{query:'Verified'})).results.length,1);
++ f.native('read-fast','Replacement source','Codex chats: test',2);
++ const stale=await sharedContext(f.service,f.owner,'archive-files',{revision:head.revision,paths:[doc.path]});assert.equal(stale.changed,true);
++ const current=await sharedContext(f.service,f.owner,'archive-files',{revision:stale.revision,paths:[doc.path]});assert.match(current.files[0].text,/Replacement source/);
++});

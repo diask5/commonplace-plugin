@@ -1,3 +1,9 @@
+# Current release: 0.4.13
+
+See [production verification](docs/PRODUCTION-READINESS.md) for the completed
+cloud-to-Mac round trip, backup restore, release checks and host limitations.
+The records below describe historical releases.
+
 # Meet Proxy 0.4.0 verification
 
 - 130 application tests passed, including callback owner/device/state isolation,

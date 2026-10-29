@@ -1,0 +1,43 @@
+{
+  "observedAt": "2026-10-27T05:28:35.308Z",
+  "records": {
+    "serverStaging": {
+      "serverFilesStaged": 5,
+      "candidateHashesVerified": true,
+      "baselineManifestVerified": true,
+      "remoteDirectory": "/tmp/meet-proxy-p0-20261027-runtime64",
+      "activated": false,
+      "servicesChanged": false
+    },
+    "serverPreflight": {
+      "exit": 0,
+      "preflight": {
+        "baseline": "20261026-current-read",
+        "baselineFilesVerified": 159,
+        "candidateFiles": 159,
+        "changedFiles": [
+          "dist/standalone/account-runtime/archive-tools.mjs",
+          "dist/standalone/account-runtime/context-assets/agent-setup.mjs",
+          "dist/standalone/account-runtime/remote-mcp.mjs"
+        ],
+        "migrationDigestsUnchanged": true,
+        "candidateSha256": "255688ceb2220b0adb035fe2e4f4f31ed20f0494fac5cc8530c64e3bce64dfa1",
+        "activated": false
+      }
+    },
+    "candidateActivation": {
+      "result": "Traceback (most recent call last):\n  File \"<stdin>\", line 43, in <module>\nAssertionError: Runtime64 did not activate; inspect old launchers without force\n\n[exited with code 1]"
+    },
+    "controlledHandoff": {
+      "state": "passed",
+      "previousRevision": 49,
+      "activeRevision": 64,
+      "accountPreserved": true,
+      "savedConfigurationPreserved": true,
+      "hostAppsUntouched": true,
+      "temporarilyPausedVerifiedPluginProcesses": 7,
+      "companionGracefullyStopped": true,
+      "allStillExistingPausedProcessesResumed": true
+    }
+  }
+}

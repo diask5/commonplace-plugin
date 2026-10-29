@@ -1,0 +1,69 @@
+{
+  "name": "Classify exact native message bodies with full private surrounding context",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch",
+    "deployment-source-modes.patch",
+    "visible-transcript-envelopes.patch"
+  ],
+  "patch": "native-message-excerpts.patch",
+  "sha256": "ce34aa558e059a9c5f551f7205ae8e5ac52e64afc76dfc2eed016c212fae67a3",
+  "state": "Published in 0.4.32/runtime65, permanently installed and server deployed. Live sharing acceptance remains open.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/unified-context.mjs",
+      "beforeSha256": "5b9274fa572c8f62ffd3277d6d84e46036f0d029ea3b58a684ff9c40433c512d",
+      "sha256": "382bfef28e6a7ccd8f97156a3682cac4e280345aa8d9aca397d662705632f0b2"
+    },
+    {
+      "path": "apps/commonplace-account/server/space-context.mjs",
+      "beforeSha256": "03cf7a8e15d538b0ce331422d73839dd612251fca6f11a7891b5874a64f12bde",
+      "sha256": "9b27d821977aea161bec0651063b3ff9f9a89f044d8ca2389356857c88feb92a"
+    },
+    {
+      "path": "tests/space-context-message-excerpts.test.mjs",
+      "beforeSha256": null,
+      "sha256": "053c6ff84fea692466806b934b779262472532f5e63a019bb6adbc49e6638653"
+    }
+  ]
+}

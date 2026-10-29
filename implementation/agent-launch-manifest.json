@@ -1,0 +1,34 @@
+{
+  "patch": "agent-launch-and-server-check.patch",
+  "sha256": "af86278adea67e864ade31c066064b730f599c07cb3c6b0eadcd8f744248ff87",
+  "appliesAfter": "mcp-adoption-0.4.19-rc.3.patch",
+  "files": [
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "1b4abad3be8b7908b364066e8fce00f2606775f3cb29162d2d19095a1c6bf9fa",
+      "sha256": "6efa95b4a70a56cdc55da323ae5643e0e8250c25b19fe5c123a30bbfb6e2057d"
+    },
+    {
+      "path": "apps/commonplace-account/server/agent-setup-ui.mjs",
+      "beforeSha256": "fbf9ab476ae8a2256fa9067a82f8c1460b56c30c3557e40dcf2d3f0bed127401",
+      "sha256": "4070ef9854534b9f0d30af61dbfebd9c53da926dc2734a99daa51b11e6f3249c"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-setup.mjs",
+      "beforeSha256": "aff90cd923d35aa1c71d9dbf64f85e2f8af4287fd35dd4b028e1afebb7117716",
+      "sha256": "bae6acff240ed038b0609a641aae5ec59d63c9d7547010edd0555d59b8413e4f"
+    },
+    {
+      "path": "tests/agent-setup-browser.test.mjs",
+      "beforeSha256": "c47001b63d7dd15b6b40b90d6837def4c479a79d0d4985676e0e307d9054aabe",
+      "sha256": "052a83cc7fbea5de31824042dd56a35762b673f8b764d5d258bf415dfafd31d9"
+    },
+    {
+      "path": "tests/mailbox-setup.test.mjs",
+      "beforeSha256": "1dbc2fb9698eb375ea095dadd69d36bda45d8ecf4825af3e13f4523c6b41a20c",
+      "sha256": "52baddb2cbb1b1b6c7f5d2863719a0e0a212f6b8849370433f3f8a2e63c39a11"
+    }
+  ],
+  "verification": "Applied cleanly to before snapshots; result matches source byte for byte.",
+  "deployment": "Only the two account UI files are deployed to staging. The native plugin setup_status addition is source-only."
+}

@@ -1,0 +1,99 @@
+{
+  "name": "P0 native host attachment and background version updates",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "p0-native-readiness.patch",
+  "sha256": "b0bd4d61e471f4ea2479bb012da103b7e44001f4c9a482f2258823733b3cd2a3",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch"
+  ],
+  "state": "0.4.24/runtime57; release state tracked in p0-native-readiness-verification.json",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-setup.mjs",
+      "beforeSha256": "0348087946c6c9f2d067e5c895406d283cc6afb75e8a9e2ef1e582ea7bbfd5a6",
+      "sha256": "f84610750f1595d7f1767e67a8dc2d5717ea846cd4117a30439765bb7f0cb4fc"
+    },
+    {
+      "path": "apps/commonplace-account/server/mcp-adapter.mjs",
+      "beforeSha256": "0afaefde0291e863cfc1c88e04515fe186d5c64947e7110a74a5df6d7ab06b6a",
+      "sha256": "3a9cffaf2f4d638d97d881e52a79164cec37dcb3bdef4a8cf70a843decaf37c8"
+    },
+    {
+      "path": "apps/commonplace/server/cloud-background.mjs",
+      "beforeSha256": "28560b276bcfa40f4a1664755f1c33b38a3494cfc5eaeb458f85f1cad7d343a0",
+      "sha256": "971a6ad45b7d6cd790866475db5a00125aa661ad62fe965e1c8ef4def4f9d8e7"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-adapter-source.mjs",
+      "beforeSha256": "10c66144aa1c41b6c6c7000ae1d5587807d3a61a472af4e14181f6528cfd8058",
+      "sha256": "d3040810977de481301077ba9babe9d9b5949e5857b213c1df127f5a263c00b2"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-adapter.mjs",
+      "beforeSha256": "0afaefde0291e863cfc1c88e04515fe186d5c64947e7110a74a5df6d7ab06b6a",
+      "sha256": "3a9cffaf2f4d638d97d881e52a79164cec37dcb3bdef4a8cf70a843decaf37c8"
+    },
+    {
+      "path": "apps/commonplace/server/native-session.mjs",
+      "beforeSha256": "b700d13b09fed757d21d16082cd72fa59666dcc5214e53ae27d211d5e6d4887c",
+      "sha256": "90720fca1a24b036c7b2a9b7f8af587f7289b9e7a8120fb45d07a7fd75c69b33"
+    },
+    {
+      "path": "apps/commonplace/server/plugin.mjs",
+      "beforeSha256": "bd21e32996e9c45da95e81e3777e5dfcee989113ef404331053f85ba4102f8be",
+      "sha256": "9e18a5ca6e0cafd4b0bd0d2bff440cc31c275e3ca24b0ee32e3e4a79f6caa6c8"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "c8811b56ed2fe502e6e800c738205a79d592219e9e31ea3416c1fe871ce407ed",
+      "sha256": "64df4a15808c6c9fbf282f3bb8d633d79f73c03364d26c6af24cbdc287fd9415"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "cd09577e6609125ee07ec04eba9bf5f35911c803b22d08c02637791f23e03463",
+      "sha256": "ac32e1976d0548b2ea884e7a02bf13a1199da644fed467e7daaea72153b31a21"
+    },
+    {
+      "path": "tests/cloud-background.test.mjs",
+      "beforeSha256": null,
+      "sha256": "bc0b7fe54443a396db46c23e18332e5c0773a9086b0b4352696d06a2c5f11f77"
+    },
+    {
+      "path": "tests/mcp-adapter.test.mjs",
+      "beforeSha256": "dfbbb14e3f22dcb39371a553d1375909d069ea122453e053017fd2b7b5b9caf6",
+      "sha256": "74a60ad0e6e26e960ff98d30301fd2a41aca54b5eac2cb4aa0698a19e1bab4e9"
+    },
+    {
+      "path": "tests/mcp-codex-identity.test.mjs",
+      "beforeSha256": null,
+      "sha256": "fe6c21e29d0a75f1feaafdbfa820c4d224cf5e60310578011081215a03a01287"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "b127857975d5143165bfd637a243acafe997fe3c6455be84ea3d114197c34754",
+      "sha256": "b923805ee256166ccbfeb3497c0b4f574c4e3c09dc109fb6cbe435b197c0f547"
+    }
+  ]
+}

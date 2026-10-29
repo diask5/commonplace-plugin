@@ -1,0 +1,64 @@
+{
+  "name": "Serve only exact public UI assets through Nginx with application fallback",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch"
+  ],
+  "patch": "public-assets-delivery.patch",
+  "sha256": "ae045a7c5149c82c2419dbf586e5917225398d21ae296d8cf97c6463425cd96c",
+  "state": "Server-only follow-up; native 0.4.26/runtime59 unchanged. Source/packaged/live evidence is tracked in public-assets-delivery-verification.json.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/context-http.mjs",
+      "beforeSha256": "826d960707890d84f02a0c359ca0ddbef8256b2aa76e371bc76a7661033a57ec",
+      "sha256": "7433687dff05e4ab5962b5f959afc73c619fc70491c061239104e1d0615eebf0"
+    },
+    {
+      "path": "scripts/build-runtime-update.py",
+      "beforeSha256": "bee3aa04cdf92d295b41e6e96d53365271a124a9f2fd07beb27f0a211e0c87ab",
+      "sha256": "39694cf65ca51412a314234f3add8cbf8b212f7cfe005db061f59a504c7b2819"
+    },
+    {
+      "path": "scripts/deploy-public-assets.py",
+      "beforeSha256": null,
+      "sha256": "0644deb59bdb0bfd93e0554488fb317e447dfb38f5ed7ffc11a5db6560bb9d76"
+    },
+    {
+      "path": "tests/test_public_assets_deployment.py",
+      "beforeSha256": null,
+      "sha256": "117e91c47aa7351a14d759a731d5281a7760fc3cea2e93787bc2adc951f4d0d0"
+    },
+    {
+      "path": "tests/test_runtime_public_assets.py",
+      "beforeSha256": null,
+      "sha256": "c62b671d8cd83bd7b8a640dea0f18fa92dee5f906780eee3588e8603e6362036"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+✔ Windows MCP resolves to the shipped native PE executable, not a shell script (133.681625ms)
+✔ MCP launcher executes in a path with spaces without a system Node or shell-expanded arguments (83.522221ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 285.362762

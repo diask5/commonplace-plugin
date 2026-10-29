@@ -1,14 +1,77 @@
 # Meet Proxy
 
-Let someone talk to your agent while you are unavailable. Questions and answers
-live in a private, durable message board that both participants can read. Your
-agent answers within the topic, duration and disclosure limits you authorize.
+Share context with a person, team or project through the assistants you already
+use. **Spaces / My context** is the main navigation. Each space has **Messages /
+My sharing rules / Members**: a shared conversation, your own prompt rules and
+simple membership controls.
+
+The [production application](https://34.27.253.220/) includes context-sharing
+spaces, one-request native plugin/MCP setup, automatic private collection,
+natural-language invitations, timed rules and leave/archive controls.
+The latest release is **0.4.31/runtime64**, installed for Claude and Codex, with server
+`20261027-context-guidance-r2` live. Two real native CLI synthesis checks passed
+after runtime64 activation; every final citation had a successful source read.
+The original failed runs remain preserved, and the historical connection-error
+cause remains unconfirmed. [Live acceptance](docs/P0-LIVE-ACCEPTANCE.md) records
+the rollout and remaining default-host, real-person sharing and clean-setup gates.
+Earlier Google and
+Desktop handoffs are documented in [P0 readiness](docs/P0-NATIVE-READINESS.md).
+Direct Mail/iMessage sends remain P1.
+
+[See the desktop and phone walkthrough](https://kyle-cloud-w3.conductor.show/review)
+or [open the interactive preview](https://kyle-cloud-w3.conductor.show/preview/sample?view=conversations).
+These walkthroughs use isolated test identities; they do not prove a fresh Google
+sign-in or native app launch. The real Mac context-read result is documented in
+[zero-to-knowledge verification](docs/ZERO-TO-KNOWLEDGE.md).
+The [sharing walkthrough](docs/SHARING-WALKTHROUGH.md) explains the animated setup,
+copy/paste next step and sharing rules.
+
+Private-library sharing is opt-in per owner and space. Every request checks the
+current rules through Perplexity Decisions; rejected excerpts and classifier
+checks stay private. Approved excerpts become shared history. Explicit uploaded
+files are shared in full. Joining a space never grants unrestricted library access.
+Existing owner retrieval through MCP or local files needs no hosted answering model.
+
+## Unified context — 0.4.15
+
+Version 0.4.15 fixes backfill of active chats and concurrent archive searches. It provides one shared archive per verified account for native and cloud
+agents: resumable transcript collection, duplicate replica merging, source
+citations, exclusions, coverage, and paginated project statements. A readable
+`/context` folder holds complete source files with an index and ranked keyword
+search, phrase/prefix matching, and project/source/date filters. Existing
+accounts, chat bindings, permissions and sync choices are preserved.
+
+See [unified context](docs/UNIFIED-CONTEXT.md) and
+[candidate verification and rollout](docs/UNIFIED-CONTEXT-VERIFICATION.md).
+The hosted backend and both plugin aliases are released. Update existing
+installations through their supported manager or bundled Codex helper, then
+refresh the existing chat if the host requires it. Saved sync choices are preserved.
+
+## Test locally before deployment
+
+The [local integration environment](docs/LOCAL-DEVELOPMENT.md) runs the real UI,
+signed API, collector, search index and task worker with isolated sample accounts
+and simulated model/host responses. In the implementation repository, run
+`npm run dev:local` or `npm run test:local`. Conductor cloud workspaces can use
+`npm run dev:preview` for a protected preview. No production setup is needed.
+
+## One private cloud workspace
+
+[Download Meet Proxy / Commonplace 0.4.31](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.31)
+for a cloud workspace containing supported synced chats, permitted agent-message
+threads, published working context, and previous cloud results. Your cloud agent
+can query the live message board, consult your connected native agents, wait for
+a matching reply, and continue the same task.
+
+See [personal agents](docs/PERSONAL-AGENTS.md),
+[cloud workspace behavior](docs/CLOUD-WORKSPACE.md), and
+[production verification](docs/PRODUCTION-READINESS.md).
 
 ## Install or update
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.7**. Enable only one alias. Existing accounts and
+update that alias to **0.4.31**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate
@@ -120,9 +183,10 @@ answers. Actual local Claude Code sessions on macOS passed both invitation
 directions, idle delivery, private-source refusals and scope controls. The
 packaged plugin also passed both flows against the deployed production relay.
 
-The Conductor desktop interface itself remains untested. Codex lifecycle hooks
-and bounded waits do not start an idle or closed chat. Native host permissions
-and Claude's accept/hold/refuse setting remain effective. Queued, delivered and
+The cloud Conductor receiver has passed delivery into the original idle chat.
+Other hosts depend on their existing-session delivery support; lifecycle hooks
+and bounded waits alone cannot wake an idle chat. Native host permissions and
+Claude's accept/hold/refuse setting remain effective. Queued, delivered and
 answered are distinct states.
 
 See [verification results](MEET-PROXY-VERIFICATION.md) and the
@@ -148,3 +212,17 @@ Requires 0.4.6; your host may need to refresh its loaded tools after updating.
 
 Version 0.4.7 also recovers a companion upgrade when an older loaded plugin
 wins the runtime process lock. Existing account and chat data stay in place.
+
+## Conductor chat history
+
+Version 0.4.8 adds visible conversations cached by Conductor on your Mac to work-chat sync, alongside local Claude and Codex transcripts. Enable sync for your connected account. The background companion keeps it running while your Mac is awake. Provider-hosted ChatGPT and Claude website histories are not downloaded by model sign-in.
+
+Version 0.4.9 adds per-message delivery/read receipts and fixes startup listeners that remained waiting after setup. Check receipts in People → Shared chats or with read_chat_link. Update the existing plugin and reload it in your receiving host; a session heartbeat alone is not proof of delivery.
+
+Version 0.4.10 delivers shared-chat messages through the persistent native inbox, preserving sender attribution and original wording. Lifecycle hooks and the persistent receiver share a cursor to avoid duplicates. Reload the updated plugin in the same chat, or restart the host and reopen that conversation.
+
+For a customer walkthrough of the local context folder, see [docs/DEMO.md](docs/DEMO.md).
+
+The [product flow and design walkthrough](docs/PRODUCT-FLOW-DESIGN.md) follows Draft v3’s Agents/Inbox and invite/accept journey. The labeled demo is separate from real-account staging; its source is preserved in the fourth incremental patch.
+
+The latest source follow-up adds [automatic collection and live desktop setup](docs/LIVE-CONTEXT-SETUP.md), with a single app sheet, verified account handoff and installation-specific progress. It requires a new plugin release and matching deployment; published 0.4.19 is unchanged.

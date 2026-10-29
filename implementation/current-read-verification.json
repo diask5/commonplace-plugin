@@ -1,0 +1,243 @@
+{
+  "state": "published, deployed, installed and active; ordinary-prompt evidence improved but P0 acceptance gates remain",
+  "nativeVersion": "0.4.28",
+  "runtimeRevision": 61,
+  "serverRelease": "20261026-current-read",
+  "source": {
+    "patches": 34,
+    "files": 203,
+    "incrementalFiles": 12,
+    "matched": true,
+    "mismatches": [],
+    "patchSha256": "9b2f398b2b02a46aa8fbd49c83afdd70b1fbe243075c09cac5fbd162216f1fa5",
+    "manifestHashAgreement": {
+      "mcp-adoption-0.4.19-rc.3.patch": "no-standard-manifest",
+      "agent-launch-and-server-check.patch": "no-standard-manifest",
+      "spec-alignment.patch": true,
+      "product-flow-design.patch": true,
+      "production-readiness.patch": true,
+      "context-product-ui.patch": true,
+      "automatic-context-ingestion.patch": true,
+      "prompt-based-sharing.patch": true,
+      "sharing-rules-design.patch": true,
+      "sharing-desktop-layout.patch": true,
+      "sharing-interactions.patch": true,
+      "shared-spaces.patch": true,
+      "message-first-spaces.patch": true,
+      "live-context-setup.patch": true,
+      "seamless-plugin-setup.patch": true,
+      "copy-setup-prompt.patch": true,
+      "context-mvp-completion.patch": true,
+      "sharing-walkthrough.patch": true,
+      "zero-to-knowledge.patch": true,
+      "archive-read-performance.patch": true,
+      "native-discovery.patch": true,
+      "archive-revision-fence.patch": true,
+      "context-completion.patch": true,
+      "p0-native-readiness.patch": true,
+      "seamless-context.patch": true,
+      "deployment-startup-readiness.patch": true,
+      "context-timeout-recovery.patch": true,
+      "server-io-recovery.patch": true,
+      "public-assets-delivery.patch": true,
+      "context-read-performance.patch": true,
+      "registration-recovery.patch": true,
+      "live-index-reuse.patch": true,
+      "demand-archives.patch": true,
+      "current-read.patch": true
+    },
+    "sourceScopeFilesNotMatchingReplay": [],
+    "sourceScopeMissingCount": 0
+  },
+  "artifacts": {
+    "runtime-update.json": "429bed64cdb57f2bbcd58ba5f3b273bbd4739ed6cb1e8c72c1c891182097dbe5",
+    "runtime-update-manifest.json": "cd4b2c24cd0c3cc0a359874e97c8046b96b3c5291cdc9acbe0e7a6769a6a4c20",
+    "runtime-update.sha256": "fec6e1efbb92766a8b12c68931cb24272ae36b3581515714f42ba8a3e0ffb62d",
+    "deploy-cloud-update.py": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408"
+  },
+  "nativeArtifacts": {
+    "meet-proxy": "fdb5855405e7fba819177e59c77411e0c60e483f5ea4a6114f7846f3dee2af1d",
+    "commonplace": "b728ee686abadd0c17adff300838fb94c46bb5fa5ed9e6e8f0435ab64719ffe7"
+  },
+  "serverChangedFiles": [
+    "dist/standalone/account-runtime/cloud-archive.mjs",
+    "dist/standalone/account-runtime/context-assets/agent-setup.mjs",
+    "dist/standalone/account-runtime/remote-mcp.mjs",
+    "dist/standalone/account-runtime/shared-context.mjs"
+  ],
+  "checks": {
+    "fullCore": {
+      "passed": 589,
+      "failed": 0,
+      "skipped": 0
+    },
+    "retrievalRouting": 24,
+    "setupUI": 13,
+    "extractedRuntime": "passed OAuth/resource/tools/origin/readonly checks with synthetic profile; compiled authorize is a placeholder",
+    "packageIntegrity": "passed both aliases against checksum-pinned baseline and exact source overlays",
+    "extractedFeatures": {
+      "passed": 32,
+      "failed": 0,
+      "cancelled": 0
+    },
+    "packagedPluginSmoke": "passed actual stdio/signed HTTP/local relay; identity and host simulated",
+    "packagedMailboxSmoke": "passed six empty profiles, exact receiver, offline backlog, retry deduplication; Google and host test doubles",
+    "publicLiveSmoke": {
+      "state": "passed",
+      "assets": 31,
+      "screens": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "seconds": 5.842,
+          "googleButtonVisible": true,
+          "overflow": false,
+          "errors": []
+        },
+        {
+          "name": "phone",
+          "width": 390,
+          "seconds": 5.628,
+          "googleButtonVisible": true,
+          "overflow": false,
+          "errors": []
+        }
+      ],
+      "protocols": [
+        {
+          "path": "/healthz",
+          "method": "get",
+          "status": 200,
+          "seconds": 5.019
+        },
+        {
+          "path": "/.well-known/oauth-authorization-server",
+          "method": "get",
+          "status": 200,
+          "seconds": 3.716
+        },
+        {
+          "path": "/.well-known/agent-configuration",
+          "method": "get",
+          "status": 200,
+          "seconds": 4.013
+        },
+        {
+          "path": "/mcp",
+          "method": "post",
+          "status": 401,
+          "seconds": 1.795
+        },
+        {
+          "path": "/context/assets/ui.css",
+          "method": "post",
+          "status": 403,
+          "seconds": 0.03
+        }
+      ],
+      "evidence": "current-read/public-smoke.json",
+      "limits": "Public sign-in only; one latency sample, not fresh authenticated setup or a general speed guarantee."
+    },
+    "installedHostBenchmark": {
+      "completed": 8,
+      "automatedPassed": 8,
+      "cleanPasses": 7,
+      "sourceCollisionCases": 1,
+      "hostPermissionDenials": 0,
+      "savedConfigurationUnchanged": true,
+      "allFinalCitationsFromSuccessfulReads": true,
+      "retrievalReadinessSeconds": 29.83,
+      "caseDurationSeconds": [
+        46.0,
+        102.97
+      ],
+      "evidence": "current-read-native-benchmark.json",
+      "receiptAudit": "current-read-receipt-audit.json",
+      "separateSynthesisRetest": {
+        "state": "guarded stop",
+        "tool": "mcp__plugin_meet-proxy_meet-proxy__setup_status",
+        "reads": "two connection-unavailable errors",
+        "hostPermissionDenials": 0,
+        "evidence": "current-read-synthesis-retest.json"
+      },
+      "limits": "Controlled tool surface, not default-host routing or fresh GUI setup; first run includes synthetic name collision."
+    }
+  },
+  "limits": [
+    "Seven clean ordinary-prompt passes; one correctly reported source conflict. Clean replacement remains unverified after connection errors and a harness guard.",
+    "One fresh-search retry is admitted only after a changed attempt under six seconds; no hard twelve-second deadline.",
+    "Three oversized-page validation errors recovered; changed/restart replies and latency remain visible.",
+    "Exact additional Claude diagnostics allowance and previously denied browser-to-MCP acceptance retest need owner approval; no saved permissions changed.",
+    "Default-host routing and new cross-person production acceptance remain unverified. Fresh-account/clean-machine coverage is separate from existing-owner handoffs.",
+    "Direct Mail/iMessage is deferred P1."
+  ],
+  "preservedFailures": [
+    "current-read-focused.log: native guidance apostrophe syntax fixed before final checks.",
+    "current-read-extracted.log: verification started before extraction completed; rerun waits for completed extraction."
+  ],
+  "production": {
+    "state": "passed",
+    "release": "20261026-current-read",
+    "filesVerified": 159,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "none; unchanged hashes, code-only activation",
+    "previous": "20261026-demand-archives"
+  },
+  "releases": {
+    "native": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.28",
+    "server": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261026-current-read",
+    "sourceCommit": "dfea660b147b294df804c1cc14ba9424a949a911",
+    "mergeCommit": "2bbf6cac36fe9ee6915f1ca95174b472c732969c"
+  },
+  "installation": {
+    "state": "passed",
+    "version": "0.4.28",
+    "runtimeRevision": 61,
+    "zipSha256": "fdb5855405e7fba819177e59c77411e0c60e483f5ea4a6114f7846f3dee2af1d",
+    "accountPreserved": true,
+    "savedPermissionsPreserved": true,
+    "codexOnlyPluginPathsChanged": true,
+    "claudePluginManagerUpdated": true,
+    "normalActivation": {
+      "state": "failed",
+      "reason": "Old cached 0.4.15 launcher restarted runtime49 during the handoff; first attempt preserved."
+    },
+    "controlledActivation": {
+      "state": "passed",
+      "previousRevision": 49,
+      "activeRevision": 61,
+      "oldProcessStoppedGracefully": true,
+      "temporarilyPausedPluginProcesses": 8,
+      "allStillExistingPausedProcessesResumed": true,
+      "hostAppsUntouched": true
+    },
+    "evidenceLocation": "Mac ~/.commonplace-code-verification/current-read-0.4.28; activation-result.json preserves failed normal attempt, runtime61-controlled-result.json is successful activation"
+  },
+  "diagnostics": {
+    "existingCompanion": {
+      "searchSeconds": 4.5674,
+      "readSeconds": 1.8039,
+      "httpStatuses": [
+        200,
+        200
+      ],
+      "sourceTextReturned": true,
+      "changed": false,
+      "limits": "Independent later transport sample; does not repair the failed model retest."
+    },
+    "publicHealth": {
+      "status": 200,
+      "ready": true,
+      "seconds": 0.795
+    },
+    "productionSSH": {
+      "state": "reauthentication required",
+      "error": "Reauthentication failed; cannot prompt during non-interactive execution.",
+      "recovery": "Same existing GCP account browser reauthentication started on Mac; awaiting completion."
+    }
+  }
+}

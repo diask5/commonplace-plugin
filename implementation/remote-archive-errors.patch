@@ -1,0 +1,133 @@
+diff --git a/apps/commonplace-account/server/remote-mcp.mjs b/apps/commonplace-account/server/remote-mcp.mjs
+index a8b4bb2..95d49ed 100644
+--- a/apps/commonplace-account/server/remote-mcp.mjs
++++ b/apps/commonplace-account/server/remote-mcp.mjs
+@@ -6,6 +6,14 @@ import {WorkProblem} from './work.mjs';
+ import {archiveTools} from './archive-tools.mjs';
+ import {sharedContext} from './shared-context.mjs';
+ import {CloudWork} from './cloud-work.mjs';
++// Archive workers preserve static validation messages but not HTTP status.
++// Expose only these exact, reviewed input/lookup failures as correction replies;
++// integrity, transport and arbitrary exception text retain their error path.
++const archiveInputErrors=new Map([
++ ['Conversation is not in this account archive.','Conversation is not in this account archive. Search or list current documents and use an ID returned there.'],
++ ['Invalid page offset or size.','Invalid page offset or size. Start at offset 0 or use nextOffset from a successful read. Omit limit for the default page (maximum 16000).'],
++ ['Use a search phrase of 1–300 characters.','Use a search phrase of 1–300 characters.'],
++]);
+ const taskTools=[
+  ['run_cloud_task',{prompt:{type:'string',minLength:1,maxLength:16000},nonce:{type:'string',pattern:'^[a-f0-9]{24}$'},targetAgentId:{type:'string'}},['prompt','nonce'],false,'Create an owner-authorized durable task. Reuse nonce only for identical retries.'],
+  ['read_cloud_task',{id:{type:'string'}},['id'],true,'Read this owner’s task and its current status.'],
+@@ -44,6 +52,8 @@ export async function remoteMcp(request,service,{device,authorize,tools}){
+    const input=generatesNonce?{...args,nonce:args.nonce??randomBytes(12).toString('hex')}:args;
+    try{const value=await call(name,input);return {content:[{type:'text',text:JSON.stringify(generatesNonce?{...value,retryNonce:input.nonce}:value)}]};}
+    catch(error){
++    const correction=archiveTools.some(tool=>tool.name===name)&&archiveInputErrors.get(error.message);
++    if(correction)return {isError:true,content:[{type:'text',text:correction}]};
+     if(!generatesNonce&&! [400,401,403,404,409,413,429].includes(error.status))throw error;
+     const checking=error.status===409&&error.message==='This request is still checking. Refresh the board.';
+     const retry=generatesNonce&&/^[a-f0-9]{24}$/.test(input.nonce||'')&&(checking||![400,401,403,404,409,410,413,429].includes(error.status));
+diff --git a/tests/remote-archive-errors.test.mjs b/tests/remote-archive-errors.test.mjs
+new file mode 100644
+index 0000000..2b55a48
+--- /dev/null
++++ b/tests/remote-archive-errors.test.mjs
+@@ -0,0 +1,99 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import http from 'node:http';
++import path from 'node:path';
++import {mkdtemp,rm} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import {randomBytes,createHash} from 'node:crypto';
++
++const root=process.cwd();
++const {openDatabase}=await import('../apps/commonplace-account/server/sqlite.mjs');
++const {AccountService}=await import('../apps/commonplace-account/server/service.mjs');
++const {closeSharedContext}=await import('../apps/commonplace-account/server/shared-context.mjs');
++
++async function fixture(t){
++ const dir=await mkdtemp(path.join(tmpdir(),'remote-archive-error-'));
++ const db=openDatabase(path.join(dir,'state.sqlite'),{migrations:path.join(root,'apps/commonplace-account/drizzle')});
++ const service=new AccountService(db,'http://127.0.0.1');
++ const owner=(await service.profile({userId:'error-reporting-test:'+randomBytes(6).toString('hex'),email:'error-test@example.test'})).id;
++ const server=http.createServer(async(req,res)=>{
++  let raw='';for await(const part of req)raw+=part;
++  const response=await service.handle(new Request(service.origin+req.url,{method:req.method,headers:req.headers,body:raw}));
++  const body=await response.text();
++  res.writeHead(response.status,Object.fromEntries(response.headers));res.end(body);
++ });
++ await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
++ service.origin='http://127.0.0.1:'+server.address().port;service.resource=service.origin+'/mcp';
++ t.after(async()=>{await closeSharedContext(service);await new Promise(r=>server.close(r));db.close();await rm(dir,{recursive:true,force:true});});
++
++ const redirect_uri='http://127.0.0.1:15469/callback';
++ const client=await(await service.handle(new Request(service.origin+'/oauth/register',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({client_name:'Error reporting test',redirect_uris:[redirect_uri]})}))).json();
++ const issue=async scope=>{
++  const verifier=randomBytes(32).toString('base64url');
++  const flow=await service.beginAuthorization({id:owner},{client_id:client.client_id,redirect_uri,response_type:'code',state:'test',code_challenge:createHash('sha256').update(verifier).digest('base64url'),code_challenge_method:'S256',resource:service.resource,scope});
++  const callback=new URL(await service.approve({id:owner},{flowId:flow.id,csrf:flow.csrf,consent:'allow'},flow.cookie,service.origin));
++  return (await(await service.handle(new Request(service.origin+'/oauth/token',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({grant_type:'authorization_code',client_id:client.client_id,redirect_uri,resource:service.resource,code:callback.searchParams.get('code'),code_verifier:verifier})}))).json()).access_token;
++ };
++ const upload=await issue('commonplace:read commonplace:write commonplace:upload');
++ const reader=await issue('commonplace:read');
++ const api=async(method,body,bearer)=>(await service.handle(new Request(service.origin+'/account/api/cloud/'+method,{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+bearer},body:JSON.stringify(body)}))).json();
++ await api('configure',{syncEnabled:true},upload);
++ await api('context-ingest',{conversation:{id:'error-test-note',provider:'claude',title:'Error reporting test note'},sourceKey:'error-test/note',revision:1,epoch:1,capturedAt:Date.now()-60000,state:'current',messages:[{id:'m1',role:'user',text:'Errorprobe synthetic test note with enough text to read a page from.',position:0,timestamp:Date.now()-60000}]},upload);
++
++ let id=0;
++ const call=async(name,args)=>{
++  const response=await service.handle(new Request(service.resource,{method:'POST',headers:{'content-type':'application/json',accept:'application/json, text/event-stream','MCP-Protocol-Version':'2025-06-18',authorization:'Bearer '+reader},body:JSON.stringify({jsonrpc:'2.0',id:++id,method:'tools/call',params:{name,arguments:args}})}));
++  const text=await response.text();
++  const data=text.split('\n').filter(l=>l.startsWith('data: ')).map(l=>l.slice(6)).join('')||text;
++  return JSON.parse(data);
++ };
++ const search=JSON.parse((await call('archive_search',{query:'Errorprobe'})).result.content[0].text);
++ assert.ok(search.results.length,'the seeded note must be searchable');
++ return {call,documentId:search.results[0].documentId,search};
++}
++
++const recoverable=reply=>reply.result?.isError===true&&typeof reply.result.content?.[0]?.text==='string';
++
++test('an unknown documentId is reported recoverably',async t=>{
++ const {call}=await fixture(t);
++ const replies=await Promise.all(['unified-000000000000000000000000','PRIVATE-INVENTED-DOC'].map(documentId=>call('archive_read',{documentId})));
++ for(const reply of replies){assert.ok(recoverable(reply));assert.doesNotMatch(JSON.stringify(reply),/PRIVATE-INVENTED-DOC|Errorprobe/);}
++ assert.equal(replies[0].result.content[0].text,replies[1].result.content[0].text);
++});
++
++test('a read offset past the end of a document is reported recoverably',async t=>{
++ const {call,documentId}=await fixture(t);
++ const reply=await call('archive_read',{documentId,offset:10_000_000});
++ assert.ok(recoverable(reply));
++ assert.match(reply.result.content[0].text,/offset/i);
++ const corrected=await call('archive_read',{documentId});
++ assert.match(JSON.parse(corrected.result.content[0].text).text,/Errorprobe/);
++});
++
++test('an empty search phrase is reported recoverably',async t=>{
++ const {call}=await fixture(t);
++ assert.ok(recoverable(await call('archive_search',{query:'   '})));
++ const corrected=await call('archive_search',{query:'Errorprobe'});
++ assert.ok(JSON.parse(corrected.result.content[0].text).results.length);
++});
++
++test('schema violations, stale revisions and scope refusals already report recoverably',async t=>{
++ const {call,documentId}=await fixture(t);
++ assert.ok(recoverable(await call('archive_read',{documentId,limit:16001})),'limit above the published maximum');
++ assert.ok(recoverable(await call('archive_search',{query:'Errorprobe',mode:'fuzzy'})),'unknown search mode');
++ assert.ok(recoverable(await call('run_cloud_task',{prompt:'probe',nonce:'0123456789abcdef01234567'})),'write tool under a read-only token');
++ const stale=await call('archive_read',{documentId,revision:1});
++ assert.deepEqual(JSON.parse(stale.result.content[0].text).restart,true,'a stale revision returns a restart reply, not an error');
++});
++
++// An unrelated internal failure must not be mistaken for one of the reviewed
++// input errors, even when it includes a similar string.
++test('only exact archive input errors become correction replies',async()=>{
++ const {remoteMcp}=await import('../apps/commonplace-account/server/remote-mcp.mjs');
++ for(const message of ['Conversation is not in this account archive. PRIVATE','Database failed PRIVATE','Archive integrity check failed.']){
++  const response=await remoteMcp(new Request('http://localhost/mcp',{method:'POST',headers:{'content-type':'application/json',accept:'application/json, text/event-stream'},body:JSON.stringify({jsonrpc:'2.0',id:1,method:'tools/call',params:{name:'archive_list',arguments:{}}})}),{origin:'http://localhost'},{device:{owner:'a'.repeat(24)},authorize:async()=>{throw Error(message);},tools:[]});
++  const reply=await response.json();
++  assert.equal(reply.result,undefined);
++  assert.equal(reply.error.code,-32603);
++ }
++});

@@ -1,0 +1,46 @@
+{
+  "name": "Prominent copy setup prompt action after app selection",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "copy-setup-prompt.patch",
+  "sha256": "6798de1bc2ca1816773ba6382d3e9e35d6bdf2c63a5cb3fe2807761c83d7237c",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch"
+  ],
+  "state": "source and working preview; not packaged, installed or deployed",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-native-setup.mjs",
+      "beforeSha256": "54558f05b92389e1b0d04df044bddd14a29bc95afa58a697bec10edd373d2aea",
+      "sha256": "2be3e96dbe5715b4f8ebd784c5ae40745edbaf4fef2c93ecb1ac7f83292f24e3"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-style.mjs",
+      "beforeSha256": "65c9b83b1967fbd6de8f5592069f38ce3940bc23b154b855edf241f4895163ec",
+      "sha256": "ca2f1b2d03c49ea8598d62263eb3c5067e652745cc760cf49b44f575ca361e51"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-ui.mjs",
+      "beforeSha256": "dbe4080a753abcf68a63e524ba9c54a7c8513566b4865fed73936d659ee1b8d7",
+      "sha256": "cd5fe0e51410b721cb73be998426cb6c71d077d3be8289da166b9de04a7a70f1"
+    },
+    {
+      "path": "tests/context-setup-browser.test.mjs",
+      "beforeSha256": "f4fe43a273c72f9952fc54886c7d55a3bc4d2b399a8a8ccf02c56cd8c4502ef3",
+      "sha256": "4fdb09b465f095dc6a3dc211c969b6d94118d90f5b423f471930e586d2147b56"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "version": "0.4.27",
+  "runtimeRevision": 60,
+  "state": "source-built; not installed, staged, published or live",
+  "dir": "artifacts/registration-recovery-0.4.27",
+  "packages": {
+    "meet-proxy": {
+      "zip": "meet-proxy-0.4.27.zip",
+      "sha256": "ddeac7c6d1921c6ae3a855d6e7412bb7e97e53084b24a3cf9a3d0743e755a07e",
+      "bytes": 230155734,
+      "authClientOverlaySha256": "2ae5ce74b9fbee676677e0bcef16ea95679420989d5f8f7414a5e7e1913513b3",
+      "setupStatusSha256": "6bba3460d43f3f1fcaa9801ccf1af21d9b801717c6c5d6ace669b972d9fd006e",
+      "localClientSha256": "60ca3a81c12935263f890514a31fc8d1bf5de4575b0befc77357e317d5efefdb"
+    },
+    "commonplace": {
+      "zip": "commonplace-0.4.27.zip",
+      "sha256": "2e33aea0f68e1920d52fd734569357c202dfbc84c7e55700385c6eb58e8596d8",
+      "bytes": 230155735,
+      "authClientOverlaySha256": "2ae5ce74b9fbee676677e0bcef16ea95679420989d5f8f7414a5e7e1913513b3",
+      "setupStatusSha256": "6bba3460d43f3f1fcaa9801ccf1af21d9b801717c6c5d6ace669b972d9fd006e",
+      "localClientSha256": "60ca3a81c12935263f890514a31fc8d1bf5de4575b0befc77357e317d5efefdb"
+    }
+  },
+  "tests": {
+    "packaging": "1/1 pass (COMMONPLACE_TEST_PACKAGE_DIR)",
+    "queueRegression": "3/3 pass vs source and both extracted packages",
+    "smokePlugin": "pass both aliases",
+    "smokeMailbox": "pass both aliases",
+    "nativeSuite": "mailbox-*, cloud-background, person-inbox: 90/90"
+  }
+}

@@ -1,0 +1,72 @@
+diff --git a/apps/commonplace-account/server/space-context.mjs b/apps/commonplace-account/server/space-context.mjs
+index 428fae7..e28685c 100644
+--- a/apps/commonplace-account/server/space-context.mjs
++++ b/apps/commonplace-account/server/space-context.mjs
+@@ -9,6 +9,15 @@ const fail=(status,message)=>{throw new WorkProblem(status,message);};
+ const id=v=>{if(typeof v!=='string'||!/^[a-f0-9]{24}$/.test(v))fail(400,'Invalid space request.');return v;};
+ const digest=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
+ const initialized=new WeakSet();
++const questionWords=new Set('what is are was were does do did the a an and of for to in on with who when where why how can could would you we our it its this that tell me about please'.split(' '));
++export function spaceQuestionKeywords(query){
++ // Preserve explicit phrases and prefixes. Discovery may drop question glue
++ // only after an empty search; policy and source checks remain unchanged.
++ if(/["*]/.test(query))return null;
++ const terms=String(query).normalize('NFKC').toLowerCase().match(/[\p{L}\p{N}]+/gu)||[];
++ const value=terms.filter(term=>!questionWords.has(term)).join(' ');
++ return value&&value!==terms.join(' ')?value:null;
++}
+ // Separate owner policies and owner audit rows. Shared activity never contains
+ // policy text, rejected titles/snippets, source IDs, or provider error bodies.
+ export class SpaceContext extends Groups {
+@@ -86,11 +95,12 @@ export class SpaceContext extends Groups {
+   }
+   // Private scan limits never enter the response or its continuation token.
+   // Pin every whole-source read or bounded indexed window to one revision.
+-  const candidates=[],seen=new Set();let cursor,revision,budget=128000;
++  const candidates=[],seen=new Set();let cursor,revision,budget=128000,searchQuery=query;
+   for(let searchPage=0;searchPage<4&&seen.size<32&&budget>0&&candidates.length<CONTEXT_CANDIDATE_LIMIT;searchPage++){
+-   check();const found=await sharedContext(this.s,owner,'archive-search',{query,...(cursor===undefined?{}:{cursor}),...(revision===undefined?{}:{revision})});
++   check();const found=await sharedContext(this.s,owner,'archive-search',{query:searchQuery,...(cursor===undefined?{}:{cursor}),...(revision===undefined?{}:{revision})});
+    check();if(found.changed||!Array.isArray(found.results)||!Number.isSafeInteger(found.revision)||(revision!==undefined&&found.revision!==revision))fail(409,'Context changed.');
+    revision=found.revision;
++   if(searchPage===0&&!found.results.length&&found.nextCursor==null){const fallback=spaceQuestionKeywords(query);if(fallback){searchQuery=fallback;continue;}}
+    for(const result of found.results){
+     if(seen.has(result.documentId))continue;if(seen.size>=32||budget<=0||candidates.length>=CONTEXT_CANDIDATE_LIMIT)break;seen.add(result.documentId);
+     let expectedTotal=null;
+diff --git a/tests/space-context-message-excerpts.test.mjs b/tests/space-context-message-excerpts.test.mjs
+index 273ec4f..a24d8f1 100644
+--- a/tests/space-context-message-excerpts.test.mjs
++++ b/tests/space-context-message-excerpts.test.mjs
+@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
+ import {randomBytes} from 'node:crypto';
+ import {startContextPreview} from '../scripts/preview-context-product.mjs';
+ import {UnifiedContext} from '../apps/commonplace-account/server/unified-context.mjs';
+-import {SpaceContext} from '../apps/commonplace-account/server/space-context.mjs';
++import {SpaceContext,spaceQuestionKeywords} from '../apps/commonplace-account/server/space-context.mjs';
+ const id=()=>randomBytes(12).toString('hex');
+ async function fixture(t,texts,decide){
+  const p=await startContextPreview();t.after(()=>p.close());const owner=p.people.ready.owner,peer=p.spaces.maya.id,groupId=p.spaces.launch.id;
+@@ -12,7 +12,7 @@ async function fixture(t,texts,decide){
+  u.ingest(owner,device,input);const calls=[];
+  p.service.spaceContextOptions={decider:{configured:true,model:'test-only',decide:async q=>{calls.push(structuredClone(q));return decide(q);}}};
+  const s=new SpaceContext(p.service);s.save(owner,{groupId,expectedRevision:0,rules:[{id:'public',text:'Share Excerptpilot public launch facts with all space members; never share private budgets or audit markers.'}],enabled:true});
+- return {p,u,s,owner,peer,groupId,calls,device,input,request:()=>s.request(peer,{groupId,contributorId:owner,query:'Excerptpilot',nonce:id()})};
++ return {p,u,s,owner,peer,groupId,calls,device,input,request:(query='Excerptpilot')=>s.request(peer,{groupId,contributorId:owner,query,nonce:id()})};
+ }
+ test('native excerpts use exact event bodies, preserve full private context and do not expose message metadata',async t=>{
+  const texts=['Excerptpilot launch planned for November 5. Summarize it.','Excerptpilot public launch: November 5.','Excerptpilot moved to November 12. Summarize the current plan.','Excerptpilot public launch: November 12. Eden owns it.','Private budget 742900; audit marker PRIVATE-X.'];
+@@ -27,6 +27,14 @@ test('native excerpts use exact event bodies, preserve full private context and
+  assert.equal(f.s.board(f.owner,{groupId:f.groupId}).events[0].privateChecks.audit.length,texts.length);
+  assert.equal(f.s.board(f.owner,{groupId:f.groupId}).events[0].privateChecks.audit[0].title,f.input.conversation.title);
+ });
++test('empty full-question discovery finds sources while retaining the original request and private checks',async t=>{
++ const f=await fixture(t,['Excerptpilot private budget 84600 and audit marker PRIVATE-X.'],()=>({probability:0}));
++ const query='What is the Excerptpilot private budget and audit marker?';const r=await f.request(query);
++ assert.equal(r.state,'no_context');assert.equal(f.calls.length,1);assert.match(f.calls[0].candidate.text,/84600/);assert.equal(f.s.board(f.peer,{groupId:f.groupId}).events.at(-1).query,query);
++ const before=f.calls.length;await f.request('"What is the Excerptpilot"');assert.equal(f.calls.length,before);
++ assert.equal(spaceQuestionKeywords('what is the and'),null);assert.equal(spaceQuestionKeywords('"What is the Excerptpilot"'),null);assert.equal(spaceQuestionKeywords('What is Excerptpilot*'),null);
++ assert.equal(spaceQuestionKeywords('What is the Excerptpilot private budget?'),'excerptpilot private budget');assert.equal(spaceQuestionKeywords('Excerptpilot private budget'),null);
++});
+ test('a confidential source title stays private and still governs every message',async t=>{
+  const f=await fixture(t,['Excerptpilot public launch: November 12.'],({candidate})=>({probability:candidate.context.includes('Confidential internal schedule')?0:1}));
+  f.u.ingest(f.owner,f.device,{...f.input,conversation:{...f.input.conversation,title:'Confidential internal schedule'},revision:2,capturedAt:Date.now()+1});

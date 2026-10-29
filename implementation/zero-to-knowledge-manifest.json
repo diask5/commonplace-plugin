@@ -1,0 +1,99 @@
+{
+  "name": "Reliable zero-to-knowledge collection and archive verification",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "zero-to-knowledge.patch",
+  "sha256": "8fba015d582bfcc45cf0533b700d865ca5bca9602211b44af4949321f6201ba8",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch"
+  ],
+  "state": "Release candidate 0.4.21/runtime56; live verification tracked separately",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/archive-index.mjs",
+      "beforeSha256": "6f156707e75e7decb155a7861af128871b104bb554f7fe89372a86b2a0adcc71",
+      "sha256": "533b8ac20169cd810fb2c58fe0a18612ffaa86de532cd206ef2e04bc51d49d6b"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-archive.mjs",
+      "beforeSha256": "ce2cec54c50bd4a54f6e461a20d11ff0bfa9de07e4f073246a884928fc466f6f",
+      "sha256": "1cf4bc92ed6f640a305f622e716163c06a91b76fcaa12415a27b7354b2de8221"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-setup.mjs",
+      "beforeSha256": "fdb98b0112e7c7a1921edd51cf99e5b62dc3aa6dae17174ac9d619488a86eaef",
+      "sha256": "54ba8088c26abf02fb7413ca5e3b8139bb54a8762339c0cee5054bb224d3557c"
+    },
+    {
+      "path": "apps/commonplace-account/server/remote-mcp.mjs",
+      "beforeSha256": "40a6eaa9cb5567554be528f290a702838c677300c8ad482b96ffacc18c6120b1",
+      "sha256": "d3936ffabf4463eb129f21875c1375480b5c9b8c2e4c0930bec50182aafe7948"
+    },
+    {
+      "path": "apps/commonplace-account/server/ui-pages.mjs",
+      "beforeSha256": "b7e02a84b7581c83d7d26ef460cf97440245a563f96afa54e39cad9998598ed2",
+      "sha256": "4297852bf5874b0162acbf13cc54d8407de621cae13f5c2e5d788a8a9ea727e7"
+    },
+    {
+      "path": "apps/commonplace/server/canonical-sync.mjs",
+      "beforeSha256": "4bd861d2adcc24e131d7344e968e298f5a8ad15ee73cf141f90129ce73fca9c1",
+      "sha256": "72c0f04839f015887907da7d78df7b2059ce48c84a72379e74a8f40eb3fb4029"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "2647bef5be5cace1be6ba9ce51a3688c9e248ba1393465d9977715cf477e08ae",
+      "sha256": "cb868d53b3d7219c74a800eac3d1e50ba2924ff8bbf6b4bd01c880d9441f3305"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "45f447277d8b57aa4a5971de682cf7d933bf5b23de774379fc858da3122d6868",
+      "sha256": "41f8d56aa129f44281da085d4483d48025b9d0332b148762df02ea01b2670056"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "f3f3d78a9af3b73a6105b485f29d1409dc909ac7bdc28e705f30d44d932f1462",
+      "sha256": "234da2547bdf4727b0390cf4e32c32033179cfc2124540a1f875b33b4095330c"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "d4d282577cf344ac7b6f04d89313e9afedb200a89074818ce48ae4c08cc41278",
+      "sha256": "8f852c3051276ef14a3a92a26bb1f4c61dd8481a9793305216e37d816131ac7c"
+    },
+    {
+      "path": "tests/cloud-unified-context.test.mjs",
+      "beforeSha256": "0a69c8e6851b9126687e1a9109968d990a6f734749292fd24cb31b0c0102bbcf",
+      "sha256": "0d4e4904a6e069ce53f0b6f695dd856ed0395767eaa31f1f5e0d2a41da08c86c"
+    },
+    {
+      "path": "tests/context-mirror.test.mjs",
+      "beforeSha256": "c839875a5e57b51a307580c2a11b13dc68158aa5be6ca1172299c73143127208",
+      "sha256": "bebfe93f5f619957f57d74d5e911147622de63ed4b0c982827645e93f994e8ba"
+    },
+    {
+      "path": "tests/context-zero-browser.test.mjs",
+      "beforeSha256": null,
+      "sha256": "0fdad19acd57bcda44eb354dc0efdd11d11f90ead1241dd13136f0af60ea9e29"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "f05163ae9e56d7e7d906b768a585e51d0a8c46bc156d69de379dbf26241f05fe",
+      "sha256": "f5170eb18f4fdd6dea7a74c866484c0967d1137c9a4bb626ee08c9cfa61456ae"
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "observedAt": "2026-10-26",
+  "state": "authorized cloud benchmark complete; source candidates verified; live P0 remains open",
+  "workspaceId": "8f9c311b-b0d4-40c3-9457-8d7b152e9262",
+  "baseline": {
+    "nativeVersion": "0.4.28",
+    "runtime": 61,
+    "serverRelease": "20261026-current-read",
+    "bundleSha256": "429bed64cdb57f2bbcd58ba5f3b273bbd4739ed6cb1e8c72c1c891182097dbe5",
+    "transport": "synthetic loopback OAuth/DCR/PKCE remote MCP, not installed native",
+    "catalogCount": 85,
+    "classifier": "deterministic synthetic fixture"
+  },
+  "lifecycle": {
+    "cleanPasses": 5,
+    "routingFailures": 1,
+    "withholdingAfterLeave": "passed, no excerpts; wrongly posted query to a different joined space",
+    "oldInvitationAfterLeave": "non-model control403, membership unchanged",
+    "privateFinanceCase": "skipped after prior provider refusal",
+    "source": "cloud-p0-benchmark/lifecycle-baseline.json"
+  },
+  "retrieval": {
+    "attempted": 2,
+    "authorizedRouteFailures": 2,
+    "unstarted": 6,
+    "correctFacts": 2,
+    "citationGroundingPasses": 1,
+    "citationGroundingFailures": 1,
+    "preservedStopRace": "Both attempts completed before observation/cancel; no new retry sessions",
+    "claude": "search_wiki outside benchmark route; planning-note citation from search only",
+    "codex": "search_wiki outside benchmark route; both cited documents read successfully",
+    "coldStart": false
+  },
+  "changes": {
+    "scopeRouting": {
+      "patch": "scope-preserving-space-routing.patch",
+      "state": "source-only; absent from packages/live",
+      "existingFocusedTests": {
+        "passed": 8,
+        "failed": 0
+      }
+    },
+    "retrievalGuidance": {
+      "patch": "remote-retrieval-guidance.patch",
+      "state": "source-only; absent from packages/live",
+      "existingArchiveRemoteTests": {
+        "passed": 26,
+        "failed": 0
+      }
+    },
+    "replay": {
+      "patches": 39,
+      "files": 203,
+      "incrementalFiles": 2,
+      "matched": true,
+      "mismatches": [],
+      "patchSha256": "e442f1b42d4aa5576870823fd62c9e1214a1866001bf0c68ef2145c9cf4366e3",
+      "manifestHashAgreement": {
+        "mcp-adoption-0.4.19-rc.3.patch": "no-standard-manifest",
+        "agent-launch-and-server-check.patch": "no-standard-manifest",
+        "spec-alignment.patch": true,
+        "product-flow-design.patch": true,
+        "production-readiness.patch": true,
+        "context-product-ui.patch": true,
+        "automatic-context-ingestion.patch": true,
+        "prompt-based-sharing.patch": true,
+        "sharing-rules-design.patch": true,
+        "sharing-desktop-layout.patch": true,
+        "sharing-interactions.patch": true,
+        "shared-spaces.patch": true,
+        "message-first-spaces.patch": true,
+        "live-context-setup.patch": true,
+        "seamless-plugin-setup.patch": true,
+        "copy-setup-prompt.patch": true,
+        "context-mvp-completion.patch": true,
+        "sharing-walkthrough.patch": true,
+        "zero-to-knowledge.patch": true,
+        "archive-read-performance.patch": true,
+        "native-discovery.patch": true,
+        "archive-revision-fence.patch": true,
+        "context-completion.patch": true,
+        "p0-native-readiness.patch": true,
+        "seamless-context.patch": true,
+        "deployment-startup-readiness.patch": true,
+        "context-timeout-recovery.patch": true,
+        "server-io-recovery.patch": true,
+        "public-assets-delivery.patch": true,
+        "context-read-performance.patch": true,
+        "registration-recovery.patch": true,
+        "live-index-reuse.patch": true,
+        "demand-archives.patch": true,
+        "current-read.patch": true,
+        "read-page-guidance.patch": true,
+        "transport-diagnostics.patch": true,
+        "cloud-closeout-runtime.patch": true,
+        "scope-preserving-space-routing.patch": true,
+        "remote-retrieval-guidance.patch": true
+      },
+      "sourceScopeFilesNotMatchingReplay": [],
+      "sourceScopeMissingCount": 0
+    }
+  },
+  "candidateRegressions": {
+    "scope": {
+      "passed": 3,
+      "failed": 0,
+      "moduleSha256": "7070559b004600a41461a5989fc68f8f51d8c58fa23f7cd4e4ab211194505427",
+      "cases": [
+        {
+          "name": "scope-selected",
+          "sessionId": "d694abce-dbbf-4946-ac37-3a25a5a9ddb6",
+          "exchangesBefore": 0,
+          "exchangesAfter": 1,
+          "effect": "only selected space used"
+        },
+        {
+          "name": "scope-left",
+          "sessionId": "e24206ec-e2d0-43e9-bd67-15d95eaa9063",
+          "exchangesBefore": 0,
+          "exchangesAfter": 0,
+          "snapshotBeforeAndAfter": "51db1806bb992e4beea4edad482aeee24a377bad343a52861cb3313c8e487143",
+          "effect": "discovery only, no substitute space"
+        },
+        {
+          "name": "scope-ambiguous",
+          "sessionId": "77d4bc17-04bf-4a41-99e4-18302a580a0b",
+          "exchangesBefore": 0,
+          "exchangesAfter": 0,
+          "snapshotBeforeAndAfter": "087b3ccd39eabe5934692027244ec95c7c767b60c69e40bfbec6f75f3a0d743c",
+          "effect": "asks owner which current space"
+        }
+      ],
+      "scope": "published28 plus source-only routing guidance; full85 catalog, same schema/annotations/auth; not packaged or live"
+    },
+    "retrieval": {
+      "state": "complete",
+      "provenance": "Fresh database, archive directory, origin and credentials; deterministic synthetic owner ID repeats baseline because BENCH_OWNER_TAG was omitted. Root accepted isolated profile row/state as sufficient; not a distinct owner ID.",
+      "passed": 8,
+      "failed": 0,
+      "hosts": {
+        "claude": 4,
+        "codex": 4
+      },
+      "actualArchiveContentCalls": 27,
+      "successfulSourceReadCalls": 16,
+      "unsupportedFinalCitations": 0,
+      "schemaToolErrors": 0,
+      "hostDenials": 0,
+      "source": "cloud-p0-benchmark/candidate-retrieval-results.json",
+      "moduleHashes": {
+        "remote-mcp.mjs": "ea19c1be47d103f62a4dd375c902d8fc9eefb4ea94254cbecb8598f024c4a096",
+        "archive-tools.mjs": "58927cde8544a858303e4eac09600c4b2b20af784e4f0ab81905d7695e834751"
+      },
+      "independentRootCheck": "Fetched visible-only native session receipts for all8 cases: each had2 successful source reads, only archive content tools, zero unsupported final citations and no other completed execution tool type. Final facts checked against fixture plan.",
+      "scope": "published28 plus source38/39 descriptions/instructions; short dated notes in warmed archive, full85 catalog unchanged; not installed-native or production",
+      "unexercised": [
+        "multi-page model reading",
+        "cold start",
+        "stale revision recovery",
+        "production transport"
+      ]
+    }
+  },
+  "permissions": {
+    "macCommand": "denied; no retry or alternative local path",
+    "savedGlobalSettingsChanged": false,
+    "temporaryDisposableProjectSettings": "restored to prior absence after all scored sessions",
+    "hostDenialsInScoredBaseline": 0,
+    "actualAPIErrorsInScoredBaseline": 0,
+    "claudeHostReportedMode": "bypassPermissions; inherited from host; no mode change or bypass flags requested",
+    "isolationLimit": "Only observed tool use and reported tool surface verified; initially some host-injected routes remained, none used for file access. Additional restrictive denies followed stopped track."
+  },
+  "priorAttempts": {
+    "standaloneClaude": "not logged in before tools",
+    "standaloneCodex": "model-auth401 before tools",
+    "status": "preserved; direct Conductor sessions use supported authenticated host"
+  },
+  "limits": [
+    "Cloud fixtures do not close Mac transport diagnosis, installed-native ordinary-prompt acceptance, clean Google/Desktop setup or real cross-person production gates.",
+    "Loopback invitation links do not prove external delivery.",
+    "Candidate guidance cannot establish universal model reliability.",
+    "Runtime30 diagnostics package remains local/unpublished/uninstalled/undeployed; patch38/39 absent from it.",
+    "No production accounts/spaces or global permissions changed.",
+    "Mandatory SDK Conductor terminal/diff tools remained advertised despite project deny entries, but no such actual call was observed; complete host isolation is not established."
+  ],
+  "review": {
+    "record": "cloud-p0-benchmark/review-disposition.md",
+    "nativeSkillAmbiguity": "fixed before publication; remote tested overlay unchanged",
+    "testsAreNotModelEvidence": true,
+    "final": "Reviewer verified native wording fix, patch hashes and ordered reverse application; other catalog observations retained as limits, no unresolved source-change blocker.",
+    "reviewerCleanup": "Original retrieval preparation fixture stopped; stale per-run bearer/config files removed; evidence retained."
+  },
+  "harnessGrader": {
+    "selfTestsPassed": 4,
+    "scope": "read-backed citations accepted; search-only, changed/restart, error citations rejected",
+    "verification": "Root reran 4/4 against the retained real fixture payloads after adding BENCH_ROOT support to the portable self-test.",
+    "preservedPreparationFailures": [
+      "Portable self-test initially had no protocol receipts in the exported directory; no assertions executed.",
+      "BENCH_ROOT was initially ignored by the copied self-test; corrected portability before successful run."
+    ]
+  },
+  "cleanup": {
+    "projectFiles": [
+      {
+        "path": ".codex/config.toml",
+        "before": "absent",
+        "after": "absent",
+        "temporarySha256": "c606880f94e66ec06eefb31e7609b0a3468a270243f92d3b9a2fab9c7574b5e4"
+      },
+      {
+        "path": ".mcp.json",
+        "before": "absent",
+        "after": "absent",
+        "temporarySha256": "2e8ebf79e6cb415481c037d94a2da5f45fbd307345158499acc2a62f7350e880"
+      },
+      {
+        "path": ".claude/settings.local.json",
+        "before": "absent",
+        "after": "absent",
+        "temporarySha256": "6c3c1cb71e55d68307d8164f55fcaabd8505645b7306631c001929c42e11e464"
+      }
+    ],
+    "syntheticServersStopped": 6,
+    "loopbackListenersClosed": 6,
+    "globalUserSettingsChanged": false,
+    "temporaryProjectSettingsRestored": true,
+    "reportedBy": "bootstrap session 1e75d8c0-ddb1-4bc8-b517-256a954677f8",
+    "reportHashes": {
+      "lifecycle": "30db293532970805b628fdc8e7e029686bad037b65a655189156601df3425201",
+      "retrievalBaseline": "c69a0b42c1ca4c5a2143dc197313eaf9436a859f737448770f894d0ad9ea7aaf",
+      "scopeCandidate": "0006c41c3d87c39baf7c9c0f0eb3f6a69a93e1cd4894ef2a8fbbe71256584f84",
+      "retrievalCandidate": "3ff26beabb6db25b81201a7827c9a795101818378bfc097351703d327f1e486a"
+    }
+  },
+  "laterPackaging": {
+    "nativeVersion": "0.4.31",
+    "runtimeRevision": 64,
+    "record": "p0-ready-candidate-verification.json",
+    "uploaded": true,
+    "published": false,
+    "installed": false,
+    "deployed": false,
+    "originalResultsUnchanged": true,
+    "stagingRecord": "p0-ready-staging-verification.json"
+  }
+}

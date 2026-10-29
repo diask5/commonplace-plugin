@@ -1,0 +1,220 @@
+{
+  "recordedAt": "2026-10-28",
+  "state": "native-video-rendered-and-playback-verified-with-open-library-sharing-issue",
+  "nativeVersion": "Claude Desktop 4.29.0",
+  "pluginVersion": "0.4.31",
+  "runtimeRevision": 64,
+  "sourceData": "fictional Larkspur Beacon launch and separate fictional private finance note",
+  "accounts": "two owner-selected existing identities; not independent-human or clean-onboarding proof",
+  "checks": {
+    "freshSourceChatAndCorrection": true,
+    "automaticCollectionObserved": true,
+    "freshNativeChatSourceRead": true,
+    "currentSourceReadRevision": 6304,
+    "realIncomingQuestionAndReply": true,
+    "realSameLinkFollowup": true,
+    "privateBudgetAndMarkerWithheld": true,
+    "requesterDisconnectedDemoLink": true,
+    "postDisconnectNewQuestion": "HTTP 404 Inbox conversation unavailable",
+    "usefulLibrarySharing": false,
+    "demoLibrarySharingPaused": true,
+    "selectedSecondSpaceMemberRemoved": true,
+    "onlySpaceOwnerRemains": true,
+    "allDemoRecordersStopped": true
+  },
+  "recording": {
+    "windowOnlyProbePassed": true,
+    "width": 1920,
+    "height": 1200,
+    "macTakeNames": [
+      "04-source-note.mp4",
+      "05-cross-chat-retrieval.mp4",
+      "06-live-rules.mp4",
+      "07-native-messaging.mp4"
+    ],
+    "finalTakesTransferred": true,
+    "rawFinalizationVerified": true,
+    "rawDirectoryOnMac": "~/Movies/Meet Proxy Desktop Demo",
+    "voice": "Bland River / BTTS v3",
+    "narrationChapters": 7,
+    "narrationSeconds": 167.06,
+    "finalVideoRendered": true,
+    "previousBrowserExportReplaced": false,
+    "previewNowServesNativeVideo": true,
+    "previousBrowserUrl": "https://kyle-cloud-w3.conductor.show/walkthrough/browser/",
+    "master": ".context/claude-desktop-demo/public/meet-proxy-p0-walkthrough.mp4",
+    "finalSourceHashes": {
+      "window-only-check.mp4": "42e230f4d924e200b10495b6c79ad2f00b59b55e3d6a07886227a03837376145",
+      "04-source-note-review.mp4": "ddda4d41196c11da23b46b81d940a77d687bfd64056e4730ea56458dc73acfed",
+      "05-cross-chat-retrieval-review.mp4": "cbce8ec387e8de7bceb837f94906dbcd689b330b6aca917f84e954a344626e6e",
+      "06-live-rules-review.mp4": "424409f95e097f2b6dbb116270efe8f155f1b8c44fd58bb362185b7ae7bbe8ff",
+      "07-native-messaging-review.mp4": "7468fbbbbc9c69a355d042dd44b9d20f17a8c18f5f047d45f2ea897573362f64",
+      "08-live-cleanup.mp4": "64f2bcd44401d40cc620df8606800f85ed583daa5aa15dce2532034dfa57d96c"
+    },
+    "cleanupTake": "08-live-cleanup.mp4",
+    "originalRecorderTimerFailure": true,
+    "nativeOriginalDurationSeconds": 31468.658,
+    "nativeOriginalExportedSeconds": 420,
+    "longOriginalRemainsPrivateOnMac": true,
+    "cleanupRecorderLog": "Recording started\nRecording 1901 for 65.0 seconds\nRecording finished\n",
+    "recovery": "Visible macOS stop finalized overlong native take before process termination. Revised recorder wall timer passed 8s probe and 65s cleanup capture. All transfers hash-checked."
+  },
+  "remaining": [
+    "Install and live-test source-only collection fix.",
+    "Resolve useful automatic classifier sharing and live-test without lowering its threshold.",
+    "Clean Google/native onboarding, independent second-person and broader default-host P0 gates remain open."
+  ],
+  "noProductionReleaseChange": true,
+  "verifiedAt": "2026-10-28T17:46:12.762560+00:00",
+  "playerUrl": "https://kyle-cloud-w3.conductor.show/walkthrough/?v=3",
+  "downloadUrl": "https://kyle-cloud-w3.conductor.show/walkthrough/meet-proxy-p0-walkthrough.mp4?v=3",
+  "previewAccess": "Conductor authentication required; anonymous external HEAD returns 401. Local player returns 200, seek/range returns 206, desktop/mobile QA passed.",
+  "cleanup": {
+    "space": "Larkspur Beacon \u00b7 Desktop demo",
+    "pauseConfirmation": "Saved. New requests are off. Previously shared excerpts stay in the space.",
+    "removalConfirmation": "Removed from the space.",
+    "activeRecorderProcesses": [],
+    "separateScopes": "Space library policy/membership cleanup is distinct from direct-link disconnection."
+  },
+  "historicalBlocks": [
+    {
+      "tool": "mcp__conductor__RunLocalCommand",
+      "reason": "No authorized Mac is bound to this chat. Send a message from the Mac you want to use.",
+      "alternateRouteUsed": false
+    },
+    {
+      "operation": "already-authorized timed recording/export/transfer",
+      "reason": "timed out awaiting tools/call after 300s",
+      "requestedTimeoutSeconds": 600,
+      "outputReceived": false
+    }
+  ],
+  "currentMacBinding": "restored by later owner message; cleanup recording and final process check succeeded",
+  "render": {
+    "state": "rendered",
+    "durationSeconds": 167.06666666666666,
+    "resolution": [
+      1920,
+      1080
+    ],
+    "fps": 30,
+    "chapters": 7,
+    "voice": "Bland River / BTTS v3",
+    "footage": "Real window recordings, ordinary cuts and punch-ins at 1x, anchored annotations; no recreated UI, slides or frame-clone padding.",
+    "mp4Bytes": 9399420,
+    "mp4Sha256": "a0fd5be24f717cedc35fbac66fbe95533586ef4a7c3425c530b9f77b1113e4d0",
+    "allP0Passed": false,
+    "usefulLibrarySharingPassed": false
+  },
+  "mediaQa": {
+    "completeDecodePassed": true,
+    "decodeErrors": "",
+    "audioLoudness": {
+      "input_i": "-16.68",
+      "input_tp": "-1.40",
+      "input_lra": "2.90",
+      "input_thresh": "-26.97",
+      "output_i": "-16.11",
+      "output_tp": "-1.50",
+      "output_lra": "2.70",
+      "output_thresh": "-26.40",
+      "normalization_type": "dynamic",
+      "target_offset": "0.11"
+    },
+    "faststartVerified": true,
+    "atoms": [
+      "ftyp",
+      "moov",
+      "free",
+      "mdat"
+    ],
+    "metadata": {
+      "ffmpeg_version": "7.0.2-static https://johnvansickle.com/ffmpeg/ built with gcc 8 (Debian 8.3.0-6)",
+      "codec": "h264",
+      "pix_fmt": "yuv420p(tv, bt709, progressive)",
+      "audio_codec": "aac",
+      "fps": 30.0,
+      "source_size": [
+        1920,
+        1080
+      ],
+      "size": [
+        1920,
+        1080
+      ],
+      "rotate": 0,
+      "duration": 167.09
+    },
+    "suppliedCredentialBytesAbsentFromPublicAssets": true,
+    "assetCount": 7,
+    "publicAssetHashes": {
+      "index.html": "3a65af83f6f4e1d3fad5cb7819baa61af4299c68cf15aaf8d87e52c14b5f4275",
+      "manrope.woff2": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972",
+      "meet-proxy-p0-walkthrough.mp4": "a0fd5be24f717cedc35fbac66fbe95533586ef4a7c3425c530b9f77b1113e4d0",
+      "captions.vtt": "5276d8657fb02d14c85a00a31697868afb6997a0ce5e1faabd97598c9f14fc98",
+      "chapters.json": "f86bba11a0880f2f64515e2179d2c330d7adf9fa490038256485657e2234575d",
+      "transcript.md": "b07ac34c7573a90d92becf84e3d90175a97352a5db33c9ebe4b0b34f00e328e5",
+      "poster.jpg": "c315e6c1ff258e18bcf5592518d9f6e294716748a5aaefae99623f01b9fa1c40"
+    },
+    "visualPrivacyReview": "All five source recordings reviewed; edit crops unrelated browser sidebars, excludes full-display takes and private finance source. Selected chapter and shot frames inspected."
+  },
+  "playerQa": {
+    "origin": "http://127.0.0.1:43321",
+    "screens": [
+      {
+        "width": 1440,
+        "status": 200,
+        "overflow": false,
+        "chapterCount": 7,
+        "videoDuration": 167.087696,
+        "videoWidth": 1920,
+        "videoHeight": 1080,
+        "errors": []
+      },
+      {
+        "width": 390,
+        "status": 200,
+        "overflow": false,
+        "chapterCount": 7,
+        "videoDuration": 167.087696,
+        "videoWidth": 1920,
+        "videoHeight": 1080,
+        "errors": []
+      }
+    ],
+    "network": [
+      {
+        "path": "meet-proxy-p0-walkthrough.mp4",
+        "status": 206
+      },
+      {
+        "path": "captions.vtt",
+        "status": 200
+      },
+      {
+        "path": "transcript.md",
+        "status": 200
+      },
+      {
+        "path": "../voices.private.json",
+        "status": 404
+      },
+      {
+        "path": "%2e%2e/voices.private.json",
+        "status": 404
+      }
+    ],
+    "state": "passed"
+  },
+  "allP0LiveEndToEndProven": false,
+  "evidenceHashes": {
+    "render.py": "2d8945b329c546f3ec9f4a062b74fd1d5937d77e099537ba604ea119098ca032",
+    "render-report.json": "572f203a4de8087d4e4d2a0e35897546e5e83dd15a0d389152ad8e26182540a9",
+    "media-qa.json": "ae3bd87a6093c97b6ffc0f068344d8b872baf85ffde0829407e0abe3cd415af0",
+    "player-qa.json": "e45349b1e26c9a14a883ad274a733e8c537db23b2537bd8f13d84f1600e0a734",
+    "narration.json": "b34569fa02852d08352f5fdace3853399d4c0c048e0470a970f89790183a004b",
+    "audio-timing.json": "7c1d53116eb0218829306e69fdf3396bc8cf69f43798f51fe220dd5b8b0f6054",
+    "message-receipts.json": "d012bde85c4451d976af0088d1da43df5443a832d6ee6357c064ba4202493c15",
+    "first-delivery-receipt.json": "d210293b186b2723be76fc1e1bd89ffa1bc5eca178592d32be0cc0dda8d0762e"
+  }
+}

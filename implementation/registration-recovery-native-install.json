@@ -1,0 +1,43 @@
+{
+  "installation": {
+    "state": "passed",
+    "installedVersion": "0.4.27",
+    "zipSha256": "ddeac7c6d1921c6ae3a855d6e7412bb7e97e53084b24a3cf9a3d0743e755a07e",
+    "accountPreserved": true,
+    "savedPermissionsPreserved": true,
+    "codexOnlyPluginPathsChanged": true,
+    "claudePluginManagerUpdated": true
+  },
+  "firstActivation": {
+    "state": "failed",
+    "error": "Old companion did not release its lock; no force kill attempted"
+  },
+  "recoveryActivation": {
+    "state": "failed",
+    "error": "Old companion did not stop within 90 seconds; no force kill attempted",
+    "allStillExistingPausedProcessesResumed": true
+  },
+  "activation": {
+    "state": "passed",
+    "previousRevision": 49,
+    "activeRevision": 60,
+    "oldProcessStoppedGracefully": true,
+    "savedPermissionsAndAccountUnchanged": true,
+    "temporarilyPausedPluginProcesses": 8,
+    "allStillExistingPausedProcessesResumed": true
+  },
+  "readiness": {
+    "ready": true,
+    "seedsVisible": [
+      "seed-plan",
+      "seed-update"
+    ],
+    "runtimeRevision": 60,
+    "waitSeconds": 9.19,
+    "method": "real installed MCP search and supporting source reads; optional mirror not required"
+  },
+  "observedRuntime": {
+    "revision": 60,
+    "backgroundVersion": "0.4.27"
+  }
+}

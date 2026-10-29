@@ -1,0 +1,195 @@
+{
+  "state": "source and interactive preview; not packaged, installed or deployed",
+  "patch": "message-first-spaces.patch",
+  "core": {
+    "passed": 419,
+    "failed": 0,
+    "skipped": 0,
+    "log": ".context/message-first/core-verified.log"
+  },
+  "ui": {
+    "passedAcrossFinalRuns": 51,
+    "unaffectedPassed": 34,
+    "affectedFinalPassed": 17,
+    "logs": [
+      ".context/message-first/ui-verified.log",
+      ".context/message-first/spaces-verified.log"
+    ],
+    "resolvedInitialFailure": "Invite note text contrast 4.33:1; fixed and affected six-width matrix rerun."
+  },
+  "policy": {
+    "passed": 45,
+    "failed": 0,
+    "log": ".context/message-first/policy-final.log"
+  },
+  "replay": {
+    "patches": 13,
+    "incrementalFiles": 26,
+    "allChangedFilesMatch": 139,
+    "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13"
+  },
+  "realDecisions": {
+    "syntheticOnly": true,
+    "first": {
+      "provider": "Perplexity Decisions",
+      "model": "pplx-decider-v1.2",
+      "synthetic": true,
+      "latencyMs": 1486,
+      "state": "no_context",
+      "approved": [],
+      "privateLeak": false,
+      "checks": {
+        "audit": [
+          {
+            "candidateId": "native-5f25e5cf8123aa7d0e7eb31f",
+            "title": "Public release plan",
+            "decision": "withhold",
+            "reason": "below_threshold",
+            "probability": 0.9932365271369151,
+            "checks": [
+              {
+                "ruleId": "scope",
+                "rule": "Share public launch plans, release dates and product progress with everyone in this space.",
+                "decision": "withhold",
+                "reason": "below_threshold",
+                "probability": 0.9943395576760727,
+                "latencyMs": 698,
+                "inputTokens": 524
+              },
+              {
+                "ruleId": "private",
+                "rule": "Never share private customer identities, invoices, financial information, credentials or personal conversations.",
+                "decision": "withhold",
+                "reason": "below_threshold",
+                "probability": 0.9932365271369151,
+                "latencyMs": 262,
+                "inputTokens": 524
+              }
+            ]
+          },
+          {
+            "candidateId": "native-0b0b787894e084eb38a18ae7",
+            "title": "Private customer finance",
+            "decision": "withhold",
+            "reason": "below_threshold",
+            "probability": 0.0009649502047448208,
+            "checks": [
+              {
+                "ruleId": "scope",
+                "rule": "Share public launch plans, release dates and product progress with everyone in this space.",
+                "decision": "withhold",
+                "reason": "below_threshold",
+                "probability": 0.0011158712784992521,
+                "latencyMs": 123,
+                "inputTokens": 552
+              },
+              {
+                "ruleId": "private",
+                "rule": "Never share private customer identities, invoices, financial information, credentials or personal conversations.",
+                "decision": "withhold",
+                "reason": "below_threshold",
+                "probability": 0.0009649502047448208,
+                "latencyMs": 122,
+                "inputTokens": 552
+              }
+            ]
+          }
+        ],
+        "revision": 1
+      },
+      "errors": []
+    },
+    "explicitAudience": {
+      "provider": "Perplexity Decisions",
+      "model": "pplx-decider-v1.2",
+      "synthetic": true,
+      "latencyMs": 1062,
+      "state": "shared",
+      "approved": [
+        "Public release plan"
+      ],
+      "privateLeak": false,
+      "checks": {
+        "audit": [
+          {
+            "candidateId": "native-b11b07cd77da0ef795f6a536",
+            "title": "Public release plan",
+            "decision": "allow",
+            "reason": "above_threshold",
+            "probability": 0.9954322799193489,
+            "latencyMs": 233,
+            "inputTokens": 1099,
+            "checks": [
+              {
+                "ruleId": "scope",
+                "rule": "Share public launch plans, release dates and product progress, including document titles, with all current and future members of this space. Public release updates are approved for anyone.",
+                "decision": "allow",
+                "reason": "above_threshold",
+                "probability": 0.9959422834729237,
+                "latencyMs": 233,
+                "inputTokens": 558
+              },
+              {
+                "ruleId": "private",
+                "rule": "Never share private customer identities, invoices, financial information, credentials or personal conversations.",
+                "decision": "allow",
+                "reason": "above_threshold",
+                "probability": 0.9954322799193489,
+                "latencyMs": 181,
+                "inputTokens": 541
+              }
+            ]
+          },
+          {
+            "candidateId": "native-ed9ebe6595c0870602d0408e",
+            "title": "Private customer finance",
+            "decision": "withhold",
+            "reason": "below_threshold",
+            "probability": 0.0009097049684275269,
+            "latencyMs": 163,
+            "inputTokens": 1155,
+            "checks": [
+              {
+                "ruleId": "scope",
+                "rule": "Share public launch plans, release dates and product progress, including document titles, with all current and future members of this space. Public release updates are approved for anyone.",
+                "decision": "withhold",
+                "reason": "below_threshold",
+                "probability": 0.0011235088101470437,
+                "latencyMs": 163,
+                "inputTokens": 586
+              },
+              {
+                "ruleId": "private",
+                "rule": "Never share private customer identities, invoices, financial information, credentials or personal conversations.",
+                "decision": "withhold",
+                "reason": "below_threshold",
+                "probability": 0.0009097049684275269,
+                "latencyMs": 128,
+                "inputTokens": 569
+              }
+            ]
+          }
+        ],
+        "revision": 1
+      },
+      "errors": []
+    },
+    "note": "First public case withheld below 0.995. Explicit current/future audience allowed it in the second probe; private example withheld both times. Not a calibration."
+  },
+  "limits": [
+    "Not deployed or packaged",
+    "Real Google and native app launch/wake unverified",
+    "At most six complete matching documents from the first search page; oversized documents withheld",
+    "No upstream MCP source ingestion",
+    "No selected-document recipient grants"
+  ],
+  "screenshots": [
+    ".context/message-first/desktop.png",
+    ".context/message-first/rules.png",
+    ".context/message-first/members.png",
+    ".context/message-first/setup.png",
+    ".context/message-first/mobile.png",
+    ".context/message-first/invitation-mobile.png",
+    ".context/message-first/exchange-desktop.png"
+  ]
+}

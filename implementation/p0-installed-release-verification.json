@@ -1,0 +1,82 @@
+{
+  "observedAt": "2026-10-27T05:43:34.022Z",
+  "state": "published, deployed, installed and active; broader acceptance gates remain open",
+  "server": {
+    "release": "20261027-context-guidance-r2",
+    "filesVerified": 159,
+    "services": {
+      "commonplace": "active",
+      "commonplace-runtime": "active",
+      "nginx": "active"
+    },
+    "workerHeartbeatAgeSeconds": 0.5,
+    "observedAt": 1793079802.842681
+  },
+  "installation": {
+    "state": "passed",
+    "installedVersion": "0.4.31",
+    "zipSha256": "968f1157f0942c660eb5325cb287cfb70f54be2da0b8d7334d004eb7ad944c33",
+    "accountPreserved": true,
+    "savedPermissionsPreserved": true,
+    "codexOnlyPluginPathsChanged": true,
+    "claudePluginManagerUpdated": true
+  },
+  "postdeploymentReads": {
+    "kind": "read-only signed companion diagnostic",
+    "installedVersion": "0.4.31",
+    "diagnosticCodeVersion": "0.4.31",
+    "http": [
+      {
+        "milliseconds": 13676,
+        "status": 200
+      },
+      {
+        "milliseconds": 4810,
+        "status": 200
+      },
+      {
+        "milliseconds": 1995,
+        "status": 200
+      }
+    ],
+    "reads": [
+      {
+        "milliseconds": 5276,
+        "hasText": true,
+        "changed": false,
+        "restart": false,
+        "textCharacters": 1774,
+        "nextOffset": null
+      },
+      {
+        "milliseconds": 2031,
+        "hasText": true,
+        "changed": false,
+        "restart": false,
+        "textCharacters": 2055,
+        "nextOffset": null
+      }
+    ],
+    "search": {
+      "milliseconds": 13893,
+      "results": 5,
+      "changed": false,
+      "revision": 6242
+    },
+    "installedCodeBothHostsMatches": {
+      "server/plugin.mjs": "9e18a5ca6e0cafd4b0bd0d2bff440cc31c275e3ca24b0ee32e3e4a79f6caa6c8",
+      "server/account-errors.mjs": "979c054135feb2797d08e7ced1447374a91d8f0e155e2d8c4706b470515ccfc9",
+      "server/agent-auth-client.mjs": "719224c96e74ebb8457c685223a2334a6fcfa8367207df922c7e6f66ca47473a",
+      ".claude-plugin/plugin.json": "18c283fcd45c2d72e846a8788abe7bbac49f8464302a950a7148381d6e0bb317"
+    },
+    "runtimeRevision": 64,
+    "nativeRegistryInstalled": true,
+    "codexSavedPluginVersion": "0.4.31",
+    "stage": "after server deployment and permanent native installation"
+  },
+  "limits": [
+    "Signed installed-package reads supplement earlier native model checks; this final probe is not a model or Desktop GUI walkthrough.",
+    "Earlier open chats may retain old plugin code until host reload.",
+    "Real second-person sharing/revocation, clean onboarding and broader default-host behavior remain unproven."
+  ]
+}

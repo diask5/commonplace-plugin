@@ -1,0 +1,119 @@
+diff --git a/apps/commonplace-account/server/policy-context.mjs b/apps/commonplace-account/server/policy-context.mjs
+index 2843fed..d7f59dd 100644
+--- a/apps/commonplace-account/server/policy-context.mjs
++++ b/apps/commonplace-account/server/policy-context.mjs
+@@ -77,14 +77,16 @@ export class PolicyContext {
+     try { candidates = structuredClone(await untilAbort(this.getCandidates(authority, query, signal),signal)); } catch { throw denied(); }
+     if (!Array.isArray(candidates) || candidates.length > CONTEXT_CANDIDATE_LIMIT) throw denied();
+     const excerpts = [], audit = [], approved = [];
+-    for (const candidate of candidates) {
++    const rules=policyRules(authority.rules), width=Math.max(1,Math.floor(8/rules.length));
++    const batchStop=new AbortController();
++    signal=signal?AbortSignal.any([signal,batchStop.signal]):batchStop.signal;
++    const evaluate=async candidate=>{
+       await check();
+-      if (!candidate || candidate.ownerId !== authority.ownerId || candidate.excluded !== false) { audit.push({decision: 'withhold', reason: 'source_scope'}); continue; }
+-      if (!validDisclosureCandidate(candidate)) { audit.push({candidateId: candidate.id, title:candidate.title, decision: 'withhold', reason: 'invalid_candidate', probability: null}); continue; }
++      if (!candidate || candidate.ownerId !== authority.ownerId || candidate.excluded !== false) return {audit:{decision: 'withhold', reason: 'source_scope'}};
++      if (!validDisclosureCandidate(candidate)) return {audit:{candidateId: candidate.id, title:candidate.title, decision: 'withhold', reason: 'invalid_candidate', probability: null}};
+       try { if (!await untilAbort(this.isCurrent(authority, candidate),signal)) throw denied(); } catch { throw denied(); }
+-      const rules=policyRules(authority.rules);
+-      // At most eight calls per candidate, in parallel. Each sees the complete
+-      // policy: a permissive rule can never override another rule's exception.
++      // At most eight provider calls across the whole batch, including all rules.
++      // Every call still sees the complete policy and original private context.
+       const checks=await untilAbort(Promise.all(rules.map(async rule=>{
+         try {
+           const result=await this.decider.decide({rules:rules.map(r=>r.text).join('\n'), rule:rule.text, recipient:authority.recipientLabel, candidate:structuredClone(candidate),signal});
+@@ -98,8 +100,17 @@ export class PolicyContext {
+       })),signal);
+       await check();
+       const allow=checks.every(c=>c.decision==='allow');
+-      if(allow){approved.push(candidate);excerpts.push({title:candidate.title,text:candidate.text});}
+-      audit.push({candidateId:candidate.id,title:candidate.sourceTitle??candidate.title,decision:allow?'allow':'withhold',reason:allow?'above_threshold':checks.find(c=>c.decision!=='allow').reason,probability:checks.some(c=>c.probability===null)?null:Math.min(...checks.map(c=>c.probability)),latencyMs:Math.max(...checks.map(c=>c.latencyMs??0)),inputTokens:checks.every(c=>c.inputTokens!==null)?checks.reduce((n,c)=>n+(c.inputTokens||0),0):null,checks});
++      return {allow,candidate,audit:{candidateId:candidate.id,title:candidate.sourceTitle??candidate.title,decision:allow?'allow':'withhold',reason:allow?'above_threshold':checks.find(c=>c.decision!=='allow').reason,probability:checks.some(c=>c.probability===null)?null:Math.min(...checks.map(c=>c.probability)),latencyMs:Math.max(...checks.map(c=>c.latencyMs??0)),inputTokens:checks.every(c=>c.inputTokens!==null)?checks.reduce((n,c)=>n+(c.inputTokens||0),0):null,checks}};
++    };
++    for(let offset=0;offset<candidates.length;offset+=width){
++      let results;
++      try{results=await Promise.all(candidates.slice(offset,offset+width).map(evaluate));}
++      catch{batchStop.abort();throw denied();}
++      // Completion order must not reorder excerpts, audit entries or pages.
++      for(const result of results){
++        if(result.allow){approved.push(result.candidate);excerpts.push({title:result.candidate.title,text:result.candidate.text});}
++        audit.push(result.audit);
++      }
+     }
+     // Recheck every approved source as well as consent after the whole batch.
+     // No streaming: revocation during a later call fences earlier results.
+diff --git a/tests/policy-context.test.mjs b/tests/policy-context.test.mjs
+index 047d947..74e88e7 100644
+--- a/tests/policy-context.test.mjs
++++ b/tests/policy-context.test.mjs
+@@ -136,6 +136,54 @@ test('work is bounded and cutoff cannot disable the check', async () => {
+   const f = fixture({candidates: Array.from({length: 33}, candidate)}); await assert.rejects(f.read(), {code: 'context_unavailable'}); assert.equal(f.state.calls, 0);
+   assert.throws(() => new PolicyContext({...f.gate, threshold: .1}));
+ });
++test('candidate batches share the eight-call ceiling and retain source order', {timeout:3000}, async () => {
++  for(const ruleCount of [1,3,8]){
++    const count=17,width=Math.floor(8/ruleCount),waves=Math.ceil(count/width);
++    const ready=Array.from({length:waves},()=>Promise.withResolvers()),release=Array.from({length:waves},()=>Promise.withResolvers());
++    const started=Array(waves).fill(0);let active=0,peak=0;
++    const candidates=Array.from({length:count},(_,i)=>({...candidate(),id:String(i),text:'Public update '+i}));
++    const f=fixture({candidates,decide:async({candidate:c})=>{
++      const wave=Math.floor(Number(c.id)/width);active++;peak=Math.max(peak,active);
++      if(++started[wave]===Math.min(width,count-wave*width)*ruleCount)ready[wave].resolve();
++      await release[wave].promise;active--;return {probability:1};
++    }});
++    f.state.authority.rules=Array.from({length:ruleCount},(_,i)=>({id:'rule'+i,text:'Share public project updates.'}));
++    const pending=f.preview();
++    for(let wave=0;wave<waves;wave++){
++      await ready[wave].promise;
++      assert.equal(active,Math.min(width,count-wave*width)*ruleCount);assert.ok(peak<=8);
++      release[wave].resolve();
++    }
++    const result=await pending;
++    assert.equal(peak,width*ruleCount);assert.equal(f.state.calls,count*ruleCount);
++    assert.deepEqual(result.audit.map(x=>x.candidateId),candidates.map(x=>x.id));
++    assert.deepEqual(result.recipientView.excerpts.map(x=>x.text),candidates.map(x=>x.text));
++  }
++});
++test('revocation cancels concurrent provider work and never starts the next batch', {timeout:2000}, async () => {
++  const ready=Promise.withResolvers(),first=Promise.withResolvers();const signals=[];
++  const f=fixture({candidates:Array.from({length:16},(_,i)=>({...candidate(),id:String(i)})),decide:async({candidate:c,signal})=>{
++    signals.push(signal);if(signals.length===8)ready.resolve();
++    if(c.id==='0'){await first.promise;return {probability:1};}
++    await new Promise(resolve=>signal.addEventListener('abort',resolve,{once:true}));
++    return {probability:1};
++  }});
++  const pending=f.read(),rejected=assert.rejects(pending,{code:'context_unavailable'});
++  await ready.promise;f.state.authority.active=false;first.resolve();await rejected;
++  assert.equal(f.state.calls,8);assert.ok(signals.every(s=>s.aborted));
++});
++test('caller cancellation discards concurrent approvals and cancels pending calls', {timeout:2000}, async () => {
++  const controller=new AbortController(),ready=Promise.withResolvers();let waiting=0;const signals=[];
++  const f=fixture({candidates:Array.from({length:16},(_,i)=>({...candidate(),id:String(i)})),decide:async({candidate:c,signal})=>{
++    signals.push(signal);
++    if(c.id==='0')return {probability:1};
++    if(++waiting===7)ready.resolve();
++    await new Promise(resolve=>signal.addEventListener('abort',resolve,{once:true}));return {probability:1};
++  }});
++  const rejected=assert.rejects(f.gate.read({principal:'sample-recipient',grantId:'sample-grant',signal:controller.signal}),{code:'context_unavailable'});
++  await ready.promise;controller.abort();await rejected;
++  assert.equal(f.state.calls,8);assert.ok(signals.every(s=>s.aborted));
++});
+ test('benchmark reports missing provider as blocked, never model success', async () => {
+   const result = await runBenchmark(new PerplexityDecisions()); assert.equal(result.state, 'blocked'); assert.equal(result.liveModelEvaluated, false); assert.equal(result.scores, undefined);
+   const scored = scoreDecisions([{id: 'a', expected: false, probability: .999}, {id: 'b', expected: true, probability: .2}, {id: 'c', expected: true, probability: null}], .995);
+diff --git a/tests/space-context.test.mjs b/tests/space-context.test.mjs
+index ca587f8..5f176be 100644
+--- a/tests/space-context.test.mjs
++++ b/tests/space-context.test.mjs
+@@ -13,7 +13,7 @@ test('space requests enforce independent owner rules and private audit under act
+  const save=(enabled,expectedRevision=s.policy(owner,{groupId}).revision)=>s.save(owner,{groupId,expectedRevision,rules,enabled});
+  const request=()=>s.request(peer,{groupId,contributorId:owner,query,nonce:uid()});
+  await t.test('sharing defaults off and peers cannot save another member’s rules',async()=>{assert.equal(s.policy(owner,{groupId}).enabled,false);const r=await request();assert.equal(r.state,'unavailable');assert.equal(calls,0);s.save(peer,{groupId,expectedRevision:0,rules:[{id:'peer',text:'Share my own launch plans.'}],enabled:true});assert.equal(s.policy(owner,{groupId}).rules.length,0);assert.throws(()=>s.policy(other,{groupId}));});
+- await t.test('all checks run in parallel, one failure withholds the whole candidate',async()=>{save(true);const r=await request();assert.equal(r.state,'shared');assert.deepEqual(r.excerpts,[{title:'Launch public',text:'Public Thursday launch'}]);assert.equal(peak,2);assert.equal(calls,4);const theirs=JSON.stringify(s.board(peer,{groupId}));assert.ok(!theirs.includes('Secret'));assert.ok(!theirs.includes('customer finances'));assert.ok(!theirs.includes('privateChecks'));const mine=s.board(owner,{groupId}).events.at(-1);assert.equal(mine.privateChecks.audit.length,2);assert.equal(mine.privateChecks.audit[1].checks[1].decision,'withhold');});
++ await t.test('all checks run in parallel, one failure withholds the whole candidate',async()=>{save(true);const r=await request();assert.equal(r.state,'shared');assert.deepEqual(r.excerpts,[{title:'Launch public',text:'Public Thursday launch'}]);assert.equal(peak,4);assert.equal(calls,4);const theirs=JSON.stringify(s.board(peer,{groupId}));assert.ok(!theirs.includes('Secret'));assert.ok(!theirs.includes('customer finances'));assert.ok(!theirs.includes('privateChecks'));const mine=s.board(owner,{groupId}).events.at(-1);assert.equal(mine.privateChecks.audit.length,2);assert.equal(mine.privateChecks.audit[1].checks[1].decision,'withhold');});
+  await t.test('new requests reclassify and identical retries only read their already shared exchange',async()=>{const before=calls,nonce=uid(),input={groupId,contributorId:owner,query,nonce};const r=await s.request(peer,input);assert.equal(calls,before+4);assert.equal((await s.request(peer,input)).replayed,true);assert.equal(calls,before+4);await assert.rejects(s.request(owner,input));assert.deepEqual(r.excerpts,(await s.request(peer,input)).excerpts);});
+  await t.test('versioned writes and maximum rule limits are enforced',async()=>{assert.throws(()=>save(false,0));assert.throws(()=>s.save(owner,{groupId,expectedRevision:1,enabled:true,rules:Array.from({length:9},(_,i)=>({id:String(i),text:'Scope'}))}));});
+  await t.test('two-week default, expiry, renewal and invalid time limits are enforced before classification',async()=>{

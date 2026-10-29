@@ -1,0 +1,86 @@
+{
+  "date": "2026-10-25",
+  "state": "source and interactive preview only",
+  "productionChanged": false,
+  "installed": false,
+  "published": false,
+  "liveSyncChanged": false,
+  "modelInferenceRequired": false,
+  "sharingGrantsImplemented": false,
+  "preview": "https://kyle-cloud-w3.conductor.show/preview/sample?view=context",
+  "previewAccess": "Conductor viewer sign-in; application uses clearly labeled disposable sample accounts, not Google sign-in",
+  "results": {
+    "main": {
+      "tests": 385,
+      "pass": 385,
+      "fail": 0,
+      "skipped": 0,
+      "durationMs": 22429.907487,
+      "log": ".context/auto-ingest/main-suite-complete.log",
+      "sha256": "deb324c190831e998205fbfbf799d58ea8748dcf8bb72495cf004883f7e11b68",
+      "scope": "Final source backend/native/MCP/collection/archive/mirror/auth regression suite with fixture accounts."
+    },
+    "ui": {
+      "tests": 81,
+      "pass": 81,
+      "fail": 0,
+      "skipped": 0,
+      "durationMs": 115996.71684,
+      "log": ".context/auto-ingest/ui-suite-frozen.log",
+      "sha256": "5404f0fd55a5c08a34d0da4c4e70978d1d958c9479061eabfda76e7b9122238d",
+      "scope": "81 final UI tests, including 24-test context suite, automatic library updates, revision-pinned reads, sync retries and 320/390/768/1440 accessibility checks. The final subsequent source change only corrects stale canonical receipt calculation; it is covered by the main suite."
+    }
+  },
+  "build": {
+    "command": "npm run build:mcp",
+    "exitCode": 0,
+    "log": ".context/auto-ingest/build-mcp.log",
+    "sha256": "a13530a51de03cab0f7e8ab547b1bc162c95530f38acb4b3f2e6687a159b82de"
+  },
+  "patch": {
+    "path": "implementation/automatic-context-ingestion.patch",
+    "sha256": "5bdeb061c1eb17cd028624aa3c9f0e606bfd71359835fa59eb5efb2fb9979a54",
+    "files": 17,
+    "sevenPatchReplayPassed": true
+  },
+  "formats": {
+    "collectorCheckpoint": 2,
+    "relayArchiveLayout": 4,
+    "localCatalogLayout": 2,
+    "databaseMigrationRequired": false
+  },
+  "screenshots": {
+    "context-desktop.png": "2c64dc6f46c7f0641e105955337bba02cab9dcd38662de57e453937268aeabc6",
+    "context-mobile.png": "45bbd3e307a7fd899f061d49456bf3ffb8be340ecff99ab418f4990c9cebc1fb",
+    "sources-desktop.png": "923cc3351918d3701cacf74057162b78ec82a1d46e5accaef43b5f5daea75d61",
+    "sources-mobile.png": "f31c5a351eb06bb475c2e11a5d11f282cb19f4bb0871da0e0a6e898d4d4a5be0"
+  },
+  "screenshotDirectory": ".context/auto-ingest/screenshots",
+  "visualReview": [
+    "sources-mobile.png",
+    "context-desktop.png"
+  ],
+  "historicalRuns": [
+    {
+      "log": ".context/auto-ingest/context-ui.log",
+      "tests": 23,
+      "pass": 20,
+      "fail": 3,
+      "reason": "Refresh timing exposed a stale document revision in the phone reader; changed-snapshot retry and independently pinned document paging fixed it. Full UI suite verifies both."
+    },
+    {
+      "log": ".context/auto-ingest/main-suite.log",
+      "tests": 385,
+      "pass": 383,
+      "fail": 2,
+      "reason": "A legacy route assertion expected the previous UI element; an account-rebinding fixture targeted a device instead of the installation link. Both test setups corrected; actual identity isolation checks pass."
+    }
+  ],
+  "limits": [
+    "No real account connection, native installation or production deployment performed.",
+    "Loaded plugin reports cached kyledias@vurbox.com identity; owner selected diaskyle10@gmail.com as archive account. Existing connection preserved.",
+    "Only supported histories and enabled custom Claude/Codex transcript folders are discovered.",
+    "Web-only chats require supported imports/connectors; arbitrary repositories, Drive, PDFs and attachments are not automatically collected.",
+    "No same-name/content-based conversation merging and no automatic cross-person context grant."
+  ]
+}

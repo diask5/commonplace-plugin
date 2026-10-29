@@ -1,0 +1,190 @@
+{
+  "name": "MCP-first context retrieval, automatic request IDs, timely collection and honest setup progress",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "seamless-context.patch",
+  "sha256": "2a392265dfb57ef6fdeb17d0ef20b06816c5eb6cd8028b36410c65ba99c44e81",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch"
+  ],
+  "state": "Packaged 0.4.25/runtime58; live and benchmark evidence tracked in seamless-context-verification.json",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/archive-builder.mjs",
+      "beforeSha256": "9dd03fcf48f2f9071bf2294d5152b5ee1b6e437e7a7ff887b73b75f80d48675c",
+      "sha256": "f0fa6d846a5d3cfb45d1a17e81b08f2003af9bf94a325feb5835a7ce5db8e6da"
+    },
+    {
+      "path": "apps/commonplace-account/server/archive-source.mjs",
+      "beforeSha256": "43655234d9117f7690e1adfde3e216ae1e885950c96e8ef9e7d38c472d27c0cb",
+      "sha256": "0364011a31e3a1c9e2ce36d397fc5d5fbb644d907bf1f13c72dca27e85570b87"
+    },
+    {
+      "path": "apps/commonplace-account/server/archive-tools.mjs",
+      "beforeSha256": "db2979aea9577c4410d4dfadf3e3b37eec3b1695c9fbce50477706172842a084",
+      "sha256": "21059ee135a5dc9f62d60d94cf4184435bf5ac4c54bd047dd5bd402d8eb622d7"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-setup.mjs",
+      "beforeSha256": "f84610750f1595d7f1767e67a8dc2d5717ea846cd4117a30439765bb7f0cb4fc",
+      "sha256": "d45bace18ac3a02379cc602f4da84bd082328905dbfe539882c7bf326d96c7b2"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-native-setup.mjs",
+      "beforeSha256": "7e3929ab4f148f48bc2141131d4b1b4c639552b78050a9cb5307143354efd9f2",
+      "sha256": "38073c0af2d94bcc03837f42c747642ee9b2346d62f8e8d4ec5da6c8eea40600"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-product.mjs",
+      "beforeSha256": "58a52fd448829492be0d77b50ddb01d66d83005b5a6f91af872234688d25264a",
+      "sha256": "eed686c7d7ed69a2cf7869f27436632d8c05fec5ef2cf8a377cc3cd393ff715f"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-style.mjs",
+      "beforeSha256": "fe2a177fc04156b19247524584e54122065eca457b71f9c997f3094def1e49ef",
+      "sha256": "7aa4b3411ace7f25137b10ac84286caaeb461b6c97b5ca0c553be0352ff0643c"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-ui.mjs",
+      "beforeSha256": "5bbe63f40fef05f49d905c6f07d4b6270b866cdf8b28195de9c08b131b6a5b18",
+      "sha256": "a3dc08b1cb11daba6639bafcdc1122ea776fc22f5579ed29d3e8ddd73c5ff87f"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-setup.mjs",
+      "beforeSha256": "d3650bc063ad40118bcc571cb58b518f09a879d34437710ae108d68e79981109",
+      "sha256": "88e6857823e913e294ad21263ab9db5b0af104562bad1f40b2148bd254ab7ec4"
+    },
+    {
+      "path": "apps/commonplace-account/server/remote-mcp.mjs",
+      "beforeSha256": "e6b5029321653dc3e3bb331a8224a133334439d7e0673ff8d2c5081c2122b39d",
+      "sha256": "4650b4e7da9f5f21eeded3b8d8e39f29ee5fb62abc29af4073a14f860cb2b9fe"
+    },
+    {
+      "path": "apps/commonplace-account/server/shared-context.mjs",
+      "beforeSha256": "93d4184bcceac82987ca3e32485decaa079cd956c3b63d8168e8d47f3d203da3",
+      "sha256": "60ec051a307676e2d61bf5dafa21ae87a253c69ed93e6e5800d2727ff406d0c0"
+    },
+    {
+      "path": "apps/commonplace-account/server/space-management.mjs",
+      "beforeSha256": "cd68a87545d9aa67d7027f04b74871394302aa0575a2f2f3af0ca3e14c09386b",
+      "sha256": "da27521069acbe78a0668e972a2c3a6180d6606fc23e8dba9478f26b189824e6"
+    },
+    {
+      "path": "apps/commonplace/plugin/commonplace/skills/context/SKILL.md",
+      "beforeSha256": "c3037f88621c7851f4a5848b2ca4f0d34142e38d14649c4b87de81b4f6ed6b9b",
+      "sha256": "fa6a74d7a7b7eec78439b7747c441b6dda99fafcb68149aecf5a0c57e8ab506a"
+    },
+    {
+      "path": "apps/commonplace/plugin/commonplace/skills/meet-proxy/SKILL.md",
+      "beforeSha256": "fdff85a7ddb211da29f679ca969e569b52b28ab880571b5f7794b0278867877a",
+      "sha256": "233d4a012d38f9f44c163592f692c003db092c8d1ba763236692e19cbae484aa"
+    },
+    {
+      "path": "apps/commonplace/server/account-client.mjs",
+      "beforeSha256": "19096e169e9e7120f0f387517e270051e2dafffc3e627a468a910f52cd7b879f",
+      "sha256": "7de87713f925614d268143adee39f7ab28b71d0c1b91e7c0ecdfae56f0055878"
+    },
+    {
+      "path": "apps/commonplace/server/account-errors.mjs",
+      "beforeSha256": "0e82074287655e9337e396dcdef69ce40bebe6b7d411f9aec7de771fce234892",
+      "sha256": "77cfb2b2a671bcab652aba4e13a9af144b4e30559b1cc1e81f4df16c00ca5c06"
+    },
+    {
+      "path": "apps/commonplace/server/account-inbox.mjs",
+      "beforeSha256": "cd343bba13006217b1ab2794936415d5639582bdb875f2155350bbe09bb67ca6",
+      "sha256": "28e2f031e7a11262bb243ba3232413b6e5be49d6eebed87a489ce6c9b9d48c2e"
+    },
+    {
+      "path": "apps/commonplace/server/canonical-sync.mjs",
+      "beforeSha256": "72c0f04839f015887907da7d78df7b2059ce48c84a72379e74a8f40eb3fb4029",
+      "sha256": "d6fcdfba2583d43a2f5573edc88293022cfa9e22714591bf278a0e491a73eeff"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "9351b50d0eec027c286a7887b30180d5c0144b11faa0aa95ef3414a837b4baf1",
+      "sha256": "3ad9fbec702d33fd0d54a542b177c0dbf0a3f678926cc5150dbee01ff94141d9"
+    },
+    {
+      "path": "apps/commonplace/server/plugin-surface.mjs",
+      "beforeSha256": "e07875aaa5ea7941878da14fb4012fc30f3370f3a0d1e249296f176e4bba8480",
+      "sha256": "b63d27eb749be4819c3d4bbf413e743c96ff70831dcff7c9dc7f99737520b3a8"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "64df4a15808c6c9fbf282f3bb8d633d79f73c03364d26c6af24cbdc287fd9415",
+      "sha256": "5abc5b0fe322cafb00e7a1a36730b93d3185a11e12999e12496cc2ac18e0bc8d"
+    },
+    {
+      "path": "docs/SETUP.md",
+      "beforeSha256": "977dfe67be4e04eb894f09b5ad5594f6f17ecf6d8a2db20d5de0d1e810bf322a",
+      "sha256": "c2aa0fb0cba57f970aa59542bd44cbec928abc8d13c1885d69778216f5fbcec9"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "af86de88ef17f7f50d5de4b6663a6f0d11ed83f7de3649715e1fc48eb6793430",
+      "sha256": "cf3eb9450f742d806df45c4ef3b8baf074b7120ce82bb7ab1c8523466ae49a6c"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "ac32e1976d0548b2ea884e7a02bf13a1199da644fed467e7daaea72153b31a21",
+      "sha256": "4c05f1662fa58ccf8b34c22b6843fbaae08566c866359e98f31a1a812c790692"
+    },
+    {
+      "path": "tests/context-setup.test.mjs",
+      "beforeSha256": "6ddf27098f8a2f46e89df1440819fc98e1825e9f5738daf758f71083e715ecf0",
+      "sha256": "85bade602220167550b9a69cad59b1778ee303aa1bd5e285fddf6d267ab7b782"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "b923805ee256166ccbfeb3497c0b4f574c4e3c09dc109fb6cbe435b197c0f547",
+      "sha256": "6b602ed15edc542d338aca57abe3816f99c9a0f2b3f504d86b0552d30d126b29"
+    },
+    {
+      "path": "tests/seamless-collection.test.mjs",
+      "beforeSha256": null,
+      "sha256": "2003171a895b01fab45c6bc6807ad6accc6fd7556bf7c300babddee299a44712"
+    },
+    {
+      "path": "tests/seamless-retrieval-benchmark.mjs",
+      "beforeSha256": null,
+      "sha256": "1c6ed51a146a85dec81659530a29f14105457ff399d7fe4dbfdb7f6fdf134760"
+    },
+    {
+      "path": "tests/seamless-retrieval.test.mjs",
+      "beforeSha256": null,
+      "sha256": "3449ec56acfcc2cdc068689098d1fd5e1db6a7142be95ace0990b3fca368b388"
+    },
+    {
+      "path": "tests/seamless-routing.test.mjs",
+      "beforeSha256": null,
+      "sha256": "045cd95a5e7ea74ad27e454abb8900bbcc5f7ca9f0501b7b93bfa90c689fe6c6"
+    },
+    {
+      "path": "tests/seamless-setup-browser.test.mjs",
+      "beforeSha256": null,
+      "sha256": "b65c88a6dcafd5ca2e4fce52eb7d94ff7062614a273da2d318b305b77b4fc484"
+    }
+  ]
+}

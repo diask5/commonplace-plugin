@@ -1,0 +1,181 @@
+{
+  "observedAt": "2026-10-27T05:44:05.660224+00:00",
+  "state": "published, server deployed, native registries installed and runtime64 active; broader acceptance gates open",
+  "nativeVersion": "0.4.31",
+  "runtimeRevision": 64,
+  "serverRelease": "20261027-context-guidance-r2",
+  "published": true,
+  "serverDeployed": true,
+  "nativeCompanionActive": true,
+  "nativeRegistryInstalled": true,
+  "serverEvidence": {
+    "exit": 0,
+    "result": {
+      "state": "passed",
+      "release": "20261027-context-guidance-r2",
+      "filesVerified": 159,
+      "serviceReadableFiles": 159,
+      "services": [
+        "active",
+        "active",
+        "active"
+      ],
+      "migrations": "unchanged; verified code-only activation",
+      "previous": "20261026-current-read",
+      "helperSha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
+      "finishedAt": 1793079400.008605,
+      "currentRelease": "20261027-context-guidance-r2",
+      "servicesNow": {
+        "commonplace": "active",
+        "commonplace-runtime": "active",
+        "nginx": "active"
+      },
+      "workerHeartbeatAgeSeconds": 0.8
+    }
+  },
+  "firstDeploymentFailurePreserved": {
+    "exit": 0,
+    "result": {
+      "state": "failed",
+      "errorType": "CalledProcessError",
+      "finishedAt": 1793079141.4818783,
+      "currentRelease": "20261026-current-read",
+      "elapsedSeconds": 157.7,
+      "boundedStartupErrors": [
+        "Commonplace failed to start Error: EACCES: permission denied, open '/[long-value].mjs'",
+        "commonplace.service: Failed with result 'exit-code'."
+      ]
+    }
+  },
+  "deploymentModeDiagnosis": {
+    "exit": 0,
+    "result": {
+      "currentRelease": "20261026-current-read",
+      "baselineMode": "0o644",
+      "failedCandidateMode": "0o600",
+      "services": [
+        "active",
+        "active",
+        "active"
+      ],
+      "workerHeartbeatAgeSeconds": 1.8
+    }
+  },
+  "nativeEvidence": "p0-live-native-verification.json",
+  "nativeUpgradeEvidence": "p0-live-upgrade-verification.json",
+  "historicalReadFailureCause": "unconfirmed; not reproduced by the current signed source reads or activated-runtime synthesis checks",
+  "codeChanges": "Native/runtime bundle unchanged from candidate; patch42 corrects only the deployment helper and tests.",
+  "releaseUrls": {
+    "native": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.31",
+    "server": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261027-context-guidance-r2"
+  },
+  "remainingGates": [
+    "Reload older open native chats; loaded version can lag installed version.",
+    "Default-host full-catalog invitation/retrieval behavior beyond the process-isolated checks.",
+    "Owner-selected real second-person sharing/revocation acceptance.",
+    "Clean Google/Desktop onboarding on a separate environment."
+  ],
+  "publicHealthAndAsset": {
+    "observedAt": "2026-10-27T05:43:35.149067+00:00",
+    "health": {
+      "ready": true
+    },
+    "agentSetupSha256": "e536f1faf1b90cc81f89d6f0661426a795edf351d955d1fdc2bd4ca46a4e112a",
+    "matchesRelease": true,
+    "probeNote": "First Python check omitted gzip decoding; corrected response decoding succeeded."
+  },
+  "serverR2DownloadedAssets": [
+    {
+      "name": "runtime-update.json",
+      "sha256": "255688ceb2220b0adb035fe2e4f4f31ed20f0494fac5cc8530c64e3bce64dfa1",
+      "bytes": 2736845,
+      "downloadMatches": true
+    },
+    {
+      "name": "runtime-update-manifest.json",
+      "sha256": "740d30390ba1954b3d32a641671692c6f3fc843bd8701055eb90341f0fc9bda1",
+      "bytes": 27225,
+      "downloadMatches": true
+    },
+    {
+      "name": "runtime-update.sha256",
+      "sha256": "63d97f13912e40b3c22d33afcfcbe1d6b07368fddfc09eec1ca75f75b0da3cac",
+      "bytes": 86,
+      "downloadMatches": true
+    },
+    {
+      "name": "deploy-cloud-update.py",
+      "sha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
+      "bytes": 12916,
+      "downloadMatches": true
+    }
+  ],
+  "nativePublication": {
+    "url": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.31",
+    "publishedAt": "2026-10-27T05:38:03Z",
+    "assets": [
+      {
+        "name": "commonplace-0.4.31-build.json",
+        "bytes": 7438,
+        "digest": "sha256:cab18a59c9e0524546d631856162e165f7e51f30f3ab2c2130fad235f64a5cf4"
+      },
+      {
+        "name": "commonplace-0.4.31.sha256",
+        "bytes": 89,
+        "digest": "sha256:74584c9ab4203a459edf2ba51995a896fc057437a6ba3becfc9e2b305938d3fb"
+      },
+      {
+        "name": "commonplace-0.4.31.zip",
+        "bytes": 230158380,
+        "digest": "sha256:84251b519af967146f5111303c1211d12a9a82d51b81d32e326f94929a0e2a05"
+      },
+      {
+        "name": "meet-proxy-0.4.31-build.json",
+        "bytes": 7436,
+        "digest": "sha256:93ffafb406c51a53d21cd8a01752a9770f4c89242c61e32dd63839fd23e8f605"
+      },
+      {
+        "name": "meet-proxy-0.4.31.sha256",
+        "bytes": 88,
+        "digest": "sha256:e9250d3b73634ddd0ac4ec9bc3daf2462266efb0cfc16256af3a19ab25acf9b9"
+      },
+      {
+        "name": "meet-proxy-0.4.31.zip",
+        "bytes": 230158380,
+        "digest": "sha256:968f1157f0942c660eb5325cb287cfb70f54be2da0b8d7334d004eb7ad944c33"
+      }
+    ]
+  },
+  "serverPublication": {
+    "url": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261027-context-guidance-r2",
+    "publishedAt": "2026-10-27T05:38:01Z",
+    "assets": [
+      {
+        "name": "deploy-cloud-update.py",
+        "bytes": 12916,
+        "digest": "sha256:6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32"
+      },
+      {
+        "name": "runtime-update-manifest.json",
+        "bytes": 27225,
+        "digest": "sha256:740d30390ba1954b3d32a641671692c6f3fc843bd8701055eb90341f0fc9bda1"
+      },
+      {
+        "name": "runtime-update.json",
+        "bytes": 2736845,
+        "digest": "sha256:255688ceb2220b0adb035fe2e4f4f31ed20f0494fac5cc8530c64e3bce64dfa1"
+      },
+      {
+        "name": "runtime-update.sha256",
+        "bytes": 86,
+        "digest": "sha256:63d97f13912e40b3c22d33afcfcbe1d6b07368fddfc09eec1ca75f75b0da3cac"
+      }
+    ]
+  },
+  "installedVerification": "p0-installed-release-verification.json",
+  "sourcePullRequest": {
+    "number": 37,
+    "state": "merged",
+    "commit": "e56b8f012897f9d9a429309c15d4b71f683d643e"
+  }
+}

@@ -124,3 +124,55 @@ Conductor currently has a separate host bug: an agent-origin message can remove
 the receiving chat's authorized Mac execution binding. Meat Proxy cannot repair
 that authority or bypass it. Chat delivery remains enabled; a new human message
 from the Mac restores Mac access until the host fixes that regression.
+# Message delivery receipts
+
+Version 0.4.9 reports each shared-chat message as queued, received by the
+plugin, submitted to the chat, read, or replied. Check `read_chat_link` or
+People → Shared chats. A live session heartbeat alone does not prove that its
+receiver is listening. The status includes the receiver's last inbox poll.
+
+The plugin acknowledges fetched events and flushes submission receipts without
+waiting for another turn. Direct agent tool reads and opening the shared web
+thread record separate read receipts; background prefetches do not. A submitted
+receipt proves transport submission, not that a model or human read the text.
+Retries preserve the first receipt and cannot acknowledge another account's or
+an obsolete receiver's delivery. Reading does not consume an undelivered message.
+
+Older plugins retain messaging compatibility, but cannot provide the new fetched
+and read receipts. Update the installed plugin and reload it in the receiving
+host. Existing accounts, conversations and selected receiving chats are retained.
+
+# Native incoming messages
+
+Version 0.4.10 and later deliver shared-chat messages from the persistent MCP connection
+through the host's supported native inbox, as well as through lifecycle hooks.
+The transports share one session lock and durable receipt cursor. A stopped or
+missing hook no longer forces an active native plugin to use model-driven waits.
+Incoming messages preserve sender attribution and original wording; any agent
+commentary is separate. On hosts without a supported native inbox, tool reads
+remain an explicitly limited fallback and should show the original message.
+
+Update your existing plugin alias and reload it in the same receiving chat. If
+the host has no plugin reload, restart it and reopen that existing conversation.
+Do not create a replacement chat or reconnect the account just to apply an update.
+
+
+## Agents on your account
+
+Version 0.4.12 adds an account-wide message board, published working context and
+native history reads without a total-history cutoff. Your connected agents can
+use `list_my_agent_conversations`, `read_agent_context`, `search_my_chats` and
+`read_my_chat` without pairing or enabling bulk sync. `publish_agent_context`
+keeps useful task context available to your other agents. Reads run in the
+connector without waking another model. Relay migrations 0037 and 0038 are
+required. See [personal agents](PERSONAL-AGENTS.md) for host support, pagination,
+exclusions and the unchanged cross-person delegation boundaries.
+
+Version 0.4.13 adds one continuously populated cloud context workspace and cloud
+agent communication through MCP. Connect a cloud subscription, enable work-chat
+sync, then send a question to your hosted agent or use `run_cloud_task`. The
+service supplies the saved context; native agents do not have to assemble it.
+The cloud agent can consult your other connected agents and wait durably for
+their replies. Requires migration 0039 and the updated cloud worker. Production
+activation is complete; see [personal agents](PERSONAL-AGENTS.md) for freshness
+and host coverage limits.

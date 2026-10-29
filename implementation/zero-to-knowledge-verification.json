@@ -1,0 +1,220 @@
+{
+  "date": "2026-10-26",
+  "nativeVersion": "0.4.21",
+  "runtimeRevision": 56,
+  "state": "Production deployed; Mac 0.4.21/runtime56 active; real assistant answer verified with owner-approved per-run two-tool rule; startup/read/exit latency remains",
+  "tests": {
+    "core": {
+      "tests": 428,
+      "passed": 428,
+      "failed": 0,
+      "logSha256": "8b382216805e04af8d0323c078c3eddfadad48135c6ccad65035f26da8219fde"
+    },
+    "browser": {
+      "tests": 127,
+      "passed": 127,
+      "failed": 0,
+      "logSha256": "81ae401decbe1668d2c4646e36efdab91de2ab77ae33722e9d4464d5d96187f8"
+    },
+    "collector-regression": {
+      "tests": 36,
+      "passed": 36,
+      "failed": 0,
+      "logSha256": "6d69a85213d6c60ba94ae69111ef767f91075c1d63dc0f9901a85476456eaa0f"
+    },
+    "archive-fix": {
+      "tests": 25,
+      "passed": 25,
+      "failed": 0,
+      "logSha256": "0a3dff29c33f7c4f0879b18de8902f44cca83cc3a7e6b77643fbf6b243a49daa"
+    },
+    "core-final": {
+      "tests": 429,
+      "passed": 429,
+      "failed": 0,
+      "logSha256": "df8f637e2b26f555e16c999eaebbd524da98d0cd2fdabf45758138fd82670e2a"
+    },
+    "large-archive": {
+      "tests": 7,
+      "passed": 7,
+      "failed": 0,
+      "logSha256": "7b8d2fd8f392565d8eed01798e7da25eab821055033cff4ffd366f74ea726ffd"
+    },
+    "journey-final": {
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "logSha256": "54d25171941f21cb8fa512a18839eedd94fac685fa3b63f805ea7cfe274d77b3"
+    },
+    "launcher": {
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "logSha256": "a7e89df27d7069e1ce4873213881351ac9c6ddad3779585822ba25ecd6c0d073"
+    },
+    "packaging-final": {
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "logSha256": "14763913637544a9eabec3529d33e9495e1f95588a70a77e7d0be4e8d7dc527d"
+    },
+    "setup-final": {
+      "tests": 20,
+      "passed": 20,
+      "failed": 0,
+      "logSha256": "29fa613176f1b0ab6405f3f12ec6f351f0a11228b11a3188d2d7ea82ded0af55"
+    },
+    "product-spec": {
+      "tests": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    "plugin-smoke": {
+      "passed": true,
+      "logSha256": "9c5189335b28065d70d6868b6de60fdb9e0df16e5fd223637ba7257ede5d4ed8"
+    },
+    "mailbox-smoke": {
+      "passed": true,
+      "logSha256": "4af3e49901ec99fc5ad12a7a358d4988d99c79571c72bb127ad729033d4bffd0"
+    },
+    "core-release-final": {
+      "tests": 431,
+      "passed": 431,
+      "failed": 0,
+      "logSha256": "d41cfc030064bc0192798ff17849a7e7dcf07f8f8fc0b2425be18d505b28bac7"
+    },
+    "read-path-final": {
+      "tests": 27,
+      "passed": 27,
+      "failed": 0,
+      "logSha256": "07443f01dd52382e0c509bb7c2858f58e4a92e65c1a73d43c93542975e9bc6cf"
+    },
+    "journey-read-path": {
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "logSha256": "28b9ed1410c936bc21632fbc2805dd5bf3987c74756d17c4b3ad62f844e043e7"
+    }
+  },
+  "replay": {
+    "patches": 20,
+    "files": 154,
+    "matched": true
+  },
+  "fixtures": [
+    "Google identity and native session identity in isolated end-to-end tests",
+    "Controlled classifier scores; actual indexed retrieval and rule evaluation wiring"
+  ],
+  "liveBeforeFix": {
+    "origin": "https://34.27.253.220",
+    "nativeClaudeSessionCreated": true,
+    "automaticCollectedMarkerReadable": true,
+    "archiveDocuments": 292,
+    "archiveCharacters": 34673841,
+    "mirrorReady": false,
+    "snapshotPreparationMs": 11984,
+    "nativeReadTimeoutObserved": true
+  },
+  "live": {
+    "runtimeRevision": 56,
+    "contentVerified": true,
+    "folderReady": true,
+    "folderError": null,
+    "mirrorMarker": true,
+    "filesVerified": 293,
+    "manifestRevision": 5419,
+    "cloudRevision": 5419,
+    "accountAndOriginPreserved": true,
+    "freshAssistant": {
+      "harnessExitCode": 124,
+      "harnessTimeoutSeconds": 110,
+      "finalResultReceived": true,
+      "finalSubtype": "success",
+      "isError": false,
+      "toolsUsed": [
+        "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+        "mcp__plugin_meet-proxy_meet-proxy__read_shared_context"
+      ],
+      "permissionDenials": [],
+      "durationMs": 87950,
+      "answerVerified": true,
+      "expectedSuffixSuppliedInPrompt": false,
+      "successfulSearch": true,
+      "successfulRead": true,
+      "readDocumentMatchedSearch": true,
+      "readCitationCount": 5,
+      "ownerApprovedPerRunAllowlist": true,
+      "persistentPermissionsChanged": false,
+      "mcpConnectMs": 177,
+      "resourceListTimeoutMs": 30000,
+      "firstReadError": "Commonplace Agent Auth failed (23).",
+      "readRetrySucceeded": true,
+      "cleanProcessCompletionVerified": false,
+      "evidenceSha256": "6974354cf584a7c8834ea50d32b4b92d399e80887119f6dbd7779d9141fec655"
+    },
+    "incremental": {
+      "checkedAt": 1792978654831,
+      "mirrorRevision": 5426,
+      "documents": 294,
+      "incrementalMarkerPresent": true,
+      "createdByRealNativeSession": true,
+      "observedUpperBoundMs": 309947
+    },
+    "previousAssistantAttempts": [
+      {
+        "exitCode": 0,
+        "isError": false,
+        "toolsUsed": [
+          "ToolSearch",
+          "ToolSearch",
+          "ToolSearch",
+          "ToolSearch",
+          "mcp__plugin_meet-proxy_meet-proxy__search_shared_context"
+        ],
+        "permissionDenials": [
+          "mcp__plugin_meet-proxy_meet-proxy__search_shared_context"
+        ],
+        "durationMs": 22732,
+        "answerVerified": false
+      },
+      {
+        "toolsUsed": [
+          "ToolSearch"
+        ],
+        "answerVerified": false,
+        "failure": "Plugin reported still connecting; no context calls or permission denials."
+      },
+      {
+        "answerVerified": false,
+        "failure": "Literal search pagination timed out and archive revision changed; test deadline reached.",
+        "permissionDenials": []
+      }
+    ]
+  },
+  "production": {
+    "release": "20261026-archive-reads",
+    "filesVerified": 153,
+    "services": {
+      "commonplace": "active",
+      "commonplace-runtime": "active",
+      "nginx": "active"
+    },
+    "nginxConfigSha256": "71d17193bb8a51b0f30d4d95c3b77dcdf031669e9701254528a56bda1b8795ae",
+    "compression": {
+      "config": "/etc/nginx/sites-available/commonplace",
+      "beforeSha256": "e9fa5a547cc21904eb8044fbeba265e62b3144abc1f30ca94b84819a12f78d78",
+      "sha256": "71d17193bb8a51b0f30d4d95c3b77dcdf031669e9701254528a56bda1b8795ae",
+      "validated": true,
+      "reloaded": true,
+      "upstreamEncoding": "gzip"
+    }
+  },
+  "limitations": [
+    "Fresh Google sign-in and all native app variants are not certified by fixture identities.",
+    "The real Claude answer passed with an owner-approved exact two-tool per-run allowlist. Future sessions still use their own host permissions.",
+    "The passing answer took 87.95 seconds, after resource-list and initial-read timeouts; the harness cleanup deadline fired after a successful final result. Startup/transport/lifecycle reliability remains open.",
+    "The live incremental update arrived within the 310-second observation window; real-time latency needs further performance work.",
+    "Supported visible histories/imports only; arbitrary codebases, web-only chats, binary attachments and upstream MCP ingestion are not covered.",
+    "Rule-gated sharing is not a perfect classifier."
+  ]
+}

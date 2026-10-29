@@ -1,0 +1,12 @@
+{
+  "state": "passed",
+  "release": "20261026-registration-recovery",
+  "filesVerified": 158,
+  "services": [
+    "active",
+    "active",
+    "active"
+  ],
+  "migrations": "none; unchanged migration hashes, code-only activation",
+  "previous": "20261026-read-performance"
+}

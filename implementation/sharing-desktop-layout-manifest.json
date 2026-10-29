@@ -1,0 +1,35 @@
+{
+  "name": "Full desktop context sharing workspace",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "sharing-desktop-layout.patch",
+  "sha256": "9f6307e8d48b8443aeb722e25e212243533f009785935eba9dc086e0d0f7aa6a",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch"
+  ],
+  "state": "source and working preview; no production deployment",
+  "files": [
+    {
+      "path": "scripts/policy-sharing-page.mjs",
+      "beforeSha256": "7e73b79e49ab4df0d4e664bf76c82ce922db3238999dc331b7036946680fdd41",
+      "sha256": "e829d825795188e89700188657136cbfdd16a9051bea6541027d2c7b0f5bec21"
+    },
+    {
+      "path": "scripts/policy-sharing-style.mjs",
+      "beforeSha256": "0d12378987c372e70efb122e22faf68796e80a4e852742e43e05577a090f6455",
+      "sha256": "8890696779434337882e67743fc11dc76f7d2494c96c909d773c3eca17c3a015"
+    },
+    {
+      "path": "tests/policy-sharing-browser.test.mjs",
+      "beforeSha256": "95b2b89722e328d74edd6d013cbe77ec7a55e783e2898d630d349e1ba0158c9d",
+      "sha256": "baf484febcf8410605be7ddaade207b5f440ee1c6cdae10872cd47ea9442f326"
+    }
+  ]
+}

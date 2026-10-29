@@ -1,0 +1,98 @@
+{
+  "kind": "controlled MCP-only; real Codex model, disposable signed service and deterministic classifier",
+  "cases": [
+    {
+      "id": "space-after-leave",
+      "exitCode": 0,
+      "elapsedSeconds": 38.5,
+      "tools": [
+        "list_context_spaces",
+        "archive_search"
+      ],
+      "onlyFixtureServer": true,
+      "configUnchanged": true,
+      "stoppedReason": null,
+      "final": "I couldn’t retrieve Maya’s latest plan. You currently have no shared space with Maya or Cobalt Launch, and your saved context has no Cobalt results.\n\nShare the plan link or a current space invitation so I can access it.",
+      "evidenceSha256": "2eb11343337f27195be2b4848849a18e68eae767fc5feef6c2ae6dd64b728323",
+      "privateLibraryPolicies": 0,
+      "requesterBoardUnavailable": true,
+      "activeMemberCount": 1
+    },
+    {
+      "id": "space-context",
+      "exitCode": 0,
+      "elapsedSeconds": 22.16,
+      "tools": [
+        "list_context_spaces",
+        "read_space_activity",
+        "request_space_context"
+      ],
+      "onlyFixtureServer": true,
+      "configUnchanged": true,
+      "stoppedReason": null,
+      "final": "Maya’s latest shared **Cobalt Launch** update says:\n\n- **Launch date:** December 28, 2026\n- **Rollout owner:** Maya\n- **Start time and timezone:** Still undecided\n\nThe shared response included no full plan document, revision date, or source link.",
+      "evidenceSha256": "d79bf303e1df86292a6c2eb155ce7dbeb23bca2aaa543a4b028fa71294541c3e",
+      "privateLibraryPolicies": 0,
+      "requesterBoardUnavailable": false,
+      "activeMemberCount": 2
+    },
+    {
+      "id": "space-invite",
+      "exitCode": 0,
+      "elapsedSeconds": 30.94,
+      "tools": [
+        "create_context_space",
+        "create_space_invitation"
+      ],
+      "onlyFixtureServer": true,
+      "configUnchanged": true,
+      "stoppedReason": null,
+      "final": "Created fixture space and returned 14-day localhost invitation; no external send.",
+      "evidenceSha256": "82a97f6fdedc5e84d22480271b97c43567a5773ad9c943e5a2b2ecb043510b96",
+      "privateLibraryPolicies": 0,
+      "requesterBoardUnavailable": false,
+      "activeMemberCount": 2
+    },
+    {
+      "id": "space-leave",
+      "exitCode": 0,
+      "elapsedSeconds": 62.33,
+      "tools": [
+        "list_context_spaces",
+        "leave_context_space"
+      ],
+      "onlyFixtureServer": true,
+      "configUnchanged": true,
+      "stoppedReason": null,
+      "final": "You’ve been removed from Cobalt Launch. Previously shared history remains in the space.",
+      "evidenceSha256": "74a42c5aab8b2ccaecf9ee969067539e7344e1be9b794a3b649c337ac45c612c",
+      "privateLibraryPolicies": 0,
+      "requesterBoardUnavailable": true,
+      "activeMemberCount": 1
+    },
+    {
+      "id": "space-unknown",
+      "exitCode": 0,
+      "elapsedSeconds": 23.4,
+      "tools": [
+        "list_context_spaces",
+        "read_space_activity",
+        "request_space_context"
+      ],
+      "onlyFixtureServer": true,
+      "configUnchanged": true,
+      "stoppedReason": null,
+      "final": "Maya hasn’t chosen an exact hour or timezone yet. The current approved Cobalt Launch update confirms **December 28, 2026**, with the start time and timezone still undecided.",
+      "evidenceSha256": "7091bc901419360d5126a32ca9225666f271cfbfd54164a02f0427401da2570e",
+      "privateLibraryPolicies": 0,
+      "requesterBoardUnavailable": false,
+      "activeMemberCount": 2
+    }
+  ],
+  "skipped": [
+    "space-accept: prior browser host denial",
+    "space-private: prior provider rejection"
+  ],
+  "complete": true,
+  "isolationPreflightPassed": true
+}

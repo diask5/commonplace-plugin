@@ -1,0 +1,82 @@
+{
+  "name": "Exact account timeout recovery and 0.4.26/runtime59 version alignment",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch"
+  ],
+  "patch": "context-timeout-recovery.patch",
+  "sha256": "0580c1ccf62e7c4f1e9bd7ea6bdd409b2ddce0fc46310abe90ddf1e1a94ac182",
+  "state": "Source/packaging patch only; 0.4.26/runtime59 build and tests per .context/timeout-fix/native-report.md; no live, install or deploy readiness implied",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-setup.mjs",
+      "beforeSha256": "d45bace18ac3a02379cc602f4da84bd082328905dbfe539882c7bf326d96c7b2",
+      "sha256": "4b9d501885619a968f85f69811daa352f162f56e5d072d66c8e98d73b26157f6"
+    },
+    {
+      "path": "apps/commonplace-account/server/remote-mcp.mjs",
+      "beforeSha256": "4650b4e7da9f5f21eeded3b8d8e39f29ee5fb62abc29af4073a14f860cb2b9fe",
+      "sha256": "838ed12e1bd3762c726e0b9228fbe7f273a707b58c9882073984bcd5aa9bfe98"
+    },
+    {
+      "path": "apps/commonplace/server/account-errors.mjs",
+      "beforeSha256": "77cfb2b2a671bcab652aba4e13a9af144b4e30559b1cc1e81f4df16c00ca5c06",
+      "sha256": "cecf04778a2bace7197576d6d07df2edd1b95f4e702129c824a4a338822bf8c4"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "3ad9fbec702d33fd0d54a542b177c0dbf0a3f678926cc5150dbee01ff94141d9",
+      "sha256": "094b4b9a3a5b5058b548ee31986511dbc79c2b1ee7be7c564e87b646026d1d04"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "5abc5b0fe322cafb00e7a1a36730b93d3185a11e12999e12496cc2ac18e0bc8d",
+      "sha256": "03d7eae5f6a07477d697cc7c4e0e3bb0ab25c8908d6a36544925b26c7de36cfd"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "4c05f1662fa58ccf8b34c22b6843fbaae08566c866359e98f31a1a812c790692",
+      "sha256": "0882df59376a6db786a5d3650189045f937cbbb585fadde7b9f002e65541ba43"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "6b602ed15edc542d338aca57abe3816f99c9a0f2b3f504d86b0552d30d126b29",
+      "sha256": "8efa5d740b7867bd9312ce01d1753a99b1d1c3cda7af43a6c7cd268b1246c81d"
+    },
+    {
+      "path": "tests/seamless-routing.test.mjs",
+      "beforeSha256": "045cd95a5e7ea74ad27e454abb8900bbcc5f7ca9f0501b7b93bfa90c689fe6c6",
+      "sha256": "fc701c7f7beb2e75e7acdef5c28f506a6a8f699b1dec95e003886afd50d5ece7"
+    },
+    {
+      "path": "tests/seamless-setup-browser.test.mjs",
+      "beforeSha256": "b65c88a6dcafd5ca2e4fce52eb7d94ff7062614a273da2d318b305b77b4fc484",
+      "sha256": "4528ec11f1f2ce18092924ee683fb82b9a91b7eb1aa0e77f4f9ca3f6bca1bb56"
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "state": "published, deployed and active on Mac; real-host benchmark incomplete",
+  "nativeVersion": "0.4.27",
+  "runtimeRevision": 60,
+  "serverRelease": "20261026-registration-recovery",
+  "source": {
+    "patches": 31,
+    "files": 201,
+    "incrementalFiles": 15,
+    "matched": true,
+    "mismatches": [],
+    "patchSha256": "fa0ce5998ca6a39d798ea992ee65f2b832a5b3aafe190966cdc6f0725cf40171",
+    "manifestHashAgreement": {
+      "mcp-adoption-0.4.19-rc.3.patch": "no-standard-manifest",
+      "agent-launch-and-server-check.patch": "no-standard-manifest",
+      "spec-alignment.patch": true,
+      "product-flow-design.patch": true,
+      "production-readiness.patch": true,
+      "context-product-ui.patch": true,
+      "automatic-context-ingestion.patch": true,
+      "prompt-based-sharing.patch": true,
+      "sharing-rules-design.patch": true,
+      "sharing-desktop-layout.patch": true,
+      "sharing-interactions.patch": true,
+      "shared-spaces.patch": true,
+      "message-first-spaces.patch": true,
+      "live-context-setup.patch": true,
+      "seamless-plugin-setup.patch": true,
+      "copy-setup-prompt.patch": true,
+      "context-mvp-completion.patch": true,
+      "sharing-walkthrough.patch": true,
+      "zero-to-knowledge.patch": true,
+      "archive-read-performance.patch": true,
+      "native-discovery.patch": true,
+      "archive-revision-fence.patch": true,
+      "context-completion.patch": true,
+      "p0-native-readiness.patch": true,
+      "seamless-context.patch": true,
+      "deployment-startup-readiness.patch": true,
+      "context-timeout-recovery.patch": true,
+      "server-io-recovery.patch": true,
+      "public-assets-delivery.patch": true,
+      "context-read-performance.patch": true,
+      "registration-recovery.patch": true
+    },
+    "sourceScopeFilesNotMatchingReplay": [],
+    "sourceScopeMissingCount": 0
+  },
+  "artifacts": {
+    "meet-proxy-0.4.27.zip": "ddeac7c6d1921c6ae3a855d6e7412bb7e97e53084b24a3cf9a3d0743e755a07e",
+    "commonplace-0.4.27.zip": "2e33aea0f68e1920d52fd734569357c202dfbc84c7e55700385c6eb58e8596d8",
+    "server/runtime-update.json": "0e5d824a6920fbb97577d289788684bd9ac1a4e6c8e7458e9152dd6961075354",
+    "server/runtime-update-manifest.json": "7841d816e7b022c5afab11741954ac95102d1534176b595ecf0f74def89b3d57",
+    "server/runtime-update.sha256": "cf0705b4878d48699910339bfc945f5f348eba59d0d2c66c06ffe714d3636a21",
+    "server/deploy-cloud-update.py": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408"
+  },
+  "checks": {
+    "registrationQueue": 3,
+    "archiveTransactionFocused": 21,
+    "archiveAuthorityReview": 109,
+    "cloudAuthorityFinal": 12,
+    "fullCore": {
+      "passed": 572,
+      "failed": 0,
+      "skipped": 0
+    },
+    "native": {
+      "packaging": "1/1 pass (COMMONPLACE_TEST_PACKAGE_DIR)",
+      "queueRegression": "3/3 pass vs source and both extracted packages",
+      "smokePlugin": "pass both aliases",
+      "smokeMailbox": "pass both aliases",
+      "nativeSuite": "mailbox-*, cloud-background, person-inbox: 90/90"
+    },
+    "cloudRegressionPassed": 117,
+    "originalCore": {
+      "pass": 569,
+      "fail": 1,
+      "failure": "Offline consultation waiting state; fixed by preserving durable consultation wait without publishing withheld text."
+    },
+    "benchmarkHarnessPassed": 13,
+    "publicLiveSmoke": {
+      "state": "passed",
+      "assets": 31,
+      "desktopWidth": 1440,
+      "phoneWidth": 390,
+      "evidence": "registration-recovery/public-smoke.json",
+      "limits": "Unauthenticated sign-in and protocol checks; not browser acceptance or native setup."
+    },
+    "realNativeBenchmark": {
+      "passed": 3,
+      "needsReview": 3,
+      "notStarted": 2,
+      "cases": 8,
+      "evidence": "registration-recovery-native-benchmark.json",
+      "limits": "Process-isolated retrieval catalog; no default-host routing proof. Search timeouts and revision churn persist; Claude cited one source not successfully read."
+    }
+  },
+  "limits": [
+    "Held-registration regression passes, but installed runtime60 still has search timeouts; no general installed performance fix is claimed.",
+    "Whole archive revision changes during optional cloud model runs withhold answers and may exhaust existing retry limits under steady ingestion.",
+    "Prior default-host invitation routing failures and host-denied browser acceptance remain unresolved; no denied action retried.",
+    "No paid infrastructure or disk changes.",
+    "Fresh real-host benchmark finished: 3 passed, 3 incomplete/failed rubric, 2 Claude cases not started after unexpected-tool guard. Earlier failures preserved."
+  ],
+  "production": {
+    "state": "passed",
+    "release": "20261026-registration-recovery",
+    "filesVerified": 158,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "none; unchanged migration hashes, code-only activation",
+    "previous": "20261026-read-performance"
+  },
+  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.27",
+  "nativeInstallation": {
+    "state": "passed",
+    "installedVersion": "0.4.27",
+    "runtimeRevision": 60,
+    "backgroundVersion": "0.4.27",
+    "accountAndSavedPermissionsUnchanged": true,
+    "evidence": "registration-recovery-native-install.json",
+    "limits": "Older open host chats may retain their loaded plugin metadata. Initial handoff failures are preserved."
+  }
+}

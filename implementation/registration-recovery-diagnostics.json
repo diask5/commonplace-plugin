@@ -1,0 +1,41 @@
+{
+  "release": "20261026-read-performance",
+  "directServer": {
+    "snapshotPointerSeconds": 0.193,
+    "snapshotCurrent": true,
+    "documents": 365,
+    "liveSearchSeconds": 20.745,
+    "snapshotSearchSeconds": 2.451,
+    "selectedReadSeconds": 0.29,
+    "walBytes": 671617712,
+    "databaseBytes": 290553856
+  },
+  "mainThreadProfile": {
+    "windowSeconds": 15,
+    "fsyncCalls": 627,
+    "fsyncWallSeconds": 4.688142,
+    "clockNanosleepCalls": 11,
+    "clockNanosleepSeconds": 0.026533,
+    "healthSeconds": [
+      1.748,
+      1.564,
+      2.506
+    ]
+  },
+  "nativeDirectTransport": {
+    "searchSeconds": 4.222,
+    "readSeconds": 1.661,
+    "searchResults": 3,
+    "readHasText": true,
+    "scope": "Existing companion identity; transport diagnostic, not model or exact host chat benchmark."
+  },
+  "installedMcp": {
+    "state": "failed",
+    "runtimeRevision": 59,
+    "initializeSeconds": 0.085,
+    "searchSeconds": 37.336,
+    "error": "Meet Proxy request timed out before a response arrived. This does not mean your sign-in expired. Check uncertain writes before retrying; reuse retryNonce when returned.",
+    "sameQueryAsDirect": false,
+    "scope": "Installed stdio MCP via active daemon; synthetic seed query, no model."
+  }
+}

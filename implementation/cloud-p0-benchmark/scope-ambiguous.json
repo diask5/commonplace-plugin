@@ -1,0 +1,13 @@
+{
+  "case": "scope-ambiguous",
+  "sessionId": "77d4bc17-04bf-4a41-99e4-18302a580a0b",
+  "tools": [
+    "list_context_spaces"
+  ],
+  "successfulReads": [],
+  "finalCitationIds": [],
+  "supportedCitationIds": [],
+  "unsupportedCitations": [],
+  "final": "Rowan is in two spaces: **Nelmere Grove** and **Iverwick Harbor**. Which space should I use to get the latest project plan?",
+  "visibleReceiptsSha256": "2d8fbb652084c1fe00c9bbb52ac642b9f72354f5649ee615d83af5d92668a931"
+}

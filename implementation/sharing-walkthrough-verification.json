@@ -1,0 +1,161 @@
+{
+  "date": "2026-10-26",
+  "state": "published and deployed web UI update",
+  "nativeRelease": "0.4.20",
+  "nativeRuntime": 55,
+  "nativePackageChanged": false,
+  "patch": "sharing-walkthrough.patch",
+  "patchSha256": "b913d642ce1b8d2265710f5795a622766ae7e72f9b1bcf83a3a875acf6935c8a",
+  "replay": {
+    "patches": 18,
+    "incrementalFiles": 7,
+    "allChangedFilesMatch": 150,
+    "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13"
+  },
+  "verification": {
+    "currentContextBrowser": {
+      "command": "npm run test:context-ui",
+      "passed": 70,
+      "failed": 0,
+      "skipped": 0,
+      "path": ".context/sharing-walkthrough/browser-accepted.log",
+      "sha256": "5c4c58dfb7ed5f689eacd9c403331a13ac25e9b231412f42b63f0184b74e088f"
+    },
+    "screenshotJourney": {
+      "passed": 1,
+      "failed": 0,
+      "fixtureAccounts": true,
+      "path": ".context/sharing-walkthrough/journey-accepted.log",
+      "sha256": "8b1211f51b09c3c8f993e7dc612559c7c99a1b4f2e4740115f42413f3f34d0f0"
+    },
+    "widths": [
+      320,
+      390,
+      768,
+      1024,
+      1440,
+      1920
+    ],
+    "accessibility": [
+      "WCAG 2 A",
+      "WCAG 2 AA",
+      "WCAG 2.1 AA",
+      "reduced motion",
+      "no horizontal overflow"
+    ],
+    "firstFailure": {
+      "cause": "Journey checked setup visibility before the async dialog opened, then tried to fill the background composer. Reproduced with a delayed group response and the setup modal open. Fixed test to await and close the dialog.",
+      "path": ".context/sharing-walkthrough/diagnostic-delayed.log",
+      "sha256": "1601423cd40277bfaf906ed81859d1959bc26c2c0918048c95b6d9ca9fc4283a"
+    },
+    "livePublic": {
+      "origin": "https://34.27.253.220",
+      "at": "2026-10-26T00:49:30.276Z",
+      "screens": [
+        {
+          "width": 1440,
+          "status": 200,
+          "loadingCleared": true,
+          "pageErrors": []
+        },
+        {
+          "width": 390,
+          "status": 200,
+          "loadingCleared": true,
+          "pageErrors": []
+        }
+      ],
+      "checks": [
+        {
+          "width": 1440,
+          "newWalkthroughMarkup": true
+        },
+        {
+          "googleHelperReady": true,
+          "origin": "https://vertical-web-313417.firebaseapp.com"
+        },
+        {
+          "width": 390,
+          "newWalkthroughMarkup": true
+        },
+        {
+          "route": "/context/assets/context-product.mjs",
+          "status": 200,
+          "sourceMatches": true,
+          "sha256": "8456655ee0e826ab0fba427736bf36b3b6760e2a1a23fd0790d7ccfce62a692c"
+        },
+        {
+          "route": "/context/assets/context-native-setup.mjs",
+          "status": 200,
+          "sourceMatches": true,
+          "sha256": "7e3929ab4f148f48bc2141131d4b1b4c639552b78050a9cb5307143354efd9f2"
+        },
+        {
+          "route": "/context/assets/context-space-rules.mjs",
+          "status": 200,
+          "sourceMatches": true,
+          "sha256": "a3547056437d9028f9b1ed48d3415c1e26af90374267dfaa194c0d8e0172603b"
+        },
+        {
+          "route": "/context/assets/context-setup-request.mjs",
+          "status": 200,
+          "sourceMatches": true,
+          "sha256": "fffdaeec0bbc87bc11f8bdafbc68f50e050675c1aa1eea0d700b384159f31100"
+        },
+        {
+          "route": "/mcp",
+          "unauthenticatedStatus": 401
+        },
+        {
+          "route": "/authorize",
+          "status": 303
+        }
+      ],
+      "realSignInCompleted": false,
+      "passed": true
+    },
+    "liveEvidence": {
+      "path": ".context/sharing-walkthrough/live-public.json",
+      "sha256": "0c4759edde9a5e4538879970d00bfc977bec024e2297eae92afbe189991ff6d1"
+    },
+    "gallery": {
+      "url": "https://kyle-cloud-w3.conductor.show/review",
+      "screens": 6,
+      "desktopAndPhone": true,
+      "exactServedScreenshotsVerified": true
+    }
+  },
+  "deployment": {
+    "origin": "https://34.27.253.220",
+    "baseline": "20261026-context-0.4.20",
+    "release": "20261026-sharing-walkthrough",
+    "runtimeFilesChanged": 4,
+    "bundleFilesVerified": 153,
+    "bundleSha256": "e0edc4be9f41f3c6cd6063c95c71268a2ae2c2c11e32cca20ae405382849267a",
+    "releaseAsset": "meet-proxy-sharing-walkthrough-20261026.tgz",
+    "releaseAssetSha256": "6ce0c1df3c7b5b8f92cb550ea98e25bd07028b112e5894df326733dd124691cf",
+    "codeOnly": true,
+    "migrations": "unchanged",
+    "web": "ready",
+    "worker": "ready",
+    "evidence": [
+      {
+        "path": ".context/sharing-walkthrough/production-preflight.json",
+        "sha256": "bfeaf59020abad6c41c820c726c89743ab59c0fcd1a3b08aeb1ca85ef4195c0c"
+      },
+      {
+        "path": ".context/sharing-walkthrough/production-deployment.json",
+        "sha256": "7695dfd0702fac539c98caf674c74d85782b79b7df2508792fef4989d0288fcf"
+      },
+      {
+        "path": ".context/sharing-walkthrough/production-verified.json",
+        "sha256": "804bed5e4d98389356e6fe4bba772a7331ff70328a9cdfd4a7ebbd71bc2cca95"
+      }
+    ]
+  },
+  "limits": [
+    "Browser screenshots use isolated test accounts and controlled providers.",
+    "Public live checks confirm sign-in helper readiness, not a completed Google login.",
+    "This UI update does not certify a fresh native host setup or change classifier performance."
+  ]
+}

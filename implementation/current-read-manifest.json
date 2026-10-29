@@ -1,0 +1,104 @@
+{
+  "name": "Recover fresh searches and verify current supporting sources",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch"
+  ],
+  "patch": "current-read.patch",
+  "sha256": "9b2f398b2b02a46aa8fbd49c83afdd70b1fbe243075c09cac5fbd162216f1fa5",
+  "state": "Native 0.4.28/runtime61 and server current-read candidate; see current-read-verification.json for lifecycle evidence.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/cloud-archive.mjs",
+      "beforeSha256": "4282ff1361b44805e07cc1930e03da1665d828181acb5b8f1a9a25bd694d5fb7",
+      "sha256": "c26ba65449721d2af1315cc5f0e1f44d5deed51786b92c93e59ea7af3ea8b798"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-setup.mjs",
+      "beforeSha256": "a6d035f5431db260608a32160beda3905ca5747d82df116001dc197ba2f340b1",
+      "sha256": "d6c56c96c66180d02f132cf25ec36b7a2ece0fea56374a7c8a01ea742816e07c"
+    },
+    {
+      "path": "apps/commonplace-account/server/remote-mcp.mjs",
+      "beforeSha256": "c58832170a5b81bea7f925fa88be4a2b8140b58a6476f13c4efe71e61e876d83",
+      "sha256": "2b0ef23b22e5d262250fc5a676d9aa6214e07f1fbf8f0ac5ed64e5927d80a00e"
+    },
+    {
+      "path": "apps/commonplace-account/server/shared-context.mjs",
+      "beforeSha256": "3126089c159b7784b9e9d9f8d71724a909a5a4d3209dc33a1993816ca4e4f654",
+      "sha256": "bb74d9b85a77f47f2d40bc58d334f7d377ebf7b9bb1926a886987cf100c2749e"
+    },
+    {
+      "path": "apps/commonplace/plugin/commonplace/skills/context/SKILL.md",
+      "beforeSha256": "fa6a74d7a7b7eec78439b7747c441b6dda99fafcb68149aecf5a0c57e8ab506a",
+      "sha256": "ecb48e96eed3f826b5fb0a6b4afd321bef2dc62e563668809c8c1d12150ac542"
+    },
+    {
+      "path": "apps/commonplace/server/account-inbox.mjs",
+      "beforeSha256": "28e2f031e7a11262bb243ba3232413b6e5be49d6eebed87a489ce6c9b9d48c2e",
+      "sha256": "42664077a77f34d50a147496464bbd425c47fdbf9301ac6c7770b0602ca9f28b"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "60ca3a81c12935263f890514a31fc8d1bf5de4575b0befc77357e317d5efefdb",
+      "sha256": "984a51f17588c5c9f8ef76a34002c4c2f97bcf4aecad81a6c990d624268c8455"
+    },
+    {
+      "path": "apps/commonplace/server/plugin-surface.mjs",
+      "beforeSha256": "b63d27eb749be4819c3d4bbf413e743c96ff70831dcff7c9dc7f99737520b3a8",
+      "sha256": "23972be2c2b03bc4f7d63bf79d2cfa72cbb6375cf3d32e6a686e0c1081e4ce48"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "6bba3460d43f3f1fcaa9801ccf1af21d9b801717c6c5d6ace669b972d9fd006e",
+      "sha256": "786422cc3b0fce840d186a1b92ee45a881b3df85faa79eab6191c8917d30192a"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "d3fdb2d3900ac28dc92f3d9e9ef362d407049912baca228868874375d437a6c9",
+      "sha256": "8178ff103050db8e6c23143a8709aaf188e2971077996fb74e9f9c02b6c2853f"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "578183f5e4c4e61b8c5fc12488ae510f8931362deb66ef7cf16afc3fdc0162bc",
+      "sha256": "8a0b9a440924850eda103815220b1c3109bcc77d67a7a168f89a861fbf560cf9"
+    },
+    {
+      "path": "tests/seamless-retrieval.test.mjs",
+      "beforeSha256": "3449ec56acfcc2cdc068689098d1fd5e1db6a7142be95ace0990b3fca368b388",
+      "sha256": "194ecf5b8d05a228be186237641cdf97c71bb15cfdc3e5399275ad17aa447173"
+    }
+  ]
+}

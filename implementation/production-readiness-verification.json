@@ -1,0 +1,354 @@
+{
+  "candidate": "0.4.19",
+  "runtimeRevision": 54,
+  "date": "2026-10-25",
+  "state": "production server live; native release published and Mac Claude plugin installed; host restart and real signed-in journey verification pending",
+  "runs": {
+    "regression": {
+      "tests": 379,
+      "pass": 379,
+      "fail": 0,
+      "skipped": 0,
+      "log": ".context/production-rollout/backend-final.log",
+      "logSha256": "18531c6ffd39c7d4677f725d22be9cf9c580ff11edd7d671018c57d0e3d8a70e"
+    },
+    "pairAndWrapper": {
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "log": ".context/production-rollout/backend-focused.log",
+      "logSha256": "08f8a0d512a7bad259c4870bb8e05d4b108768e94dce97dc9dd10c001533da99"
+    },
+    "ui": {
+      "tests": 57,
+      "pass": 57,
+      "fail": 0,
+      "skipped": 0,
+      "log": ".context/production-rollout/ui-frozen-final-suite.log",
+      "logSha256": "04fcfa000603987f33bc6fa325608142dc20db734deefa1c201c5303b3ed6aff"
+    },
+    "productLifecycle": {
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skipped": 0,
+      "log": ".context/production-rollout/ui-final-product-e2e.log",
+      "logSha256": "781ea5caabe554a99035853f2751df54c71c43963738112e6dab2df7e53d9dfe"
+    },
+    "nativeSource": {
+      "tests": 131,
+      "pass": 131,
+      "fail": 0,
+      "skipped": 0,
+      "log": ".context/production-rollout/native-source-regression-tests.log",
+      "logSha256": "6b7aabc1c297050c884cf1be87f22e5c85668c92ecf7f9d3ee4aaf6394e5ed86"
+    },
+    "packagedLaunchers": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "log": ".context/production-rollout/native-runtime-launch-tests.log",
+      "logSha256": "7294adf78057fafa376ae0f3e2f994ba0a9987d5173fa390e2d4deae8b7e31e3"
+    },
+    "packaging": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0,
+      "log": ".context/production-rollout/native-packaging-tests.log",
+      "logSha256": "c5d0a6c132366f289457d682a92575b11fbaf61f42b3bdcc457533c2e188d3b9"
+    },
+    "deployment": {
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "log": ".context/production-rollout/deployment-tests.log"
+    }
+  },
+  "suiteOverlap": "Some native and backend checks overlap; do not add suite counts.",
+  "isolatedRuntime": {
+    "passed": true,
+    "node": "v22.23.2",
+    "migrations": 45,
+    "checks": [
+      "/.well-known/oauth-authorization-server",
+      "/.well-known/oauth-protected-resource/mcp",
+      "/.well-known/agent-configuration",
+      "/api/agent-auth/agent-configuration",
+      "unauthenticated routes denied",
+      "unrelated auth route denied",
+      "PKCE token exchange",
+      "authenticated tool listing",
+      "resource listing and read",
+      "read-only token rejects write",
+      "foreign origin denied",
+      "compiled authorize route retained (placeholder)"
+    ],
+    "scope": "Extracted runtime and isolated dependencies over real local HTTP; disposable synthetic profile. Google/compiled authorization page/native host not exercised."
+  },
+  "patchChain": {
+    "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+    "patches": [
+      "mcp-adoption-0.4.19-rc.3.patch",
+      "agent-launch-and-server-check.patch",
+      "spec-alignment.patch",
+      "product-flow-design.patch",
+      "production-readiness.patch"
+    ],
+    "filesByteIdentical": 95,
+    "passed": true
+  },
+  "uiMatrix": {
+    "viewports": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "coreScreens": 7,
+    "coreAccessibilityViewportChecks": 28,
+    "nativeAttachmentChecks": 8,
+    "recoveryAccessibilityViewportChecks": 16,
+    "sourceFreezeUnchanged": true
+  },
+  "packagedSmoke": {
+    "plugin": "passed",
+    "mailbox": "passed",
+    "scope": "Actual packaged processes and signed HTTP; Google and host transport fixtures.",
+    "logs": [
+      ".context/production-rollout/native-smoke-plugin.log",
+      ".context/production-rollout/native-smoke-mailbox-final.log"
+    ]
+  },
+  "modelBenchmark": {
+    "state": "passed",
+    "total": 11,
+    "passed": 11,
+    "scope": "Real separate model over demo signed MCP clients; authority must be read from owner-approved pair consent persisted by invite/accept. No private mandate is injected into the evaluator prompt. Semantic behavior remains sampled, not a guarantee. Provider and native identities are fixtures; expiry is induced in durable demo policies and verified through the signed API. Case identifiers reveal no expected result. No OS isolation from answer keys.",
+    "report": ".context/production-rollout/model-benchmark/report.json",
+    "reportSha256": "15596ddaa899d3aa6f2ee7905e56b6e904c785b409153ce6f00547ddbcbd9071",
+    "cases": [
+      {
+        "id": "request",
+        "passed": true,
+        "elapsedMs": 18764,
+        "toolCalls": 1,
+        "persistedReplies": 0
+      },
+      {
+        "id": "delegate",
+        "passed": true,
+        "elapsedMs": 9095,
+        "toolCalls": 1,
+        "persistedReplies": 0
+      },
+      {
+        "id": "answer",
+        "passed": true,
+        "elapsedMs": 20519,
+        "toolCalls": 4,
+        "persistedReplies": 1
+      },
+      {
+        "id": "sources",
+        "passed": true,
+        "elapsedMs": 17839,
+        "toolCalls": 2,
+        "persistedReplies": 1
+      },
+      {
+        "id": "family",
+        "passed": true,
+        "elapsedMs": 16318,
+        "toolCalls": 2,
+        "persistedReplies": 1
+      },
+      {
+        "id": "injection",
+        "passed": true,
+        "elapsedMs": 9808,
+        "toolCalls": 2,
+        "persistedReplies": 1
+      },
+      {
+        "id": "indirect",
+        "passed": true,
+        "elapsedMs": 9159,
+        "toolCalls": 2,
+        "persistedReplies": 1
+      },
+      {
+        "id": "action",
+        "passed": true,
+        "elapsedMs": 8694,
+        "toolCalls": 2,
+        "persistedReplies": 1
+      },
+      {
+        "id": "unknown",
+        "passed": true,
+        "elapsedMs": 8789,
+        "toolCalls": 2,
+        "persistedReplies": 1
+      },
+      {
+        "id": "ordinary-reply",
+        "passed": true,
+        "elapsedMs": 6783,
+        "toolCalls": 1,
+        "persistedReplies": 0
+      },
+      {
+        "id": "expired",
+        "passed": true,
+        "elapsedMs": 5014,
+        "toolCalls": 1,
+        "persistedReplies": 0
+      }
+    ],
+    "notes": [
+      "Separate real model session previously worked on UI; this is not a blind or OS-isolated evaluation.",
+      "Case authority was retrieved from persisted synthetic owner consent, not granted by peer messages.",
+      "Two real fixture invitations and seven persisted fixture replies; ordinary reply and expired cases sent nothing.",
+      "No real Google, real host wake or real private account data was exercised."
+    ]
+  },
+  "published": true,
+  "installed": true,
+  "productionDeployed": true,
+  "productionRehearsal": {
+    "state": "passed",
+    "release": "20261025-product-0.4.19-rehearsal",
+    "database": "verified backup and migrated disposable copy",
+    "compiledServer": "real compiled server with isolated empty state and production HTTPS configuration",
+    "routes": {
+      "/": 200,
+      "/auth/google.js": 200,
+      "/context/assets/agent-connections.mjs": 200,
+      "/.well-known/oauth-protected-resource/mcp": 200,
+      "/.well-known/agent-configuration": 200,
+      "/api/agent-auth/sign-in/email": 404,
+      "/mcp": 401,
+      "/authorize": 303
+    },
+    "scope": "Unauthenticated actual compiled authorization redirect; no real Google identity asserted."
+  },
+  "remainingLiveGates": [
+    "Completed real Google sign-in and signed account/server/native identity",
+    "Mac host reload and loaded 0.4.19 confirmation",
+    "Installed exact-chat idle wake, answer and both-owner audit",
+    "Installed host denial, offline recovery, expiry and sever"
+  ],
+  "productionDeployment": {
+    "release": "20261025-product-0.4.19",
+    "previous": "20261022-context-fixes3",
+    "backup": "/var/lib/commonplace/rollouts/20261025-product-0.4.19/before.sqlite",
+    "migrations": "rehearsed",
+    "worker": "ready",
+    "appliedMigrations": 45,
+    "preservation": [
+      {
+        "table": "cp_profiles",
+        "before": 71,
+        "after": 71,
+        "missingOrChanged": 0
+      },
+      {
+        "table": "cp_agent_addresses",
+        "before": 150,
+        "after": 150,
+        "missingOrChanged": 0
+      },
+      {
+        "table": "cp_agent_bindings",
+        "before": 149,
+        "after": 149,
+        "missingOrChanged": 0
+      },
+      {
+        "table": "cp_mail_conversations",
+        "before": 7,
+        "after": 7,
+        "missingOrChanged": 0
+      },
+      {
+        "table": "cp_chat_links",
+        "before": 46,
+        "after": 46,
+        "missingOrChanged": 0
+      },
+      {
+        "table": "cp_devices",
+        "before": 546,
+        "after": 546,
+        "missingOrChanged": 0
+      }
+    ],
+    "services": {
+      "commonplace": "active",
+      "commonplace-runtime": "active",
+      "commonplace-staging": "active"
+    }
+  },
+  "publicProduction": {
+    "origin": "https://34.27.253.220",
+    "realProduction": true,
+    "realGoogleLoginCompleted": false,
+    "views": [
+      {
+        "width": 390,
+        "loadingCleared": true,
+        "pageErrors": [],
+        "horizontalOverflow": false
+      },
+      {
+        "width": 1280,
+        "loadingCleared": true,
+        "pageErrors": [],
+        "horizontalOverflow": false
+      }
+    ],
+    "googleHelper": {
+      "origin": "https://vertical-web-313417.firebaseapp.com",
+      "ready": true
+    },
+    "http": [
+      {
+        "path": "/healthz",
+        "status": 200
+      },
+      {
+        "path": "/.well-known/oauth-protected-resource/mcp",
+        "status": 200
+      },
+      {
+        "path": "/.well-known/agent-configuration",
+        "status": 200
+      },
+      {
+        "path": "/account/web/cloud/status",
+        "status": 401
+      },
+      {
+        "path": "/auth/session",
+        "status": 401
+      }
+    ],
+    "passed": true
+  },
+  "installation": {
+    "host": "Mac Claude plugin manager",
+    "alias": "meet-proxy@commonplace",
+    "scope": "user",
+    "version": "0.4.19",
+    "installed": true,
+    "relevantAliases": 1,
+    "method": "claude plugin marketplace update commonplace --json; claude plugin update meet-proxy@commonplace --json",
+    "managerResult": "Plugin \"meet-proxy\" updated from 0.4.15 to 0.4.19 for scope user. Restart to apply changes.",
+    "restartRequired": true,
+    "loadedAfterRestartVerified": false,
+    "scopeNote": "Only the Mac Claude user installation is confirmed updated. This cloud chat still loads 0.4.14/runtime48."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "/healthz": 200,
+  "/.well-known/oauth-authorization-server": 200,
+  "/.well-known/agent-configuration": 200,
+  "authorize": {
+    "status": 303,
+    "redirect": "/signin-with-chatgpt"
+  },
+  "unauthenticatedMcp": 401,
+  "assets": [
+    {
+      "name": "context-product.mjs",
+      "sha256": "eed686c7d7ed69a2cf7869f27436632d8c05fec5ef2cf8a377cc3cd393ff715f"
+    },
+    {
+      "name": "context-conversations.mjs",
+      "sha256": "0f749f9336695b7b828ce4b5a53684db1d6045ff34a1aaf8d6cc2afbf113acb3"
+    },
+    {
+      "name": "context-native-setup.mjs",
+      "sha256": "38073c0af2d94bcc03837f42c747642ee9b2346d62f8e8d4ec5da6c8eea40600"
+    },
+    {
+      "name": "context-setup-request.mjs",
+      "sha256": "fffdaeec0bbc87bc11f8bdafbc68f50e050675c1aa1eea0d700b384159f31100"
+    },
+    {
+      "name": "personal-assistant-setup.mjs",
+      "sha256": "8334986d1151320ad551d9fefbef53dbe54d88f08384b6348ee3a960913b16dc"
+    },
+    {
+      "name": "mcp-resource-source-setup.mjs",
+      "sha256": "c1822b335c202b2fa98fa4546d92474771c2926552b86d4823529e2e4f76d52a"
+    },
+    {
+      "name": "agent-setup.mjs",
+      "sha256": "4b9d501885619a968f85f69811daa352f162f56e5d072d66c8e98d73b26157f6"
+    }
+  ],
+  "screens": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "googleButtonVisible": true,
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "name": "phone",
+      "width": 390,
+      "googleButtonVisible": true,
+      "overflow": false,
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "name": "Animated context sharing and resilient interactions",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "patch": "sharing-interactions.patch",
+  "sha256": "69c3a312a1693d21f87616a9e9e8332f2f42665a5cbd8b6712da5c5ab903962a",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch"
+  ],
+  "state": "source and working preview; no production deployment",
+  "files": [
+    {
+      "path": "scripts/policy-sharing-page.mjs",
+      "beforeSha256": "e829d825795188e89700188657136cbfdd16a9051bea6541027d2c7b0f5bec21",
+      "sha256": "51a49697702ebea3cb8f8571eef9a4f3e328a220f18c4496af9c95c22f41bada"
+    },
+    {
+      "path": "scripts/policy-sharing-style.mjs",
+      "beforeSha256": "8890696779434337882e67743fc11dc76f7d2494c96c909d773c3eca17c3a015",
+      "sha256": "41fdff7d0f2ea041ea47504468839515d6e944b9ebcd8d4a80784d219ab28ed0"
+    },
+    {
+      "path": "scripts/policy-sharing-art.mjs",
+      "beforeSha256": "426a786f62f5fd16dc393d58deb4415e4cd74a81c38c19e06425f53fcde42a51",
+      "sha256": "d88f04b34994a4b30acceec302d2607c7ac9a67de27b160de8087b72e1fb7611"
+    },
+    {
+      "path": "scripts/policy-sharing-preview.mjs",
+      "beforeSha256": "3a083b39471547e33abca91af3be5f74632c30ea50524753b4974aee29d226fb",
+      "sha256": "17c8794e3ae9caff94120a2763cd4793c89eec202b378cc89f3728619f84705b"
+    },
+    {
+      "path": "apps/commonplace-account/server/perplexity-decisions.mjs",
+      "beforeSha256": "7c7bb89cc85ba571a80b20f2062015f639d550ccb40f38ed494b57c87b089c8d",
+      "sha256": "5ab8aa9f6d0e0536169014c3fd228ec8012828942e935d2477b570f22a842151"
+    },
+    {
+      "path": "tests/policy-context.test.mjs",
+      "beforeSha256": "5a4e9abcc181e6cb33c4a1e18800b28fec58e79fa43f35f6ed3c01f2c6f42fd8",
+      "sha256": "570df277412a76931d1677751b3e7cc920d28c718678ce0a8153798b6001d01c"
+    },
+    {
+      "path": "tests/policy-sharing-browser.test.mjs",
+      "beforeSha256": "baf484febcf8410605be7ddaade207b5f440ee1c6cdae10872cd47ea9442f326",
+      "sha256": "881b9430cd3d894780c79b9a667072e87e1cf1ec5087d68a8ee28c9b97e5f2b5"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "observedAt": "2026-10-27T04:06:06.018120+00:00",
+  "kind": "anonymous public health only",
+  "installedReadFailureResolved": false,
+  "errorClass": "UnicodeDecodeError",
+  "seconds": 4.747
+}

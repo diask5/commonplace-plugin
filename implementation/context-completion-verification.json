@@ -1,0 +1,279 @@
+{
+  "at": "2026-10-26",
+  "release": "0.4.23",
+  "runtimeRevision": 57,
+  "source": {
+    "state": "implemented, frozen, tested and portable",
+    "manifest": "context-completion-manifest.json",
+    "patchSha256": "c75aa935a18d54e6521ee05c731d235b04370cfb483bd8acead8f3dfae78a64f",
+    "replay": {
+      "patches": 23,
+      "files": 174,
+      "incrementalFiles": 50,
+      "matched": true,
+      "patchSha256": "c75aa935a18d54e6521ee05c731d235b04370cfb483bd8acead8f3dfae78a64f"
+    },
+    "pullRequest": "https://github.com/diask5/commonplace-plugin/pull/16",
+    "mergeCommit": "6bcc80c5efbd970f5e4c7537400b125fccbc2374"
+  },
+  "releaseState": {
+    "packaged": true,
+    "githubDraft": true,
+    "published": false,
+    "installed": false,
+    "staged": false,
+    "productionActivated": false,
+    "marketplace": "unchanged at 0.4.22",
+    "draftUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/untagged-696ffde76f485897f6fc",
+    "targetCommit": "6bcc80c5efbd970f5e4c7537400b125fccbc2374",
+    "artifactUploadVerified": true,
+    "githubReleaseId": 423836374,
+    "uploadedArtifacts": [
+      {
+        "digest": "sha256:fd1033b1ec3074692821531fd7f60fb9532fdb5164f58edc838de361187e0709",
+        "name": "commonplace-0.4.23-build.json",
+        "size": 7438,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:5da9ba9f46a319e370f8c73055ef407fc329c083242c12698f6b13ac11064f8b",
+        "name": "commonplace-0.4.23.sha256",
+        "size": 89,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:cd16f253c8c99bc858408279490cb8a89ddc957a7885c8085bd3314f224eb6a2",
+        "name": "commonplace-0.4.23.zip",
+        "size": 230150118,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:53dc94e2c07cdf638b14a4a9252aa77cb26544b871303c56c29df297c7336324",
+        "name": "meet-proxy-0.4.23-build.json",
+        "size": 7436,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:d5ac86e48802cc566be77994a4d31c6beef8e6fce0888d5029207501a6afa940",
+        "name": "meet-proxy-0.4.23.sha256",
+        "size": 88,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:67b302266d1900df9e56dd40f6fa58b4b57facf2bba65ef3e10cbd160d4be3ef",
+        "name": "meet-proxy-0.4.23.zip",
+        "size": 230150118,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:f6c45ad31f2abb5fbbc5a08a4ebf580cf5a4adf932ced02705130acddf114c12",
+        "name": "runtime-update-manifest.json",
+        "size": 19415,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:799f60874653175d09474a42c514bd2466c43c5f9ca54a216fb3d7661ac20b1e",
+        "name": "runtime-update.json",
+        "size": 2663553,
+        "state": "uploaded"
+      },
+      {
+        "digest": "sha256:bfc707273636272bb88bc82b42db0c4cbea8aee1f46af59ab93c44925d9e8ccd",
+        "name": "runtime-update.sha256",
+        "size": 86,
+        "state": "uploaded"
+      }
+    ]
+  },
+  "lastVerifiedProduction": {
+    "native": "0.4.22",
+    "runtimeRevision": 56,
+    "serverRelease": "20261026-revision-fence",
+    "origin": "https://34.27.253.220",
+    "evidence": "spec-recheck-verification.json"
+  },
+  "blocker": {
+    "tool": "mcp__conductor__RunLocalCommand",
+    "action": "Compile static contact AppleScripts without executing them",
+    "reason": "No authorized Mac is bound to this chat. Send a message from the Mac you want to use.",
+    "commandRan": false,
+    "recovery": "Owner sends a message in this chat from Conductor on the authorized Mac; retry only after host binding is restored.",
+    "alsoBlocks": [
+      "existing Mac-based Google Cloud deployment path",
+      "native installation",
+      "real Claude retrieval recheck"
+    ]
+  },
+  "artifacts": {
+    "directory": ".context/commonplace-source/artifacts/completion-0.4.23-final",
+    "native": {
+      "meet-proxy": {
+        "file": "meet-proxy-0.4.23.zip",
+        "sha256": "67b302266d1900df9e56dd40f6fa58b4b57facf2bba65ef3e10cbd160d4be3ef",
+        "bytes": 230150118,
+        "overlayFiles": 59
+      },
+      "commonplace": {
+        "file": "commonplace-0.4.23.zip",
+        "sha256": "cd16f253c8c99bc858408279490cb8a89ddc957a7885c8085bd3314f224eb6a2",
+        "bytes": 230150118,
+        "overlayFiles": 59
+      }
+    },
+    "accountRuntime": {
+      "file": "runtime/runtime-update.json",
+      "sha256": "799f60874653175d09474a42c514bd2466c43c5f9ca54a216fb3d7661ac20b1e",
+      "files": 156,
+      "manifestSha256": "f6c45ad31f2abb5fbbc5a08a4ebf580cf5a4adf932ced02705130acddf114c12"
+    }
+  },
+  "verification": {
+    "core": {
+      "state": "passed",
+      "tests": 489,
+      "log": ".context/remaining-gaps/core-shutdown-final.log",
+      "sha256": "868073401ce1c2d0f2be7c4621449f24088e0ae083aa5f89e1e7f86dae4821c8"
+    },
+    "ui": {
+      "state": "passed",
+      "tests": 129,
+      "log": ".context/remaining-gaps/ui-final.log",
+      "sha256": "a0f89c5806aa6a7243a7fc0931fbe1ebe9d758a986d832517dbea930db307fbe"
+    },
+    "productLifecycle": {
+      "state": "passed",
+      "tests": 15,
+      "log": ".context/remaining-gaps/product-spec.log",
+      "sha256": "daec3b52b611261b59668c5942f42637037d956015557c2bfac66e9c60d405af"
+    },
+    "extractedFeaturesAndLaunchers": {
+      "state": "passed",
+      "tests": 32,
+      "log": ".context/remaining-gaps/extracted-features-after-drain.log",
+      "sha256": "66370bfb9db57634c2f95cb891557228bfbefdd40656c289ac76f424de0d616d"
+    },
+    "extractedIngestion": {
+      "state": "passed",
+      "tests": 16,
+      "log": ".context/remaining-gaps/ingestion-extracted-final.log",
+      "sha256": "da7c99b80517c54844697e403e08caa0e3bdd82a083cf8131b489dfc15a27b6b"
+    },
+    "shutdownRegression": {
+      "state": "passed",
+      "tests": 27,
+      "log": ".context/remaining-gaps/shutdown-regression.log",
+      "sha256": "b3b7f861808b757c633e7ab774f01a6eb8df9f355443f73bb82be82d616245a5"
+    },
+    "packagingIntegrity": {
+      "state": "passed",
+      "tests": 1,
+      "log": ".context/remaining-gaps/packaging-complete.log",
+      "sha256": "11a7490e8ba999aeaacfa90f0bf59f374888e99dbbbb960bc86432ec2a783e27"
+    },
+    "packagedZeroToKnowledge": {
+      "state": "passed",
+      "tests": 1,
+      "log": ".context/remaining-gaps/knowledge-final.log",
+      "sha256": "5ddf8d4569f8c12cc68ef5f75a92199eb4c3e924515cbd1f42ac580717fc2d4a"
+    },
+    "packagedStdio": {
+      "state": "passed",
+      "tests": null,
+      "log": ".context/remaining-gaps/plugin-smoke.log",
+      "sha256": "aba7cf2b2b9fc97e2938cc3636d338697a48a2a38fbb9fd4622058d961ef042d"
+    },
+    "packagedMailbox": {
+      "state": "passed",
+      "tests": null,
+      "log": ".context/remaining-gaps/mailbox-final.log",
+      "sha256": "1589fcb3cf7d2069401de907f42208e40e5527f58ae925395c382f8c8a0083b9"
+    }
+  },
+  "archiveBenchmark": {
+    "syntheticOnly": true,
+    "characters": 33510690,
+    "sections": 4200,
+    "readDuringBuildMs": [
+      297,
+      270,
+      331
+    ],
+    "fullBuildMs": 1003,
+    "log": ".context/remaining-gaps/benchmark-archive.log",
+    "sha256": "b33fb37bccf66d25e31f205fefe2dfba26522af2ace13822ef9c821b7c2bee3f",
+    "productionLatencyProven": false
+  },
+  "classifier": {
+    "realProvider": true,
+    "syntheticInputsOnly": true,
+    "model": "pplx-decider-v1.2",
+    "promptVersion": 3,
+    "threshold": 0.995,
+    "cases": 32,
+    "correct": 25,
+    "falseAllows": 0,
+    "falseWithholds": 7,
+    "errors": 0,
+    "providerLatencyMs": {
+      "p50": 133,
+      "p95": 228
+    },
+    "thresholdChanged": false,
+    "reportSha256": "cb0d5e662184e4212faab0765d1cee9e216e4a0191edac51f15ac39a3306fb49"
+  },
+  "schema": {
+    "existingMigrationsChanged": false,
+    "lazyAdditiveTables": [
+      "cp_space_context_runs",
+      "cp_space_context_pages",
+      "cp_space_context_receipts"
+    ],
+    "productionDataChanged": false
+  },
+  "unverifiedLiveJourneys": [
+    "Actual AppleScript compile/TCC/Mail/Messages execution; no real contact sends performed",
+    "Real owner-selected upstream MCP provider",
+    "Fresh Google consent and complete Codex Desktop attachment",
+    "0.4.23 installed host retrieval and production runtime activation"
+  ],
+  "limits": [
+    "32 chunks, 32 sources, four search pages, 128k characters and 20 seconds per sharing request",
+    "Six approved excerpts per page; continuation expires after at most ten minutes and sooner for source or policy expiry",
+    "MCP resources only: no upstream OAuth, stdio launch, arbitrary tools, binaries, templates or SSE-only server",
+    "Collection requires online native runtime; no guarantee of instantaneous or exhaustive context",
+    "Compatible MCP assistants require DCR/PKCE support; retrieval does not enable wake, delivery or native capture",
+    "Model benchmark has seven false withholds; small synthetic sample is not a privacy guarantee"
+  ],
+  "screenshots": {
+    "personal-assistant-setup.png": {
+      "path": "docs/screenshots/context-completion/personal-assistant-setup.png",
+      "sha256": "75c5ea940945e87651300b7c619d8a41f39a9d5ce0677b3a9b3bbd665d65875e",
+      "identity": "isolated sample"
+    },
+    "personal-assistant-setup-phone.png": {
+      "path": "docs/screenshots/context-completion/personal-assistant-setup-phone.png",
+      "sha256": "ff6b12e84c3eea0a18441932ee6b43b72dbc349f56dbc37d57389a6d00e97d53",
+      "identity": "isolated sample"
+    },
+    "mcp-resource-source-setup.png": {
+      "path": "docs/screenshots/context-completion/mcp-resource-source-setup.png",
+      "sha256": "df963cdd45d6e5f490656a70b1162949802afeb3e7c06c24ce606ab312906491",
+      "identity": "isolated sample"
+    },
+    "mcp-resource-source-setup-phone.png": {
+      "path": "docs/screenshots/context-completion/mcp-resource-source-setup-phone.png",
+      "sha256": "2fffb97d4755c09304c80ddcbf4a4ad44a0b3e3a7b98f3ba45310e10b70a33cc",
+      "identity": "isolated sample"
+    }
+  },
+  "failureResolution": {
+    "original": "ENOTEMPTY from temp-tree removal during a background warm worker; later after-hooks skipped and fake provider listener leaked",
+    "fix": "Track and drain all shared context jobs before SQLite close; leading fixture hook always closes collectors and fake provider",
+    "nativeZipChangedForFix": false,
+    "serverRuntimeRebuilt": true,
+    "historicalLogsRetained": true
+  },
+  "supersededBy": "p0-native-readiness-verification.json",
+  "currentRolloutNote": "0.4.23 published/installed/deployed, superseded by live 0.4.24/runtime57; candidate values below are historical.",
+  "historicalCandidateRecord": true
+}

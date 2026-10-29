@@ -1,0 +1,322 @@
+diff --git a/apps/commonplace-account/server/archive-builder.mjs b/apps/commonplace-account/server/archive-builder.mjs
+index 1a50d75..3041bba 100644
+--- a/apps/commonplace-account/server/archive-builder.mjs
++++ b/apps/commonplace-account/server/archive-builder.mjs
+@@ -18,8 +18,10 @@ try{
+   database=new DatabaseSync(workerData.database,{readOnly:true});
+   database.exec('PRAGMA busy_timeout=5000; BEGIN');
+   const {method,input}=workerData.liveQuery;
+-  parentPort.postMessage({value:await liveArchiveQuery(database,workerData.owner,method,input,{now:workerData.now})});
+-  database.exec('COMMIT');
++  let reading=true;
++  const value=await liveArchiveQuery(database,workerData.owner,method,input,{now:workerData.now,base:workerData.liveBase,onProjected:()=>{database.exec('COMMIT');reading=false;}});
++  if(reading)database.exec('COMMIT');
++  parentPort.postMessage({value});
+  }else if(workerData.query){
+   // The parent pins this authenticated snapshot until the read finishes. Keep
+   // section reads off the web event loop as well as index construction.
+diff --git a/apps/commonplace-account/server/archive-source.mjs b/apps/commonplace-account/server/archive-source.mjs
+index a6a315d..34dc063 100644
+--- a/apps/commonplace-account/server/archive-source.mjs
++++ b/apps/commonplace-account/server/archive-source.mjs
+@@ -4,6 +4,7 @@ import {UnifiedContext,legacyVisibleSql} from './unified-context.mjs';
+ import {WorkspaceNetwork} from './workspace-network.mjs';
+ import {DatabaseSync} from 'node:sqlite';
+ import {ArchiveTools} from './archive-tools.mjs';
++import {patchLiveIndex} from './live-archive-index.mjs';
+ 
+ const hash=value=>createHash('sha256').update(value).digest('hex');
+ export const archiveDocumentId=/^(?:native|chatgpt|work|unified|thread|context)-[a-f0-9]{24}$/;
+@@ -68,12 +69,13 @@ export function readArchiveDocument(db,owner,input,{now=Date.now()}={}){
+ // compare the returned revision/expiry with current state before using it.
+ export const LIVE_CHARACTER_LIMIT=48_000_000;
+ class LiveArchiveTools extends ArchiveTools {
+-  constructor(manifest,bodies){super('',manifest);this.bodies=bodies;this.index=null;}
++  constructor(manifest,bodies,base,stats){super('',manifest);this.bodies=bodies;this.index=null;this.base=base;this.stats=stats;this.patched=null;}
+   async section(id){
+     if(!/^(?:(?:task|mail|context|unified)_)?[a-f0-9]{24}$/.test(id)||!Object.hasOwn(this.manifest.sources,id))throw Error('Unknown archive section.');
+     return this.bodies.get(id);
+   }
+-  rank(terms,input,cursor){
++  async rank(terms,input,cursor){
++    if(!this.index&&this.base){this.patched=await patchLiveIndex(this.base,this.manifest,this.bodies,{stats:this.stats});this.index=this.patched?.db||null;}
+     if(!this.index){
+       const index=new DatabaseSync(':memory:');
+       index.exec("CREATE TABLE documents(rowid INTEGER PRIMARY KEY,id TEXT UNIQUE NOT NULL,kind TEXT,project TEXT,captured_at INTEGER); CREATE VIRTUAL TABLE search USING fts5(title,body,content='',tokenize='unicode61 remove_diacritics 0');");
+@@ -86,9 +88,9 @@ class LiveArchiveTools extends ArchiveTools {
+     for(const [key,column,op] of [['documentId','id','='],['kind','kind','='],['project','project','='],['after','captured_at','>='],['before','captured_at','<']])if(input[key]!==undefined){where.push('d.'+column+op+'?');args.push(key==='project'?input[key].trim().toLowerCase():input[key]);}
+     return this.index.prepare(`SELECT d.id,bm25(search,5.0,1.0) AS score FROM search JOIN documents d ON d.rowid=search.rowid WHERE ${where.join(' AND ')} ORDER BY score,d.id LIMIT 16 OFFSET ?`).all(...args,cursor);
+   }
+-  close(){this.index?.close();this.index=null;}
++  async close(){if(this.patched)await this.patched.close();else this.index?.close();this.index=null;}
+ }
+-export async function liveArchiveQuery(db,owner,method,input,{now=Date.now(),limit=LIVE_CHARACTER_LIMIT}={}){
++export async function liveArchiveQuery(db,owner,method,input,{now=Date.now(),limit=LIVE_CHARACTER_LIMIT,base,stats,onProjected}={}){
+   if(!/^[a-f0-9]{24}$/.test(owner))throw Error('Invalid archive owner.');
+   if(!['archive_list','archive_search'].includes(method))throw Error('Unknown archive tool.');
+   const revision=db.prepare('SELECT revision FROM cp_cloud_archive_state WHERE owner=?').get(owner)?.revision??0;
+@@ -111,6 +113,9 @@ export async function liveArchiveQuery(db,owner,method,input,{now=Date.now(),lim
+   }
+   const expiresAt=new WorkspaceNetwork(db,{now:()=>now}).expiresAt(owner);
+   const manifest={format:1,owner,revision,createdAt:now,expiresAt,documents,sources,characters:documents.reduce((n,d)=>n+d.characters,0)};
+-const tools=new LiveArchiveTools(manifest,bodies);
++// The complete authoritative projection is captured. Derived indexing needs
++  // no database read transaction; the coordinator still fences before release.
++  onProjected?.();
++  const tools=new LiveArchiveTools(manifest,bodies,base,stats);
+   return tools.call(method,args).finally(()=>tools.close()).then(value=>({value,expiresAt,revision}));
+ }
+diff --git a/apps/commonplace-account/server/cloud-archive.mjs b/apps/commonplace-account/server/cloud-archive.mjs
+index 47f1f3a..680eba2 100644
+--- a/apps/commonplace-account/server/cloud-archive.mjs
++++ b/apps/commonplace-account/server/cloud-archive.mjs
+@@ -4,6 +4,7 @@ import {createHash,randomBytes} from 'node:crypto';
+ import path from 'node:path';
+ import {Worker} from 'node:worker_threads';
+ import {archiveSections} from './archive-source.mjs';
++import {collectLiveIndexes} from './live-archive-index.mjs';
+ import {WorkspaceNetwork} from './workspace-network.mjs';
+ import {buildContextFiles,validContextFiles,everyFile,forEachFile} from './archive-index.mjs';
+ const hash=s=>createHash('sha256').update(s).digest('hex');
+@@ -151,6 +152,7 @@ export class CloudArchive {
+   }
+   async collect(owner,current){
+     const root=path.join(this.directory,ownerId(owner));
++    await collectLiveIndexes(root);
+     for(const item of await readdir(root,{withFileTypes:true}))if(item.isDirectory()&&generation(item.name)){
+       const directory=path.join(root,item.name),revision=Number(item.name.match(/^r(\d+)/)[1]),currentRevision=Number(path.basename(current).match(/^r(\d+)/)[1]);
+       if(directory!==current&&revision<=currentRevision&&!this.pins.has(directory))await rm(directory,{recursive:true,force:true});
+diff --git a/apps/commonplace-account/server/live-archive-index.mjs b/apps/commonplace-account/server/live-archive-index.mjs
+new file mode 100644
+index 0000000..414733c
+--- /dev/null
++++ b/apps/commonplace-account/server/live-archive-index.mjs
+@@ -0,0 +1,81 @@
++import {DatabaseSync} from 'node:sqlite';
++import {mkdtemp,copyFile,chmod,rm,lstat,open,readdir,readFile} from 'node:fs/promises';
++import {constants} from 'node:fs';
++import path from 'node:path';
++import {createHash} from 'node:crypto';
++import {contextLayout,fileDigest} from './archive-index.mjs';
++
++const digest=body=>createHash('sha256').update(body).digest('hex');
++const same=(a,b)=>a.digest===b.digest&&a.title===b.title&&a.kind===b.kind&&
++  (a.project||'').toLowerCase()===(b.project||'').toLowerCase()&&a.capturedAt===b.capturedAt;
++
++// Orphan scratch belongs to one account and one process. Never remove a live
++// process's query, or an arbitrary/symlinked directory. A later archive cleanup
++// reclaims a crashed process's derived index without touching published files.
++async function processStamp(pid) {
++  // The production archive has one PID namespace. Linux start ticks distinguish
++  // a recycled PID (including a restarted PID1) from the original process.
++  try{const raw=await readFile('/proc/'+pid+'/stat','utf8'),stamp=raw.slice(raw.lastIndexOf(')')+2).split(' ')[19];return /^\d+$/.test(stamp)?stamp:null;}catch{return null;}
++}
++export async function collectLiveIndexes(root,{alive=pid=>{try{process.kill(pid,0);return true;}catch(e){return e.code==='EPERM';}},stamp=processStamp}={}) {
++  for(const entry of await readdir(root,{withFileTypes:true}).catch(()=>[])) {
++    const match=/^\.live-index-(\d+)-(\d+|unknown)-[a-zA-Z0-9]{6}$/.exec(entry.name);
++    if(!match||!entry.isDirectory())continue;
++    const pid=Number(match[1]);if(!Number.isSafeInteger(pid)||pid<=0)continue;
++    if(alive(pid)){const current=await stamp(pid);if(!current||match[2]==='unknown'||current===match[2])continue;}
++    await rm(path.join(root,entry.name),{recursive:true,force:true}).catch(()=>{});
++  }
++}
++
++// A prior index is only an acceleration input. The caller still reconstructs
++// the complete current authorized projection and fences its revision/expiry.
++// Mutate a private copy; published snapshots and the primary DB stay untouched.
++export async function patchLiveIndex(base,manifest,bodies,{stats}={}) {
++  if(!base||base.manifest?.owner!==manifest.owner||base.manifest.layout!==contextLayout)return null;
++  const prior=base.manifest,old=new Map(prior.documents.map(d=>[d.id,d]));
++  if(old.size!==prior.documents.length)return null;
++  const current=new Map(manifest.documents.map(d=>[d.id,d]));
++  const removed=prior.documents.filter(d=>!current.has(d.id)||!same(d,current.get(d.id)));
++  const added=manifest.documents.filter(d=>!old.has(d.id)||!same(old.get(d.id),d));
++  // A large delta is cheaper and simpler to rebuild with the ordinary path.
++  if(removed.length+added.length>Math.max(16,prior.documents.length/2))return null;
++  let directory,db;
++  try {
++    const source=path.join(base.directory,'search.sqlite'),stat=await lstat(source);
++    if(!stat.isFile()||stat.isSymbolicLink()||stat.size>128_000_000||typeof prior.files?.['search.sqlite']!=='string')return null;
++    // Scratch is outside immutable generations, so retirement cannot race a
++    // new directory entry. Mode0700 keeps it private; dead-process cleanup is
++    // tied to the owner's archive lifecycle.
++    directory=await mkdtemp(path.join(path.dirname(base.directory),'.live-index-'+process.pid+'-'+(await processStamp(process.pid)||'unknown')+'-'));
++    const filename=path.join(directory,'search.sqlite');
++    await copyFile(source,filename);await chmod(filename,0o600);
++    if(await fileDigest(filename)!==prior.files['search.sqlite'])throw Error('Invalid acceleration index.');
++    db=new DatabaseSync(filename);
++    // This is disposable derived data, never a change to primary durability.
++    db.exec('PRAGMA journal_mode=MEMORY; BEGIN');
++    const rows=db.prepare('SELECT * FROM documents').all(),byId=new Map(rows.map(r=>[r.id,r]));
++    if(rows.length!==old.size||rows.some(r=>{const d=old.get(r.id);return !d||r.kind!==d.kind||r.project!==(d.project||'').toLowerCase()||r.captured_at!==d.capturedAt;}))throw Error('Invalid acceleration metadata.');
++    const remove=db.prepare("INSERT INTO search(search,rowid,title,body) VALUES('delete',?,?,?)");
++    const removeMeta=db.prepare('DELETE FROM documents WHERE id=?');
++    for(const d of removed) {
++      if(!/^(?:native|chatgpt|work|unified|thread|context)-[a-f0-9]{24}$/.test(d.id)||d.path!=='documents/'+d.id+'.txt')throw Error('Invalid acceleration document.');
++      const handle=await open(path.join(base.directory,d.path),constants.O_RDONLY|constants.O_NOFOLLOW);
++      let body;try{const s=await handle.stat();if(!s.isFile()||s.size>64_000_000)throw Error('Invalid acceleration document.');body=await handle.readFile('utf8');}finally{await handle.close();}
++      if(digest(body)!==d.digest)throw Error('Invalid acceleration document.');
++      remove.run(byId.get(d.id).rowid,d.title,body);removeMeta.run(d.id);
++    }
++    let rowid=rows.reduce((n,r)=>Math.max(n,r.rowid),0);
++    const meta=db.prepare('INSERT INTO documents VALUES(?,?,?,?,?)'),insert=db.prepare('INSERT INTO search(rowid,title,body) VALUES(?,?,?)');
++    for(const d of added) {
++      const body=d.sections.map(id=>bodies.get(id)).join('');
++      meta.run(++rowid,d.id,d.kind,(d.project||'').toLowerCase(),d.capturedAt);insert.run(rowid,d.title,body);
++    }
++    db.exec('COMMIT');
++    if(stats)Object.assign(stats,{reused:old.size-removed.length,removed:removed.length,indexed:added.length});
++    return {db,close:async()=>{try{db.close();}finally{await rm(directory,{recursive:true,force:true}).catch(()=>{});}}};
++  } catch {
++    // Missing/retired or damaged base files never supply results. Start fresh.
++    try{db?.close();}finally{if(directory)await rm(directory,{recursive:true,force:true}).catch(()=>{});}
++    return null;
++  }
++}
+diff --git a/apps/commonplace-account/server/shared-context.mjs b/apps/commonplace-account/server/shared-context.mjs
+index d44e695..b4fb0bf 100644
+--- a/apps/commonplace-account/server/shared-context.mjs
++++ b/apps/commonplace-account/server/shared-context.mjs
+@@ -128,7 +128,10 @@ async function liveSlot(service,run){
+  try{return await run();}finally{const next=state.live.queue.shift();if(next)next();else state.live.active--;}
+ }
+ async function liveRead(service,archive,owner,method,input){
+- const result=await liveSlot(service,()=>archiveWorker({database:archive.database,owner,now:Date.now(),liveQuery:{method:method.replace('archive-','archive_'),input}}));
++ // A prior generation may retire while copied; the worker falls back to a
++ // fresh index on any missing/corrupt base. No prior source bytes are returned.
++ const base=method==='archive-search'?await archive.current(owner).catch(()=>null):null;
++ const result=await liveSlot(service,()=>archiveWorker({database:archive.database,owner,now:Date.now(),liveBase:base,liveQuery:{method:method.replace('archive-','archive_'),input}}));
+  if(result.tooLarge)return null;
+  if(result.value.restart)return result.value;
+  const current=service.db.sqlite.prepare('SELECT revision FROM cp_cloud_archive_state WHERE owner=?').get(owner)?.revision??0;
+diff --git a/package.json b/package.json
+index afa4107..e8aa7d1 100644
+--- a/package.json
++++ b/package.json
+@@ -7,7 +7,7 @@
+   },
+   "scripts": {
+     "start": "node scripts/relay.mjs",
+-    "test": "node --test tests/agent-network.test.mjs apps/commonplace-account/tests/*.test.mjs apps/commonplace/tests/person-inbox.test.mjs apps/commonplace/tests/session-invitations.test.mjs apps/commonplace/tests/chat-wait.test.mjs apps/commonplace/tests/account-origin.test.mjs apps/commonplace/tests/delegation-client.test.mjs tests/relay.test.mjs tests/delegation-http.test.mjs tests/production-*.test.mjs tests/mailbox-*.test.mjs tests/cloud-*.test.mjs tests/context-mirror.test.mjs tests/conductor-history.test.mjs tests/people-invitations.test.mjs tests/chat-setup.test.mjs tests/codex-host-context.test.mjs tests/local-environment.test.mjs tests/mcp-*.test.mjs tests/agent-connections.test.mjs tests/policy-context.test.mjs tests/space-context*.test.mjs tests/context-setup.test.mjs tests/context-setup-request.test.mjs tests/contact-delivery.test.mjs tests/personal-assistant-setup.test.mjs tests/seamless-routing.test.mjs tests/seamless-collection.test.mjs tests/seamless-retrieval.test.mjs tests/agent-auth-rate-storage.test.mjs tests/agent-auth-registration-queue.test.mjs tests/archive-document-reuse.test.mjs tests/context-read-indexes.test.mjs tests/archive-io-hotpath.test.mjs tests/archive-short-transaction.test.mjs tests/archive-short-transaction-authority.test.mjs tests/archive-coordination.test.mjs",
++    "test": "node --test tests/agent-network.test.mjs apps/commonplace-account/tests/*.test.mjs apps/commonplace/tests/person-inbox.test.mjs apps/commonplace/tests/session-invitations.test.mjs apps/commonplace/tests/chat-wait.test.mjs apps/commonplace/tests/account-origin.test.mjs apps/commonplace/tests/delegation-client.test.mjs tests/relay.test.mjs tests/delegation-http.test.mjs tests/production-*.test.mjs tests/mailbox-*.test.mjs tests/cloud-*.test.mjs tests/context-mirror.test.mjs tests/conductor-history.test.mjs tests/people-invitations.test.mjs tests/chat-setup.test.mjs tests/codex-host-context.test.mjs tests/local-environment.test.mjs tests/mcp-*.test.mjs tests/agent-connections.test.mjs tests/policy-context.test.mjs tests/space-context*.test.mjs tests/context-setup.test.mjs tests/context-setup-request.test.mjs tests/contact-delivery.test.mjs tests/personal-assistant-setup.test.mjs tests/seamless-routing.test.mjs tests/seamless-collection.test.mjs tests/seamless-retrieval.test.mjs tests/agent-auth-rate-storage.test.mjs tests/agent-auth-registration-queue.test.mjs tests/archive-document-reuse.test.mjs tests/context-read-indexes.test.mjs tests/archive-io-hotpath.test.mjs tests/archive-short-transaction.test.mjs tests/archive-short-transaction-authority.test.mjs tests/archive-coordination.test.mjs tests/live-index-reuse.test.mjs",
+     "test:backend": "node --test apps/commonplace-account/tests/*.test.mjs",
+     "test:package": "node --test tests/packaging.test.mjs",
+     "test:deployment": "python3 -m unittest tests.test_deployment tests.test_public_assets_deployment tests.test_runtime_public_assets",
+diff --git a/tests/live-index-reuse.test.mjs b/tests/live-index-reuse.test.mjs
+new file mode 100644
+index 0000000..d785f30
+--- /dev/null
++++ b/tests/live-index-reuse.test.mjs
+@@ -0,0 +1,112 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {randomBytes,createHash} from 'node:crypto';
++import {mkdtemp,rm,readFile,writeFile,chmod,readdir,mkdir,symlink} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {openDatabase} from '../apps/commonplace-account/server/sqlite.mjs';
++import {AccountService} from '../apps/commonplace-account/server/service.mjs';
++import {CloudWork} from '../apps/commonplace-account/server/cloud-work.mjs';
++import {CloudArchive} from '../apps/commonplace-account/server/cloud-archive.mjs';
++import {collectLiveIndexes} from '../apps/commonplace-account/server/live-archive-index.mjs';
++import {liveArchiveQuery} from '../apps/commonplace-account/server/archive-source.mjs';
++const hash=s=>createHash('sha256').update(s).digest('hex');
++async function fixture(t,size=1000,count=40){
++ const dir=await mkdtemp(path.join(tmpdir(),'live-reuse-test-'));
++ const db=openDatabase(path.join(dir,'db.sqlite'),{migrations:path.resolve('apps/commonplace-account/drizzle')});
++ t.after(async()=>{db.close();await rm(dir,{recursive:true,force:true});});
++ const service=new AccountService(db,'https://relay.example');
++ const owner=(await service.profile({userId:'owner',email:'owner@example.test'})).id;
++ const other=(await service.profile({userId:'other',email:'other@example.test'})).id;
++ const work=new CloudWork(service),device=randomBytes(12).toString('hex');
++ work.run('INSERT INTO cp_devices(id,owner,client,name,scope,created_at) VALUES(?,?,?,?,?,?)',device,owner,'test','Mac','commonplace',Date.now());
++ const native=(i,body,revision=1,title='Codex chats: document '+i)=>work.upload(owner,{id:device},{key:hash('source'+i),text:body,title,revision,capturedAt:1000+i});
++ for(let i=0;i<count;i++)native(i,('shared marker word'+i+' value['+i+'].x ').repeat(Math.ceil(size/35)).slice(0,size));
++ const archive=new CloudArchive(work,{directory:path.join(dir,'archives')});
++ const base=await archive.materialize(owner);
++ const compare=async(input,expectedReuse=true)=>{
++  const stats={},now=Date.now();
++  db.sqlite.exec('BEGIN');
++  try{
++   const begin=performance.now();
++   const actual=await liveArchiveQuery(db.sqlite,owner,'archive_search',input,{base,stats,now});
++   const patchMs=performance.now()-begin,fullBegin=performance.now();
++   const expected=await liveArchiveQuery(db.sqlite,owner,'archive_search',input,{now});
++   assert.deepEqual(actual,expected);
++   if(expectedReuse)assert.ok(stats.reused>0,JSON.stringify(stats));else assert.deepEqual(stats,{});
++   assert.equal((await readdir(path.dirname(base.directory)).catch(()=>[])).some(n=>n.startsWith('.live-index-')),false);
++   return {actual,stats,patchMs,fullMs:performance.now()-fullBegin};
++  }finally{db.sqlite.exec('COMMIT');}
++ };
++ return {dir,db,service,work,owner,other,native,base,archive,compare};
++}
++test('patched contentless FTS matches full rebuild after add/edit/delete with ranking and paging',async t=>{
++ const f=await fixture(t);
++ f.native(0,'new marker replacement',2);f.native(60,'new shared marker added');
++ f.work.run('DELETE FROM cp_cloud_sources WHERE owner=? AND source_key=?',f.owner,hash('source1'));
++ const before=await readFile(path.join(f.base.directory,'search.sqlite'));
++ for(const input of [{query:'shared marker'},{query:'shared marker',cursor:15},{query:'new'},{query:'mark*',kind:'codex'},{query:'marker',after:1015},{query:'value[3].x',mode:'phrase'}]){
++  const {stats}=await f.compare(input,input.mode!=='phrase');
++  if(!input.mode){assert.equal(stats.removed,2);assert.equal(stats.indexed,2);}
++ }
++ assert.deepEqual(await readFile(path.join(f.base.directory,'search.sqlite')),before,'base index remains immutable');
++});
++test('removed private source and another owner never appear through a stale index',async t=>{
++ const f=await fixture(t);
++ f.work.run('DELETE FROM cp_cloud_sources WHERE owner=? AND source_key=?',f.owner,hash('source3'));
++ const {actual}=await f.compare({query:'word3'});assert.equal(actual.value.results.length,0);
++ const result=await liveArchiveQuery(f.db.sqlite,f.other,'archive_search',{query:'shared'},{base:f.base});
++ assert.equal(result.value.results.length,0);
++});
++test('corrupt index, corrupt removed body and a retired base fall back without stale text',async t=>{
++ const f=await fixture(t);f.native(0,'new replacement',2);
++ const d=f.base.manifest.documents.find(d=>d.title==='Codex chats: document 0');
++ const file=path.join(f.base.directory,d.path);await chmod(file,0o600);await writeFile(file,'corrupted');
++ await f.compare({query:'replacement'},false);
++ const index=path.join(f.base.directory,'search.sqlite');await chmod(index,0o600);await writeFile(index,'not sqlite');
++ await f.compare({query:'replacement'},false);
++ await rm(f.base.directory,{recursive:true});await f.compare({query:'replacement'},false);
++});
++test('small changes only index changed documents in a larger real archive',async t=>{
++ const f=await fixture(t,38000,180);f.native(0,'shared marker changed',2);
++ const start=performance.now();const {stats,patchMs,fullMs}=await f.compare({query:'shared marker'});
++ assert.equal(stats.reused,179);assert.equal(stats.indexed,1);assert.equal(stats.removed,1);
++ t.diagnostic('7 MB authoritative projection + patched/full equality: '+Math.round(performance.now()-start)+' ms; patched '+Math.round(patchMs)+' ms, fresh '+Math.round(fullMs)+' ms');
++});
++
++test('retirement reclaims only dead-process scratch and preserves live queries',async t=>{
++ const f=await fixture(t),root=path.dirname(f.base.directory);
++ const dead='.live-index-111111-7-abcdef',live='.live-index-222222-7-ghijkl';
++ await mkdir(path.join(root,dead));await mkdir(path.join(root,live));
++ await symlink(f.dir,path.join(root,'.live-index-111111-7-aaaaaa'));
++ await collectLiveIndexes(root,{alive:pid=>pid===222222,stamp:async()=> '7'});
++ const names=await readdir(root);assert.ok(!names.includes(dead));assert.ok(names.includes(live));
++ assert.ok(names.includes('.live-index-111111-7-aaaaaa'));assert.ok(names.includes(path.basename(f.base.directory)));
++});
++test('derived index work can release the captured read transaction without mixing snapshots',async t=>{
++ const f=await fixture(t);let projected=false;f.db.sqlite.exec('BEGIN');
++ const prior=f.db.sqlite.prepare('SELECT revision FROM cp_cloud_archive_state WHERE owner=?').get(f.owner).revision;
++ const out=await liveArchiveQuery(f.db.sqlite,f.owner,'archive_search',{query:'word0'},{base:f.base,onProjected:()=>{
++  f.db.sqlite.exec('COMMIT');projected=true;f.native(0,'replacement no old marker',2);
++ }});
++ assert.ok(projected);assert.equal(out.revision,prior);assert.equal(out.value.results.length,1);
++ assert.ok(f.db.sqlite.prepare('SELECT revision FROM cp_cloud_archive_state WHERE owner=?').get(f.owner).revision>out.revision,'coordinator must still withhold captured old revision');
++});
++
++test('title-only and capture-date changes update both FTS and filters',async t=>{
++ const f=await fixture(t),d=f.base.manifest.documents.find(d=>d.title==='Codex chats: document 0');
++ const body=await readFile(path.join(f.base.directory,d.path),'utf8');
++ f.native(0,body,2,'Codex chats: Renamedpilot');
++ f.work.run('UPDATE cp_cloud_sources SET captured_at=? WHERE owner=? AND source_key=?',9000,f.owner,hash('source0'));
++ const {actual,stats}=await f.compare({query:'Renamedpilot',after:8000});
++ assert.equal(actual.value.results.length,1);assert.equal(stats.indexed,1);assert.equal(stats.reused,39);
++ assert.equal((await f.compare({query:'Renamedpilot',before:8000})).actual.value.results.length,0);
++});
++
++test('PID reuse reclaims an orphan without removing the current process generation',async t=>{
++ const f=await fixture(t),root=path.dirname(f.base.directory);
++ const old='.live-index-222222-6-abcdef',active='.live-index-222222-7-ghijkl';
++ await mkdir(path.join(root,old));await mkdir(path.join(root,active));
++ await collectLiveIndexes(root,{alive:()=>true,stamp:async()=> '7'});
++ const names=await readdir(root);assert.ok(!names.includes(old));assert.ok(names.includes(active));
++});

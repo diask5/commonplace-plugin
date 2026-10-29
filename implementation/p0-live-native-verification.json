@@ -1,0 +1,184 @@
+{
+  "observedAt": "2026-10-27T05:31:48.773Z",
+  "state": "Two native CLI synthesis checks pass after runtime64 activation",
+  "nativeVersion": "0.4.31",
+  "runtimeRevision": 64,
+  "pluginLoad": "reviewed candidate via per-process paths; stable plugin registries still 0.4.28 at scoring",
+  "installedHostApplications": true,
+  "desktopGuiWalkthrough": false,
+  "sourceScope": "Retained synthetic notes in real owner archive",
+  "result": {
+    "job": {
+      "state": "finished",
+      "stage": "codex-synthesis",
+      "elapsedSeconds": 141.27
+    },
+    "report": {
+      "kind": "real installed hosts and real owner archive; process-isolated tool surface",
+      "collectedAt": 1793078967.797913,
+      "scoringRevision": 2,
+      "cases": [
+        {
+          "id": "claude-synthesis",
+          "host": "claude",
+          "state": "passed",
+          "checks": {
+            "completed": true,
+            "searched": true,
+            "readSupportingContext": true,
+            "noPermissionDenials": true,
+            "savedConfigurationUnchanged": true,
+            "citationsMatchRetrievedSources": true,
+            "latestDate": true,
+            "correctOwner": true,
+            "changeReason": true
+          },
+          "elapsedSeconds": 89.51,
+          "tools": [
+            "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+            "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+            "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+            "mcp__plugin_meet-proxy_meet-proxy__read_shared_context"
+          ],
+          "final": "The Mariner Cedar MC-7DE04D pilot now launches on **December 29, 2026**. **Eden Hart** still owns it. It slipped from November 18 because the audit export needs a reconciliation fix.\n\n- **Plan:** The October 20 planning note set the launch for November 18, 2026. A decision update on October 25 moved it to December 29, 2026 and says it replaces the earlier dates.\n- **Owner:** The October 20 note names Eden Hart. The October 25 update says \"the prior owner is unchanged,\" so Eden Hart still owns it.\n- **Why it changed:** The audit export needs a reconciliation fix before launch.\n- **Still open:** Neither note sets a start time or timezone for the launch.\n\nThe notes don't say who is doing the fix or whether it's on track for the new date.\n\nBoth notes call themselves synthetic benchmark notes and say the projects and facts are fictional test context, not real commitments.\n\nSources:\n- `[private source title]`: planning note, 2026-10-20 [[source citation]]\n- `[private source title]`: decision update, 2026-10-25 [[source citation]]",
+          "evidenceSha256": "d4bd9d3ba311a39b9285361b2ba6e875e033431ca65d5d3acc3cb349884e2288",
+          "visibleToolIntervals": [
+            {
+              "name": "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+              "seconds": 14.972
+            },
+            {
+              "name": "mcp__plugin_meet-proxy_meet-proxy__search_shared_context",
+              "seconds": 14.99
+            },
+            {
+              "name": "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+              "seconds": 5.244
+            },
+            {
+              "name": "mcp__plugin_meet-proxy_meet-proxy__read_shared_context",
+              "seconds": 5.099
+            }
+          ]
+        },
+        {
+          "id": "codex-synthesis",
+          "host": "codex",
+          "state": "passed",
+          "checks": {
+            "completed": true,
+            "searched": true,
+            "readSupportingContext": true,
+            "noPermissionDenials": true,
+            "savedConfigurationUnchanged": true,
+            "citationsMatchRetrievedSources": true,
+            "latestDate": true,
+            "correctOwner": true,
+            "changeReason": true
+          },
+          "elapsedSeconds": 51.45,
+          "tools": [
+            "search_shared_context",
+            "read_shared_context",
+            "read_shared_context"
+          ],
+          "final": "Dune Sparrow is now planned to launch **December 13, 2026**, with **Ravi Shore** still owning the pilot.\n\n- **Original plan:** The October 20 planning note targeted November 13, 2026, and named Ravi as owner. cite[source citation]\n- **What changed and why:** The October 25 decision update moved launch back one month because **the billing export failed reconciliation**. Ownership stayed unchanged. cite[source citation]\n- **Still unresolved:** Start time and timezone remain undecided. The notes don’t establish a remediation plan or who owns the billing fix. cite[source citation]\n\nThese sources are explicitly labeled fictional test work context.",
+          "evidenceSha256": "ba3e213fcd8931da2d735aec079a04cf987df99b6204402b887181dc5bfd4e88",
+          "visibleToolIntervals": [
+            {
+              "name": "search_shared_context",
+              "seconds": 26.548
+            },
+            {
+              "name": "read_shared_context",
+              "seconds": 5.597
+            },
+            {
+              "name": "read_shared_context",
+              "seconds": 5.657
+            }
+          ]
+        }
+      ],
+      "limits": [
+        "Not a default-host app-routing benchmark.",
+        "Not a new Google/Desktop GUI onboarding walkthrough.",
+        "Deterministic rubric checked against private visible tool receipts; no hidden reasoning used."
+      ],
+      "complete": true,
+      "runFinished": true,
+      "notStarted": 0,
+      "passed": 2,
+      "needsReview": 0
+    }
+  },
+  "strictGrounding": {
+    "job": {
+      "state": "finished",
+      "stage": "codex-synthesis",
+      "elapsedSeconds": 141.27
+    },
+    "strictReadGrounding": [
+      {
+        "id": "codex-synthesis",
+        "completed": true,
+        "savedConfigurationUnchanged": true,
+        "deniedCalls": 0,
+        "reads": [
+          {
+            "successfulSourceRead": true,
+            "citationCount": 4,
+            "textCharacters": 5868,
+            "changed": false,
+            "restart": false
+          },
+          {
+            "successfulSourceRead": true,
+            "citationCount": 4,
+            "textCharacters": 3807,
+            "changed": false,
+            "restart": false
+          }
+        ],
+        "finalCitationCount": 2,
+        "unsupportedFinalCitationCount": 0,
+        "allFinalCitationsBackedByCurrentSuccessfulRead": true,
+        "evidenceSha256": "ba3e213fcd8931da2d735aec079a04cf987df99b6204402b887181dc5bfd4e88"
+      },
+      {
+        "id": "claude-synthesis",
+        "completed": true,
+        "savedConfigurationUnchanged": true,
+        "deniedCalls": 0,
+        "reads": [
+          {
+            "successfulSourceRead": true,
+            "citationCount": 4,
+            "textCharacters": 1774,
+            "changed": false,
+            "restart": false
+          },
+          {
+            "successfulSourceRead": true,
+            "citationCount": 4,
+            "textCharacters": 2055,
+            "changed": false,
+            "restart": false
+          }
+        ],
+        "finalCitationCount": 2,
+        "unsupportedFinalCitationCount": 0,
+        "allFinalCitationsBackedByCurrentSuccessfulRead": true,
+        "evidenceSha256": "d4bd9d3ba311a39b9285361b2ba6e875e033431ca65d5d3acc3cb349884e2288"
+      }
+    ]
+  },
+  "originalFailedReadCause": "unconfirmed; distinct reproducible upgrade guard and old-launcher race were recovered",
+  "limitations": [
+    "Process tool isolation retained; not a full default-host routing benchmark.",
+    "Earlier failures and pre-activation candidate failures remain preserved.",
+    "No real second-person invitation or clean Google/Desktop test was performed.",
+    "No model or effort override, no saved approval changes, no host denial.",
+    "Warm archive. Claude total89.51s and Codex51.45s; not a low-latency claim."
+  ]
+}

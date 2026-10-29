@@ -1,0 +1,43 @@
+{
+  "case": "codex-correction",
+  "sessionId": "faeeba76-0de3-4359-bdd1-2f63cbac82ae",
+  "tools": [
+    "archive_search",
+    "search_wiki",
+    "archive_read",
+    "archive_read"
+  ],
+  "successfulReads": [
+    {
+      "documentId": "unified-c18c2467e4dfae0dafbcdb77",
+      "citations": [
+        "unified_0a4e411e2352d8974fd00027"
+      ],
+      "revision": 9,
+      "offset": 0,
+      "nextOffset": null,
+      "characters": 2229
+    },
+    {
+      "documentId": "unified-50bfa02c1935ed27fb304283",
+      "citations": [
+        "unified_47f4abc0e34b3acc76a822f0"
+      ],
+      "revision": 9,
+      "offset": 0,
+      "nextOffset": null,
+      "characters": 1471
+    }
+  ],
+  "finalCitationIds": [
+    "unified_0a4e411e2352d8974fd00027",
+    "unified_47f4abc0e34b3acc76a822f0"
+  ],
+  "supportedCitationIds": [
+    "unified_0a4e411e2352d8974fd00027",
+    "unified_47f4abc0e34b3acc76a822f0"
+  ],
+  "unsupportedCitations": [],
+  "final": "The latest recorded launch date is **December 24, 2026**, moved from November 10 because the partner sandbox will be ready later. The exact time and timezone remain undecided. \ue200cite\ue202unified_0a4e411e2352d8974fd00027\ue201\n\n**Isla Froment** remains the owner. \ue200cite\ue202unified_47f4abc0e34b3acc76a822f0\ue201\n\nBoth source notes are marked as fictional benchmark data, so this is a test-context answer.",
+  "visibleReceiptsSha256": "a805d74b341b297a36860ecda18679fa648107aab1a35d80b14d4c251b00e832"
+}

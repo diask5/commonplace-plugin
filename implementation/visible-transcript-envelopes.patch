@@ -1,0 +1,156 @@
+--- a/apps/commonplace/server/ingest.mjs
++++ b/apps/commonplace/server/ingest.mjs
+@@ -61,6 +61,10 @@
+ export function extractTranscript(input) {
+   const texts = [];
+   const add = (entry) => {
++    // A host API-request/debug envelope may contain a user-role message with
++    // private reminders. It is not a visible conversation turn. Trust the
++    // outer record kind before inspecting a nested message's role.
++    if (entry?.type && !['user', 'assistant', 'message', 'response_item'].includes(entry.type)) return;
+     let message;
+     if (entry?.type === 'response_item' && entry.payload?.type === 'message')
+       message = entry.payload;
+@@ -93,7 +97,7 @@
+   try {
+     const parsed = JSON.parse(input);
+     if (Array.isArray(parsed)) parsed.forEach(add);
+-    else if (Array.isArray(parsed.messages)) parsed.messages.forEach(add);
++    else if (!parsed.type && Array.isArray(parsed.messages)) parsed.messages.forEach(add);
+     else add(parsed);
+   } catch {
+     for (const line of input.split(/\r?\n/)) {
+--- a/apps/commonplace/server/canonical-sync.mjs
++++ b/apps/commonplace/server/canonical-sync.mjs
+@@ -59,13 +59,20 @@
+  }
+  async send(key,input,next){input={...input,ownerId:this.state.owner};this.state.pending={key,input,next};await this.save();await this.flush();}
+  async tick(owner,roots){
+-  await this.load(owner);let budget=Math.min(this.budget,6);if(this.state.pending){await this.flush();budget--;}
+-  if(this.state.format!==2){
+-   // Older JSON scans restarted their capture on every page. Recollect once
+-   // after the exact pending retry so incomplete historical captures are repaired.
+-   for(const record of Object.values(this.state.files))for(const key of ['captureId','captureComplete','queued','scanComplete','offset','index','version','scanVersion','seen','scannedAt','headDigest','headLength','inode','lastReported'])delete record[key];
+-   this.state.format=2;await this.save();
+-  }
++  await this.load(owner);let budget=Math.min(this.budget,6);
++  if(this.state.format!==3){
++   // Old collectors admitted host API-request envelopes. Never replay their
++   // pending text. Reconcile its possibly accepted revision, then recapture
++   // each source with the current visible-turn parser.
++   if(this.state.pending){
++    const p=this.state.pending,checkpoint=await this.app.accountClient.request('/account/api/cloud/context-checkpoint',{conversation:p.input.conversation,sourceKey:p.input.sourceKey,ownerId:this.state.owner});
++    this.state.files[p.key]={...this.state.files[p.key],epoch:checkpoint.epoch,revision:checkpoint.revision};
++    delete this.state.pending;
++   }
++   for(const record of Object.values(this.state.files))for(const key of ['captureId','captureComplete','queued','scanComplete','offset','index','version','scanVersion','seen','scannedAt','headDigest','headLength','inode','lastReported','error','errorVersion','errorAt'])delete record[key];
++   this.state.format=3;await this.save();
++  }
++  if(this.state.pending){await this.flush();budget--;}
+   const seen=new Set();let partial=false;
+   const entries=[];this.state.cursors||={};
+   // Walking only reads directory names. The costlier realpath+lstat stage is
+@@ -163,7 +170,7 @@
+       offset+=position;complete=offset===stat.size;
+      }else{
+       if(stat.size>50000000){partial=true;continue;}
+-      const raw=JSON.parse(await fh.readFile('utf8')),rows=Array.isArray(raw)?raw:Array.isArray(raw.messages)?raw.messages:[raw];
++      const raw=JSON.parse(await fh.readFile('utf8')),rows=Array.isArray(raw)?raw:!raw.type&&Array.isArray(raw.messages)?raw.messages:[raw];
+       index=full?0:record.index||0;
+       // Retain an export's real session and project metadata without treating
+       // its entire message array as one synthetic user message.
+--- a/package.json
++++ b/package.json
+@@ -7,7 +7,7 @@
+   },
+   "scripts": {
+     "start": "node scripts/relay.mjs",
+-    "test": "node --test tests/remote-archive-errors.test.mjs tests/agent-network.test.mjs apps/commonplace-account/tests/*.test.mjs apps/commonplace/tests/person-inbox.test.mjs apps/commonplace/tests/session-invitations.test.mjs apps/commonplace/tests/chat-wait.test.mjs apps/commonplace/tests/account-origin.test.mjs apps/commonplace/tests/delegation-client.test.mjs tests/relay.test.mjs tests/delegation-http.test.mjs tests/production-*.test.mjs tests/mailbox-*.test.mjs tests/cloud-*.test.mjs tests/context-mirror.test.mjs tests/conductor-history.test.mjs tests/people-invitations.test.mjs tests/chat-setup.test.mjs tests/codex-host-context.test.mjs tests/local-environment.test.mjs tests/mcp-*.test.mjs tests/agent-connections.test.mjs tests/policy-context.test.mjs tests/space-context*.test.mjs tests/context-setup.test.mjs tests/context-setup-request.test.mjs tests/contact-delivery.test.mjs tests/personal-assistant-setup.test.mjs tests/seamless-routing.test.mjs tests/seamless-collection.test.mjs tests/seamless-retrieval.test.mjs tests/agent-auth-rate-storage.test.mjs tests/agent-auth-registration-queue.test.mjs tests/archive-document-reuse.test.mjs tests/context-read-indexes.test.mjs tests/archive-io-hotpath.test.mjs tests/archive-short-transaction.test.mjs tests/archive-short-transaction-authority.test.mjs tests/archive-coordination.test.mjs tests/live-index-reuse.test.mjs",
++    "test": "node --test tests/transcript-visibility.test.mjs tests/remote-archive-errors.test.mjs tests/agent-network.test.mjs apps/commonplace-account/tests/*.test.mjs apps/commonplace/tests/person-inbox.test.mjs apps/commonplace/tests/session-invitations.test.mjs apps/commonplace/tests/chat-wait.test.mjs apps/commonplace/tests/account-origin.test.mjs apps/commonplace/tests/delegation-client.test.mjs tests/relay.test.mjs tests/delegation-http.test.mjs tests/production-*.test.mjs tests/mailbox-*.test.mjs tests/cloud-*.test.mjs tests/context-mirror.test.mjs tests/conductor-history.test.mjs tests/people-invitations.test.mjs tests/chat-setup.test.mjs tests/codex-host-context.test.mjs tests/local-environment.test.mjs tests/mcp-*.test.mjs tests/agent-connections.test.mjs tests/policy-context.test.mjs tests/space-context*.test.mjs tests/context-setup.test.mjs tests/context-setup-request.test.mjs tests/contact-delivery.test.mjs tests/personal-assistant-setup.test.mjs tests/seamless-routing.test.mjs tests/seamless-collection.test.mjs tests/seamless-retrieval.test.mjs tests/agent-auth-rate-storage.test.mjs tests/agent-auth-registration-queue.test.mjs tests/archive-document-reuse.test.mjs tests/context-read-indexes.test.mjs tests/archive-io-hotpath.test.mjs tests/archive-short-transaction.test.mjs tests/archive-short-transaction-authority.test.mjs tests/archive-coordination.test.mjs tests/live-index-reuse.test.mjs",
+     "test:backend": "node --test apps/commonplace-account/tests/*.test.mjs",
+     "test:package": "node --test tests/packaging.test.mjs",
+     "test:deployment": "python3 -m unittest tests.test_deployment tests.test_public_assets_deployment tests.test_runtime_public_assets",
+--- a/apps/commonplace/server/cloud-sync.mjs
++++ b/apps/commonplace/server/cloud-sync.mjs
+@@ -16,12 +16,12 @@
+   static async open(app,options={}) {
+     let state={version:1,files:{},enabled:false,lastSyncedAt:null};
+     try {state=JSON.parse(await readFile(path.join(app.dir,'cloud-sync.json'),'utf8'));if(state.version!==1)throw Error('Unsupported sync state.');}catch(error){if(error.code!=='ENOENT')throw error;}
+-    if(state.formatRevision!==2){
++    if(state.formatRevision!==3){
+       // Reparse existing files when privacy rules change. A possibly delivered
+       // pending upload reserves its revision, but its old text is never replayed.
+       if(state.pending){const p=state.pending,r=state.files[p.file];if(r)r.parts[p.part]={hash:null,revision:p.input.revision};delete state.pending;}
+       for(const record of Object.values(state.files))delete record.version;
+-      state.formatRevision=2;
++      state.formatRevision=3;
+     }
+     return new CloudSync(app,state,options);
+   }
+--- a/tests/cloud-unified-context.test.mjs
++++ b/tests/cloud-unified-context.test.mjs
+@@ -359,7 +359,7 @@
+  // The earlier collector resumed at row 40 under a new capture ID, losing rows 0–39.
+  const record=Object.values(state.files)[0];record.captureId='old-broken-capture';await writeFile(stateFile,JSON.stringify(state));
+  for(let i=0;i<3;i++)await new CanonicalSync(app,{budget:1}).tick(f.a.owner,roots);
+- assert.equal(f.unified.coverage(f.a.owner).conversations[0].messages,55);assert.equal(JSON.parse(await readFile(stateFile,'utf8')).format,2);
++ assert.equal(f.unified.coverage(f.a.owner).conversations[0].messages,55);assert.equal(JSON.parse(await readFile(stateFile,'utf8')).format,3);
+ });
+ 
+ test('automatic collection status includes canonical-only history and hides excluded or revoked sources',async t=>{
+--- a/tests/seamless-collection.test.mjs
++++ b/tests/seamless-collection.test.mjs
+@@ -181,3 +181,20 @@
+  f.clock.now+=60000;const r=await sync.tick('owner',[{path:path.join(f.dir,'missing'),name:'Gone',kind:'claude'}]);
+  assert.equal(r.partial,true);assert.equal(f.uploads.filter(u=>u.state==='unavailable').length,0);
+ });
++
++test('privacy parser upgrade recaptures unchanged sources without replaying old pending text',async t=>{
++ const f=await fixture(t),sync=f.sync();
++ const file=await f.chat('demo','Visible public plan');
++ await appendFile(file,JSON.stringify({type:'api-request-blob',message:{role:'user',content:'PRIVATE_HOST_CANARY'}})+'\n');
++ await sync.tick('owner',f.roots);
++ const [key,record]=Object.entries(sync.state.files)[0],old=structuredClone(f.uploads[0]);
++ old.messages=[{...old.messages[0],text:'PRIVATE_HOST_CANARY'}];old.revision=record.revision+1;
++ sync.state.format=2;sync.state.pending={key,input:old,next:{...record,revision:old.revision}};
++ await sync.save();f.checkpoint={epoch:record.epoch,revision:old.revision};
++ const before=f.uploads.length,restarted=f.sync();await restarted.tick('owner',f.roots);
++ assert.ok(f.uploads.length>before,'unchanged source is reparsed');
++ assert.doesNotMatch(JSON.stringify(f.uploads.slice(before)),/PRIVATE_HOST_CANARY/);
++ assert.match(JSON.stringify(f.uploads.slice(before)),/Visible public plan/);
++ assert.equal(restarted.state.format,3);assert.equal(restarted.state.pending,undefined);
++ assert.ok(f.uploads[before].revision>old.revision,'possibly accepted revision is preserved');
++});
+--- /dev/null
++++ b/tests/transcript-visibility.test.mjs
+@@ -0,0 +1,30 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {extractTranscript} from '../apps/commonplace/server/ingest.mjs';
++import {transcriptRecord} from '../apps/commonplace/server/canonical-sync.mjs';
++
++test('Claude API request blobs never become synced user turns',()=>{
++ const visible={type:'user',uuid:'visible-turn',message:{role:'user',content:'Move the pilot to November 12.'}};
++ const blob={type:'api-request-blob',message:{role:'user',content:'<system-reminder>PRIVATE_HOST_CANARY</system-reminder>\nMove the pilot to November 12.'}};
++ assert.equal(extractTranscript(JSON.stringify(blob)), '');
++ assert.equal(extractTranscript(JSON.stringify({type:'api-request-blob',messages:[visible,blob]})), '');
++ assert.equal(extractTranscript([visible,blob].map(JSON.stringify).join('\n')), 'User: Move the pilot to November 12.');
++ assert.deepEqual(transcriptRecord(JSON.stringify(blob),{index:1,provider:'claude',fallbackId:'fixture'}).messages,[]);
++});
++
++test('nonconversation envelopes cannot impersonate user or assistant text',()=>{
++ for(const type of ['system','progress','summary','api-response','tool_result','queue-operation']){
++  assert.equal(extractTranscript(JSON.stringify({type,message:{role:'assistant',content:'PRIVATE_HOST_CANARY'}})), '');
++  assert.equal(extractTranscript(JSON.stringify({type,role:'user',content:'PRIVATE_HOST_CANARY'})), '');
++ }
++});
++
++test('visible Claude, Codex and generic messages retain text and omit reasoning',()=>{
++ const records=[
++  {type:'user',message:{role:'user',content:'Original plan'}},
++  {type:'assistant',message:{role:'assistant',content:[{type:'thinking',thinking:'PRIVATE_THOUGHT'},{type:'text',text:'Current plan'}]}},
++  {type:'response_item',payload:{type:'message',role:'assistant',content:[{type:'output_text',text:'Codex answer'}]}},
++  {role:'user',content:'Generic message'},
++ ];
++ assert.equal(extractTranscript(JSON.stringify(records)), 'User: Original plan\n\nAssistant: Current plan\n\nAssistant: Codex answer\n\nUser: Generic message');
++});

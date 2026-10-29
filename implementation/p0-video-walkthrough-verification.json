@@ -1,0 +1,216 @@
+{
+  "recordedAt": "2026-10-28T07:15:24.450Z",
+  "verifiedAt": "2026-10-28T07:21:42.576916+00:00",
+  "status": "preserved_browser_demo_superseded_by_verified_native_video",
+  "requestedRevision": "Owner rejected the first slide-heavy export; replacement is actual full-frame UI footage with cursor, click rings, anchored annotations and synchronized Bland narration.",
+  "playerUrl": "https://kyle-cloud-w3.conductor.show/walkthrough/browser/",
+  "downloadUrl": "https://kyle-cloud-w3.conductor.show/walkthrough/browser/meet-proxy-p0-walkthrough.mp4?v=2",
+  "previewAccess": "Conductor preview authentication required; anonymous external check of preview returned 401. Local player and media QA passed.",
+  "master": ".context/p0-demo-v2/public/meet-proxy-p0-walkthrough.mp4",
+  "render": {
+    "state": "rendered",
+    "presentation": "Full-frame actual browser footage; visible animated cursor, click rings, anchored annotations; no slide or title-card scenes; no cloned-frame padding.",
+    "durationSeconds": 221.83333333333334,
+    "resolution": "1920x1080",
+    "fps": 30,
+    "chapters": 14,
+    "narration": "Bland River / btts-3",
+    "mp4Bytes": 18000629,
+    "mp4Sha256": "33874dc47eb2d8ea1dc06cd554f40cb0f7775e4494e0a9cda0919119590f7780",
+    "voiceSynthesisCostUsd": 0.1680000000000001,
+    "allP0LiveAcceptanceProven": false,
+    "syntheticAccounts": true,
+    "explicitSharedFileReadPassed": true,
+    "approvedLibrarySharingPassed": false
+  },
+  "mediaQa": {
+    "completeDecodePassed": true,
+    "decodeErrors": [],
+    "credentialAbsentFromAllPublicFiles": true,
+    "publicFiles": 7,
+    "faststartVerified": true,
+    "topLevelAtoms": [
+      "ftyp",
+      "moov",
+      "free",
+      "mdat"
+    ],
+    "mediaDurationSeconds": 221.85,
+    "resolution": [
+      1920,
+      1080
+    ],
+    "fps": 30.0
+  },
+  "playerQa": {
+    "origin": "http://127.0.0.1:43321",
+    "screens": [
+      {
+        "width": 1440,
+        "status": 200,
+        "overflow": false,
+        "chapterCount": 14,
+        "videoDuration": 221.854362,
+        "videoWidth": 1920,
+        "videoHeight": 1080,
+        "errors": []
+      },
+      {
+        "width": 390,
+        "status": 200,
+        "overflow": false,
+        "chapterCount": 14,
+        "videoDuration": 221.854362,
+        "videoWidth": 1920,
+        "videoHeight": 1080,
+        "errors": []
+      }
+    ],
+    "network": [
+      {
+        "path": "meet-proxy-p0-walkthrough.mp4",
+        "status": 206
+      },
+      {
+        "path": "captions.vtt",
+        "status": 200
+      },
+      {
+        "path": "transcript.md",
+        "status": 200
+      },
+      {
+        "path": "../voices.private.json",
+        "status": 404
+      },
+      {
+        "path": "%2e%2e/voices.private.json",
+        "status": 404
+      }
+    ],
+    "state": "passed"
+  },
+  "sourceSpec": {
+    "path": ".context/attachments/assets/8d74e8b8-0ad7-4673-9826-a85778f671e3/Meet Proxy Product Spec copy.txt",
+    "sha256": "1d061a660d1e280c4f33a111fdabb1c5fb8fc52a3aa4cd86ebe4fee5f396091d",
+    "laterSpacesAmendmentsApply": true
+  },
+  "recording": {
+    "scenes": 14,
+    "uiErrors": [],
+    "allScenesCompleted": true,
+    "source": "Actual application UI and HTTP handlers, isolated sample identities and fictional context. No real Google signup or fresh native install is depicted.",
+    "httpResponsesObserved": 328,
+    "expected403s": [
+      {
+        "path": "/account/web/social/space-invite-accept",
+        "status": 403
+      },
+      {
+        "path": "/account/web/social/space-invite-accept",
+        "status": 403
+      }
+    ],
+    "scriptedPairMessages": true,
+    "browserFixtureStoppedAfterRecording": true
+  },
+  "checks": {
+    "setupDoesNotInventReady": true,
+    "inviteCreated": true,
+    "joiningDoesNotEnableSharing": true,
+    "rulesPersisted": true,
+    "explicitFileShared": true,
+    "memberReadsSharedFile": true,
+    "memberPostedMessage": true,
+    "approvedLibrarySharingSucceeded": false,
+    "requesterPrivateAuditAbsent": true,
+    "sharedExchangeIdMatches": true,
+    "sameAgentPairThread": true,
+    "memberLeft": true,
+    "oldInviteCannotUndoLeave": true,
+    "ownerRemovedMember": true,
+    "oldInviteCannotUndoRemoval": true
+  },
+  "classifier": {
+    "model": "pplx-decider-v1.2",
+    "configuredRemoteProvider": true,
+    "deterministicSubstitute": false,
+    "threshold": 0.995,
+    "thresholdChanged": false,
+    "calls": [
+      {
+        "candidate": "walkthrough-public",
+        "probability": 0.9672051023383171,
+        "milliseconds": 193
+      },
+      {
+        "candidate": "walkthrough-public",
+        "probability": 0.9637501035582089,
+        "milliseconds": 185
+      },
+      {
+        "candidate": "walkthrough-private",
+        "probability": 0.0014104955020852283,
+        "milliseconds": 115
+      },
+      {
+        "candidate": "walkthrough-private",
+        "probability": 0.0014227491418924564,
+        "milliseconds": 117
+      }
+    ],
+    "finding": "Public launch sample and private financial sample withheld. Explicit shared-file success is separate from the failed useful private-library request."
+  },
+  "accountCreation": {
+    "disposableDemoAccountsCreated": true,
+    "separateMacChromeProfileGoogleSignupOpenRequestedSuccessfully": true,
+    "productionParticipantCreated": false,
+    "remaining": "Owner must complete Google account details and any verification; async request pending. Main Meet Proxy account was not relinked."
+  },
+  "privacy": {
+    "publicAssetAllowlistCount": 7,
+    "suppliedCredentialAbsentFromAllPublicAssets": true,
+    "credentialSentOnlyToRequestedBlandProvider": true,
+    "productionPrivateConversationsIncluded": false,
+    "productionPermissionsChanged": false,
+    "productionAccountChanged": false
+  },
+  "allP0LiveEndToEndProven": false,
+  "remainingGates": [
+    "Fresh verified Google/native onboarding",
+    "Real second-person production sharing/revocation",
+    "Useful approved private-library sharing for demonstrated example",
+    "Natural invitation paths and inherited host authority not newly filmed",
+    "Broader default-host behavior"
+  ],
+  "runtimeSourcePackageInstallationOrDeploymentChanged": false,
+  "previousExport": {
+    "path": ".context/p0-video/public/meet-proxy-p0-walkthrough.mp4",
+    "sha256": "b90795c4c92e4874d9971aa1b1faca97fae8d2dab0a84c60bf67b11e22da0150",
+    "status": "Preserved; superseded after owner rejected slide-heavy format"
+  },
+  "evidenceHashes": {
+    "recording-evidence.json": "a43fcbe23bff94c66330c4a1fa61463fbccb74f1e3bd5c6b1a256bf614d54c42",
+    "record-used.mjs": "2e03b5b93ed06bde7737ce08a0a65a78a0ff20110aa0fde28d0bdd1ef0d1d50a",
+    "render.py": "2054b5595eee6dcbfbcd1d96c6bf7eb384807e040833e18e8cf350d0a7cbaa14",
+    "render-report.json": "42673f82731a01ecb87c2e1f5ef17cd3a14e59422e5e10d6cd81b15bb8b2576b",
+    "media-qa.json": "e17c589744924b4f0ec2d9402afe5efa55f72d4d6547cd2287cce6a2b73d4f06",
+    "player-qa.json": "f89a2d6d0111c9073ecd4eb3538c77ccb5cbf3b4947993d4a7cb0a5111e06d36",
+    "narration.json": "75c29dc3e4b7b2eba19584c30a2ae4194faca62fcfa561a8baca4bd97d05f7ee",
+    "audio-timing.json": "38277721e1b64886fa3fb7037ac8b586513336d315177adec31e3f45355b72c3"
+  },
+  "publicAssetHashes": {
+    "manrope.woff2": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972",
+    "index.html": "2ae65fcb5f2fe8227b4466ab424cb7ceb23d1e4fed982bc8dbaafd436f3890cb",
+    "meet-proxy-p0-walkthrough.mp4": "33874dc47eb2d8ea1dc06cd554f40cb0f7775e4494e0a9cda0919119590f7780",
+    "captions.vtt": "4cddf4df8250fb8977ae42fa3bee837ecf6b7d0448c444967da318ae5af0be8f",
+    "chapters.json": "768451ff8cbfd84c04dfc0458a16cd06d12ebe841c31b4c393aa8abfc56c58da",
+    "transcript.md": "8759d06f7d5ca4959bf650c4991ec58b2dadbf0555e3e460ad51a0057bae3558",
+    "poster.jpg": "affd4e9d30d1cebc9f0e1475a6cc916da21b8ff5417bc9fa3a51d233423d83d2"
+  },
+  "supersededBy": {
+    "verification": "implementation/claude-desktop-demo-verification.json",
+    "url": "https://kyle-cloud-w3.conductor.show/walkthrough/?v=3",
+    "originalBrowserMasterUnchanged": true
+  }
+}

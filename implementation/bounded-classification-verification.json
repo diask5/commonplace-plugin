@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-28",
+  "state": "published and deployed",
+  "serverRelease": "20261028-bounded-classification",
+  "nativeVersion": "0.4.32",
+  "nativeArtifactsChanged": false,
+  "coreTests": {
+    "passed": 610,
+    "failed": 0
+  },
+  "focusedTests": {
+    "passed": 51,
+    "failed": 0
+  },
+  "replay": {
+    "patches": 48,
+    "changedFiles": 206,
+    "mismatches": [],
+    "matched": true
+  },
+  "bundleSha256": "d5adb1f901089030bf361f7b0653b6b28268d7e95de495dbb27445276a6e3544",
+  "serverFiles": 159,
+  "maxProviderConcurrencyPerRequest": 8,
+  "candidateBatchWidth": "floor(8 / ruleCount)",
+  "unchanged": [
+    "0.995 threshold",
+    "pplx-decider-v1.2",
+    "classifier prompt",
+    "32 candidate limit",
+    "20 second request deadline",
+    "all-rule requirement",
+    "authority/source/expiry checks",
+    "recipient shape and source order",
+    "native packages and saved permissions"
+  ],
+  "newLiveBaseline": [
+    {
+      "query": "long ordinary public-plan question",
+      "state": "no_context",
+      "candidates": 13,
+      "selectedSource": "summary conversation only"
+    },
+    {
+      "query": "Juniper Lantern pilot",
+      "state": "unavailable",
+      "diagnostic": {
+        "phase": "classification",
+        "deadlineReached": false,
+        "sourceRevisionChanged": true,
+        "authorityChanged": false
+      }
+    },
+    {
+      "query": "Juniper Lantern pilot",
+      "state": "unavailable",
+      "diagnostic": {
+        "phase": "classification",
+        "deadlineReached": true,
+        "sourceRevisionChanged": false,
+        "authorityChanged": false
+      }
+    }
+  ],
+  "extractedServerSmoke": {
+    "passed": true,
+    "syntheticProfile": true,
+    "compiledAuthorize": "placeholder"
+  },
+  "liveRetest": {
+    "state": "no_context",
+    "requestId": "8ac599d33ea591e1268df16c",
+    "query": "Juniper Lantern pilot",
+    "checksCompleted": 26,
+    "excerpts": 0,
+    "maximumPublicSourceProbability": 0.9911949440115266,
+    "threshold": 0.995,
+    "meaning": "The request completed with 26 audit entries: 20 scored below threshold and six were withheld after provider HTTP 429. No excerpt was shared. This is request completion evidence, not 26 successful classifications or a useful-sharing pass.",
+    "incidentalMessage": "The first post-rollout form submission was a plain message after the form reset. It is retained and is not counted as a classified request.",
+    "checksWithProbability": 20,
+    "belowThreshold": 20,
+    "providerHttp429": 6
+  },
+  "video": {
+    "fullReplacementComplete": false,
+    "nativeSourceAndRetrievalRecorded": true,
+    "chromeCaptureError": "The user declined TCCs for application, window, display capture",
+    "nativeSetupBlockedTool": "finish_context_setup",
+    "nativeSetupHostReason": "Data Exfiltration",
+    "hostApprovalPending": true,
+    "chromeCaptureRecovered": true,
+    "captureRecoveryEvidence": "implementation/full-video-retake-verification.json"
+  },
+  "deployment": {
+    "state": "passed",
+    "release": "20261028-bounded-classification",
+    "filesVerified": 159,
+    "serviceReadableFiles": 159,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "unchanged; verified code-only activation",
+    "previous": "20261028-sharing-diagnostics",
+    "finishedAt": 1793225092.5121355
+  },
+  "privateLiveRetest": {
+    "requestId": "bcc391a6303fff85888ad6b0",
+    "state": "no_context",
+    "checksCompleted": 4,
+    "excerpts": 0,
+    "maximumProbability": 0.001943792760378561
+  },
+  "demoState": {
+    "spaceId": "cf4c9dc83edd075b8850c885",
+    "name": "Juniper Lantern live demo",
+    "sharingPaused": true,
+    "membershipRetainedForPendingNativeHandoff": true,
+    "recordersStoppedOrFailed": true
+  }
+}

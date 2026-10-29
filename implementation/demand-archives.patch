@@ -1,0 +1,70 @@
+diff --git a/apps/commonplace-account/server/cloud-worker.mjs b/apps/commonplace-account/server/cloud-worker.mjs
+index 99473fc..a777d8d 100644
+--- a/apps/commonplace-account/server/cloud-worker.mjs
++++ b/apps/commonplace-account/server/cloud-worker.mjs
+@@ -40,7 +40,9 @@ export class CloudWorker {
+     if(this.closed)return;
+     this.work.run('INSERT INTO cp_cloud_runtime VALUES(1,?) ON CONFLICT(id) DO UPDATE SET seen_at=excluded.seen_at',Date.now());
+     this.work.reconcile();
+-    if(this.archive)void this.archive.syncPending().catch(()=>{});
++    // Native/web reads maintain their own archive. Do not duplicate every
++    // collection update in the optional model worker while no job needs it.
++    // Claimed jobs still prepare and fence their exact snapshot below.
+     for(const [id,controller] of this.logins)if(this.work.get('SELECT state FROM cp_model_accounts WHERE id=?',id)?.state!=='connecting')controller.abort();
+     for(const [id,complete] of this.callbacks) {
+       const callback=this.work.get("SELECT login_callback FROM cp_model_accounts WHERE id=? AND state='connecting'",id)?.login_callback;
+diff --git a/tests/cloud-worker-archive-authority.test.mjs b/tests/cloud-worker-archive-authority.test.mjs
+index 25eda5b..35ee9f8 100644
+--- a/tests/cloud-worker-archive-authority.test.mjs
++++ b/tests/cloud-worker-archive-authority.test.mjs
+@@ -9,7 +9,8 @@ import {openDatabase} from '../apps/commonplace-account/server/sqlite.mjs';
+ import {AccountService} from '../apps/commonplace-account/server/service.mjs';
+ import {CloudWork} from '../apps/commonplace-account/server/cloud-work.mjs';
+ import {CloudArchive} from '../apps/commonplace-account/server/cloud-archive.mjs';
+-import {closeSharedContext} from '../apps/commonplace-account/server/shared-context.mjs';
++import {setupCheckPrompt} from '../apps/commonplace-account/server/agent-setup.mjs';
++import {closeSharedContext,warmSharedContext} from '../apps/commonplace-account/server/shared-context.mjs';
+ import {CloudWorker} from '../apps/commonplace-account/server/cloud-worker.mjs';
+ import {CredentialVault} from '../apps/commonplace-account/server/subscription-runner.mjs';
+ const uid=()=>randomBytes(12).toString('hex');
+@@ -27,7 +28,7 @@ async function fixture(t){
+   const run=runner=>new CloudWorker(work,{run:runner},vault,{archive});
+   const revision=()=>work.get('SELECT revision FROM cp_cloud_archive_state WHERE owner=?',owner).revision;
+   const leased=()=>work.get('SELECT lease_token FROM cp_model_accounts WHERE id=?',a.id).lease_token;
+-  return {work,archive,owner,source,task,native,run,revision,leased,account:a,vault};
++  return {work,archive,owner,source,task,native,run,revision,leased,account:a,vault,service};
+ }
+ const credential=f=>f.vault.open(f.owner,f.account.id,f.work.get('SELECT credential FROM cp_model_accounts WHERE id=?',f.account.id).credential);
+ function countReleases(archive){const n={released:0},prepare=archive.prepare.bind(archive);archive.prepare=async(...a)=>{const s=await prepare(...a),r=s.release.bind(s);s.release=async()=>{n.released++;return r();};return s;};return n;}
+@@ -127,3 +128,31 @@ test('archive change with an unobserved consultation reply requeues without publ
+   await w.tick();w.close();const row=f.work.get('SELECT state,result FROM cp_cloud_tasks WHERE id=?',f.task.id);
+   assert.equal(row.state,'queued');assert.equal(row.result,null);
+ });
++
++test('idle optional worker does not duplicate indexing; web readiness still converges',async t=>{
++ const f=await fixture(t);f.work.cancel(f.owner,f.task);let prefetch=0,models=0;
++ t.mock.method(f.archive,'syncPending',async()=>{prefetch++;});
++ const before=f.work.archiveStatus(f.owner);assert.equal(before.ready,false);
++ const w=f.run(async()=>{models++;return {output:answer('Unexpected')};});
++ await w.tick();await w.tick();w.close();assert.equal(prefetch,0);assert.equal(models,0);
++ assert.equal(f.work.archiveStatus(f.owner).publishedRevision,before.publishedRevision);
++ await warmSharedContext(f.service,f.owner);assert.equal(f.work.archiveStatus(f.owner).ready,true);
++});
++test('queued optional job prepares current archive before model and releases it',async t=>{
++ const f=await fixture(t),counts=countReleases(f.archive),prepare=f.archive.prepare.bind(f.archive);let prepared=0,prefetch=0;
++ t.mock.method(f.archive,'syncPending',async()=>{prefetch++;});
++ f.archive.prepare=async(...args)=>{const snapshot=await prepare(...args);prepared++;return snapshot;};
++ const w=f.run(async(_auth,_context,{archive})=>{
++  assert.equal(prepared,1);assert.equal(archive.manifest.revision,f.revision());
++  assert.ok(archive.manifest.documents.length);return {output:answer('Current')};
++ });
++ await w.tick();w.close();assert.equal(prefetch,0);assert.equal(prepared,1);assert.equal(counts.released,1);
++ assert.equal(f.work.read(f.owner,f.task).state,'completed');
++});
++test('subscription setup check does not need an archive build',async t=>{
++ const f=await fixture(t);f.work.run('UPDATE cp_cloud_tasks SET prompt=? WHERE id=?',setupCheckPrompt,f.task.id);
++ let prepared=0,prefetch=0;t.mock.method(f.archive,'prepare',async()=>{prepared++;throw Error('Unexpected build');});
++ t.mock.method(f.archive,'syncPending',async()=>{prefetch++;});
++ const w=f.run(async(_auth,_context,{archive})=>{assert.equal(archive,null);return {output:answer('Ready')};});
++ await w.tick();w.close();assert.equal(prepared,0);assert.equal(prefetch,0);assert.equal(f.work.read(f.owner,f.task).state,'completed');
++});

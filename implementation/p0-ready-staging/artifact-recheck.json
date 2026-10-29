@@ -1,0 +1,51 @@
+{
+  "observedAt": "2026-10-27T04:05:28.741037+00:00",
+  "checks": [
+    {
+      "name": "meet-proxy",
+      "bytes": 230158380,
+      "sha256": "968f1157f0942c660eb5325cb287cfb70f54be2da0b8d7334d004eb7ad944c33",
+      "matches": true
+    },
+    {
+      "name": "commonplace",
+      "bytes": 230158380,
+      "sha256": "84251b519af967146f5111303c1211d12a9a82d51b81d32e326f94929a0e2a05",
+      "matches": true
+    },
+    {
+      "name": "runtime-update.json",
+      "bytes": 2736845,
+      "sha256": "255688ceb2220b0adb035fe2e4f4f31ed20f0494fac5cc8530c64e3bce64dfa1",
+      "matches": true
+    },
+    {
+      "name": "runtime-update-manifest.json",
+      "bytes": 27225,
+      "sha256": "740d30390ba1954b3d32a641671692c6f3fc843bd8701055eb90341f0fc9bda1",
+      "matches": true
+    },
+    {
+      "name": "runtime-update.sha256",
+      "bytes": 86,
+      "sha256": "63d97f13912e40b3c22d33afcfcbe1d6b07368fddfc09eec1ca75f75b0da3cac",
+      "matches": true
+    },
+    {
+      "name": "deploy-cloud-update.py",
+      "bytes": 12117,
+      "sha256": "62ecf4694ee2dcea742dec538c8a13fbbafe3aa9fff5aadd9fc369c67e678408",
+      "matches": true
+    },
+    {
+      "name": "p0-ready-candidate.patch",
+      "sha256": "644313765867487b0c218759507b47cad911a27c38e569d527ae120013446fe1",
+      "matches": true
+    },
+    {
+      "name": "remote-archive-errors.patch",
+      "sha256": "0119b2c0f9fd0046ec0f06602419a60a8b8dcdbc4eeef3b12043171d5b419c2e",
+      "matches": true
+    }
+  ]
+}
