@@ -1,21 +1,29 @@
 {
-  "date": "2026-10-28",
-  "state": "incomplete; native and selected browser flows recorded",
+  "date": "2026-10-29",
+  "state": "Finished Claude-centered cursor video delivered and verified in Mac Chrome; all-P0 acceptance remains incomplete.",
   "fullReplacementComplete": false,
   "googleDeviceVerification": "completed by owner; do not repeat sign-in",
   "actualRecordedFlows": [
-    "Claude Desktop ordinary note entry",
-    "Claude Desktop changed-date note entry",
-    "different existing Claude chat retrieves source and answers corrected date",
-    "browser fourteen-day rule enable and save",
-    "recipient private-topic request with four scored withhold decisions",
-    "owner-only audit and paused sharing"
+    "Fresh Claude public-brief entry",
+    "Fresh same-account Claude retrieval with three successful source reads and five supported final citations",
+    "Native creation of a fresh space and invitation",
+    "Selected second Google account browser acceptance",
+    "Two-sided browser messages",
+    "Unchanged owner rule, 14-day window and explicit opt-in",
+    "Public question finds two candidates but both are withheld",
+    "Full private question finds four candidates, all withheld",
+    "Owner audit control, recipient excludes private checks",
+    "Owner member removal and recipient access error",
+    "Old invitation join rejected",
+    "Sharing paused before disposable space archived",
+    "Retained native incoming questions, source reads, replies and privacy refusal",
+    "Fresh real-cursor site navigation and confirmed message visible in both selected accounts"
   ],
   "notYetFullyRecorded": [
-    "browser invitation acceptance",
-    "native handoff and message delivery in new space",
-    "rules and useful public request",
-    "membership removal and blocked follow-up"
+    "New native attachment and message delivery through the denied Juniper handoff",
+    "Useful public sharing through the new automatic excerpt gate",
+    "Independent-human clean-machine acceptance",
+    "Both invitation directions and recipient-initiated severing in the requested walkthrough"
   ],
   "blocks": [
     {
@@ -23,7 +31,8 @@
       "host": "Claude Desktop automatic approval review",
       "reason": "Data Exfiltration",
       "ownerHostApprovalPending": true,
-      "automaticallyRetried": false
+      "observedDeniedAttemptCount": 2,
+      "retriedDuringVideoEditingContinuation": false
     },
     {
       "action": "Chrome window capture",
@@ -35,7 +44,21 @@
       "resolution": "Settings already showed Conductor enabled; CGPreflightScreenCaptureAccess returned true. The same unchanged recorder completed a five-second capture and four subsequent selected browser takes. No permission setting or capture route was changed."
     }
   ],
-  "nativeSetupReadOnlyRecheck": "Existing native transcript contains denied tool result and no later finish_context_setup attempt.",
+  "nativeSetupReadOnlyRecheck": {
+    "sessionId": "ce86dfb3-c824-4a20-9209-43233445a04f",
+    "observedDeniedAttempts": [
+      {
+        "callAt": "2026-10-28T21:52:48.764Z",
+        "deniedAt": "2026-10-28T21:52:55.339Z"
+      },
+      {
+        "callAt": "2026-10-29T00:20:51.389Z",
+        "deniedAt": "2026-10-29T00:20:57.701Z"
+      }
+    ],
+    "reason": "Data Exfiltration",
+    "correction": "The earlier no-later-attempt statement was incorrect. A read-only audit found two attempts. Their actor/authorization is not inferred. The video-editing continuation did not retry or bypass this action."
+  },
   "recordingSources": [
     {
       "file": "01-new-notes.mp4",
@@ -53,10 +76,10 @@
   "narration": {
     "provider": "Bland",
     "voice": "River",
-    "generatedLines": 7,
-    "narratesOnlyRecordedNativeSteps": true
+    "generatedLines": 16,
+    "narratesOnlyRecordedNativeSteps": false
   },
-  "privacyReview": "Internal edited chapters still require full privacy and media review before publication.",
+  "privacyReview": "Cropped browser URL bars and unrelated sidebar; masked native invitation; synthetic native source notes only. Reviewed selected edit frames and invitation boundaries.",
   "livePublicRequestCorrection": {
     "requestId": "8ac599d33ea591e1268df16c",
     "auditEntries": 26,
@@ -64,7 +87,7 @@
     "providerHttp429": 6,
     "sharedExcerpts": 0
   },
-  "currentServer": "20261028-bounded-classification",
+  "currentServer": "20261029-question-discovery",
   "releasePr": 41,
   "releaseMergeCommit": "aff6c6869b2e17e1c1e8224c2c39b5879dfe8ef6",
   "nativeRelease": "0.4.32/runtime65",
@@ -141,5 +164,631 @@
     "policyReadStatus": 200,
     "recipientReadStatus": 200,
     "membershipRetainedForNativeHandoff": true
-  }
+  },
+  "newRecordedFlows": [
+    "Fresh Claude public-brief entry",
+    "Fresh same-account Claude retrieval with three successful source reads and five supported final citations",
+    "Native creation of a fresh space and invitation",
+    "Selected second Google account browser acceptance",
+    "Two-sided browser messages",
+    "Unchanged owner rule, 14-day window and explicit opt-in",
+    "Public question finds two candidates but both are withheld",
+    "Full private question finds four candidates, all withheld",
+    "Owner audit control, recipient excludes private checks",
+    "Owner member removal and recipient access error",
+    "Old invitation join rejected",
+    "Sharing paused before disposable space archived"
+  ],
+  "remainingDemonstrationGaps": [
+    "Useful automatic public-context sharing: both candidates below unchanged 0.995 threshold",
+    "finish_context_setup remains host-denied; no native message delivery proof in this new space",
+    "Independent-human / clean-machine / new Google and native installation acceptance"
+  ],
+  "newNativeRetrieval": {
+    "sessionId": "9e3f9a46-fd9c-4268-9b6f-6d411ab789a3",
+    "successfulSourceReads": 3,
+    "finalCitations": 5,
+    "unsupportedFinalCitations": [],
+    "hostDenial": false,
+    "separateFromDeniedSetupChat": true
+  },
+  "demoCleanup": {
+    "space": "e0b9264656f7ea2fd8a56d17",
+    "selectedMemberRemoved": true,
+    "oldInvitationJoinRejected": true,
+    "sharingPaused": true,
+    "policyRevision": 2,
+    "durationDays": 14,
+    "archived": true,
+    "ownerReadAfterArchive": 404,
+    "allRecordersFinalized": true,
+    "originalJuniperSpaceRemainsPaused": true
+  },
+  "transferredNewRecordings": [
+    {
+      "file": "13-public-brief-native.mp4",
+      "bytes": 3868626,
+      "sha256": "ea64674c08e427202655576dd7cdbfb5a24e5c191e1119d9d4eca1ba1b287abe"
+    },
+    {
+      "file": "14-new-native-invitation.mp4",
+      "bytes": 8102754,
+      "sha256": "ae40094e30d5ac204e7cfb49b8f89fa401e2995fcda24746127c51353a33a400"
+    },
+    {
+      "file": "15-invite-accept.mp4",
+      "bytes": 5441909,
+      "sha256": "92c3bc03b08a1ac87f5932a170f16caec53b7e364979de98c51b38444e152c2d"
+    },
+    {
+      "file": "16-joined-and-message.mp4",
+      "bytes": 416898,
+      "sha256": "52577533b7d2a7b3328ca2bd5377396e166198ccaf63ae5eac4ff8292a9be0cd"
+    },
+    {
+      "file": "17-owner-rules-and-message.mp4",
+      "bytes": 4076178,
+      "sha256": "38e74f075030544c9ec9994431f4f390f1119dfee0ee717de8c4298b20dbbe6c"
+    },
+    {
+      "file": "18-public-request.mp4",
+      "bytes": 2947227,
+      "sha256": "b87ac1573ee473539955f2bd21483743f620b39029f1069dce52550a429bbeaa"
+    },
+    {
+      "file": "19-private-question.mp4",
+      "bytes": 2955910,
+      "sha256": "acde7081eb999092aacbf134e87b75846f9a3639a1db6e6d7e22305144731afa"
+    },
+    {
+      "file": "20-owner-audit-revoke.mp4",
+      "bytes": 3661041,
+      "sha256": "d68a31fcca62941eaf8c5d06a954d1c6a37d4cbb05c20c4f56bec99dd798c13b"
+    },
+    {
+      "file": "21-revoked-recipient.mp4",
+      "bytes": 3786921,
+      "sha256": "0b04313e14ff034c27dbd35cd36bdbe4c87bd023a95e770600040146f4589c7d"
+    },
+    {
+      "file": "22-fresh-native-retrieval.mp4",
+      "bytes": 5997707,
+      "sha256": "db29b019afed374135edb2f9e513b6d149a5453bcd1446b6625cf5c842572c97"
+    },
+    {
+      "file": "23-old-invitation-rejected.mp4",
+      "bytes": 2100673,
+      "sha256": "906f55c10537b2b70dfa5c479a87554b4cdac5a202ff5528a64136492073cf88"
+    },
+    {
+      "file": "24-pause-sharing.mp4",
+      "bytes": 2642451,
+      "sha256": "45e0b4fece75d9628aa4a8c339924550c1d8d3adc1866fae3fef61ef134e0ee4"
+    }
+  ],
+  "allNewHashesMatchMac": true,
+  "requestedVideoArtifactComplete": true,
+  "allP0Demonstrated": false,
+  "earlierBrowserCut": {
+    "available": true,
+    "url": "https://kyle-cloud-w3.conductor.show/walkthrough/full/",
+    "localArtifact": ".context/claude-desktop-demo/e2e/final-edit/public/meet-proxy-p0-walkthrough.mp4",
+    "fullDecode": "passed",
+    "bytes": 14066018,
+    "sha256": "027a0817b7a666e85e92c02635d312bed4ff8269519acd70494850d834909a8d",
+    "durationSeconds": 443.3,
+    "frameRate": 30,
+    "width": 1920,
+    "height": 1200,
+    "narrationProvider": "Bland",
+    "voice": "River / BTTSv3",
+    "generatedLines": 15,
+    "captions": true,
+    "chapterLinks": true,
+    "realMovingFootage": true,
+    "screenshotsUsedAsVideo": false,
+    "speed": 1,
+    "waitCutsExplicit": true,
+    "privateInvitationConcealed": true,
+    "priorVideosUnchanged": true,
+    "coverage": "Recorded lifecycle and actual outcomes; not an all-P0 pass",
+    "role": "Preserved supporting cut; rejected as the final demonstration by the owner."
+  },
+  "nativeMessagingFootage": {
+    "source": "26-original-native-messaging.mp4",
+    "retainedSession": "8d68a0d3-c8ad-4b1f-addf-a457ef8f91cb",
+    "recordedDate": "2026-10-28",
+    "historicalNotNewConnection": true,
+    "linkId": "5aa7cceb7997cd5c5b4ca0dc",
+    "sourceDurationSeconds": 420,
+    "sourceSha256": "015811af86c1fece0b13b6d69a751880afb2d8492c6978c5156fc9cbc6964cd0",
+    "flow": [
+      "owner authorizes 14-day public-topic mandate",
+      "incoming Codex question",
+      "successful native source reads",
+      "answer-only reply",
+      "same-thread follow-up",
+      "private-topic refusal without lookup"
+    ],
+    "firstReplyDelivery": "read, from retained recipient receipt after initial queued UI",
+    "disconnectedAfterOriginalDemo": true,
+    "subsequentRead": 404,
+    "notUsedToBypassNewSetupDenial": true
+  },
+  "cursorRetake": {
+    "recordedDate": "2026-10-29",
+    "actualMouseEvents": true,
+    "sameRecorderWithShowsCursor": true,
+    "permissionSettingsChanged": false,
+    "syntheticSpace": "cf4c9dc83edd075b8850c885",
+    "sharingStayedPaused": true,
+    "freshWebsiteActions": [
+      "rules tab",
+      "scroll",
+      "inspect 14-day duration choices without change",
+      "members tab",
+      "messages tab",
+      "paste fictional update",
+      "click actual Send message button",
+      "recipient refresh and same message visibility"
+    ],
+    "firstTake": "27-cursor-website: navigation misclick; unsent composer discarded; retained and excluded from final edit",
+    "secondTake": "28-cursor-website-corrected: initial two-second check still pending; later owner UI confirms posted; no duplicate retry",
+    "recipientTake": "29-cursor-recipient: same message visible after refresh",
+    "recordersFinalized": true,
+    "files": [
+      {
+        "file": "28-cursor-website-corrected.mp4",
+        "bytes": 3016848,
+        "sha256": "12b299ff5c3590a806a64c311bc61b8c3a395e6b4dea56e63dbd899a10468e34"
+      },
+      {
+        "file": "29-cursor-recipient.mp4",
+        "bytes": 633508,
+        "sha256": "de49ecb2e4d3bdb2e92c8bb0056cf0e68b33d06f90b0053a959a5577c55c7039"
+      }
+    ]
+  },
+  "renderedWalkthrough": {
+    "url": "https://kyle-cloud-w3.conductor.show/walkthrough/claude/",
+    "localArtifact": ".context/claude-desktop-demo/e2e/cursor-edit/public/meet-proxy-p0-walkthrough.mp4",
+    "seconds": 321.8,
+    "narrationProvider": "Bland",
+    "voice": "River / BTTSv3",
+    "generatedLines": 16,
+    "captions": true,
+    "chapterLinks": true,
+    "realMovingFootage": true,
+    "screenshotsUsedAsVideo": false,
+    "frozenFramePadding": false,
+    "speed": 1,
+    "cutsMarked": true,
+    "separateExamplesLabeled": true,
+    "privateInvitationConcealed": true,
+    "priorVideosUnchanged": true,
+    "allP0AcceptanceClaimed": false,
+    "fullDecodePassed": true,
+    "bytes": 16818132,
+    "sha256": "a10ccded381d556f67f7261d08d868f4541b68a3ca7c94f21e7179fc0dd6abf0",
+    "narrationSeconds": 280.9800000000001,
+    "longestBetweenCueGapSeconds": 4.780000000000001,
+    "width": 1920,
+    "height": 1200,
+    "frameRate": 30,
+    "privateDraftRelease": "meet-proxy-claude-demo-20261029",
+    "publication": "private draft asset delivery; no product release change",
+    "sourceHashes": [
+      {
+        "file": "04-source-note.mp4",
+        "bytes": 9709421,
+        "sha256": "361911dae7ab55b6aadd11eef8070b7ff874ddaa681c3688fdf0c26b1ed9318e"
+      },
+      {
+        "file": "05-cross-chat-retrieval.mp4",
+        "bytes": 7316914,
+        "sha256": "a086b1518bf2ffbfb092c78199970257214470f2387201e07f4d043b0bd968e6"
+      },
+      {
+        "file": "14-new-native-invitation.mp4",
+        "bytes": 8102754,
+        "sha256": "ae40094e30d5ac204e7cfb49b8f89fa401e2995fcda24746127c51353a33a400"
+      },
+      {
+        "file": "15-invite-accept.mp4",
+        "bytes": 5441909,
+        "sha256": "92c3bc03b08a1ac87f5932a170f16caec53b7e364979de98c51b38444e152c2d"
+      },
+      {
+        "file": "20-owner-audit-revoke.mp4",
+        "bytes": 3661041,
+        "sha256": "d68a31fcca62941eaf8c5d06a954d1c6a37d4cbb05c20c4f56bec99dd798c13b"
+      },
+      {
+        "file": "21-revoked-recipient.mp4",
+        "bytes": 3786921,
+        "sha256": "0b04313e14ff034c27dbd35cd36bdbe4c87bd023a95e770600040146f4589c7d"
+      },
+      {
+        "file": "22-fresh-native-retrieval.mp4",
+        "bytes": 5997707,
+        "sha256": "db29b019afed374135edb2f9e513b6d149a5453bcd1446b6625cf5c842572c97"
+      },
+      {
+        "file": "23-old-invitation-rejected.mp4",
+        "bytes": 2100673,
+        "sha256": "906f55c10537b2b70dfa5c479a87554b4cdac5a202ff5528a64136492073cf88"
+      },
+      {
+        "file": "26-original-native-messaging.mp4",
+        "bytes": 25882687,
+        "sha256": "015811af86c1fece0b13b6d69a751880afb2d8492c6978c5156fc9cbc6964cd0"
+      },
+      {
+        "file": "28-cursor-website-corrected.mp4",
+        "bytes": 3016848,
+        "sha256": "12b299ff5c3590a806a64c311bc61b8c3a395e6b4dea56e63dbd899a10468e34"
+      },
+      {
+        "file": "29-cursor-recipient.mp4",
+        "bytes": 633508,
+        "sha256": "de49ecb2e4d3bdb2e92c8bb0056cf0e68b33d06f90b0053a959a5577c55c7039"
+      }
+    ],
+    "playerQA": {
+      "pageErrors": [],
+      "mobileHorizontalOverflow": false
+    },
+    "macDelivery": {
+      "directory": "/Users/kyledias/Movies/Meet Proxy Desktop Demo/Claude Desktop Walkthrough",
+      "exactHashMatchesCloud": true,
+      "player": "http://127.0.0.1:52194/",
+      "openInChrome": true
+    },
+    "macPlayback": {
+      "durationSeconds": 321.8,
+      "width": 1920,
+      "height": 1200,
+      "advancedSeconds": 2.980904,
+      "readyState": 4,
+      "error": null,
+      "decodedAudioBytes": 74628,
+      "decodedVideoBytes": 92453,
+      "leftPausedAt": 0,
+      "soundEnabled": true
+    },
+    "preview": {
+      "localHttpStatus": 200,
+      "byteRangeStatus": 206,
+      "externalUnauthenticatedStatus": 401,
+      "requiresConductorAuthentication": true,
+      "badGatewayObserved": false
+    },
+    "editManifest": [
+      {
+        "id": "notes",
+        "file": "04-source-note.mp4",
+        "start": 0,
+        "end": 30,
+        "duration": 22,
+        "at": 0,
+        "kind": "native",
+        "title": "01  Give Claude the plan, then change it",
+        "note": "Idle waits cut \u00b7 Larkspur Beacon \u00b7 Recorded 28 Oct \u00b7 Fictional content",
+        "ref": "PRIVATE CONTEXT",
+        "pieces": [
+          [
+            0,
+            10
+          ],
+          [
+            18,
+            30
+          ]
+        ]
+      },
+      {
+        "id": "retrieve",
+        "file": "05-cross-chat-retrieval.mp4",
+        "start": 0,
+        "end": 47,
+        "duration": 26,
+        "at": 22,
+        "kind": "native",
+        "title": "02  Retrieve the update in a different chat",
+        "note": "Idle waits cut \u00b7 Same account \u00b7 Existing installation \u00b7 Real search and source reads",
+        "ref": "CONTEXT SYNC",
+        "pieces": [
+          [
+            0,
+            9
+          ],
+          [
+            30,
+            47
+          ]
+        ]
+      },
+      {
+        "id": "scope",
+        "file": "26-original-native-messaging.mp4",
+        "start": 0,
+        "end": 21,
+        "duration": 21,
+        "at": 48,
+        "kind": "legacy",
+        "title": "03  Authorize this conversation",
+        "note": "Recorded Larkspur connection \u00b7 14 days \u00b7 Public launch topics only",
+        "ref": "SPEC 7.7 / 7.9",
+        "pieces": [
+          [
+            0,
+            21
+          ]
+        ]
+      },
+      {
+        "id": "incoming",
+        "file": "26-original-native-messaging.mp4",
+        "start": 92,
+        "end": 124,
+        "duration": 21,
+        "at": 69,
+        "kind": "legacy",
+        "title": "04  An incoming question arrives in Claude",
+        "note": "Idle waits cut \u00b7 The requester is using Codex",
+        "ref": "SPEC 7.8",
+        "pieces": [
+          [
+            92,
+            103
+          ],
+          [
+            114,
+            124
+          ]
+        ]
+      },
+      {
+        "id": "reply",
+        "file": "26-original-native-messaging.mp4",
+        "start": 124,
+        "end": 162,
+        "duration": 28,
+        "at": 90,
+        "kind": "legacy",
+        "title": "05  Read privately, send the answer",
+        "note": "Idle waits cut \u00b7 Reply stays in the existing thread",
+        "ref": "SPEC 7.8 / 7.9",
+        "pieces": [
+          [
+            124,
+            135
+          ],
+          [
+            145,
+            162
+          ]
+        ]
+      },
+      {
+        "id": "followup",
+        "file": "26-original-native-messaging.mp4",
+        "start": 177,
+        "end": 228,
+        "duration": 27,
+        "at": 118,
+        "kind": "legacy",
+        "title": "06  Follow up in the same thread",
+        "note": "Idle waits cut \u00b7 No second conversation created",
+        "ref": "SPEC 7.8",
+        "pieces": [
+          [
+            177,
+            187
+          ],
+          [
+            211,
+            228
+          ]
+        ]
+      },
+      {
+        "id": "refusal",
+        "file": "26-original-native-messaging.mp4",
+        "start": 274,
+        "end": 309,
+        "duration": 25,
+        "at": 145,
+        "kind": "legacy",
+        "title": "07  Keep private topics private",
+        "note": "Idle waits cut \u00b7 Budget and audit-marker request refused",
+        "ref": "SPEC 7.9",
+        "pieces": [
+          [
+            274,
+            286
+          ],
+          [
+            296,
+            309
+          ]
+        ]
+      },
+      {
+        "id": "invite",
+        "file": "14-new-native-invitation.mp4",
+        "start": 15,
+        "end": 46,
+        "duration": 21,
+        "at": 170,
+        "kind": "native",
+        "title": "08  Create an invitation from Claude",
+        "note": "Idle waits cut \u00b7 Separate Juniper Lantern run \u00b7 Private invitation concealed",
+        "ref": "SPEC 7.5",
+        "pieces": [
+          [
+            15,
+            26
+          ],
+          [
+            36,
+            46
+          ]
+        ]
+      },
+      {
+        "id": "accept",
+        "file": "15-invite-accept.mp4",
+        "start": 38,
+        "end": 57,
+        "duration": 19,
+        "at": 191,
+        "kind": "invite",
+        "title": "09  Accept with the second account",
+        "note": "Separate Juniper run \u00b7 Already signed in with Google",
+        "ref": "SPEC 7.6",
+        "pieces": [
+          [
+            38,
+            57
+          ]
+        ]
+      },
+      {
+        "id": "joined",
+        "file": "15-invite-accept.mp4",
+        "start": 87,
+        "end": 97,
+        "duration": 10,
+        "at": 210,
+        "kind": "browser-wide",
+        "title": "09  The joined space opens",
+        "note": "30-second loading interval omitted \u00b7 A service refresh occurred",
+        "ref": "SPACES / MESSAGES",
+        "pieces": [
+          [
+            87,
+            97
+          ]
+        ]
+      },
+      {
+        "id": "website",
+        "file": "28-cursor-website-corrected.mp4",
+        "start": 0,
+        "end": 31,
+        "duration": 31,
+        "kind": "browser",
+        "title": "10  Navigate the space and post a message",
+        "note": "New cursor recording \u00b7 Existing Juniper live demo \u00b7 Sharing stays paused",
+        "ref": "RULES / MEMBERS / MESSAGES",
+        "pieces": [
+          [
+            0,
+            31
+          ]
+        ],
+        "at": 220
+      },
+      {
+        "id": "recipient",
+        "file": "29-cursor-recipient.mp4",
+        "start": 0,
+        "end": 9,
+        "duration": 9,
+        "kind": "browser",
+        "title": "10  Read it in the other account",
+        "note": "Recipient refresh \u00b7 The same posted message is visible",
+        "ref": "TWO-SIDED HISTORY",
+        "pieces": [
+          [
+            0,
+            9
+          ]
+        ],
+        "at": 251
+      },
+      {
+        "id": "remove",
+        "file": "20-owner-audit-revoke.mp4",
+        "start": 43,
+        "end": 59.8,
+        "duration": 10.799999999999997,
+        "at": 260,
+        "kind": "browser",
+        "title": "11  Remove the demo member",
+        "note": "Idle waits cut \u00b7 Owner action \u00b7 Confirmation before removal",
+        "ref": "SPEC 7.10",
+        "pieces": [
+          [
+            43,
+            48
+          ],
+          [
+            54,
+            59.8
+          ]
+        ]
+      },
+      {
+        "id": "blocked",
+        "file": "21-revoked-recipient.mp4",
+        "start": 0,
+        "end": 10,
+        "duration": 10,
+        "at": 270.8,
+        "kind": "browser-wide",
+        "title": "11  Check access after removal",
+        "note": "The removed account loses access to this space",
+        "ref": "SPEC 7.10",
+        "pieces": [
+          [
+            0,
+            10
+          ]
+        ]
+      },
+      {
+        "id": "old-invite",
+        "file": "23-old-invitation-rejected.mp4",
+        "start": 0,
+        "end": 29,
+        "duration": 16,
+        "at": 280.8,
+        "kind": "invite",
+        "title": "12  Try the old invitation",
+        "note": "Idle waits cut \u00b7 The old link cannot restore removed membership",
+        "ref": "REVOCATION CHECK",
+        "pieces": [
+          [
+            0,
+            7
+          ],
+          [
+            20,
+            29
+          ]
+        ]
+      },
+      {
+        "id": "current",
+        "file": "22-fresh-native-retrieval.mp4",
+        "start": 49,
+        "end": 74,
+        "duration": 25,
+        "at": 296.8,
+        "kind": "native",
+        "title": "13  Back in Claude Desktop",
+        "note": "Later Juniper retrieval \u00b7 Three source reads \u00b7 Five supported citations",
+        "ref": "CURRENT INSTALLED FLOW",
+        "pieces": [
+          [
+            49,
+            74
+          ]
+        ]
+      }
+    ]
+  },
+  "fullReplacementCompleteMeaning": "Legacy flag tracks a complete all-P0 success demonstration, not delivery of the honest recorded walkthrough."
 }

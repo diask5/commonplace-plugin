@@ -1,5 +1,10 @@
 # Meet Proxy Draft v3 compliance
 
+29 October video update: the [Claude Desktop and Spaces walkthrough](FULL-VIDEO-RETAKE.md)
+uses real moving footage, fresh cursor interaction, narrated chapters and an exact
+P0 coverage table. The artifact is complete; unresolved product acceptance gates
+remain open. It combines separately labeled retained and new recordings.
+
 29 October: [bounded question discovery](QUESTION-DISCOVERY.md) is live on server
 `20261029-question-discovery`; 611 core tests and exact 49-patch replay pass.
 The full-sentence private question now finds four withheld candidates. A fresh

@@ -49,9 +49,12 @@ threshold, model, prompt, deadline and privacy fences. The fresh Juniper Lantern
 query completes with 26 audit entries (20 below threshold, six provider HTTP 429)
 but still withholds every public excerpt; the
 private query completes with all four candidates withheld. Its earlier source-change
-and deadline stops remain preserved. Demo sharing is paused. The full replacement
-video is unfinished: Claude blocked `finish_context_setup` as Data Exfiltration,
-and the earlier Chrome capture failed. A later Settings/read-only permission check
+and deadline stops remain preserved. Demo sharing is paused. A 5:22 Claude-centered replacement video now includes
+real native messaging and fresh cursor-driven website interaction with narration.
+It labels separate recorded examples and does not claim all-P0 readiness.
+Claude blocked `finish_context_setup` as Data Exfiltration; two denied attempts
+are retained, and the editing continuation did not retry or bypass the gate.
+The earlier Chrome capture failed. A later Settings/read-only permission check
 showed recording already enabled; the unchanged recorder completed a five-second
 check and four real browser takes without permission edits. Claude setup approval
 remains pending. Recorded private-topic checks withhold all four candidates; a
