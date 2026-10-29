@@ -1,5 +1,7 @@
 # Meet Proxy Draft v3 compliance
 
+29 October [native catch-up update](BOUNDED-SYNC-CATCHUP.md): 0.4.33/runtime66 is published and installed, with 631 core tests, both-alias package checks, packaged stdio and exact 52-patch replay passing. The companion still runs runtime65 while its active-work guard defers activation; bounded retries are queued without forcing a restart. A second fresh marker was successfully read from production on runtime65. This does not close actual-host setup or sharing reliability gates.
+
 29 October [cross-host context sync](CROSS-HOST-CONTEXT-SYNC.md): five explicit app choices, truthful sync status and source-read verification are live on server `20261029-cross-host-sync`. A fresh message from this chat was successfully read from the live Mac archive. 628 core tests, 27 browser checks, 23 extracted-bundle tests and exact 51-patch replay pass. Regular Claude/ChatGPT connections read the library; they do not automatically upload web-only chats. Actual-host onboarding and sharing reliability gates remain open. 159 deployed files and all three services are verified; a long-chat collection delay is addressed in the separate native catch-up update.
 
 29 October sharing stress update: [the cross-person evaluation](SHARING-STRESS.md)

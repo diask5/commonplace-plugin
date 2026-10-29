@@ -21,10 +21,24 @@ the same payload after restart. The full 631-test core suite passes, including
 the five-client sync/retrieval regression. All 52 portable patches replay exactly
 across 212 changed files.
 
-Native candidate **0.4.33/runtime66** packages the fix. Publication, installation
-and a successful live follow-up read are still pending; do not infer them from
-the source tests. Server `20261029-cross-host-sync` is already live and its bytes
-do not change for this native fix.
+Native **0.4.33/runtime66** is published and installed in both permanent
+registries. The actual companion still runs runtime65: two normal activation
+attempts deferred, and the same restart endpoint returned 45 active-work
+responses during a bounded wait. No signals or force path were used. A bounded
+retry (at most 12 attempts, 45 seconds between attempts) is scheduled on the Mac;
+activation remains unverified until it reports runtime66. Server
+`20261029-cross-host-sync` is live and unchanged by this native update.
+
+The supported Claude updater initially saw 0.4.32 because it clones the default
+`codex/plugin-distribution` branch, while the new catalog had first merged into
+main. PR #46 promoted only the verified release pointers into that distribution
+branch; a subsequent supported update passed. The repository default was not
+changed. Accounts and saved permissions were preserved.
+
+At 06:04:07 UTC the post-deployment marker was successfully read at archive
+revision 6534 with five citations. Its source capture is complete. Other sources
+remain partial, and this read still used runtime65; it is production sync
+evidence, not proof the new scheduling behavior is active.
 
 The earlier successful marker read and the incomplete second-marker check are
 preserved separately. Regular Claude/ChatGPT connections still read the existing

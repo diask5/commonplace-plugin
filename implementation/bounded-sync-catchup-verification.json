@@ -1,6 +1,6 @@
 {
   "date": "2026-10-29",
-  "state": "Packaged native candidate; publication and installation pending",
+  "state": "Published and installed in both registries; runtime activation deferred by active-work guard",
   "patch": {
     "number": 52,
     "path": "bounded-sync-catchup.patch",
@@ -9,8 +9,8 @@
   "native": {
     "version": "0.4.33",
     "runtime": 66,
-    "published": false,
-    "installed": false,
+    "published": true,
+    "installed": true,
     "active": false,
     "artifacts": [
       {
@@ -25,7 +25,45 @@
         "sha256": "39df9bd813df628baee4a1707538f5034b4898a5e7a0fac08064d2b6e33f42bf",
         "bytes": 230158871
       }
-    ]
+    ],
+    "observedActiveRuntime": 65,
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.33",
+    "installation": {
+      "state": "passed",
+      "installedVersion": "0.4.33",
+      "zipSha256": "4a8d49ec62745d4acc070446ecac8389d9f241697ac31ea2c2bd1297c1132140",
+      "accountPreserved": true,
+      "savedPermissionsPreserved": true,
+      "codexOnlyPluginPathsChanged": true,
+      "claudePluginManagerUpdated": true
+    },
+    "activation": {
+      "state": "incomplete",
+      "error": "Active-work guard did not become idle within 45 seconds",
+      "guardBusyResponses": 45,
+      "guardAccepted": false,
+      "forcedSignals": false,
+      "at": "2026-10-29T06:02:44.980Z"
+    },
+    "deferredRetry": {
+      "state": "scheduled",
+      "pid": 92779,
+      "maximumAttempts": 12,
+      "delaySeconds": 45,
+      "forcedSignals": false,
+      "permissionChanges": false,
+      "resultPath": "/Users/kyledias/.commonplace-code-verification/context-sync-0.4.33/deferred-status.json"
+    },
+    "latestObservedStatus": {
+      "activeRevision": 65,
+      "backgroundVersion": "0.4.32",
+      "deferred": {
+        "state": "incomplete",
+        "error": "Commonplace is reconnecting. Your messages remain saved.",
+        "attempt": 1,
+        "at": 1793253883.924649
+      }
+    }
   },
   "server": {
     "release": "20261029-cross-host-sync",
@@ -95,6 +133,22 @@
   "allP0Ready": false,
   "evidence": [
     {
+      "path": "implementation/bounded-sync-catchup/activation-first.json",
+      "sha256": "1c413480f914297828153d31bb6e580bc12d25b70e7ec553daa98b4a1f37852c"
+    },
+    {
+      "path": "implementation/bounded-sync-catchup/activation-guarded.json",
+      "sha256": "2e28b73ef97d437d566bc5dbdeac39618025f2a5b3f0a9529b4280c644189bdd"
+    },
+    {
+      "path": "implementation/bounded-sync-catchup/activation-latest.json",
+      "sha256": "08850c2955a1c57c1164588b8972ec0741b2427d0f70c923c853a8ab1fc23a75"
+    },
+    {
+      "path": "implementation/bounded-sync-catchup/activation-retry.json",
+      "sha256": "1c413480f914297828153d31bb6e580bc12d25b70e7ec553daa98b4a1f37852c"
+    },
+    {
       "path": "implementation/bounded-sync-catchup/backfill-after.tap",
       "sha256": "228a6253f27bad4cca47139b289749921c11f0399af5cc272af461a31e193b90"
     },
@@ -111,8 +165,16 @@
       "sha256": "dc568097dc78c291c10c0ba6c90a42960112f8eb00fcd24ac5c110767875d590"
     },
     {
+      "path": "implementation/bounded-sync-catchup/deferred-upgrade.json",
+      "sha256": "03d96e444f08961056570b8e8fd63dfe38b64379af5129ccd47bc12531bba900"
+    },
+    {
       "path": "implementation/bounded-sync-catchup/meet-proxy-0.4.33-build.json",
       "sha256": "0b89671d60d460ef0ed06098f9f9625f6f241511b6675f00c6aeabb7d4e9405d"
+    },
+    {
+      "path": "implementation/bounded-sync-catchup/native-install.json",
+      "sha256": "94ef087ca17e240aaf70660103eabe2550027dd870f2b15af4de831fdc7aadeb"
     },
     {
       "path": "implementation/bounded-sync-catchup/native-package-after.tap",
@@ -127,12 +189,53 @@
       "sha256": "a1cf083140a1bdd89c7afb95d2f3916d2c8b9137d25598f043eda75201b65b4c"
     },
     {
+      "path": "implementation/bounded-sync-catchup/native33-release.json",
+      "sha256": "f93457761366b6aa27ac071194d26a2f3a120a506c83eeb7233ab6b4fe95549e"
+    },
+    {
       "path": "implementation/bounded-sync-catchup/post-deploy-marker-first.json",
       "sha256": "af077833712020a121717dc982bcfa16058a4d1826f57a8f8655d03a40ea1533"
+    },
+    {
+      "path": "implementation/bounded-sync-catchup/post-deploy-read.json",
+      "sha256": "6bed92fa56f16903e44605e7bb85ee23f5a01bf0712d2edfa7d130cad32a1c58"
     },
     {
       "path": "implementation/bounded-sync-catchup/replay52.json",
       "sha256": "1f12cd295f55c483acdb4d979d903dcc944230e03cc3ff1187ce7c704d9aa952"
     }
+  ],
+  "liveFollowup": {
+    "at": "2026-10-29T06:04:07.902Z",
+    "activeRevision": 65,
+    "resultCount": 1,
+    "revision": 6534,
+    "nextCursor": null,
+    "sourceCaptureComplete": true,
+    "syncError": "Collection is continuing; see source coverage for missing or partial chats.",
+    "reads": [
+      {
+        "hasMarker": true,
+        "citationCount": 5,
+        "revision": 6534,
+        "offset": 636651
+      }
+    ],
+    "limitation": "Successful post-rollout source read is on runtime65. It does not prove the runtime66 scheduling improvement is active."
+  },
+  "distribution": {
+    "sourcePr": 45,
+    "sourceMerge": "0f40984f85e07616a50347e615fc1837c04a02ab",
+    "catalogPr": 46,
+    "catalogMerge": "ff17c73752e65c2a0cc4c67474cc6af135a69fb0",
+    "defaultBranch": "codex/plugin-distribution",
+    "defaultBranchChanged": false,
+    "firstInstall": "Plugin manager returned already latest 0.4.32 because only main had the new catalog. Corrected the actual default distribution catalog, retried the supported update, both registries now 0.4.33.",
+    "originalFailureRetainedOnMac": true
+  },
+  "openGates": [
+    "runtime66 active-work guard must allow activation; bounded retry is scheduled",
+    "actual-model fresh-host onboarding and prior Claude finish_context_setup approval",
+    "sharing recall, false withholding and provider capacity"
   ]
 }

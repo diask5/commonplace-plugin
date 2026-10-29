@@ -1,0 +1,9 @@
+{
+  "state": "scheduled",
+  "pid": 92779,
+  "maximumAttempts": 12,
+  "delaySeconds": 45,
+  "forcedSignals": false,
+  "permissionChanges": false,
+  "resultPath": "/Users/kyledias/.commonplace-code-verification/context-sync-0.4.33/deferred-status.json"
+}

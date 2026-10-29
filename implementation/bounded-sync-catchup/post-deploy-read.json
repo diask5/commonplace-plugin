@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-29T06:04:07.902Z",
+  "activeRevision": 65,
+  "resultCount": 1,
+  "revision": 6534,
+  "nextCursor": null,
+  "sourceCaptureComplete": true,
+  "syncError": "Collection is continuing; see source coverage for missing or partial chats.",
+  "reads": [
+    {
+      "hasMarker": true,
+      "citationCount": 5,
+      "revision": 6534,
+      "offset": 636651
+    }
+  ]
+}
