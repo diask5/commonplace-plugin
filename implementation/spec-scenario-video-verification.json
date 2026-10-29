@@ -434,5 +434,25 @@
   "playerQA": {
     "pageErrors": [],
     "mobileHorizontalOverflow": false
-  }
+  },
+  "deliveryIncidents": [
+    {
+      "observedAt": "2026-10-29T05:15:42Z",
+      "userReported": "Cloudflare 502 from kyle-cloud-w3.conductor.show",
+      "originBefore": "No process listening on port 43321; connection refused. Recorded old PID was no longer running.",
+      "causeLimit": "The process was absent; the precise event that stopped it is not established.",
+      "recovery": "Restarted unchanged video server.",
+      "verifiedAfter": {
+        "playerOriginStatus": 200,
+        "videoByteRangeStatus": 206,
+        "unauthenticatedExternalStatus": 401,
+        "externalAuthPreserved": true,
+        "macPlayerStatus": 200,
+        "macFileHashMatches": true
+      },
+      "fallback": "Opened the exact saved MP4 in QuickTime Player on the Mac; this requires no preview server.",
+      "durableHostingClaimed": false,
+      "permissionsOrProductRuntimeChanged": false
+    }
+  ]
 }
