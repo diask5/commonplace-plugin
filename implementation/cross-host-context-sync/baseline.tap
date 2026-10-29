@@ -1,0 +1,62 @@
+▶ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline
+  ✔ one-tap app chooser is accessible from phone to desktop (2743.606572ms)
+  ✔ open app is primary, auto collection is disclosed, and unrelated connected chats/uploads never complete setup (1542.852458ms)
+  ✔ slow host setup stays explicit and does not invent installation progress (105.929067ms)
+  ✔ all app surfaces carry server/account and recover the same handoff when reopened (8137.87652ms)
+  ✔ registration confirms plugin and MCP together; no manual receiver picker and no false content success (2501.663143ms)
+  ✔ empty and interrupted collection are honest; incoming context becomes ready without a refresh click (7500.841745ms)
+  ✔ a delayed confirmation from another app cannot complete the selected setup (346.009031ms)
+  ✔ live setup accessible at 320px (620.247118ms)
+  ✔ live setup accessible at 390px (555.714758ms)
+  ✔ live setup accessible at 768px (533.750799ms)
+  ✔ live setup accessible at 1440px (555.259444ms)
+  ✔ live setup accessible at 1920px (643.839332ms)
+  ✔ polling failure visibly reconnects and recovers, offline collectors never claim all sources are current (4532.59791ms)
+  ✔ expired handoff renews without a second Google ceremony (266.317368ms)
+  ✔ changed browser account clears the old setup token and progress (133.968716ms)
+✔ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline (31625.637719ms)
+✔ a newly signed-in account goes straight to desktop setup with collection already included (705.075804ms)
+✔ account changes before app launch automatically invalidate every prepared app link (3048.68984ms)
+✔ preparing a setup has visible progress and a failed preparation can retry (651.536ms)
+✔ each app gets a complete install-and-connect request with one exact private handoff (1.286268ms)
+✔ missing account, unknown app or invalid handoff never produces a setup authorization (0.19225ms)
+2026-10-29T05:34:29.610Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ signed native handoff carries browser identity once, routes the exact chat, and collects searchable updates automatically (772.57144ms)
+✔ setup rejects account mismatches, wrong apps, unverified chats and expired tokens without linking or enabling sync (239.285712ms)
+✔ setup cannot override a receiver changed after handoff or accept a revoked group; private status is owner-only (164.984033ms)
+✔ private setup codes are removed by both native collection and server import sanitizers (0.370538ms)
+✔ setup readiness follows what direct canonical retrieval returns, without waiting for an archive snapshot (195.379692ms)
+✔ personal assistant setup contains a real remote MCP URL and truthful host capabilities (1.688694ms)
+✔ discovery verifies actual OAuth metadata without claiming authorization or host registration (110.442473ms)
+✔ compatible personal host completes existing DCR + PKCE OAuth then searches authorized context (277.955436ms)
+✔ discovery refuses foreign OAuth destinations and missing PKCE support (1.559494ms)
+✔ resource-source setup is native-only, preserves exact data and never includes a bearer value (0.649155ms)
+✔ a new chat is not queued behind a full budget of unchanged heartbeats (42.243022ms)
+✔ a changed old chat and a new chat both beat heartbeats, newest first (18.009066ms)
+✔ initial backfill leads with the newest chat and still serves the longest-waiting one (6.812825ms)
+✔ constant fresh traffic cannot starve heartbeats or an old backfill (73.931103ms)
+✔ a failed upload replays identically before any newer work and does not mark complete (6.225306ms)
+✔ an unreadable source is skipped without consuming upload budget or hiding other chats (3.893908ms)
+✔ changing accounts discards another account's pending state and recollects only under the new owner (3.602949ms)
+✔ a restored relay checkpoint makes the source fresh and is recollected before heartbeats (12.219071ms)
+✔ source heartbeats still report unchanged chats once the queue is clear (2.685261ms)
+✔ a partial malformed capture stays partial through backoff and retries before heartbeats (10.342878ms)
+✔ a deferred retry keeps the tick partial even with no fresh work (3.267272ms)
+✔ bounded scans rotate through every file and never imply a source disappeared (12.238547ms)
+✔ an unreadable root never marks its previously collected chats unavailable (2.046968ms)
+✔ privacy parser upgrade recaptures unchanged sources without replaying old pending text (3.380862ms)
+▶ seamless setup: copy is primary, host steps are explicit, progress is installation-specific and MCP is the default route
+  ✔ choosing an app launches directly; no extra settings or filesystem grant is requested (1353.380174ms)
+  ✔ after selection Copy setup prompt is primary above live progress with explicit host steps (1316.199629ms)
+  ✔ registration recedes the copy action; scanning shows actual file counts only from this installation (6330.142628ms)
+  ✔ partial collection reports received vs searchable and last updated; ready never claims more than indexed (4619.154951ms)
+  ✔ local folder is optional in copy and no setting or grant is added (9.041277ms)
+✔ seamless setup: copy is primary, host steps are explicit, progress is installation-specific and MCP is the default route (14466.199809ms)
+ℹ tests 51
+ℹ suites 0
+ℹ pass 51
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 36494.57671

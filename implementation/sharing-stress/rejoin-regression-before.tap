@@ -1,0 +1,32 @@
+TAP version 13
+# Subtest: same-millisecond remove and re-add cannot resurrect a member’s sharing consent
+not ok 1 - same-millisecond remove and re-add cannot resurrect a member’s sharing consent
+  ---
+  duration_ms: 152.56085
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:98:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:106:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 348.948449

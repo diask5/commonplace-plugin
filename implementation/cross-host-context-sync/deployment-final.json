@@ -1,0 +1,14 @@
+{
+  "state": "passed",
+  "release": "20261029-cross-host-sync",
+  "filesVerified": 159,
+  "serviceReadableFiles": 159,
+  "services": [
+    "active",
+    "active",
+    "active"
+  ],
+  "migrations": "unchanged; verified code-only activation",
+  "previous": "20261029-question-discovery",
+  "finishedAt": 1793252981.2998712
+}

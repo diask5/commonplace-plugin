@@ -1,0 +1,30 @@
+✔ each app gets a complete install-and-connect request with one exact private handoff (1.24093ms)
+✔ missing account, unknown app or invalid handoff never produces a setup authorization (0.171578ms)
+✖ existing setup offers compatible OAuth retrieval and private native source import without disturbing native setup (757.629144ms)
+✔ personal assistant setup contains a real remote MCP URL and truthful host capabilities (1.670413ms)
+✔ discovery verifies actual OAuth metadata without claiming authorization or host registration (101.565936ms)
+✔ compatible personal host completes existing DCR + PKCE OAuth then searches authorized context (254.115737ms)
+✔ discovery refuses foreign OAuth destinations and missing PKCE support (1.89399ms)
+✔ resource-source setup is native-only, preserves exact data and never includes a bearer value (0.821094ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1185.43335
+
+✖ failing tests:
+
+test at tests/personal-assistant-setup-browser.test.mjs:8:1
+✖ existing setup offers compatible OAuth retrieval and private native source import without disturbing native setup (757.629144ms)
+  locator.click: Error: strict mode violation: locator('#connect-dialog [data-personal-assistant]') resolved to 3 elements:
+      1) <button type="button" data-personal-assistant="claude-chat">…</button> aka getByRole('button', { name: 'Claude chat Read your synced' })
+      2) <button type="button" data-personal-assistant="chatgpt">…</button> aka getByRole('button', { name: 'ChatGPT Read your synced' })
+      3) <button class="secondary" data-personal-assistant="">Set up a compatible assistant</button> aka getByRole('button', { name: 'Set up a compatible assistant' })
+  
+  Call log:
+  [2m  - waiting for locator('#connect-dialog [data-personal-assistant]')[22m
+  
+      at TestContext.<anonymous> (/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/personal-assistant-setup-browser.test.mjs:17:195)

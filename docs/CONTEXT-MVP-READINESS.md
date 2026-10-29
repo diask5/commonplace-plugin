@@ -1,5 +1,23 @@
 # Context MVP readiness — 26 October 2026
 
+29 October [cross-host context sync](CROSS-HOST-CONTEXT-SYNC.md): five explicit app choices, truthful sync status and source-read verification are live on server `20261029-cross-host-sync`. A fresh message from this chat was successfully read from the live Mac archive. 628 core tests, 27 browser checks, 23 extracted-bundle tests and exact 51-patch replay pass. Regular Claude/ChatGPT connections read the library; they do not automatically upload web-only chats. Actual-host onboarding and sharing reliability gates remain open. 159 deployed files and all three services are verified; a long-chat collection delay is addressed in the separate native catch-up update.
+
+29 October [sharing stress evaluation](SHARING-STRESS.md): useful automatic
+sharing still fails acceptance. Three answerable question phrasings missed their
+source, permitted facts were withheld, and a ten-owner burst hit 30 provider 429s
+in 40 calls. A consent-resurrection edge case is fixed in source-only patch 50,
+with 625 core tests, 27 browser tests and exact 50-patch replay passing. The live
+server and native packages have not changed; the fix is not deployed.
+
+The later [Sam and Zane scenario cut](FULL-VIDEO-RETAKE.md) follows the spec’s
+owner-initiated flow with action-focused narration. It uses disclosed scenario
+roles and preserves the same open acceptance gates.
+
+29 October video update: the [Claude Desktop and Spaces walkthrough](FULL-VIDEO-RETAKE.md)
+uses real moving footage, fresh cursor interaction, narrated chapters and an exact
+P0 coverage table. The artifact is complete; unresolved product acceptance gates
+remain open. It combines separately labeled retained and new recordings.
+
 29 October: [bounded question discovery](QUESTION-DISCOVERY.md) is live on server
 `20261029-question-discovery`; 611 core tests and exact 49-patch replay pass.
 The full-sentence private question now finds four withheld candidates. A fresh

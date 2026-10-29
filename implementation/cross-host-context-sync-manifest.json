@@ -1,0 +1,111 @@
+{
+  "name": "Five-host setup paths and truthful context syncing; verify cross-client collection and reads",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch",
+    "deployment-source-modes.patch",
+    "visible-transcript-envelopes.patch",
+    "native-message-excerpts.patch",
+    "p0-excerpts-candidate.patch",
+    "private-native-titles.patch",
+    "space-request-diagnostics.patch",
+    "bounded-classification.patch",
+    "question-discovery.patch",
+    "sharing-stress.patch"
+  ],
+  "patch": "cross-host-context-sync.patch",
+  "sha256": "8341e4e4b17729d4eb030b0eaf1c11e02aaa02a26d5527003b21c4d6b8587a9b",
+  "state": "Server published and live as 20261029-cross-host-sync. Native was unchanged at rollout; later catch-up update is separate.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-native-setup.mjs",
+      "beforeSha256": "38073c0af2d94bcc03837f42c747642ee9b2346d62f8e8d4ec5da6c8eea40600",
+      "sha256": "4d0fdb2041b4741f0ecc8c560c8cadb77e04436327b9be7f7d10c4723bb7bf61"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-setup-request.mjs",
+      "beforeSha256": "fffdaeec0bbc87bc11f8bdafbc68f50e050675c1aa1eea0d700b384159f31100",
+      "sha256": "ea447e932d0357fe9bf78c76a11eb765acc8e3be3af848aea83349b191cdabce"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/personal-assistant-setup.mjs",
+      "beforeSha256": "8334986d1151320ad551d9fefbef53dbe54d88f08384b6348ee3a960913b16dc",
+      "sha256": "3646b5c1294ab6327d1ca48d5d4aa76c3abacb2b952df7967bdaf62f08e0aea7"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-style.mjs",
+      "beforeSha256": "7aa4b3411ace7f25137b10ac84286caaeb461b6c97b5ca0c553be0352ff0643c",
+      "sha256": "90495a62ed55307c75cb55f88dfaefec23a8e6418c25fb036dcab92ef24e79f8"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-ui.mjs",
+      "beforeSha256": "a3dc08b1cb11daba6639bafcdc1122ea776fc22f5579ed29d3e8ddd73c5ff87f",
+      "sha256": "25008fe06bdbcdc8c5ce26bcc79d770c57f90abb3c58b6ce653eeddb4e76a768"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "15fcee9ffa6620ca80d3d66f38ac575962739ccb2655a60da7a09899d4b41b19",
+      "sha256": "afb498d3147d313ec1031684223150becb1057e236596d4bc57efa145f0af4d7"
+    },
+    {
+      "path": "tests/context-setup-browser.test.mjs",
+      "beforeSha256": "3305d3624847591c0280bcffc5bba89b2b5c6c61329c2df3ab3206d85194de51",
+      "sha256": "de715bfab13a046570b4f7ad91d068893e57a5b7d79a230e0cc880558ed1a095"
+    },
+    {
+      "path": "tests/personal-assistant-setup-browser.test.mjs",
+      "beforeSha256": "acd4c8c5d340914b5f1c755bcd7a9956ab13b67343e55689fecdd0ebb815dc85",
+      "sha256": "3d8a0206de9e4fdb0390c6c497f64c8e3560054447705997f35fc6dbf8c3f97f"
+    },
+    {
+      "path": "tests/personal-assistant-setup.test.mjs",
+      "beforeSha256": "5107f87bab3274c02986a2e95faae5bb34abf77c1d2e39613a21765e64472b18",
+      "sha256": "e35d0a9dee7d6df673533cae9fbe2418a1e4e0007c47c5f88002e096c09dfe5e"
+    },
+    {
+      "path": "tests/context-setup-cross-host.test.mjs",
+      "beforeSha256": null,
+      "sha256": "22af958bd9e187a16196d6e8cfa4d302b8c1e399dd16bcbc456254622643496e"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"state\": \"started\", \"pid\": 504431, \"directory\": \"/tmp/meet-proxy-host-sync-jvoumjf6\", \"baselineFilesVerified\": 159, \"changedFiles\": [\"dist/standalone/account-runtime/context-assets/context-native-setup.mjs\", \"dist/standalone/account-runtime/context-assets/context-setup-request.mjs\", \"dist/standalone/account-runtime/context-assets/personal-assistant-setup.mjs\", \"dist/standalone/account-runtime/context-product-style.mjs\", \"dist/standalone/account-runtime/context-product-ui.mjs\", \"dist/standalone/account-runtime/groups.mjs\"]}\n\nWARNING: \n\nTo increase the performance of the tunnel, consider installing NumPy. For instructions,\nplease see https://cloud.google.com/iap/docs/using-tcp-forwarding#increasing_the_tcp_upload_bandwidth\n\n"
+    }
+  ]
+}

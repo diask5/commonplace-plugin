@@ -1,5 +1,24 @@
 # Meet Proxy Draft v3 compliance
 
+29 October [cross-host context sync](CROSS-HOST-CONTEXT-SYNC.md): five explicit app choices, truthful sync status and source-read verification are live on server `20261029-cross-host-sync`. A fresh message from this chat was successfully read from the live Mac archive. 628 core tests, 27 browser checks, 23 extracted-bundle tests and exact 51-patch replay pass. Regular Claude/ChatGPT connections read the library; they do not automatically upload web-only chats. Actual-host onboarding and sharing reliability gates remain open. 159 deployed files and all three services are verified; a long-chat collection delay is addressed in the separate native catch-up update.
+
+29 October sharing stress update: [the cross-person evaluation](SHARING-STRESS.md)
+confirms the private retrieval → all-rule classifier → approved shared context
+path, but does not pass overall readiness. It found three natural-question
+retrieval misses, permitted facts withheld, and 30 provider 429s in a 40-call
+ten-owner burst. Patch 50 fixes rejoin restoring an old opt-in at equal/backwards
+timestamps, in source only. All 625 core tests, 27 browser tests and the exact
+50-patch replay pass. Published and deployed artifacts remain unchanged.
+
+The later [Sam and Zane scenario cut](FULL-VIDEO-RETAKE.md) follows the spec’s
+owner-initiated flow with action-focused narration. It uses disclosed scenario
+roles and preserves the same open acceptance gates.
+
+29 October video update: the [Claude Desktop and Spaces walkthrough](FULL-VIDEO-RETAKE.md)
+uses real moving footage, fresh cursor interaction, narrated chapters and an exact
+P0 coverage table. The artifact is complete; unresolved product acceptance gates
+remain open. It combines separately labeled retained and new recordings.
+
 29 October: [bounded question discovery](QUESTION-DISCOVERY.md) is live on server
 `20261029-question-discovery`; 611 core tests and exact 49-patch replay pass.
 The full-sentence private question now finds four withheld candidates. A fresh

@@ -1,0 +1,82 @@
+{
+  "at": "2026-10-29T05:28:08.780Z",
+  "syntheticOnly": true,
+  "realClassifier": false,
+  "productionChanged": false,
+  "source": "Project Lumen pilot public launch date: November 12, 2026. Eden Hart owns it. The launch moved from November 5 because the keyboard accessibility review needs another week. Exact start time and timezone remain undecided.",
+  "rows": [
+    {
+      "query": "Project Lumen",
+      "expectedMatch": true,
+      "keywordFallback": null,
+      "state": "shared",
+      "candidateChecks": 1,
+      "matched": true
+    },
+    {
+      "query": "What is the Project Lumen launch date?",
+      "expectedMatch": true,
+      "keywordFallback": "project lumen launch date",
+      "state": "shared",
+      "candidateChecks": 1,
+      "matched": true
+    },
+    {
+      "query": "When is the Project Lumen pilot going live now, and who owns it?",
+      "expectedMatch": true,
+      "keywordFallback": "project lumen pilot going live now owns",
+      "state": "no_context",
+      "candidateChecks": 0,
+      "matched": false
+    },
+    {
+      "query": "Catch me up on the Project Lumen pilot. What's the plan, who owns it, and why did it change?",
+      "expectedMatch": true,
+      "keywordFallback": "catch up project lumen pilot s plan owns change",
+      "state": "no_context",
+      "candidateChecks": 0,
+      "matched": false
+    },
+    {
+      "query": "What exact time and timezone does the Project Lumen pilot launch?",
+      "expectedMatch": true,
+      "keywordFallback": "exact time timezone project lumen pilot launch",
+      "state": "shared",
+      "candidateChecks": 1,
+      "matched": true
+    },
+    {
+      "query": "What changed about Project Lumen?",
+      "expectedMatch": true,
+      "keywordFallback": "changed project lumen",
+      "state": "no_context",
+      "candidateChecks": 0,
+      "matched": false
+    },
+    {
+      "query": "\"Project Lumen\"",
+      "expectedMatch": true,
+      "keywordFallback": null,
+      "state": "shared",
+      "candidateChecks": 1,
+      "matched": true
+    },
+    {
+      "query": "\"Completely absent Project Lumen\"",
+      "expectedMatch": false,
+      "keywordFallback": null,
+      "state": "no_context",
+      "candidateChecks": 0,
+      "matched": false
+    }
+  ],
+  "expectedMatches": 7,
+  "matchedExpected": 4,
+  "misses": [
+    "When is the Project Lumen pilot going live now, and who owns it?",
+    "Catch me up on the Project Lumen pilot. What's the plan, who owns it, and why did it change?",
+    "What changed about Project Lumen?"
+  ],
+  "literalAbsentStayedAbsent": true,
+  "limitation": "Tests recall using real archive search/read and a deterministic allow response; not model semantic behavior or end-to-end answering."
+}

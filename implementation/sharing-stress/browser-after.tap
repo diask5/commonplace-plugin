@@ -1,0 +1,38 @@
+▶ Spaces: real groups, messages, explicit file sharing, per-owner rules and responsive controls
+  ✔ one space combines sharing and messages under a two-link navigation (64.22473ms)
+  ✔ rules persist per owner and per space with sharing explicitly off (498.605508ms)
+  ✔ create a project with multiple connected people using real group membership (205.561781ms)
+  ✔ message retries reuse their nonce after a lost response and never duplicate a post (267.534071ms)
+  ✔ review and explicitly share a file; retries, member reads and foreign-space refusal work (360.027971ms)
+  ✔ outsiders cannot list, read or upload files and removal stops member access (26.447345ms)
+  ✔ file endpoints require authentication and same-origin requests (3.663083ms)
+  ✔ MCP setup names the exact shared space without granting private archive access (137.02553ms)
+  ✔ shared context, messages and access work at 320px without overflow or accessibility violations (2973.568095ms)
+  ✔ shared context, messages and access work at 390px without overflow or accessibility violations (2845.222856ms)
+  ✔ shared context, messages and access work at 768px without overflow or accessibility violations (2663.239298ms)
+  ✔ shared context, messages and access work at 1024px without overflow or accessibility violations (2973.382243ms)
+  ✔ shared context, messages and access work at 1440px without overflow or accessibility violations (2830.188726ms)
+  ✔ shared context, messages and access work at 1920px without overflow or accessibility violations (2729.620082ms)
+  ✔ create and file-review dialogs remain usable at phone and desktop widths (3819.172072ms)
+  ✔ reduced motion is respected and owner reset clears private rule fields (169.23434ms)
+✔ Spaces: real groups, messages, explicit file sharing, per-owner rules and responsive controls (23633.804047ms)
+▶ context exchanges and native setup use real account boundaries and observed state
+  ✔ messages default, three keyboard tabs, and one compact desktop toolbar (97.597531ms)
+  ✔ owner enables multiple rules; actual request writes only approved context to the shared board (914.625338ms)
+✔ context exchanges and native setup use real account boundaries and observed state (2078.415317ms)
+✔ requester loads further approved context with retry-safe nonce and no rejected excerpts (806.850275ms)
+▶ space invite joins a new person after sign-in without granting their personal context
+  ✔ only owner issues links; stable retries, expiry and revocation preserve membership (3.666055ms)
+  ✔ public preview survives Google sign-in and opens exactly the invited group (1140.002249ms)
+  ✔ removed members cannot use an old reusable link to undo removal (1.742722ms)
+  ✔ owner can create, copy and revoke actual links from Members (256.21449ms)
+  ✔ invalid links are unavailable; temporary failures have a retry (235.514933ms)
+✔ space invite joins a new person after sign-in without granting their personal context (2274.595893ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24166.483786

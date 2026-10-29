@@ -422,5 +422,30 @@
   ],
   "testLimits": "Synthetic Google and host identities in browser/native fixtures; tests overlap and counts must not be summed as distinct coverage.",
   "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.20",
-  "pullRequest": "https://github.com/diask5/commonplace-plugin/pull/10"
+  "pullRequest": "https://github.com/diask5/commonplace-plugin/pull/10",
+  "sharingStress20261029": {
+    "state": "Stress evaluation complete; consent fix source-only; overall sharing acceptance fails",
+    "verification": "sharing-stress-verification.json",
+    "sourcePatch": 50,
+    "productionChanged": false
+  },
+  "crossHostSync20261029": {
+    "state": "Server published and live; native backlog follow-up separate",
+    "verification": "implementation/cross-host-context-sync-verification.json",
+    "liveMacFreshMarkerRead": true,
+    "corePassed": 628,
+    "browserPassed": 27,
+    "bundlePassed": 23,
+    "nativeUnchanged": "0.4.32/runtime65",
+    "actualHostOnboardingComplete": false,
+    "allP0Ready": false,
+    "serverRelease": "20261029-cross-host-sync"
+  },
+  "boundedSyncCatchup20261029": {
+    "verification": "implementation/bounded-sync-catchup-verification.json",
+    "version": "0.4.33/runtime66",
+    "state": "Packaged candidate; publication and installation pending",
+    "corePassed": 631,
+    "allP0Ready": false
+  }
 }

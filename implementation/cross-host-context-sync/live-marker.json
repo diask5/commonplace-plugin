@@ -1,0 +1,73 @@
+{
+  "at": "2026-10-29",
+  "marker": "MEETPROXY-SYNC-CHECK-20261029-MEADOW-731",
+  "route": "Existing Mac account, signed read-only archive API; no setup or permission mutations",
+  "calls": [
+    {
+      "key": "hostSyncLiveRead",
+      "at": "2026-10-29T05:40:12.898Z",
+      "runtime": 65,
+      "resultCount": 0,
+      "revision": 6530,
+      "reads": []
+    },
+    {
+      "key": "hostSyncMarkerScoped",
+      "at": "2026-10-29T05:42:15.367Z",
+      "sourceRecordFound": true,
+      "sourceExcluded": false,
+      "captureComplete": true,
+      "sourceRevision": 11192,
+      "scoped": true,
+      "resultCount": 1,
+      "revision": 6530,
+      "nextCursor": null,
+      "reads": [
+        {
+          "hasMarker": false,
+          "citationCount": 1,
+          "revision": 6530,
+          "nextOffset": 2371
+        }
+      ]
+    },
+    {
+      "key": "hostSyncMarkerExact",
+      "at": "2026-10-29T05:42:31.875Z",
+      "resultCount": 0,
+      "revision": 6530,
+      "nextCursor": 500,
+      "scannedSections": 500,
+      "totalSections": 1330,
+      "reads": []
+    },
+    {
+      "key": "hostSyncMarkerPaged",
+      "at": "2026-10-29T05:42:57.149Z",
+      "pages": [
+        {
+          "resultCount": 0,
+          "revision": 6530,
+          "nextCursor": 1000,
+          "scannedSections": 1000,
+          "totalSections": 1330
+        },
+        {
+          "resultCount": 1,
+          "revision": 6530,
+          "nextCursor": null,
+          "scannedSections": 1330,
+          "totalSections": 1330
+        }
+      ],
+      "reads": [
+        {
+          "hasMarker": true,
+          "citationCount": 2,
+          "revision": 6530,
+          "offset": 633116
+        }
+      ]
+    }
+  ]
+}

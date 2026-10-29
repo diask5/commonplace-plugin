@@ -1,0 +1,29 @@
+2026-10-29T05:51:47.413Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ native collection updates one library read by three native and two independent OAuth clients (2474.869461ms)
+ℹ Five protocol clients read initial content, edits and recovered uploads; exclusions propagated to all five and another account read nothing. Native and Google identities are synthetic.
+✔ sync presentation distinguishes saved context from current collection (0.44581ms)
+✔ a new chat is not queued behind a full budget of unchanged heartbeats (36.856986ms)
+✔ a changed old chat and a new chat both beat heartbeats, newest first (15.111908ms)
+✔ initial backfill leads with the newest chat and still serves the longest-waiting one (4.455329ms)
+✔ constant fresh traffic cannot starve heartbeats or an old backfill (41.662682ms)
+✔ a failed upload replays identically before any newer work and does not mark complete (6.634714ms)
+✔ an unreadable source is skipped without consuming upload budget or hiding other chats (4.096469ms)
+✔ changing accounts discards another account's pending state and recollects only under the new owner (3.496484ms)
+✔ a restored relay checkpoint makes the source fresh and is recollected before heartbeats (9.71471ms)
+✔ source heartbeats still report unchanged chats once the queue is clear (2.895357ms)
+✔ a partial malformed capture stays partial through backoff and retries before heartbeats (7.571297ms)
+✔ a deferred retry keeps the tick partial even with no fresh work (3.25238ms)
+✔ bounded scans rotate through every file and never imply a source disappeared (11.017671ms)
+✔ an unreadable root never marks its previously collected chats unavailable (2.001528ms)
+✔ privacy parser upgrade recaptures unchanged sources without replaying old pending text (3.019083ms)
+✔ one long active conversation uses remaining upload slots before unchanged heartbeats (17.399977ms)
+✔ requeued chunks rotate across active sources and reserve overdue heartbeats (11.641535ms)
+✔ failed later chunk resumes exactly without losing the earlier chunk (7.797212ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3122.327663

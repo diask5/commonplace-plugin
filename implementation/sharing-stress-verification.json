@@ -1,0 +1,222 @@
+{
+  "date": "2026-10-29",
+  "state": "Stress evaluation complete; consent fix source-only; overall sharing acceptance fails",
+  "patch": {
+    "number": 50,
+    "manifest": "sharing-stress-manifest.json",
+    "path": "sharing-stress.patch",
+    "sha256": "e7a80695644d124c5d8d1717c351b198ccb8d2f3e37ece850cf156e71280342b",
+    "packaged": false,
+    "installed": false,
+    "deployed": false
+  },
+  "productionUnchanged": {
+    "native": "0.4.32/runtime65",
+    "server": "20261029-question-discovery",
+    "classifierModel": "pplx-decider-v1.2",
+    "promptVersion": 3,
+    "threshold": 0.995,
+    "permissionsChanged": false,
+    "productionAccountWrites": false
+  },
+  "architecture": "Private owner retrieval -> per-excerpt all-rule classification -> approved context in shared space history -> requester assistant answers. No server answer generation is tested.",
+  "fix": {
+    "trigger": "Policy save, removal and re-add with equal millisecond times or a backwards wall clock",
+    "before": "Old sharing opt-in could become active again",
+    "after": "Rejoining explicitly disables the existing policy and increments its revision; requires fresh owner opt-in",
+    "regressionBefore": {
+      "failed": 1,
+      "reason": "Expected disabled policy was enabled"
+    },
+    "afterCases": [
+      "equal timestamps",
+      "clock moves back 60 seconds",
+      "stale-save rejection",
+      "request withheld without classification",
+      "fresh owner opt-in succeeds"
+    ]
+  },
+  "checks": {
+    "sharingBaseline": {
+      "passed": 72,
+      "failed": 0
+    },
+    "newStress": {
+      "passed": 14,
+      "failed": 0
+    },
+    "core": {
+      "passed": 625,
+      "failed": 0,
+      "includesNewStress": true
+    },
+    "browserAfter": {
+      "passed": 27,
+      "failed": 0
+    },
+    "replay": {
+      "patches": 50,
+      "changedFiles": 211,
+      "mismatches": [],
+      "matched": true
+    }
+  },
+  "deterministicLoad": {
+    "distinctOwners": 10,
+    "requests": 30,
+    "approvedExcerpts": 160,
+    "providerCalls": 640,
+    "maxPerOwnerInFlight": 8,
+    "maxOverallInFlight": 80,
+    "classifier": "test-only",
+    "singleOwnerBurst": {
+      "attempts": 40,
+      "admitted": 1,
+      "rejected429": 39
+    }
+  },
+  "realClassifier": {
+    "syntheticOnly": true,
+    "hostedProvider": true,
+    "model": "pplx-decider-v1.2",
+    "promptVersion": 3,
+    "threshold": 0.995,
+    "calls": 56,
+    "summary": {
+      "corpus": {
+        "threshold": 0.995,
+        "evaluated": 36,
+        "errors": 0,
+        "falseAllows": [],
+        "falseWithholds": [
+          "decision",
+          "release",
+          "technical",
+          "negative-result",
+          "french-progress",
+          "resolved-reference",
+          "budget-explicitly-permitted"
+        ],
+        "correct": 29
+      },
+      "nativeCases": 8,
+      "nativeExpectedAllowed": 4,
+      "nativeAllowed": 3,
+      "nativeFalseAllows": [],
+      "nativeFalseWithholds": [
+        "native-correction"
+      ],
+      "providerErrors": 0,
+      "privacyProjectionFailures": []
+    },
+    "expectedPermitted": 16,
+    "permittedShared": 8,
+    "permittedWithheld": 8,
+    "expectedForbidden": 30,
+    "forbiddenShared": 0,
+    "providerErrors": 0,
+    "nativeSourcePath": "real archive search/read and structured native records; no host models invoked",
+    "namedRecipientCaseLimit": "Named Sam is absent from that preview membership; not isolated proof about future members"
+  },
+  "realProviderBurst": {
+    "owners": 10,
+    "requests": 10,
+    "providerCalls": 40,
+    "peakProviderCalls": 40,
+    "elapsedMs": 438,
+    "publicShared": 0,
+    "privateShared": 0,
+    "metadataLeaks": 0,
+    "providerErrors": 30,
+    "checkingRowsAfter": 0,
+    "candidateInjection": true,
+    "realArchiveRetrieval": false
+  },
+  "questionRecall": {
+    "expectedMatches": 7,
+    "matchedExpected": 4,
+    "misses": [
+      "When is the Project Lumen pilot going live now, and who owns it?",
+      "Catch me up on the Project Lumen pilot. What's the plan, who owns it, and why did it change?",
+      "What changed about Project Lumen?"
+    ],
+    "literalAbsentStayedAbsent": true,
+    "realClassifier": false
+  },
+  "actualProviderCallsTotal": 96,
+  "openGates": [
+    "natural-language retrieval recall",
+    "useful model admission at the existing policy threshold",
+    "provider-wide capacity under concurrent owners",
+    "package and deploy consent fix",
+    "real-account end-to-end answer generation",
+    "previous native setup approval and clean/independent-human onboarding"
+  ],
+  "limits": [
+    "All new accounts and source text synthetic; no production user load or private source inspection.",
+    "Provider errors withhold but do not count as semantic privacy passes.",
+    "No retry, classifier model/prompt/cutoff change, host gate bypass, policy weakening, installation or deployment.",
+    "625 core tests include the 14 new tests; suites overlap.",
+    "The initial stress harness failed on missing synthetic contact connections before requests; retained separately from product regressions.",
+    "Existing published/installed/deployed and video evidence remains unchanged."
+  ],
+  "cleanup": {
+    "previewServersClosedByFinallyOrTestCleanup": true,
+    "temporaryDatabasesRemovedByPreviewClose": true,
+    "productionSharingSettingsUnchanged": true
+  },
+  "evidence": [
+    {
+      "path": "implementation/sharing-stress/baseline.tap",
+      "sha256": "088561047a69643c5ec20f49b87d559848108087ba62e086995d42d68cabc5ed"
+    },
+    {
+      "path": "implementation/sharing-stress/stress-first.tap",
+      "sha256": "4d35e8c171471beaf12c1ae89806f4c9c6c5877dc40e866b9b95c807a8438953"
+    },
+    {
+      "path": "implementation/sharing-stress/stress-second.tap",
+      "sha256": "085b5535546857c044ba2db685b730a3bf6930c1b6531b509753a1c0874a7f42"
+    },
+    {
+      "path": "implementation/sharing-stress/rejoin-regression-before.tap",
+      "sha256": "3c3af8bafb868d339117734d901390355bc638cc78fa65d3e5f2cf9fb0c11b06"
+    },
+    {
+      "path": "implementation/sharing-stress/stress-after.tap",
+      "sha256": "0bab72c8e3241a931af1315be2a9d347e0a869b09447c17efa52bd976870f0ab"
+    },
+    {
+      "path": "implementation/sharing-stress/core.tap",
+      "sha256": "58d6f954f804cfe0d471493becce3c96e347f6da90e535c40d2269ffdbedb93b"
+    },
+    {
+      "path": "implementation/sharing-stress/browser-after.tap",
+      "sha256": "0349017e9e887aed844706ae0b455f2ca5933d0849e86901f5669faae320707a"
+    },
+    {
+      "path": "implementation/sharing-stress/real-classifier.json",
+      "sha256": "b59b98b424e2f12d2de836dcd6c53b9101344bc80d67560aeba9236cff8acdb4"
+    },
+    {
+      "path": "implementation/sharing-stress/real-classifier.log",
+      "sha256": "911c35f8fcd215eef859dba38a7a62460209b1ce1902d3919b81993c67be37d8"
+    },
+    {
+      "path": "implementation/sharing-stress/real-load.json",
+      "sha256": "236f13b383d0b2517b78f67a41e8d8658760b97ef79b257ce7a03e1d29a16596"
+    },
+    {
+      "path": "implementation/sharing-stress/real-load.log",
+      "sha256": "688ceccf37f43e8c040213d08d79dea1a623e0dfab7ce02d0e2a55a962094552"
+    },
+    {
+      "path": "implementation/sharing-stress/question-discovery.json",
+      "sha256": "eb8d0567ce970fd9e153b62e90b5b9528c0dfea8eef6897b25ac8e2b3649dbc8"
+    },
+    {
+      "path": "implementation/sharing-stress/replay50.json",
+      "sha256": "fa4f3373d21f18c0239f9728338f75d075aef60e34c10dd3515a6ffb86967ae6"
+    }
+  ]
+}

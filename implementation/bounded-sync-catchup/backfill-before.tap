@@ -1,0 +1,75 @@
+✔ a new chat is not queued behind a full budget of unchanged heartbeats (36.022595ms)
+✔ a changed old chat and a new chat both beat heartbeats, newest first (14.376205ms)
+✔ initial backfill leads with the newest chat and still serves the longest-waiting one (3.739674ms)
+✔ constant fresh traffic cannot starve heartbeats or an old backfill (40.030512ms)
+✔ a failed upload replays identically before any newer work and does not mark complete (5.641102ms)
+✔ an unreadable source is skipped without consuming upload budget or hiding other chats (4.042732ms)
+✔ changing accounts discards another account's pending state and recollects only under the new owner (3.464057ms)
+✔ a restored relay checkpoint makes the source fresh and is recollected before heartbeats (9.371156ms)
+✔ source heartbeats still report unchanged chats once the queue is clear (2.814162ms)
+✔ a partial malformed capture stays partial through backoff and retries before heartbeats (8.391015ms)
+✔ a deferred retry keeps the tick partial even with no fresh work (4.564306ms)
+✔ bounded scans rotate through every file and never imply a source disappeared (11.90791ms)
+✔ an unreadable root never marks its previously collected chats unavailable (1.935831ms)
+✔ privacy parser upgrade recaptures unchanged sources without replaying old pending text (3.229939ms)
+✖ one long active conversation uses remaining upload slots before unchanged heartbeats (11.665615ms)
+✖ requeued chunks rotate across active sources and reserve overdue heartbeats (8.944783ms)
+✖ failed later chunk resumes exactly without losing the earlier chunk (3.834404ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 14
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 249.370729
+
+✖ failing tests:
+
+test at .context/commonplace-source/tests/seamless-collection.test.mjs:203:1
+✖ one long active conversation uses remaining upload slots before unchanged heartbeats (11.665615ms)
+  AssertionError [ERR_ASSERTION]: spare slots advance the long source
+  
+  1 !== 6
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/seamless-collection.test.mjs:210:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 6,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at .context/commonplace-source/tests/seamless-collection.test.mjs:215:1
+✖ requeued chunks rotate across active sources and reserve overdue heartbeats (8.944783ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  3 !== 6
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/seamless-collection.test.mjs:221:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 6,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at .context/commonplace-source/tests/seamless-collection.test.mjs:225:1
+✖ failed later chunk resumes exactly without losing the earlier chunk (3.834404ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/seamless-collection.test.mjs:229:2)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /offline second batch/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

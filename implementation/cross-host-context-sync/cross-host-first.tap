@@ -1,0 +1,38 @@
+TAP version 13
+# 2026-10-29T05:38:22.931Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+# Subtest: native collection updates one library read by three native and two independent OAuth clients
+not ok 1 - native collection updates one library read by three native and two independent OAuth clients
+  ---
+  duration_ms: 431.749913
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-cross-host.test.mjs:27:1'
+  failureType: 'testCodeFailure'
+  error: 'archive_search: {"jsonrpc":"2.0","id":1,"error":{"code":-32601,"message":"Action unavailable."}}'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    Object.call (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/signed-fixture.mjs:33:14)
+    async file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-cross-host.test.mjs:46:15
+    async Promise.all (index 0)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-cross-host.test.mjs:50:17)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: sync presentation distinguishes saved context from current collection
+ok 2 - sync presentation distinguishes saved context from current collection
+  ---
+  duration_ms: 0.932761
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1042.811041

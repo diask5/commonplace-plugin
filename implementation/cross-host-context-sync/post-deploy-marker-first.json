@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"at\":\"2026-10-29T05:50:26.425Z\",\"resultCount\":0,\"revision\":6530,\"nextCursor\":null,\"sourceCaptureComplete\":false,\"syncError\":\"Collection is continuing; see source coverage for missing or partial chats.\",\"reads\":[]}\n\n(node:75351) ExperimentalWarning: SQLite is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    }
+  ]
+}

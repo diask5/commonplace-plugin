@@ -1,0 +1,35 @@
+2026-10-29T05:46:17.623Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ native collection updates one library read by three native and two independent OAuth clients (2350.20841ms)
+ℹ Five protocol clients read initial content, edits and recovered uploads; exclusions propagated to all five and another account read nothing. Native and Google identities are synthetic.
+✔ sync presentation distinguishes saved context from current collection (0.447412ms)
+✔ personal assistant setup contains a real remote MCP URL and truthful host capabilities (1.687907ms)
+✔ discovery verifies actual OAuth metadata without claiming authorization or host registration (103.673801ms)
+✔ compatible personal host completes existing DCR + PKCE OAuth then searches authorized context (261.042122ms)
+✔ discovery refuses foreign OAuth destinations and missing PKCE support (1.291812ms)
+✔ resource-source setup is native-only, preserves exact data and never includes a bearer value (0.559041ms)
+✔ regular chat hosts have their own setup route and verify actual reads without claiming upload (0.205418ms)
+2026-10-29T05:46:17.583Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ real production wrapper with a stub compiled fallback serves current discovery, OAuth, MCP and restricted Agent Auth (296.721139ms)
+✔ ten people can share concurrently with owner isolation and bounded per-request classification (731.8918ms)
+ℹ {"owners":10,"requests":30,"approvedExcerpts":160,"providerCalls":640,"peakProviderCalls":80,"perOwnerPeak":[8,8,8,8,8,8,8,8,8,8],"elapsedMs":599,"results":[{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16}]}
+✔ forty simultaneous requests serialize one contributor across spaces without lost locks or replay leaks (130.717951ms)
+✔ each owner and space has separate opt-in, audit and rules; provider errors do not leak or strand work (219.68951ms)
+✔ in-flight pause prevents every pending excerpt and retry (121.133749ms)
+✔ in-flight rules prevents every pending excerpt and retry (198.509575ms)
+✔ in-flight expiry prevents every pending excerpt and retry (129.357191ms)
+✔ in-flight remove-requester prevents every pending excerpt and retry (168.645303ms)
+✔ in-flight remove-contributor prevents every pending excerpt and retry (109.959558ms)
+✔ in-flight archive-space prevents every pending excerpt and retry (178.722766ms)
+✔ in-flight new-member prevents every pending excerpt and retry (124.222893ms)
+✔ in-flight receiver-generation prevents every pending excerpt and retry (127.753156ms)
+✔ invitation acceptance does not opt in; removal stops activity and old links; rejoin does not restore old sharing (106.353904ms)
+✔ remove and re-add cannot resurrect consent when clock delta is 0ms (105.821033ms)
+✔ remove and re-add cannot resurrect consent when clock delta is -60000ms (112.493112ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2970.931054

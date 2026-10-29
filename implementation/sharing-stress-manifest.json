@@ -1,0 +1,85 @@
+{
+  "name": "Invalidate sharing opt-in on rejoin; add bounded cross-person sharing stress evidence",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch",
+    "deployment-source-modes.patch",
+    "visible-transcript-envelopes.patch",
+    "native-message-excerpts.patch",
+    "p0-excerpts-candidate.patch",
+    "private-native-titles.patch",
+    "space-request-diagnostics.patch",
+    "bounded-classification.patch",
+    "question-discovery.patch"
+  ],
+  "patch": "sharing-stress.patch",
+  "sha256": "e7a80695644d124c5d8d1717c351b198ccb8d2f3e37ece850cf156e71280342b",
+  "state": "Source-only; not packaged, installed or deployed.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/groups.mjs",
+      "beforeSha256": "44afc25001c0c9d1a2a07005d29bd48856833a29fe80b0872a0aa67d31f09bc5",
+      "sha256": "30d724f01a8f37f1b79a1a8be56a73d7e46378c9e7cafd49da6758d70394d026"
+    },
+    {
+      "path": "tests/space-context-stress.test.mjs",
+      "beforeSha256": null,
+      "sha256": "3d67380ecc64fc774d6b55bcc6f0a3a8e76b34c0a7b47b68a4e4e17d6672a7b1"
+    },
+    {
+      "path": "scripts/stress-sharing.mjs",
+      "beforeSha256": null,
+      "sha256": "8e1080a9a0aa756c708ba178fda4943a27d61605376c0eae2d4a2210e33eb110"
+    },
+    {
+      "path": "scripts/stress-sharing-load.mjs",
+      "beforeSha256": null,
+      "sha256": "46262269f74187906ef01e2ecc19184ecb74a69aa52a487fcfefe1b5bb617e9c"
+    },
+    {
+      "path": "scripts/probe-sharing-questions.mjs",
+      "beforeSha256": null,
+      "sha256": "13c6ffff5c0e2564108f1a533dd60cf99ff63ab1fdcca3802a2788d3a8924d58"
+    }
+  ]
+}
