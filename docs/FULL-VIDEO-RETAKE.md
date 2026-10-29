@@ -1,5 +1,27 @@
 # Real-footage walkthrough — Claude Desktop and Spaces
 
+## Sam and Zane scenario cut
+
+The owner requested an example from the attached spec and action-focused narration.
+The [Sam and Zane scenario](https://kyle-cloud-w3.conductor.show/walkthrough/scenario/)
+uses the section 6 premise with the owner-initiated invitation from section 7.5:
+Zane asks his assistant to handle Sam’s questions while he is in meetings. Sam
+accepts, receives the updated launch answer, follows up in the same conversation,
+encounters the private-topic boundary, and loses access when removed.
+
+Sam and Zane are clearly identified as scenario roles performed using the owner’s
+two demo accounts. No independent participation is claimed. Original UI names and
+responses are unchanged. Separate invitation, conversation and website examples
+remain labeled. Technical readiness commentary is kept out of the narration;
+the open acceptance gates remain in the coverage record. Prior videos, raw footage
+and failure evidence are preserved. This edit changes no runtime or permission.
+See `implementation/spec-scenario-video-verification.json` for hashes, exact cuts,
+media checks and Mac playback evidence. The 3:52 file fully decodes, matches
+the exact Mac copy, and plays in Mac Chrome with audio/video decoded and no
+media error. It is saved in `Movies/Meet Proxy Desktop Demo/Sam and Zane Walkthrough`
+and open at the start with sound enabled.
+
+
 ## 29 October replacement
 
 The owner rejected the browser-heavy cut and its long idle stretches. The new

@@ -52,6 +52,9 @@ private query completes with all four candidates withheld. Its earlier source-ch
 and deadline stops remain preserved. Demo sharing is paused. A 5:22 Claude-centered replacement video now includes
 real native messaging and fresh cursor-driven website interaction with narration.
 It labels separate recorded examples and does not claim all-P0 readiness.
+A later Sam-and-Zane scenario cut uses sections 6/7.5 and action-focused narration;
+roles are disclosed as demo accounts, not independent human participants.
+See `implementation/spec-scenario-video-verification.json`.
 Claude blocked `finish_context_setup` as Data Exfiltration; two denied attempts
 are retained, and the editing continuation did not retry or bypass the gate.
 The earlier Chrome capture failed. A later Settings/read-only permission check

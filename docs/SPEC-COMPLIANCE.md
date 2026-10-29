@@ -1,5 +1,9 @@
 # Meet Proxy Draft v3 compliance
 
+The later [Sam and Zane scenario cut](FULL-VIDEO-RETAKE.md) follows the spec’s
+owner-initiated flow with action-focused narration. It uses disclosed scenario
+roles and preserves the same open acceptance gates.
+
 29 October video update: the [Claude Desktop and Spaces walkthrough](FULL-VIDEO-RETAKE.md)
 uses real moving footage, fresh cursor interaction, narrated chapters and an exact
 P0 coverage table. The artifact is complete; unresolved product acceptance gates

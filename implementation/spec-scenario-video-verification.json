@@ -1,0 +1,438 @@
+{
+  "date": "2026-10-29",
+  "request": "Use a scenario from the attached spec; focus narration on the people and actions.",
+  "specAttachment": ".context/attachments/assets/01da6c70-2704-4974-a1b6-1cc156b79f54/Meet Proxy Product Spec copy.txt",
+  "scenario": "Sam needs a project answer while Zane is in meetings; Zane delegates to his assistant.",
+  "specSections": [
+    "6: Sam and Zane example",
+    "7.5: owner-initiated invitation",
+    "7.7\u20137.10: boundaries, same-thread follow-up, context guarding and revocation"
+  ],
+  "roleDisclosure": "Sam and Zane are scenario roles performed with the owner\u2019s two demo accounts; not independent participants.",
+  "originalUiOrAccountNamesAltered": false,
+  "narrationApproach": "Actions and story, without readiness diagnostics or repeated fixture explanations.",
+  "separateExamplesLabeled": true,
+  "priorVideosPreserved": true,
+  "productRuntimeChanged": false,
+  "hostPermissionsChanged": false,
+  "newSetupAttempted": false,
+  "allP0Demonstrated": false,
+  "url": "https://kyle-cloud-w3.conductor.show/walkthrough/scenario/",
+  "privateDraftRelease": "meet-proxy-scenario-demo-20261029",
+  "localArtifact": ".context/claude-desktop-demo/e2e/scenario-edit/public/meet-proxy-p0-walkthrough.mp4",
+  "media": {
+    "fullDecodePassed": true,
+    "bytes": 13035150,
+    "sha256": "66d53d2e4c39a5b6c88be9ac73f4e57dea7fd87411cc13c271f0cf9daecaba39",
+    "seconds": 231.8,
+    "narrationSeconds": 199.92000000000002,
+    "longestBetweenCueGapSeconds": 3.9000000000000057,
+    "width": 1920,
+    "height": 1200,
+    "frameRate": 30,
+    "realFootage": true,
+    "generatedScreenshotsOrFrozenFramesUsed": false,
+    "footageSpeed": 1,
+    "cutsMarked": true,
+    "actualCursorCapturedInNewWebsiteTakes": true,
+    "sourceHashes": [
+      {
+        "file": "04-source-note.mp4",
+        "bytes": 9709421,
+        "sha256": "361911dae7ab55b6aadd11eef8070b7ff874ddaa681c3688fdf0c26b1ed9318e"
+      },
+      {
+        "file": "05-cross-chat-retrieval.mp4",
+        "bytes": 7316914,
+        "sha256": "a086b1518bf2ffbfb092c78199970257214470f2387201e07f4d043b0bd968e6"
+      },
+      {
+        "file": "14-new-native-invitation.mp4",
+        "bytes": 8102754,
+        "sha256": "ae40094e30d5ac204e7cfb49b8f89fa401e2995fcda24746127c51353a33a400"
+      },
+      {
+        "file": "15-invite-accept.mp4",
+        "bytes": 5441909,
+        "sha256": "92c3bc03b08a1ac87f5932a170f16caec53b7e364979de98c51b38444e152c2d"
+      },
+      {
+        "file": "20-owner-audit-revoke.mp4",
+        "bytes": 3661041,
+        "sha256": "d68a31fcca62941eaf8c5d06a954d1c6a37d4cbb05c20c4f56bec99dd798c13b"
+      },
+      {
+        "file": "21-revoked-recipient.mp4",
+        "bytes": 3786921,
+        "sha256": "0b04313e14ff034c27dbd35cd36bdbe4c87bd023a95e770600040146f4589c7d"
+      },
+      {
+        "file": "23-old-invitation-rejected.mp4",
+        "bytes": 2100673,
+        "sha256": "906f55c10537b2b70dfa5c479a87554b4cdac5a202ff5528a64136492073cf88"
+      },
+      {
+        "file": "26-original-native-messaging.mp4",
+        "bytes": 25882687,
+        "sha256": "015811af86c1fece0b13b6d69a751880afb2d8492c6978c5156fc9cbc6964cd0"
+      },
+      {
+        "file": "28-cursor-website-corrected.mp4",
+        "bytes": 3016848,
+        "sha256": "12b299ff5c3590a806a64c311bc61b8c3a395e6b4dea56e63dbd899a10468e34"
+      },
+      {
+        "file": "29-cursor-recipient.mp4",
+        "bytes": 633508,
+        "sha256": "de49ecb2e4d3bdb2e92c8bb0056cf0e68b33d06f90b0053a959a5577c55c7039"
+      }
+    ]
+  },
+  "editManifest": [
+    {
+      "id": "invite",
+      "file": "14-new-native-invitation.mp4",
+      "start": 15,
+      "end": 46,
+      "duration": 19,
+      "at": 0,
+      "kind": "native",
+      "title": "01  Sam needs an answer",
+      "note": "Sam & Zane \u00b7 Product scenario \u00b7 Invitation example: Juniper Lantern",
+      "ref": "ZANE / OWNER",
+      "pieces": [
+        [
+          15,
+          24
+        ],
+        [
+          36,
+          46
+        ]
+      ]
+    },
+    {
+      "id": "accept",
+      "file": "15-invite-accept.mp4",
+      "start": 42,
+      "end": 57,
+      "duration": 15,
+      "at": 19,
+      "kind": "invite",
+      "title": "02  Sam accepts the invitation",
+      "note": "Invitation example \u00b7 Private link concealed \u00b7 Waiting intervals cut",
+      "ref": "SAM / REQUESTER",
+      "pieces": [
+        [
+          42,
+          57
+        ]
+      ]
+    },
+    {
+      "id": "joined",
+      "file": "15-invite-accept.mp4",
+      "start": 87,
+      "end": 93,
+      "duration": 6,
+      "at": 34,
+      "kind": "browser-wide",
+      "title": "03  A shared conversation",
+      "note": "Juniper Lantern \u00b7 Loading interval cut",
+      "ref": "SAM + ZANE",
+      "pieces": [
+        [
+          87,
+          93
+        ]
+      ]
+    },
+    {
+      "id": "scope",
+      "file": "26-original-native-messaging.mp4",
+      "start": 0,
+      "end": 21,
+      "duration": 14,
+      "at": 40,
+      "kind": "legacy",
+      "title": "04  Zane sets the boundaries",
+      "note": "Conversation example: Larkspur Beacon \u00b7 14 days \u00b7 Public launch topics",
+      "ref": "ZANE / OWNER",
+      "pieces": [
+        [
+          0,
+          4
+        ],
+        [
+          11,
+          21
+        ]
+      ]
+    },
+    {
+      "id": "notes",
+      "file": "04-source-note.mp4",
+      "start": 0,
+      "end": 28,
+      "duration": 17,
+      "at": 54,
+      "kind": "native",
+      "title": "05  The plan changes",
+      "note": "Larkspur Beacon \u00b7 Owner\u2019s private Claude chat \u00b7 Waiting intervals cut",
+      "ref": "ZANE / OWNER",
+      "pieces": [
+        [
+          0,
+          7
+        ],
+        [
+          18,
+          28
+        ]
+      ]
+    },
+    {
+      "id": "retrieve",
+      "file": "05-cross-chat-retrieval.mp4",
+      "start": 0,
+      "end": 43,
+      "duration": 17,
+      "at": 71,
+      "kind": "native",
+      "title": "06  The update carries across chats",
+      "note": "Larkspur Beacon \u00b7 Synced context \u00b7 Waiting intervals cut",
+      "ref": "ZANE / OWNER",
+      "pieces": [
+        [
+          0,
+          6
+        ],
+        [
+          32,
+          43
+        ]
+      ]
+    },
+    {
+      "id": "incoming",
+      "file": "26-original-native-messaging.mp4",
+      "start": 92,
+      "end": 124,
+      "duration": 17,
+      "at": 88,
+      "kind": "legacy",
+      "title": "07  Sam asks Claude through his assistant",
+      "note": "Larkspur Beacon \u00b7 Incoming Codex question \u00b7 Waiting intervals cut",
+      "ref": "SAM \u2192 ZANE\u2019S CLAUDE",
+      "pieces": [
+        [
+          92,
+          99
+        ],
+        [
+          114,
+          124
+        ]
+      ]
+    },
+    {
+      "id": "reply",
+      "file": "26-original-native-messaging.mp4",
+      "start": 124,
+      "end": 159,
+      "duration": 18,
+      "at": 105,
+      "kind": "legacy",
+      "title": "08  Sam gets the answer",
+      "note": "Larkspur Beacon \u00b7 Answer in the existing thread \u00b7 Sources stay with the owner",
+      "ref": "ZANE\u2019S CLAUDE \u2192 SAM",
+      "pieces": [
+        [
+          124,
+          128
+        ],
+        [
+          145,
+          159
+        ]
+      ]
+    },
+    {
+      "id": "followup",
+      "file": "26-original-native-messaging.mp4",
+      "start": 177,
+      "end": 228,
+      "duration": 17,
+      "at": 123,
+      "kind": "legacy",
+      "title": "09  One thread for the follow-up",
+      "note": "Larkspur Beacon \u00b7 Same conversation \u00b7 Waiting intervals cut",
+      "ref": "SAM + ZANE\u2019S CLAUDE",
+      "pieces": [
+        [
+          177,
+          184
+        ],
+        [
+          218,
+          228
+        ]
+      ]
+    },
+    {
+      "id": "refusal",
+      "file": "26-original-native-messaging.mp4",
+      "start": 274,
+      "end": 306,
+      "duration": 17,
+      "at": 140,
+      "kind": "legacy",
+      "title": "10  A private question stays private",
+      "note": "Larkspur Beacon \u00b7 Budget and audit-marker request refused",
+      "ref": "ZANE\u2019S BOUNDARIES",
+      "pieces": [
+        [
+          274,
+          281
+        ],
+        [
+          296,
+          306
+        ]
+      ]
+    },
+    {
+      "id": "website",
+      "file": "28-cursor-website-corrected.mp4",
+      "start": 0,
+      "end": 31,
+      "duration": 31,
+      "kind": "browser",
+      "title": "11  Messages, rules, and members together",
+      "note": "Website example: Juniper Lantern \u00b7 Sharing paused \u00b7 Actual cursor interaction",
+      "ref": "ZANE / OWNER",
+      "pieces": [
+        [
+          0,
+          31
+        ]
+      ],
+      "at": 157
+    },
+    {
+      "id": "recipient",
+      "file": "29-cursor-recipient.mp4",
+      "start": 0,
+      "end": 9,
+      "duration": 9,
+      "kind": "browser",
+      "title": "12  Sam reads the shared update",
+      "note": "Juniper Lantern \u00b7 Recipient refresh \u00b7 Same posted message",
+      "ref": "SAM / REQUESTER",
+      "pieces": [
+        [
+          0,
+          9
+        ]
+      ],
+      "at": 188
+    },
+    {
+      "id": "remove",
+      "file": "20-owner-audit-revoke.mp4",
+      "start": 43,
+      "end": 59.8,
+      "duration": 10.799999999999997,
+      "at": 197,
+      "kind": "browser",
+      "title": "13  Zane removes access",
+      "note": "Juniper invitation example \u00b7 Owner removal \u00b7 Waiting intervals cut",
+      "ref": "ZANE / OWNER",
+      "pieces": [
+        [
+          43,
+          48
+        ],
+        [
+          54,
+          59.8
+        ]
+      ]
+    },
+    {
+      "id": "blocked",
+      "file": "21-revoked-recipient.mp4",
+      "start": 0,
+      "end": 10,
+      "duration": 10,
+      "at": 207.8,
+      "kind": "browser-wide",
+      "title": "14  Access stops",
+      "note": "Juniper invitation example \u00b7 The removed account cannot open the space",
+      "ref": "SAM / REQUESTER",
+      "pieces": [
+        [
+          0,
+          10
+        ]
+      ]
+    },
+    {
+      "id": "old-invite",
+      "file": "23-old-invitation-rejected.mp4",
+      "start": 0,
+      "end": 29,
+      "duration": 14,
+      "at": 217.8,
+      "kind": "invite",
+      "title": "15  The old invitation stays closed",
+      "note": "Juniper invitation example \u00b7 Old-link rejection \u00b7 Waiting intervals cut",
+      "ref": "SAM + ZANE",
+      "pieces": [
+        [
+          0,
+          5
+        ],
+        [
+          20,
+          29
+        ]
+      ]
+    }
+  ],
+  "narration": {
+    "provider": "Bland",
+    "voice": "River",
+    "model": "BTTSv3",
+    "cues": 15,
+    "captions": true
+  },
+  "remainingProductGates": [
+    "host-denied finish_context_setup",
+    "useful public-context excerpt sharing",
+    "clean-machine/default-host onboarding",
+    "independent-human acceptance",
+    "both invitation directions and recipient-native severing in one live walkthrough"
+  ],
+  "delivery": {
+    "directory": "/Users/kyledias/Movies/Meet Proxy Desktop Demo/Sam and Zane Walkthrough",
+    "hashMatchesCloud": true,
+    "url": "http://127.0.0.1:62777/",
+    "openInChrome": true,
+    "leftPausedAtStartWithSound": true
+  },
+  "macPlayback": {
+    "durationSeconds": 231.8,
+    "width": 1920,
+    "height": 1200,
+    "readyState": 4,
+    "advancedSeconds": 2.964846,
+    "decodedAudioBytes": 73767,
+    "decodedVideoBytes": 161788,
+    "error": null
+  },
+  "playerQA": {
+    "pageErrors": [],
+    "mobileHorizontalOverflow": false
+  }
+}
