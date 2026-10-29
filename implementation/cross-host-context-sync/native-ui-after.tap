@@ -1,0 +1,35 @@
+▶ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline
+  ✔ one-tap app chooser is accessible from phone to desktop (2814.887492ms)
+  ✔ open app is primary, auto collection is disclosed, and unrelated connected chats/uploads never complete setup (1494.757922ms)
+  ✔ slow host setup stays explicit and does not invent installation progress (103.465474ms)
+  ✔ all app surfaces carry server/account and recover the same handoff when reopened (8197.292639ms)
+  ✔ registration confirms plugin and MCP together; no manual receiver picker and no false content success (2487.889682ms)
+  ✔ empty and interrupted collection are honest; incoming context becomes ready without a refresh click (7498.480031ms)
+  ✔ a delayed confirmation from another app cannot complete the selected setup (331.475114ms)
+  ✔ live setup accessible at 320px (585.261545ms)
+  ✔ live setup accessible at 390px (515.510126ms)
+  ✔ live setup accessible at 768px (561.622419ms)
+  ✔ live setup accessible at 1440px (551.567659ms)
+  ✔ live setup accessible at 1920px (531.671215ms)
+  ✔ polling failure visibly reconnects and recovers, offline collectors never claim all sources are current (4723.019501ms)
+  ✔ expired handoff renews without a second Google ceremony (260.631593ms)
+  ✔ changed browser account clears the old setup token and progress (134.352494ms)
+✔ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline (31641.503824ms)
+✔ a newly signed-in account goes straight to desktop setup with collection already included (651.326437ms)
+✔ account changes before app launch automatically invalidate every prepared app link (3051.12347ms)
+✔ preparing a setup has visible progress and a failed preparation can retry (594.859688ms)
+▶ seamless setup: copy is primary, host steps are explicit, progress is installation-specific and MCP is the default route
+  ✔ choosing an app launches directly; no extra settings or filesystem grant is requested (1389.810597ms)
+  ✔ after selection Copy setup prompt is primary above live progress with explicit host steps (1370.105169ms)
+  ✔ registration recedes the copy action; scanning shows actual file counts only from this installation (6144.324911ms)
+  ✔ partial collection reports received vs searchable and last updated; ready never claims more than indexed (4783.584002ms)
+  ✔ local folder is optional in copy and no setting or grant is added (9.417593ms)
+✔ seamless setup: copy is primary, host steps are explicit, progress is installation-specific and MCP is the default route (14524.969021ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 36448.839031

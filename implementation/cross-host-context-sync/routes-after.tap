@@ -1,0 +1,17 @@
+✔ each app gets a complete install-and-connect request with one exact private handoff (1.47833ms)
+✔ missing account, unknown app or invalid handoff never produces a setup authorization (0.216377ms)
+✔ existing setup offers compatible OAuth retrieval and private native source import without disturbing native setup (8065.95988ms)
+✔ personal assistant setup contains a real remote MCP URL and truthful host capabilities (1.713342ms)
+✔ discovery verifies actual OAuth metadata without claiming authorization or host registration (99.904513ms)
+✔ compatible personal host completes existing DCR + PKCE OAuth then searches authorized context (281.018294ms)
+✔ discovery refuses foreign OAuth destinations and missing PKCE support (1.347152ms)
+✔ resource-source setup is native-only, preserves exact data and never includes a bearer value (0.52571ms)
+✔ regular chat hosts have their own setup route and verify actual reads without claiming upload (0.263156ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8565.514088

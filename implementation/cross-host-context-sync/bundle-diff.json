@@ -1,0 +1,13 @@
+{
+  "baseline": "20261029-question-discovery",
+  "fileCount": 159,
+  "changedFiles": [
+    "dist/standalone/account-runtime/context-assets/context-native-setup.mjs",
+    "dist/standalone/account-runtime/context-assets/context-setup-request.mjs",
+    "dist/standalone/account-runtime/context-assets/personal-assistant-setup.mjs",
+    "dist/standalone/account-runtime/context-product-style.mjs",
+    "dist/standalone/account-runtime/context-product-ui.mjs",
+    "dist/standalone/account-runtime/groups.mjs"
+  ],
+  "migrationChanges": false
+}

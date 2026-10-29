@@ -1,0 +1,857 @@
+{
+  "at": "2026-10-29T05:28:46.390Z",
+  "syntheticOnly": true,
+  "realClassifier": true,
+  "candidateInjection": true,
+  "realArchiveRetrieval": false,
+  "productionChanged": false,
+  "model": "pplx-decider-v1.2",
+  "threshold": 0.995,
+  "rules": [
+    {
+      "id": "public",
+      "text": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members."
+    },
+    {
+      "id": "private",
+      "text": "Never share private financial details, customer identities, credentials, personal matters or private audit markers."
+    }
+  ],
+  "publicText": "Project Lumen pilot launches November 12, 2026. Eden Hart owns the rollout. Exact start time and timezone remain undecided.",
+  "privateText": "Project Lumen private budget is $420,000. Private audit marker: PRIVATE_CANARY_LOAD.",
+  "owners": 10,
+  "requests": 10,
+  "providerCalls": 40,
+  "peakProviderCalls": 40,
+  "elapsedMs": 438,
+  "rows": [
+    {
+      "ownerIndex": 0,
+      "requesterIndex": 1,
+      "state": "no_context",
+      "durationMs": 348,
+      "publicShared": false,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [],
+      "audit": [
+        {
+          "candidateId": "private-source-c5c3cf08d361f0b553e07fc8-0",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": 0.9941311823245371,
+          "latencyMs": 293,
+          "inputTokens": 1725,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.9945000919232808,
+              "latencyMs": 279,
+              "inputTokens": 865
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.9941311823245371,
+              "latencyMs": 293,
+              "inputTokens": 860
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-c5c3cf08d361f0b553e07fc8-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": 0.0004148431193445683,
+          "latencyMs": 283,
+          "inputTokens": 1701,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0004246515637715705,
+              "latencyMs": 283,
+              "inputTokens": 853
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0004148431193445683,
+              "latencyMs": 276,
+              "inputTokens": 848
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 1,
+      "requesterIndex": 2,
+      "state": "no_context",
+      "durationMs": 330,
+      "publicShared": false,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [],
+      "audit": [
+        {
+          "candidateId": "private-source-bd76140ce40eac3364c81ef8-0",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": null,
+          "latencyMs": 272,
+          "inputTokens": 865,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.9945000919232808,
+              "latencyMs": 272,
+              "inputTokens": 865
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-bd76140ce40eac3364c81ef8-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": null,
+          "latencyMs": 275,
+          "inputTokens": 853,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0004246515637715705,
+              "latencyMs": 275,
+              "inputTokens": 853
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 2,
+      "requesterIndex": 3,
+      "state": "no_context",
+      "durationMs": 325,
+      "publicShared": false,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [],
+      "audit": [
+        {
+          "candidateId": "private-source-68786748413bd87e87f27c12-0",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 0,
+          "inputTokens": 0,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-68786748413bd87e87f27c12-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 269,
+          "inputTokens": 848,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0004148431193445683,
+              "latencyMs": 269,
+              "inputTokens": 848
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 3,
+      "requesterIndex": 4,
+      "state": "no_context",
+      "durationMs": 329,
+      "publicShared": false,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [],
+      "audit": [
+        {
+          "candidateId": "private-source-960c61559c701a4418301ab3-0",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 0,
+          "inputTokens": 0,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-960c61559c701a4418301ab3-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 274,
+          "inputTokens": 848,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0004148431193445683,
+              "latencyMs": 274,
+              "inputTokens": 848
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 4,
+      "requesterIndex": 5,
+      "state": "no_context",
+      "durationMs": 311,
+      "publicShared": false,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [],
+      "audit": [
+        {
+          "candidateId": "private-source-03bc6af0febcedc1a674dff7-0",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 0,
+          "inputTokens": 0,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-03bc6af0febcedc1a674dff7-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 0,
+          "inputTokens": 0,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 5,
+      "requesterIndex": 6,
+      "state": "no_context",
+      "durationMs": 427,
+      "publicShared": false,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [],
+      "audit": [
+        {
+          "candidateId": "private-source-23f46bb55851e359dbf0c712-0",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": null,
+          "latencyMs": 288,
+          "inputTokens": 865,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.9945000919232808,
+              "latencyMs": 288,
+              "inputTokens": 865
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-23f46bb55851e359dbf0c712-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": null,
+          "latencyMs": 288,
+          "inputTokens": 853,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0004246515637715705,
+              "latencyMs": 288,
+              "inputTokens": 853
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 6,
+      "requesterIndex": 7,
+      "state": "no_context",
+      "durationMs": 303,
+      "publicShared": false,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [],
+      "audit": [
+        {
+          "candidateId": "private-source-f40e7c556640496c6537ab35-0",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 0,
+          "inputTokens": 0,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-f40e7c556640496c6537ab35-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 0,
+          "inputTokens": 0,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 7,
+      "requesterIndex": 8,
+      "state": "no_context",
+      "durationMs": 293,
+      "publicShared": false,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [],
+      "audit": [
+        {
+          "candidateId": "private-source-6ed145f530a396dcd5372877-0",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 0,
+          "inputTokens": 0,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-6ed145f530a396dcd5372877-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 0,
+          "inputTokens": 0,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 8,
+      "requesterIndex": 9,
+      "state": "no_context",
+      "durationMs": 296,
+      "publicShared": false,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [],
+      "audit": [
+        {
+          "candidateId": "private-source-18f2fca2465ae171493c115c-0",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 0,
+          "inputTokens": 0,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-18f2fca2465ae171493c115c-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 0,
+          "inputTokens": 0,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 9,
+      "requesterIndex": 0,
+      "state": "no_context",
+      "durationMs": 327,
+      "publicShared": false,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [],
+      "audit": [
+        {
+          "candidateId": "private-source-789619a007bc0f2c53931777-0",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 0,
+          "inputTokens": 0,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-789619a007bc0f2c53931777-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "provider_http_429",
+          "probability": null,
+          "latencyMs": 0,
+          "inputTokens": 0,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "provider_http_429",
+              "probability": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "receipts": [
+    {
+      "number": 8,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 19,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 17,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 10,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 30,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 15,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 25,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 13,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 6,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 20,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 26,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 29,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 22,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 39,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 28,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 32,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 37,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 9,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 34,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 36,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 14,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 11,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 31,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 35,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 33,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 27,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 18,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 38,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 1,
+      "probability": 0.9945000919232808,
+      "latencyMs": 279,
+      "inputTokens": 865
+    },
+    {
+      "number": 5,
+      "probability": 0.9945000919232808,
+      "latencyMs": 272,
+      "inputTokens": 865
+    },
+    {
+      "number": 12,
+      "probability": 0.0004148431193445683,
+      "latencyMs": 269,
+      "inputTokens": 848
+    },
+    {
+      "number": 4,
+      "probability": 0.0004148431193445683,
+      "latencyMs": 276,
+      "inputTokens": 848
+    },
+    {
+      "number": 7,
+      "probability": 0.0004246515637715705,
+      "latencyMs": 275,
+      "inputTokens": 853
+    },
+    {
+      "number": 16,
+      "probability": 0.0004148431193445683,
+      "latencyMs": 274,
+      "inputTokens": 848
+    },
+    {
+      "number": 3,
+      "probability": 0.0004246515637715705,
+      "latencyMs": 283,
+      "inputTokens": 853
+    },
+    {
+      "number": 40,
+      "error": "provider_http_429"
+    },
+    {
+      "number": 2,
+      "probability": 0.9941311823245371,
+      "latencyMs": 293,
+      "inputTokens": 860
+    },
+    {
+      "number": 21,
+      "probability": 0.9945000919232808,
+      "latencyMs": 288,
+      "inputTokens": 865
+    },
+    {
+      "number": 23,
+      "probability": 0.0004246515637715705,
+      "latencyMs": 288,
+      "inputTokens": 853
+    },
+    {
+      "number": 24,
+      "error": "provider_http_429"
+    }
+  ],
+  "publicShared": 0,
+  "privateShared": 0,
+  "metadataLeaks": 0,
+  "providerErrors": 30,
+  "checkingRowsAfter": 0,
+  "limitation": "One small concurrent burst against the real provider; synthetic source injection, no production accounts/load, no retry or altered provider limits."
+}

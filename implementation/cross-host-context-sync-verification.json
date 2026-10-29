@@ -1,0 +1,195 @@
+{
+  "date": "2026-10-29",
+  "state": "Verified source and server candidate; production rollout pending",
+  "patch": {
+    "number": 51,
+    "path": "cross-host-context-sync.patch",
+    "sha256": "8341e4e4b17729d4eb030b0eaf1c11e02aaa02a26d5527003b21c4d6b8587a9b",
+    "applyAfter": "sharing-stress.patch"
+  },
+  "native": {
+    "published": "0.4.32/runtime65",
+    "unchanged": true
+  },
+  "server": {
+    "candidate": "20261029-cross-host-sync",
+    "prior": "20261029-question-discovery",
+    "bundleSha256": "c8ed1c4035498d4db6855a2f1749bec34bcb2331de9ba2349cec01f612f61869",
+    "fileCount": 159,
+    "changedFileCount": 6,
+    "migrationChanges": false,
+    "published": false,
+    "deployed": false
+  },
+  "checks": {
+    "core": {
+      "pass": 628,
+      "fail": 0,
+      "includesCrossHostRegression": true
+    },
+    "setupBrowser": {
+      "pass": 27,
+      "fail": 0,
+      "widths": [
+        320,
+        390,
+        768,
+        1440,
+        1920
+      ]
+    },
+    "extractedBundle": {
+      "pass": 23,
+      "fail": 0,
+      "identities": "synthetic",
+      "compiledFallback": "stub"
+    },
+    "deployment": {
+      "pass": 57,
+      "skip": 1,
+      "fail": 0
+    },
+    "replay": {
+      "patches": 51,
+      "changedFiles": 212,
+      "mismatches": [],
+      "matched": true
+    }
+  },
+  "crossHostRegression": {
+    "nativeClients": [
+      "Claude Code protocol fixture",
+      "Codex protocol fixture",
+      "Conductor protocol fixture"
+    ],
+    "remoteOAuthClients": [
+      "Claude chat protocol fixture",
+      "ChatGPT protocol fixture"
+    ],
+    "actualHostModels": false,
+    "cases": [
+      "file collection into canonical archive",
+      "five clients read identical initial content",
+      "source edits replace prior text",
+      "failed upload preserves prior context and recovers after collector restart",
+      "hidden reasoning and tool payload excluded",
+      "source exclusion reaches all five readers and collection does not undo it",
+      "unrelated account receives no source",
+      "reading in a client does not invent collection receipts for that installation"
+    ]
+  },
+  "liveMac": {
+    "runtime": 65,
+    "version": "0.4.32",
+    "collectionEnabled": true,
+    "diagnosticReadsOnly": true,
+    "newVisibleMarkerRetrieved": true,
+    "successfulReadAt": "2026-10-29T05:42:57.149Z",
+    "archiveRevision": 6530,
+    "sourceReadCitationCount": 2,
+    "searchPages": [
+      {
+        "scannedSections": 500,
+        "results": 0,
+        "nextCursor": 500
+      },
+      {
+        "scannedSections": 1000,
+        "results": 0,
+        "nextCursor": 1000
+      },
+      {
+        "scannedSections": 1330,
+        "results": 1,
+        "nextCursor": null
+      }
+    ],
+    "caution": "The earlier empty phrase-search pages had continuation cursors. They were not evidence of missing sync. This was a signed read on the existing Mac account, not model-host or clean-install acceptance."
+  },
+  "changes": [
+    "five explicit app choices with native collection versus remote retrieval",
+    "same-account guidance and official host instructions",
+    "copyable source-read verification request with empty-page cursor handling",
+    "paused/offline/error/partial collection does not claim ongoing current sync",
+    "Claude Code prompt usable in Desktop Code or terminal",
+    "patch50 consent invalidation included in server bundle"
+  ],
+  "limitations": [
+    "Regular Claude and ChatGPT connections retrieve the synced library; connection alone does not collect their web-only history.",
+    "Fresh Google plus actual-model acceptance in every host remains open.",
+    "Existing Claude finish_context_setup denial remains pending; no denied action was retried or bypassed.",
+    "Older open host chats can retain old loaded plugins; no existing account was replaced.",
+    "Sharing recall, conservative false withholding and provider capacity failures remain open, per sharing-stress-verification.json."
+  ],
+  "permissionChanges": false,
+  "productionAccountWrites": false,
+  "officialGuides": [
+    "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp",
+    "https://developers.openai.com/plugins/deploy/connect-chatgpt",
+    "https://learn.chatgpt.com/docs/extend/mcp?surface=cli",
+    "https://www.conductor.build/docs/reference/mcp"
+  ],
+  "retainedHarnessFailures": [
+    "initial browser selector ambiguous after new app buttons; fixed specific selector",
+    "initial cross-host harness used remote tool aliases on native clients; fixed alias mapping",
+    "first extracted smoke command ran from repository root and found no test; rerun from extracted tree"
+  ],
+  "evidence": [
+    {
+      "path": "implementation/cross-host-context-sync/baseline.tap",
+      "sha256": "595e3084a316ee28af67a670c465b7db0b4fef4eb51df60e2317955d5074baee"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/browser-final.tap",
+      "sha256": "6099b5e6c17259f744a0d6517c7d3b150a17513943f41efbd89ffafb5c453c78"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/bundle-diff.json",
+      "sha256": "efc2ef046a6a3e5ee0ca024fbc79f92bf59d1d5b66c4d1feaaa42afcc1dbfee3"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/bundle-smoke.tap",
+      "sha256": "b4b73fd0c5a50c434f3327f07fe3ba7cdaf272d7304c50b3ab7c0612d65add7c"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/core-final.tap",
+      "sha256": "66d9a8a744193fed91461ca9eaf9cce56d817fe2f593881f25f5fcfcd77099f3"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/cross-host-first.tap",
+      "sha256": "860a4be8b8ce8819b89a51bcb870f55a6a77c0967589d01879ec8f0f0fbdb50d"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/cross-host-second.tap",
+      "sha256": "7847956af7d19ca7e7e323f3b5f0ea3d728741c6b9915d96613f8c5c7adf7515"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/deployment-tests.log",
+      "sha256": "8c70314300eb7566414dd9fb4c3417985a987393975d12cc88323d696e52c3f5"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/live-marker.json",
+      "sha256": "0256549b70a7e4bc090de403e2135cb50f208159c7a77bfb33c3861acb56fe19"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/native-ui-after.tap",
+      "sha256": "632337c1384f4a2fef05d8762607dcee207a88fe0c364300dfef706ae8213774"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/replay51.json",
+      "sha256": "e4c605b8d0323b1b04cc073d237ef71f8a93623fe278d7c4c4308c9894359d4b"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/routes-after.tap",
+      "sha256": "db5b4e9b21bbd4f9bfe8b2aa07def12f800897053a1297e4c8b8b8c5bde980b2"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/routes-first.tap",
+      "sha256": "6f839e47d69a7336dbb636dd90cf6cb81dfee3974261a052cf2505fdb6e3187b"
+    },
+    {
+      "path": "implementation/cross-host-context-sync/runtime-update-manifest.json",
+      "sha256": "11c2f006442146467bbf595d32fa3561fe90047914b12fb234aaf8e9d378620e"
+    }
+  ]
+}

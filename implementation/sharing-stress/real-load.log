@@ -1,0 +1,13 @@
+{
+  "report": ".context/sharing-stress/real-load.json",
+  "owners": 10,
+  "requests": 10,
+  "providerCalls": 40,
+  "peakProviderCalls": 40,
+  "publicShared": 0,
+  "privateShared": 0,
+  "metadataLeaks": 0,
+  "providerErrors": 30,
+  "checkingRowsAfter": 0,
+  "elapsedMs": 438
+}

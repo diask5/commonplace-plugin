@@ -1,5 +1,14 @@
 # Context MVP readiness — 26 October 2026
 
+29 October [cross-host context sync](CROSS-HOST-CONTEXT-SYNC.md): five explicit app choices, truthful sync status and source-read verification are ready in server candidate `20261029-cross-host-sync`. A fresh message from this chat was successfully read from the live Mac archive. 628 core tests, 27 browser checks, 23 extracted-bundle tests and exact 51-patch replay pass. Regular Claude/ChatGPT connections read the library; they do not automatically upload web-only chats. Actual-host onboarding and sharing reliability gates remain open. Rollout is pending.
+
+29 October [sharing stress evaluation](SHARING-STRESS.md): useful automatic
+sharing still fails acceptance. Three answerable question phrasings missed their
+source, permitted facts were withheld, and a ten-owner burst hit 30 provider 429s
+in 40 calls. A consent-resurrection edge case is fixed in source-only patch 50,
+with 625 core tests, 27 browser tests and exact 50-patch replay passing. The live
+server and native packages have not changed; the fix is not deployed.
+
 The later [Sam and Zane scenario cut](FULL-VIDEO-RETAKE.md) follows the spec’s
 owner-initiated flow with action-focused narration. It uses disclosed scenario
 roles and preserves the same open acceptance gates.

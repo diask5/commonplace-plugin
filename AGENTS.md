@@ -1,5 +1,16 @@
 # Meet Proxy product contract
 
+29 October sharing stress follow-up: [results](docs/SHARING-STRESS.md) and
+`implementation/sharing-stress-verification.json` preserve 96 real-provider calls
+with synthetic data, ten-owner load and ordinary-question recall. The context
+store classifies exact excerpts before disclosure; requester assistants answer
+from approved shared context. Useful sharing remains unreliable: permitted facts
+withheld, three recall misses, and 30 provider 429s in a 40-call burst. Patch 50
+invalidates old opt-in explicitly when a removed member rejoins, fixing equal or
+backwards timestamp resurrection. It is SOURCE ONLY, not packaged/installed/live.
+625 core tests, 27 browser tests and exact 50-patch replay across 211 files pass.
+No threshold/model/prompt/host permission or production settings changed.
+
 Use [the attached Draft v3 product spec](docs/MEET-PROXY-PRODUCT-SPEC.md) as the
 product source of truth. Its original wording is preserved. Later explicit user
 instructions take precedence. Track implementation and evidence in
@@ -32,6 +43,14 @@ Native context-space tools create/invite/preview/accept/leave/archive within cur
 account and workspace scope. Joining never enables private-library sharing.
 See [the current readiness audit](docs/CONTEXT-MVP-READINESS.md) and
 `implementation/context-mvp-verification.json` for release state.
+Cross-host setup candidate patch 51 is verified: five explicit app choices, current
+versus paused/offline/error sync status, and source-read connection verification.
+628 core tests, 27 setup/browser checks, 23 extracted-server checks and exact
+51-patch replay pass. A fresh visible message from this chat was read successfully
+from the live Mac archive after following phrase-search pagination. Regular Claude
+and ChatGPT connections retrieve existing context; they do not collect web-only
+chat history. Server candidate `20261029-cross-host-sync` includes patch 50 and
+is not yet deployed. See [cross-host sync](docs/CROSS-HOST-CONTEXT-SYNC.md).
 Current published native release is **0.4.32/runtime65**, installed in both
 permanent registries with runtime65 active on the Mac. Server
 **20261029-question-discovery** is live; patch 49 fixes empty full-question discovery

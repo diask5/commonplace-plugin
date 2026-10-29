@@ -1,0 +1,262 @@
+TAP version 13
+# Subtest: ten people can share concurrently with owner isolation and bounded per-request classification
+not ok 1 - ten people can share concurrently with owner isolation and bounded per-request classification
+  ---
+  duration_ms: 123.433271
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:30:1'
+  failureType: 'testCodeFailure'
+  error: 'Choose someone already in your People.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:5:37)
+    Groups.connected (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:23:108)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:76
+    Array.forEach (<anonymous>)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:60
+    Groups.atomic (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/shared-chats.mjs:16:62)
+    Groups.create (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:31:17)
+    fixture (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:16:30)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:31:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+  ...
+# Subtest: forty simultaneous requests serialize one contributor across spaces without lost locks or replay leaks
+not ok 2 - forty simultaneous requests serialize one contributor across spaces without lost locks or replay leaks
+  ---
+  duration_ms: 99.970039
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:44:1'
+  failureType: 'testCodeFailure'
+  error: 'Choose someone already in your People.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:5:37)
+    Groups.connected (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:23:108)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:76
+    Array.forEach (<anonymous>)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:60
+    Groups.atomic (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/shared-chats.mjs:16:62)
+    Groups.create (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:31:17)
+    fixture (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:16:30)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:45:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+  ...
+# Subtest: each owner and space has separate opt-in, audit and rules; provider errors do not leak or strand work
+not ok 3 - each owner and space has separate opt-in, audit and rules; provider errors do not leak or strand work
+  ---
+  duration_ms: 116.536074
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:59:1'
+  failureType: 'testCodeFailure'
+  error: 'Choose someone already in your People.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:5:37)
+    Groups.connected (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:23:108)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:76
+    Array.forEach (<anonymous>)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:60
+    Groups.atomic (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/shared-chats.mjs:16:62)
+    Groups.create (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:31:17)
+    fixture (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:16:30)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:60:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+  ...
+# Subtest: in-flight pause prevents every pending excerpt and retry
+not ok 4 - in-flight pause prevents every pending excerpt and retry
+  ---
+  duration_ms: 108.042249
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:72:141'
+  failureType: 'testCodeFailure'
+  error: 'Choose someone already in your People.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:5:37)
+    Groups.connected (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:23:108)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:76
+    Array.forEach (<anonymous>)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:60
+    Groups.atomic (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/shared-chats.mjs:16:62)
+    Groups.create (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:31:17)
+    fixture (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:16:30)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:73:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+  ...
+# Subtest: in-flight rules prevents every pending excerpt and retry
+not ok 5 - in-flight rules prevents every pending excerpt and retry
+  ---
+  duration_ms: 91.254774
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:72:141'
+  failureType: 'testCodeFailure'
+  error: 'Choose someone already in your People.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:5:37)
+    Groups.connected (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:23:108)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:76
+    Array.forEach (<anonymous>)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:60
+    Groups.atomic (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/shared-chats.mjs:16:62)
+    Groups.create (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:31:17)
+    fixture (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:16:30)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:73:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+  ...
+# Subtest: in-flight expiry prevents every pending excerpt and retry
+not ok 6 - in-flight expiry prevents every pending excerpt and retry
+  ---
+  duration_ms: 93.39336
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:72:141'
+  failureType: 'testCodeFailure'
+  error: 'Choose someone already in your People.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:5:37)
+    Groups.connected (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:23:108)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:76
+    Array.forEach (<anonymous>)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:60
+    Groups.atomic (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/shared-chats.mjs:16:62)
+    Groups.create (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:31:17)
+    fixture (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:16:30)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:73:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+  ...
+# Subtest: in-flight remove-requester prevents every pending excerpt and retry
+not ok 7 - in-flight remove-requester prevents every pending excerpt and retry
+  ---
+  duration_ms: 104.667365
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:72:141'
+  failureType: 'testCodeFailure'
+  error: 'Choose someone already in your People.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:5:37)
+    Groups.connected (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:23:108)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:76
+    Array.forEach (<anonymous>)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:60
+    Groups.atomic (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/shared-chats.mjs:16:62)
+    Groups.create (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:31:17)
+    fixture (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:16:30)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:73:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+  ...
+# Subtest: in-flight remove-contributor prevents every pending excerpt and retry
+not ok 8 - in-flight remove-contributor prevents every pending excerpt and retry
+  ---
+  duration_ms: 97.885423
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:72:141'
+  failureType: 'testCodeFailure'
+  error: 'Choose someone already in your People.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:5:37)
+    Groups.connected (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:23:108)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:76
+    Array.forEach (<anonymous>)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:60
+    Groups.atomic (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/shared-chats.mjs:16:62)
+    Groups.create (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:31:17)
+    fixture (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:16:30)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:73:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+  ...
+# Subtest: in-flight archive-space prevents every pending excerpt and retry
+not ok 9 - in-flight archive-space prevents every pending excerpt and retry
+  ---
+  duration_ms: 94.169018
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:72:141'
+  failureType: 'testCodeFailure'
+  error: 'Choose someone already in your People.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:5:37)
+    Groups.connected (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:23:108)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:76
+    Array.forEach (<anonymous>)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:60
+    Groups.atomic (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/shared-chats.mjs:16:62)
+    Groups.create (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:31:17)
+    fixture (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:16:30)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:73:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+  ...
+# Subtest: in-flight new-member prevents every pending excerpt and retry
+not ok 10 - in-flight new-member prevents every pending excerpt and retry
+  ---
+  duration_ms: 103.198272
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:72:141'
+  failureType: 'testCodeFailure'
+  error: 'Choose someone already in your People.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:5:37)
+    Groups.connected (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:23:108)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:76
+    Array.forEach (<anonymous>)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:60
+    Groups.atomic (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/shared-chats.mjs:16:62)
+    Groups.create (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:31:17)
+    fixture (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:16:30)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:73:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+  ...
+# Subtest: in-flight receiver-generation prevents every pending excerpt and retry
+not ok 11 - in-flight receiver-generation prevents every pending excerpt and retry
+  ---
+  duration_ms: 130.480663
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:72:141'
+  failureType: 'testCodeFailure'
+  error: 'Choose someone already in your People.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:5:37)
+    Groups.connected (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:23:108)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:76
+    Array.forEach (<anonymous>)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:60
+    Groups.atomic (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/shared-chats.mjs:16:62)
+    Groups.create (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:31:17)
+    fixture (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:16:30)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:73:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+  ...
+# Subtest: invitation acceptance does not opt in; removal stops activity and old links; rejoin does not restore old sharing
+not ok 12 - invitation acceptance does not opt in; removal stops activity and old links; rejoin does not restore old sharing
+  ---
+  duration_ms: 102.714749
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:86:1'
+  failureType: 'testCodeFailure'
+  error: 'Choose someone already in your People.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:5:37)
+    Groups.connected (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:23:108)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:76
+    Array.forEach (<anonymous>)
+    file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:33:60
+    Groups.atomic (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/shared-chats.mjs:16:62)
+    Groups.create (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/groups.mjs:31:17)
+    fixture (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:16:30)
+    async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-context-stress.test.mjs:87:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 0
+# fail 12
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1443.164932

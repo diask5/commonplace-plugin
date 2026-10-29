@@ -1,0 +1,95 @@
+TAP version 13
+# Subtest: ten people can share concurrently with owner isolation and bounded per-request classification
+ok 1 - ten people can share concurrently with owner isolation and bounded per-request classification
+  ---
+  duration_ms: 786.320724
+  type: 'test'
+  ...
+# {"owners":10,"requests":30,"approvedExcerpts":160,"providerCalls":640,"peakProviderCalls":80,"perOwnerPeak":[8,8,8,8,8,8,8,8,8,8],"elapsedMs":618,"results":[{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16}]}
+# Subtest: forty simultaneous requests serialize one contributor across spaces without lost locks or replay leaks
+ok 2 - forty simultaneous requests serialize one contributor across spaces without lost locks or replay leaks
+  ---
+  duration_ms: 150.489064
+  type: 'test'
+  ...
+# Subtest: each owner and space has separate opt-in, audit and rules; provider errors do not leak or strand work
+ok 3 - each owner and space has separate opt-in, audit and rules; provider errors do not leak or strand work
+  ---
+  duration_ms: 160.870842
+  type: 'test'
+  ...
+# Subtest: in-flight pause prevents every pending excerpt and retry
+ok 4 - in-flight pause prevents every pending excerpt and retry
+  ---
+  duration_ms: 155.527272
+  type: 'test'
+  ...
+# Subtest: in-flight rules prevents every pending excerpt and retry
+ok 5 - in-flight rules prevents every pending excerpt and retry
+  ---
+  duration_ms: 122.262687
+  type: 'test'
+  ...
+# Subtest: in-flight expiry prevents every pending excerpt and retry
+ok 6 - in-flight expiry prevents every pending excerpt and retry
+  ---
+  duration_ms: 122.989963
+  type: 'test'
+  ...
+# Subtest: in-flight remove-requester prevents every pending excerpt and retry
+ok 7 - in-flight remove-requester prevents every pending excerpt and retry
+  ---
+  duration_ms: 115.920524
+  type: 'test'
+  ...
+# Subtest: in-flight remove-contributor prevents every pending excerpt and retry
+ok 8 - in-flight remove-contributor prevents every pending excerpt and retry
+  ---
+  duration_ms: 112.759882
+  type: 'test'
+  ...
+# Subtest: in-flight archive-space prevents every pending excerpt and retry
+ok 9 - in-flight archive-space prevents every pending excerpt and retry
+  ---
+  duration_ms: 112.413036
+  type: 'test'
+  ...
+# Subtest: in-flight new-member prevents every pending excerpt and retry
+ok 10 - in-flight new-member prevents every pending excerpt and retry
+  ---
+  duration_ms: 122.302197
+  type: 'test'
+  ...
+# Subtest: in-flight receiver-generation prevents every pending excerpt and retry
+ok 11 - in-flight receiver-generation prevents every pending excerpt and retry
+  ---
+  duration_ms: 125.966798
+  type: 'test'
+  ...
+# Subtest: invitation acceptance does not opt in; removal stops activity and old links; rejoin does not restore old sharing
+ok 12 - invitation acceptance does not opt in; removal stops activity and old links; rejoin does not restore old sharing
+  ---
+  duration_ms: 111.341868
+  type: 'test'
+  ...
+# Subtest: remove and re-add cannot resurrect consent when clock delta is 0ms
+ok 13 - remove and re-add cannot resurrect consent when clock delta is 0ms
+  ---
+  duration_ms: 113.055939
+  type: 'test'
+  ...
+# Subtest: remove and re-add cannot resurrect consent when clock delta is -60000ms
+ok 14 - remove and re-add cannot resurrect consent when clock delta is -60000ms
+  ---
+  duration_ms: 116.505521
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2607.318847
