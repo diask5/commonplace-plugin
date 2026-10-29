@@ -1,5 +1,12 @@
 # Meet Proxy Draft v3 compliance
 
+29 October: [bounded question discovery](QUESTION-DISCOVERY.md) is live on server
+`20261029-question-discovery`; 611 core tests and exact 49-patch replay pass.
+The full-sentence private question now finds four withheld candidates. A fresh
+public request still withholds both candidates at the unchanged threshold. Native
+0.4.32/runtime65 and the pending Claude setup approval are unchanged.
+
+
 Later 28 October retake: server `20261028-bounded-classification` is live, with
 610 core tests and the exact 48-patch replay passing. The fresh public query
 completes with 26 audit entries (20 below threshold, six provider HTTP 429)

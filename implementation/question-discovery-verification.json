@@ -1,6 +1,6 @@
 {
   "date": "2026-10-29",
-  "state": "local server candidate; not published or deployed",
+  "state": "published and live; bounded question discovery verified",
   "serverRelease": "20261029-question-discovery",
   "nativeVersion": "0.4.32/runtime65",
   "nativeArtifactsChanged": false,
@@ -36,6 +36,46 @@
     "syntheticIdentity": true,
     "compiledAuthorize": "placeholder"
   },
-  "liveAcceptance": "pending",
-  "segmentationExperiment": "Preserved separately in implementation/experiments/verbatim-blocks.json; not included in this candidate. Its bounded model diagnostic did not establish useful public sharing."
+  "liveAcceptance": {
+    "space": "e0b9264656f7ea2fd8a56d17",
+    "publicRequest": {
+      "id": "8cdb2a5c41366b981ddfcd55",
+      "query": "What is the Juniper Lantern public launch brief?",
+      "state": "no_context",
+      "candidates": 2,
+      "probabilities": [
+        0.9920847780603449,
+        0.9262219195363253
+      ],
+      "providerErrors": 0,
+      "sharedExcerpts": 0
+    },
+    "privateRequest": {
+      "id": "32b5b338078bf6e6a0c8828a",
+      "query": "What is the Juniper Lantern private budget and audit marker?",
+      "state": "no_context",
+      "candidates": 4,
+      "allWithheld": true,
+      "providerErrors": 0,
+      "sharedExcerpts": 0,
+      "recipientPrivateChecksAbsent": true
+    },
+    "discoveryFix": "The formerly empty full-sentence private query now finds four candidates. Useful public sharing still fails the unchanged threshold."
+  },
+  "segmentationExperiment": "Preserved separately in implementation/experiments/verbatim-blocks.json; not included in this candidate. Its bounded model diagnostic did not establish useful public sharing.",
+  "deployment": {
+    "release": "20261029-question-discovery",
+    "previous": "20261028-bounded-classification",
+    "filesVerified": 159,
+    "serviceReadableFiles": 159,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "migrations": "unchanged; code-only",
+    "finishedAtEpoch": 1793234064.6924167
+  },
+  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261029-question-discovery",
+  "pullRequest": 44
 }

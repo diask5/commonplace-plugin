@@ -34,7 +34,12 @@ See [the current readiness audit](docs/CONTEXT-MVP-READINESS.md) and
 `implementation/context-mvp-verification.json` for release state.
 Current published native release is **0.4.32/runtime65**, installed in both
 permanent registries with runtime65 active on the Mac. Server
-**20261028-bounded-classification** is live; all 159 files/readability and three
+**20261029-question-discovery** is live; patch 49 fixes empty full-question discovery
+within the existing search budget. 611 core tests and the exact 49-patch replay pass.
+The private question now finds four withheld candidates; useful public sharing
+still withholds both new candidates below the unchanged 0.995 threshold.
+See [question discovery](docs/QUESTION-DISCOVERY.md). The prior
+**20261028-bounded-classification** release is retained; all 159 files/readability and three
 services are verified. Patches 46–47 keep native source titles private and add
 bounded owner-only stopped-request observations. No native package, threshold,
 classifier prompt/model, permission, deadline or authority fence changed.
