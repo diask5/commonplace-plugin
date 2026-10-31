@@ -1,0 +1,17 @@
+✔ two linked identities retain separate credentials and independent chat selections (26.006073ms)
+✔ newly selected account never copies old transcript by default; explicit consent assigns only this chat (12.351086ms)
+✔ unknown sources, subagents, and mismatching aliases cannot leak into another account (8.714231ms)
+✔ selection waits for in-flight capture and then blocks subsequent old-account captures (59.257243ms)
+✔ paused chat disables on-demand reads, routing rejects stale profiles and preserves legacy defaults (8.028432ms)
+✔ mismatching Google identity, unverified profile, and path injection never select a profile (8.760085ms)
+✔ link retries reuse profile, selection verifies live identity, scoped chats cannot widen authority (12.782929ms)
+✔ canonical pending retry and real transcript upload are fenced by profile ownership (18.753084ms)
+✔ a busy legacy primary companion blocks linking before creating an alternate profile (5.099583ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 263.955747
