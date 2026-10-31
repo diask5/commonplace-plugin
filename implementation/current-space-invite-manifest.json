@@ -61,7 +61,7 @@
   ],
   "patch": "current-space-invite.patch",
   "sha256": "208a59a9b79852eb2f75c6ec162a2d760a8362b8d65c9f957215e33dbf620ce7",
-  "state": "Packaged; production deployment pending.",
+  "state": "Published as 20261031-current-space-invite; NOT deployed. Host Mac execution unavailable; live server remains 20261031-setup-activation.",
   "files": [
     {
       "path": "apps/commonplace-account/server/context-assets/context-space-invitations.mjs",

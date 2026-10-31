@@ -1,0 +1,7 @@
+{
+  "asset": "https://34.27.253.220/context/assets/context-space-invitations.mjs",
+  "liveSha256": "25fe22b76b733f24d31ad278f8980a361d7fa087324df1fec788cbd78db86de0",
+  "matchesPreviousRelease": true,
+  "matchesCandidate": false,
+  "deploymentAttempt": "Host rejected before command execution: Local execution is not enabled for this session"
+}

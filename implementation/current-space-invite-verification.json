@@ -1,12 +1,12 @@
 {
   "date": "2026-10-31",
-  "state": "Packaged; production deployment pending.",
+  "state": "Published and tested; deployment blocked before command execution by Conductor host binding. Production retains the previous release.",
   "patch": 57,
   "nativeVersionUnchanged": "0.4.33/runtime66",
   "server": {
     "baseline": "20261031-setup-activation",
     "candidate": "20261031-current-space-invite",
-    "published": false,
+    "published": true,
     "deployed": false,
     "files": 160,
     "bundleSha256": "6713cbe66af9bd8f00f38dbc0161051c8e0028b17548da4bd4c9ece590a656c9",
@@ -15,7 +15,22 @@
     "changedFiles": [
       "dist/standalone/account-runtime/context-assets/context-space-invitations.mjs",
       "dist/standalone/account-runtime/context-product-ui.mjs"
-    ]
+    ],
+    "sourceCommit": "42d965ce180741ce18935df3f7a3d622c5a5218a",
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261031-current-space-invite",
+    "deploymentBlock": {
+      "tool": "mcp__conductor__RunLocalCommand",
+      "reason": "Local execution is not enabled for this session",
+      "commandExecuted": false,
+      "retryAttempted": false
+    },
+    "liveBaselineCheck": {
+      "asset": "https://34.27.253.220/context/assets/context-space-invitations.mjs",
+      "liveSha256": "25fe22b76b733f24d31ad278f8980a361d7fa087324df1fec788cbd78db86de0",
+      "matchesPreviousRelease": true,
+      "matchesCandidate": false,
+      "deploymentAttempt": "Host rejected before command execution: Local execution is not enabled for this session"
+    }
   },
   "checks": {
     "invitationBrowser": {
@@ -50,5 +65,35 @@
   ],
   "testNotes": [
     "The initial new browser test used browser.newPage rather than an explicit context, which axe rejected. Fixed the test harness; the dependent subtest then ran normally. Raw failure evidence is retained without ANSI styling/trailing whitespace."
+  ],
+  "evidence": [
+    {
+      "path": "implementation/current-space-invite/deploy57.py",
+      "sha256": "da31d3dc132ddf1b91f082e4428f04492499a4605c83fc37846114a17fb6cfec"
+    },
+    {
+      "path": "implementation/current-space-invite/first-attempt.tap",
+      "sha256": "4207c70439de8ee7526f297b78f91b5ed764f79eb6a4c80316b0d7753ab64aef"
+    },
+    {
+      "path": "implementation/current-space-invite/invitations.tap",
+      "sha256": "fc9c1ebcb11b7430dc5a35be28ac6f698dd8c29ca18b5aabf690984bb741b0a6"
+    },
+    {
+      "path": "implementation/current-space-invite/live-baseline-check.json",
+      "sha256": "5799301fad00b80c38f3a9daca031084a40b3f32677195bb5c2a5ccdc5153e3a"
+    },
+    {
+      "path": "implementation/current-space-invite/public-smoke.mjs",
+      "sha256": "4f61882fc57ec92d6b8cbbd31fd52d43dca712321cb28cef4564d7da415a895b"
+    },
+    {
+      "path": "implementation/current-space-invite/replay.json",
+      "sha256": "f59861ff6aaa54ccc1452f566b10f7788415ffbfae122d36cde2d3f760d0218b"
+    },
+    {
+      "path": "implementation/current-space-invite/runtime-update-manifest.json",
+      "sha256": "1ab1d37c76ab8d663de2fac4e631207fd6a97c38921bac951d5ba9d9ac21b16d"
+    }
   ]
 }

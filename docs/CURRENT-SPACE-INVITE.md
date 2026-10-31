@@ -1,7 +1,10 @@
 # Invite into the current space — 31 October 2026
 
-Patch 57 is packaged for server `20261031-current-space-invite`; deployment is
-pending. Native 0.4.33/runtime66 is unchanged.
+Patch 57 is **published, not deployed**, as `20261031-current-space-invite`.
+Conductor rejected `RunLocalCommand` with “Local execution is not enabled for
+this session” before executing the deployment command. The public asset still
+matches live server `20261031-setup-activation`; no alternate deployment route
+or automatic retry was attempted. Native 0.4.33/runtime66 is unchanged.
 
 The top-bar Invite action previously defaulted to a new space even when a space
 was open. If the signed-in account was a member, its current space disappeared
