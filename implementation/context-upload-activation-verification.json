@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-31",
+  "state": "Native 0.4.33/runtime66 active; persistent background launcher updated; discovered sources current and two production source reads passed",
+  "native": {
+    "version": "0.4.33",
+    "runtime": 66,
+    "published": true,
+    "installed": true,
+    "active": true,
+    "backgroundVersion": "0.4.33",
+    "newArtifactPublished": false
+  },
+  "server": {
+    "release": "20261029-cross-host-sync",
+    "changedInThisFollowup": false
+  },
+  "initialObservation": {
+    "runtimeRevision": 49,
+    "activePluginVersion": "0.4.15",
+    "backgroundVersion": "0.4.32",
+    "deferredUpgradeAttempts": 12,
+    "totalSources": 195,
+    "completeSources": 194,
+    "incompleteSources": 1,
+    "sourceErrors": 0,
+    "historicalRuntimeRegressionCause": "Not established; the process was observed running an older loaded plugin."
+  },
+  "repair": {
+    "method": "Existing installed createLocalClient guarded upgrade followed by ensureCloudBackground for the idle saved launcher",
+    "guardAccepted": true,
+    "accountPreserved": true,
+    "savedPermissionsPreserved": true,
+    "sameActivePidDuringLauncherUpdate": true,
+    "forcedCompanionSignals": false,
+    "deniedHostSetupRetried": false
+  },
+  "verification": {
+    "activeRuntime": 66,
+    "discoveredSources": 195,
+    "completeSources": 195,
+    "incompleteSources": 0,
+    "sourceErrors": 0,
+    "discoveryPartial": false,
+    "conductorConversations": 49,
+    "transcriptRoots": 4,
+    "syncError": null,
+    "successfulProductionSourceReads": 2,
+    "archiveRevisions": [
+      6603,
+      6604
+    ],
+    "bothSearchesFollowedEmptyPages": [
+      500,
+      1000
+    ],
+    "secondTextPostedAfterActivation": true,
+    "firstReadCitations": 2,
+    "secondReadCitations": 1,
+    "privateTranscriptRetained": false,
+    "credentialsRetained": false
+  },
+  "limits": [
+    "Counts cover the discovered sources on this already configured Mac, not every possible chat or device.",
+    "No reboot or sleep/wake acceptance was performed; the background launcher configuration was checked.",
+    "No sync latency SLA is inferred from these observations.",
+    "Regular Claude and ChatGPT connections still do not automatically collect website-only chat history.",
+    "Fresh-user host onboarding, previous Claude setup approval and cross-person sharing reliability remain open."
+  ],
+  "originalEvidenceRetained": "implementation/bounded-sync-catchup-verification.json",
+  "sourceCodeChanged": false,
+  "tests": "Live guarded activation, background installation, collection coverage and two successful current production source reads; no code change requiring a new test run.",
+  "allP0Ready": false,
+  "evidence": [
+    {
+      "path": "implementation/context-upload-activation/activation-result.json",
+      "sha256": "5b2a8b08ef3fb9dcf6c24d1f32966007892074a6d36d556ac75e08073fc061ab"
+    },
+    {
+      "path": "implementation/context-upload-activation/background-upgrade.json",
+      "sha256": "816d8ab894b8e80988ad44b32a1da2bb13a71b3f425e6ca00867268026b08bdb"
+    },
+    {
+      "path": "implementation/context-upload-activation/first-marker-read.json",
+      "sha256": "e45f132dc090225f045a744a1e76d7daa9cfcb0d1399c4724cff5813cfc572b6"
+    },
+    {
+      "path": "implementation/context-upload-activation/previous-deferred-status.json",
+      "sha256": "302c09988ded8efe196900714ef84d1a09e63b3f5e6e267135bc9e9e6a3cdff0"
+    },
+    {
+      "path": "implementation/context-upload-activation/second-marker-read.json",
+      "sha256": "51a7f328d26363c71e55a559d252ebfd4ccf6f82c237795626fb549f9c7e2364"
+    },
+    {
+      "path": "implementation/context-upload-activation/final-status.json",
+      "sha256": "d04a317245836a7f520687f62f629f1a8da5b54bb23f5d9cfd85f87feb99167e"
+    }
+  ],
+  "latestVerifiedAt": "2026-10-31T21:05:14Z"
+}

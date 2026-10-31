@@ -1,0 +1,1111 @@
+{
+  "at": "2026-10-31T21:36:36.307Z",
+  "syntheticOnly": true,
+  "realClassifier": true,
+  "candidateInjection": true,
+  "realArchiveRetrieval": false,
+  "productionChanged": false,
+  "model": "pplx-decider-v1.2",
+  "threshold": 0.995,
+  "rules": [
+    {
+      "id": "public",
+      "text": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members."
+    },
+    {
+      "id": "private",
+      "text": "Never share private financial details, customer identities, credentials, personal matters or private audit markers."
+    }
+  ],
+  "publicText": "Project Lumen pilot launches November 12, 2026. Eden Hart owns the rollout. Exact start time and timezone remain undecided.",
+  "privateText": "Project Lumen private budget is $420,000. Private audit marker: PRIVATE_CANARY_LOAD.",
+  "owners": 10,
+  "requests": 10,
+  "providerCalls": 40,
+  "pendingDecisionPeak": 40,
+  "peakProviderCalls": 3,
+  "providerStartGapsMs": [
+    123,
+    126,
+    125,
+    130,
+    126,
+    125,
+    126,
+    126,
+    126,
+    130,
+    134,
+    134,
+    125,
+    125,
+    126,
+    125,
+    126,
+    145,
+    126,
+    159,
+    126,
+    126,
+    125,
+    132,
+    127,
+    126,
+    126,
+    129,
+    127,
+    128,
+    138,
+    126,
+    125,
+    125,
+    126,
+    125,
+    126,
+    126,
+    126
+  ],
+  "providerStatuses": [
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200
+  ],
+  "elapsedMs": 5229,
+  "rows": [
+    {
+      "ownerIndex": 0,
+      "requesterIndex": 1,
+      "state": "shared",
+      "durationMs": 587,
+      "publicShared": true,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [
+        {
+          "title": "Shared excerpt",
+          "text": "Project Lumen pilot launches November 12, 2026. Eden Hart owns the rollout. Exact start time and timezone remain undecided."
+        }
+      ],
+      "audit": [
+        {
+          "candidateId": "private-source-c5c3cf08d361f0b553e07fc8-0",
+          "title": "Shared excerpt",
+          "decision": "allow",
+          "reason": "above_threshold",
+          "probability": 0.997784513817771,
+          "latencyMs": 265,
+          "inputTokens": 1621,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.9985990988800955,
+              "latencyMs": 216,
+              "inputTokens": 813
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.997784513817771,
+              "latencyMs": 265,
+              "inputTokens": 808
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-c5c3cf08d361f0b553e07fc8-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": 0.00031442822474885316,
+          "latencyMs": 500,
+          "inputTokens": 1597,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.00031442822474885316,
+              "latencyMs": 395,
+              "inputTokens": 801
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0003849460281829748,
+              "latencyMs": 500,
+              "inputTokens": 796
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 1,
+      "requesterIndex": 2,
+      "state": "shared",
+      "durationMs": 1103,
+      "publicShared": true,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [
+        {
+          "title": "Shared excerpt",
+          "text": "Project Lumen pilot launches November 12, 2026. Eden Hart owns the rollout. Exact start time and timezone remain undecided."
+        }
+      ],
+      "audit": [
+        {
+          "candidateId": "private-source-bd76140ce40eac3364c81ef8-0",
+          "title": "Shared excerpt",
+          "decision": "allow",
+          "reason": "above_threshold",
+          "probability": 0.997784513817771,
+          "latencyMs": 750,
+          "inputTokens": 1621,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.9985990988800955,
+              "latencyMs": 630,
+              "inputTokens": 813
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.997784513817771,
+              "latencyMs": 750,
+              "inputTokens": 808
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-bd76140ce40eac3364c81ef8-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": 0.00031442822474885316,
+          "latencyMs": 1009,
+          "inputTokens": 1597,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.00031442822474885316,
+              "latencyMs": 877,
+              "inputTokens": 801
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0003849460281829748,
+              "latencyMs": 1009,
+              "inputTokens": 796
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 2,
+      "requesterIndex": 3,
+      "state": "shared",
+      "durationMs": 1604,
+      "publicShared": true,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [
+        {
+          "title": "Shared excerpt",
+          "text": "Project Lumen pilot launches November 12, 2026. Eden Hart owns the rollout. Exact start time and timezone remain undecided."
+        }
+      ],
+      "audit": [
+        {
+          "candidateId": "private-source-68786748413bd87e87f27c12-0",
+          "title": "Shared excerpt",
+          "decision": "allow",
+          "reason": "above_threshold",
+          "probability": 0.997784513817771,
+          "latencyMs": 1307,
+          "inputTokens": 1621,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.9985990988800955,
+              "latencyMs": 1199,
+              "inputTokens": 813
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.997784513817771,
+              "latencyMs": 1307,
+              "inputTokens": 808
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-68786748413bd87e87f27c12-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": 0.00031442822474885316,
+          "latencyMs": 1520,
+          "inputTokens": 1597,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.00031442822474885316,
+              "latencyMs": 1402,
+              "inputTokens": 801
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0003849460281829748,
+              "latencyMs": 1520,
+              "inputTokens": 796
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 3,
+      "requesterIndex": 4,
+      "state": "shared",
+      "durationMs": 2132,
+      "publicShared": true,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [
+        {
+          "title": "Shared excerpt",
+          "text": "Project Lumen pilot launches November 12, 2026. Eden Hart owns the rollout. Exact start time and timezone remain undecided."
+        }
+      ],
+      "audit": [
+        {
+          "candidateId": "private-source-960c61559c701a4418301ab3-0",
+          "title": "Shared excerpt",
+          "decision": "allow",
+          "reason": "above_threshold",
+          "probability": 0.997784513817771,
+          "latencyMs": 1824,
+          "inputTokens": 1621,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.9985990988800955,
+              "latencyMs": 1657,
+              "inputTokens": 813
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.997784513817771,
+              "latencyMs": 1824,
+              "inputTokens": 808
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-960c61559c701a4418301ab3-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": 0.00031442822474885316,
+          "latencyMs": 2057,
+          "inputTokens": 1597,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.00031442822474885316,
+              "latencyMs": 1917,
+              "inputTokens": 801
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0003849460281829748,
+              "latencyMs": 2057,
+              "inputTokens": 796
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 4,
+      "requesterIndex": 5,
+      "state": "shared",
+      "durationMs": 2672,
+      "publicShared": true,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [
+        {
+          "title": "Shared excerpt",
+          "text": "Project Lumen pilot launches November 12, 2026. Eden Hart owns the rollout. Exact start time and timezone remain undecided."
+        }
+      ],
+      "audit": [
+        {
+          "candidateId": "private-source-03bc6af0febcedc1a674dff7-0",
+          "title": "Shared excerpt",
+          "decision": "allow",
+          "reason": "above_threshold",
+          "probability": 0.997784513817771,
+          "latencyMs": 2305,
+          "inputTokens": 1621,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.9985990988800955,
+              "latencyMs": 2153,
+              "inputTokens": 813
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.997784513817771,
+              "latencyMs": 2305,
+              "inputTokens": 808
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-03bc6af0febcedc1a674dff7-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": 0.00031442822474885316,
+          "latencyMs": 2602,
+          "inputTokens": 1597,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.00031442822474885316,
+              "latencyMs": 2431,
+              "inputTokens": 801
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0003849460281829748,
+              "latencyMs": 2602,
+              "inputTokens": 796
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 5,
+      "requesterIndex": 6,
+      "state": "shared",
+      "durationMs": 3229,
+      "publicShared": true,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [
+        {
+          "title": "Shared excerpt",
+          "text": "Project Lumen pilot launches November 12, 2026. Eden Hart owns the rollout. Exact start time and timezone remain undecided."
+        }
+      ],
+      "audit": [
+        {
+          "candidateId": "private-source-23f46bb55851e359dbf0c712-0",
+          "title": "Shared excerpt",
+          "decision": "allow",
+          "reason": "above_threshold",
+          "probability": 0.997784513817771,
+          "latencyMs": 2867,
+          "inputTokens": 1621,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.9985990988800955,
+              "latencyMs": 2747,
+              "inputTokens": 813
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.997784513817771,
+              "latencyMs": 2867,
+              "inputTokens": 808
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-23f46bb55851e359dbf0c712-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": 0.00031442822474885316,
+          "latencyMs": 3162,
+          "inputTokens": 1597,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.00031442822474885316,
+              "latencyMs": 2973,
+              "inputTokens": 801
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0003849460281829748,
+              "latencyMs": 3162,
+              "inputTokens": 796
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 6,
+      "requesterIndex": 7,
+      "state": "shared",
+      "durationMs": 3667,
+      "publicShared": true,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [
+        {
+          "title": "Shared excerpt",
+          "text": "Project Lumen pilot launches November 12, 2026. Eden Hart owns the rollout. Exact start time and timezone remain undecided."
+        }
+      ],
+      "audit": [
+        {
+          "candidateId": "private-source-f40e7c556640496c6537ab35-0",
+          "title": "Shared excerpt",
+          "decision": "allow",
+          "reason": "above_threshold",
+          "probability": 0.997784513817771,
+          "latencyMs": 3339,
+          "inputTokens": 1621,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.9985990988800955,
+              "latencyMs": 3252,
+              "inputTokens": 813
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.997784513817771,
+              "latencyMs": 3339,
+              "inputTokens": 808
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-f40e7c556640496c6537ab35-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": 0.00031442822474885316,
+          "latencyMs": 3603,
+          "inputTokens": 1597,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.00031442822474885316,
+              "latencyMs": 3495,
+              "inputTokens": 801
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0003849460281829748,
+              "latencyMs": 3603,
+              "inputTokens": 796
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 7,
+      "requesterIndex": 8,
+      "state": "shared",
+      "durationMs": 4241,
+      "publicShared": true,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [
+        {
+          "title": "Shared excerpt",
+          "text": "Project Lumen pilot launches November 12, 2026. Eden Hart owns the rollout. Exact start time and timezone remain undecided."
+        }
+      ],
+      "audit": [
+        {
+          "candidateId": "private-source-6ed145f530a396dcd5372877-0",
+          "title": "Shared excerpt",
+          "decision": "allow",
+          "reason": "above_threshold",
+          "probability": 0.997784513817771,
+          "latencyMs": 4159,
+          "inputTokens": 1621,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.9985990988800955,
+              "latencyMs": 3729,
+              "inputTokens": 813
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.997784513817771,
+              "latencyMs": 4159,
+              "inputTokens": 808
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-6ed145f530a396dcd5372877-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": 0.00031442822474885316,
+          "latencyMs": 4142,
+          "inputTokens": 1597,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.00031442822474885316,
+              "latencyMs": 3978,
+              "inputTokens": 801
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0003849460281829748,
+              "latencyMs": 4142,
+              "inputTokens": 796
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 8,
+      "requesterIndex": 9,
+      "state": "shared",
+      "durationMs": 4756,
+      "publicShared": true,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [
+        {
+          "title": "Shared excerpt",
+          "text": "Project Lumen pilot launches November 12, 2026. Eden Hart owns the rollout. Exact start time and timezone remain undecided."
+        }
+      ],
+      "audit": [
+        {
+          "candidateId": "private-source-18f2fca2465ae171493c115c-0",
+          "title": "Shared excerpt",
+          "decision": "allow",
+          "reason": "above_threshold",
+          "probability": 0.997784513817771,
+          "latencyMs": 4367,
+          "inputTokens": 1621,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.9985990988800955,
+              "latencyMs": 4260,
+              "inputTokens": 813
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.997784513817771,
+              "latencyMs": 4367,
+              "inputTokens": 808
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-18f2fca2465ae171493c115c-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": 0.00031442822474885316,
+          "latencyMs": 4695,
+          "inputTokens": 1597,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.00031442822474885316,
+              "latencyMs": 4487,
+              "inputTokens": 801
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0003849460281829748,
+              "latencyMs": 4695,
+              "inputTokens": 796
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ownerIndex": 9,
+      "requesterIndex": 0,
+      "state": "shared",
+      "durationMs": 5186,
+      "publicShared": true,
+      "privateShared": false,
+      "metadataLeak": false,
+      "excerpts": [
+        {
+          "title": "Shared excerpt",
+          "text": "Project Lumen pilot launches November 12, 2026. Eden Hart owns the rollout. Exact start time and timezone remain undecided."
+        }
+      ],
+      "audit": [
+        {
+          "candidateId": "private-source-789619a007bc0f2c53931777-0",
+          "title": "Shared excerpt",
+          "decision": "allow",
+          "reason": "above_threshold",
+          "probability": 0.997784513817771,
+          "latencyMs": 4869,
+          "inputTokens": 1621,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.9985990988800955,
+              "latencyMs": 4759,
+              "inputTokens": 813
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "allow",
+              "reason": "above_threshold",
+              "probability": 0.997784513817771,
+              "latencyMs": 4869,
+              "inputTokens": 808
+            }
+          ]
+        },
+        {
+          "candidateId": "private-source-789619a007bc0f2c53931777-1",
+          "title": "Shared excerpt",
+          "decision": "withhold",
+          "reason": "below_threshold",
+          "probability": 0.00031442822474885316,
+          "latencyMs": 5137,
+          "inputTokens": 1597,
+          "checks": [
+            {
+              "ruleId": "public",
+              "rule": "Share Project Lumen product decisions, engineering progress, launch dates and rollout owner with all current and future space members.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.00031442822474885316,
+              "latencyMs": 4996,
+              "inputTokens": 801
+            },
+            {
+              "ruleId": "private",
+              "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+              "decision": "withhold",
+              "reason": "below_threshold",
+              "probability": 0.0003849460281829748,
+              "latencyMs": 5137,
+              "inputTokens": 796
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "receipts": [
+    {
+      "number": 1,
+      "probability": 0.9985990988800955,
+      "latencyMs": 216,
+      "inputTokens": 813
+    },
+    {
+      "number": 2,
+      "probability": 0.997784513817771,
+      "latencyMs": 265,
+      "inputTokens": 808
+    },
+    {
+      "number": 3,
+      "probability": 0.00031442822474885316,
+      "latencyMs": 395,
+      "inputTokens": 801
+    },
+    {
+      "number": 4,
+      "probability": 0.0003849460281829748,
+      "latencyMs": 500,
+      "inputTokens": 796
+    },
+    {
+      "number": 5,
+      "probability": 0.9985990988800955,
+      "latencyMs": 630,
+      "inputTokens": 813
+    },
+    {
+      "number": 6,
+      "probability": 0.997784513817771,
+      "latencyMs": 750,
+      "inputTokens": 808
+    },
+    {
+      "number": 7,
+      "probability": 0.00031442822474885316,
+      "latencyMs": 877,
+      "inputTokens": 801
+    },
+    {
+      "number": 8,
+      "probability": 0.0003849460281829748,
+      "latencyMs": 1009,
+      "inputTokens": 796
+    },
+    {
+      "number": 9,
+      "probability": 0.9985990988800955,
+      "latencyMs": 1199,
+      "inputTokens": 813
+    },
+    {
+      "number": 10,
+      "probability": 0.997784513817771,
+      "latencyMs": 1307,
+      "inputTokens": 808
+    },
+    {
+      "number": 11,
+      "probability": 0.00031442822474885316,
+      "latencyMs": 1402,
+      "inputTokens": 801
+    },
+    {
+      "number": 12,
+      "probability": 0.0003849460281829748,
+      "latencyMs": 1520,
+      "inputTokens": 796
+    },
+    {
+      "number": 13,
+      "probability": 0.9985990988800955,
+      "latencyMs": 1657,
+      "inputTokens": 813
+    },
+    {
+      "number": 14,
+      "probability": 0.997784513817771,
+      "latencyMs": 1824,
+      "inputTokens": 808
+    },
+    {
+      "number": 15,
+      "probability": 0.00031442822474885316,
+      "latencyMs": 1917,
+      "inputTokens": 801
+    },
+    {
+      "number": 16,
+      "probability": 0.0003849460281829748,
+      "latencyMs": 2057,
+      "inputTokens": 796
+    },
+    {
+      "number": 17,
+      "probability": 0.9985990988800955,
+      "latencyMs": 2153,
+      "inputTokens": 813
+    },
+    {
+      "number": 18,
+      "probability": 0.997784513817771,
+      "latencyMs": 2305,
+      "inputTokens": 808
+    },
+    {
+      "number": 19,
+      "probability": 0.00031442822474885316,
+      "latencyMs": 2431,
+      "inputTokens": 801
+    },
+    {
+      "number": 20,
+      "probability": 0.0003849460281829748,
+      "latencyMs": 2602,
+      "inputTokens": 796
+    },
+    {
+      "number": 21,
+      "probability": 0.9985990988800955,
+      "latencyMs": 2747,
+      "inputTokens": 813
+    },
+    {
+      "number": 22,
+      "probability": 0.997784513817771,
+      "latencyMs": 2867,
+      "inputTokens": 808
+    },
+    {
+      "number": 23,
+      "probability": 0.00031442822474885316,
+      "latencyMs": 2973,
+      "inputTokens": 801
+    },
+    {
+      "number": 24,
+      "probability": 0.0003849460281829748,
+      "latencyMs": 3162,
+      "inputTokens": 796
+    },
+    {
+      "number": 25,
+      "probability": 0.9985990988800955,
+      "latencyMs": 3252,
+      "inputTokens": 813
+    },
+    {
+      "number": 26,
+      "probability": 0.997784513817771,
+      "latencyMs": 3339,
+      "inputTokens": 808
+    },
+    {
+      "number": 27,
+      "probability": 0.00031442822474885316,
+      "latencyMs": 3495,
+      "inputTokens": 801
+    },
+    {
+      "number": 28,
+      "probability": 0.0003849460281829748,
+      "latencyMs": 3603,
+      "inputTokens": 796
+    },
+    {
+      "number": 29,
+      "probability": 0.9985990988800955,
+      "latencyMs": 3729,
+      "inputTokens": 813
+    },
+    {
+      "number": 31,
+      "probability": 0.00031442822474885316,
+      "latencyMs": 3978,
+      "inputTokens": 801
+    },
+    {
+      "number": 32,
+      "probability": 0.0003849460281829748,
+      "latencyMs": 4142,
+      "inputTokens": 796
+    },
+    {
+      "number": 30,
+      "probability": 0.997784513817771,
+      "latencyMs": 4159,
+      "inputTokens": 808
+    },
+    {
+      "number": 33,
+      "probability": 0.9985990988800955,
+      "latencyMs": 4260,
+      "inputTokens": 813
+    },
+    {
+      "number": 34,
+      "probability": 0.997784513817771,
+      "latencyMs": 4367,
+      "inputTokens": 808
+    },
+    {
+      "number": 35,
+      "probability": 0.00031442822474885316,
+      "latencyMs": 4487,
+      "inputTokens": 801
+    },
+    {
+      "number": 36,
+      "probability": 0.0003849460281829748,
+      "latencyMs": 4695,
+      "inputTokens": 796
+    },
+    {
+      "number": 37,
+      "probability": 0.9985990988800955,
+      "latencyMs": 4759,
+      "inputTokens": 813
+    },
+    {
+      "number": 38,
+      "probability": 0.997784513817771,
+      "latencyMs": 4869,
+      "inputTokens": 808
+    },
+    {
+      "number": 39,
+      "probability": 0.00031442822474885316,
+      "latencyMs": 4996,
+      "inputTokens": 801
+    },
+    {
+      "number": 40,
+      "probability": 0.0003849460281829748,
+      "latencyMs": 5137,
+      "inputTokens": 796
+    }
+  ],
+  "publicShared": 10,
+  "privateShared": 0,
+  "metadataLeaks": 0,
+  "providerErrors": 0,
+  "checkingRowsAfter": 0,
+  "limitation": "One small concurrent burst against the real provider; synthetic source injection, no production accounts/load, shared bounded scheduling; no retry, cutoff change or provider account limit change."
+}

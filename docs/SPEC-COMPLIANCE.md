@@ -1,5 +1,30 @@
 # Meet Proxy Draft v3 compliance
 
+31 October [classifier reliability candidate](CLASSIFIER-RELIABILITY.md): patch
+53 keeps the 0.995 cutoff and existing model, improves the original allowed sample
+from 8/16 to 12/16, and completes the ten-owner burst with 10/10 public requests
+shared and zero provider errors. Forbidden samples remained withheld. All 640
+core tests and exact 53-patch replay pass. The server candidate is packaged,
+not deployed: Google Cloud reauthentication blocked production preflight.
+Remaining false withholding and broader P0 gaps are explicitly retained.
+
+31 October [exact mapping of the ten original P0s](P0-SPEC-MAPPING.md): the new
+attachment matches the preserved Draft v3 byte for byte. The original pair-based
+inbox and answer-only source protection must be distinguished from the later
+Spaces/excerpt-sharing design. Approved excerpts and Space exchange history do
+not prove section 7.9 answer-only disclosure or a complete pair-agent Q/A audit.
+The mapping records implementation, selected live evidence and outstanding
+acceptance separately; it does not undo the owner's later product direction.
+
+31 October [context upload activation](BOUNDED-SYNC-CATCHUP.md): the existing
+0.4.33/runtime66 package is now active on the owner's Mac and its saved background
+launcher is updated. All 195 discovered sources reached complete capture with no
+collection error. Two fresh texts, including one posted after activation, were
+successfully read from production at revisions 6603 and 6604. Account and saved
+permissions were preserved; no host gate was bypassed. This closes the observed
+activation/catch-up gap on this Mac, not clean onboarding or sharing reliability.
+[Exact evidence](../implementation/context-upload-activation-verification.json).
+
 29 October [native catch-up update](BOUNDED-SYNC-CATCHUP.md): 0.4.33/runtime66 is published and installed, with 631 core tests, both-alias package checks, packaged stdio and exact 52-patch replay passing. The companion still runs runtime65 while its active-work guard defers activation; bounded retries are queued without forcing a restart. A second fresh marker was successfully read from production on runtime65. This does not close actual-host setup or sharing reliability gates.
 
 29 October [cross-host context sync](CROSS-HOST-CONTEXT-SYNC.md): five explicit app choices, truthful sync status and source-read verification are live on server `20261029-cross-host-sync`. A fresh message from this chat was successfully read from the live Mac archive. 628 core tests, 27 browser checks, 23 extracted-bundle tests and exact 51-patch replay pass. Regular Claude/ChatGPT connections read the library; they do not automatically upload web-only chats. Actual-host onboarding and sharing reliability gates remain open. 159 deployed files and all three services are verified; a long-chat collection delay is addressed in the separate native catch-up update.

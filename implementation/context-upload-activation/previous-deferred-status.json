@@ -1,0 +1,6 @@
+{
+  "state": "deferred",
+  "reason": "Active-work guard did not clear within the bounded retry window",
+  "attempts": 12,
+  "at": 1793254473.999873
+}

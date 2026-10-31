@@ -1,0 +1,8 @@
+{
+  "state": "passed",
+  "previousRevision": 49,
+  "activeRevision": 66,
+  "accountAndPermissionsPreserved": true,
+  "activeWorkGuardRespected": true,
+  "forcedSignals": false
+}

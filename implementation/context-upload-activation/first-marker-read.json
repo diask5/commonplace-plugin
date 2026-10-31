@@ -1,0 +1,72 @@
+{
+  "at": "2026-10-31T21:03:53.967Z",
+  "marker": "MEETPROXY-UPLOAD-CHECK-20261031-ASPEN-841",
+  "activeRevision": 66,
+  "pages": [
+    {
+      "resultCount": 0,
+      "revision": 6603,
+      "nextCursor": 500,
+      "restart": false
+    },
+    {
+      "resultCount": 0,
+      "revision": 6603,
+      "nextCursor": 1000,
+      "restart": false
+    },
+    {
+      "resultCount": 1,
+      "revision": 6603,
+      "nextCursor": null,
+      "restart": false
+    }
+  ],
+  "reads": [
+    {
+      "hasMarker": true,
+      "citationCount": 2,
+      "revision": 6603,
+      "offset": 648404,
+      "restart": false
+    }
+  ],
+  "counts": {
+    "total": 195,
+    "complete": 195,
+    "incomplete": 0,
+    "errors": 0
+  },
+  "coverage": {
+    "conductor": {
+      "available": true,
+      "conversations": 49,
+      "partial": false,
+      "cached": true
+    },
+    "transcriptRoots": 4,
+    "discoveryPartial": false,
+    "canonical": {
+      "partial": false,
+      "files": 195,
+      "protocol": 1,
+      "sent": {
+        "fresh": 0,
+        "continuing": 0,
+        "retry": 0,
+        "heartbeat": 6
+      },
+      "deferred": {
+        "fresh": 0,
+        "continuing": 0,
+        "retry": 0,
+        "heartbeat": 158
+      },
+      "backedOff": 0,
+      "scanned": 195,
+      "discovered": 195
+    }
+  },
+  "syncError": null,
+  "lastSyncedAt": 1793480631676
+}

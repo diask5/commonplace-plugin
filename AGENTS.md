@@ -1,5 +1,21 @@
 # Meet Proxy product contract
 
+31 October classifier follow-up: [candidate results](docs/CLASSIFIER-RELIABILITY.md)
+and `implementation/classifier-reliability-verification.json` retain 367 actual
+provider calls across baseline and candidate evaluations with synthetic content.
+Selected prompt v5 shares 12/16 permitted original examples (baseline 8/16) and
+12/20 additional examples (baseline 1/20); forbidden examples remain withheld.
+A credential/endpoint-shared per-process FIFO (four active, 125 ms start spacing,
+128 queued, existing deadlines) removes provider errors in the ten-owner burst:
+10/10 public requests shared, no private content/metadata shared. Cutoff 0.995,
+model, rules, authority and source fences are unchanged. Rejected prompt variants
+and original failures remain retained. All 640 core tests, eight extracted queue
+tests, extracted HTTP/OAuth/MCP checks and exact 53-patch replay across 217 files
+pass. The 160-file server candidate `20261031-classifier-reliability` is packaged,
+not deployed: existing-account GCP reauthentication blocked preflight. Native
+0.4.33/runtime66 is unchanged. False withholding, cross-process provider capacity,
+search recall and full P0 acceptance remain open. Do not claim this candidate live.
+
 29 October sharing stress follow-up: [results](docs/SHARING-STRESS.md) and
 `implementation/sharing-stress-verification.json` preserve 96 real-provider calls
 with synthetic data, ten-owner load and ordinary-question recall. The context
@@ -56,14 +72,20 @@ Published native 0.4.33/runtime66 adds patch 52: progressing long-chat chunks
 use spare upload slots before ordinary heartbeats, with the same six-upload
 ceiling, atomic capture, exclusions and durable retries. Three new regressions
 fail before/pass after; 631 core tests, both-alias packaging and 52-patch replay
-pass. It is published and installed in both registries. Runtime65 remains active:
-the supported restart guard stayed busy; a bounded 12-attempt retry is queued,
-with no forced signals. The second live marker read passed on runtime65 and
-does not prove runtime66 activation. Source PR #45 and distribution PR #46 are
+pass. It is published and installed in both registries. On 31 October the
+supported restart guard accepted runtime66 activation, and the persistent
+background launcher was updated to 0.4.33. All 195 discovered sources reached
+complete capture with no sync error; two fresh production source reads passed
+at revisions 6603/6604, including text posted after activation. Account and saved
+permissions were preserved, with no forced companion signals. The earlier
+12-attempt deferral and runtime65 reads remain historical evidence. The initial
+31 October check found runtime49 from an older loaded plugin; why runtime65
+stopped is not established. See `implementation/context-upload-activation-verification.json`.
+Source PR #45 and distribution PR #46 are
 merged; the default distribution branch remains unchanged. See
 [bounded catch-up](docs/BOUNDED-SYNC-CATCHUP.md).
-The previous native release was **0.4.32/runtime65**; runtime65 is still active
-until the supported upgrade guard permits runtime66. Server
+The previous native release was **0.4.32/runtime65**; runtime66 is now active
+on the verified Mac. Server
 **20261029-cross-host-sync** is live; the prior question-discovery release
 is retained. Patch 49 fixes empty full-question discovery
 within the existing search budget. 611 core tests and the exact 49-patch replay pass.

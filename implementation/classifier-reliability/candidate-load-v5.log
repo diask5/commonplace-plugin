@@ -1,0 +1,14 @@
+{
+  "report": "/home/vercel-sandbox/commonplace-plugin/.context/classifier-fix/candidate-load-v5.json",
+  "owners": 10,
+  "requests": 10,
+  "providerCalls": 40,
+  "peakProviderCalls": 3,
+  "pendingDecisionPeak": 40,
+  "publicShared": 10,
+  "privateShared": 0,
+  "metadataLeaks": 0,
+  "providerErrors": 0,
+  "checkingRowsAfter": 0,
+  "elapsedMs": 5229
+}
