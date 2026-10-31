@@ -1,0 +1,48 @@
+✔ Decisions request uses the documented API with one candidate, one noul question and no private identifiers (52.788552ms)
+✔ loopback Decider gets no hosted key and defaults to the local Flash model (1.333124ms)
+✔ arbitrary outbound hosts, URL credentials, aliases and malformed endpoints are refused (0.750007ms)
+✔ missing credentials do not call any provider (0.834721ms)
+✔ invalid, truncated, oversize, non-probabilistic and wrong-model responses are refused (9.246729ms)
+✔ HTTP failure bodies and transport errors never echo private input (13.736407ms)
+✔ caller cancellation stops provider work and remains distinct from provider timeouts (1.895232ms)
+✔ oversize candidates are withheld whole instead of silently truncating sensitive tails (2.80049ms)
+✔ the gate validates proposed fields even when an injected classifier accepts everything (0.884346ms)
+✔ only the exact approved title and text enter the recipient response (1.824053ms)
+✔ denied and uncertain chunks do not leak titles, IDs, counts, probabilities or reasons to recipients (2.497363ms)
+✔ owner audit and recipient reads have distinct authenticated principals (0.608894ms)
+✔ inactive, expired or invalid policy authority does not call the classifier (5.043357ms)
+✔ excluded and foreign-owner sources never reach Perplexity (0.822084ms)
+✔ rule edits, recipient changes, expiry and revocation during classification fence all results (1.790231ms)
+✔ excluding an earlier approved source during later classification fences the batch (0.877917ms)
+✔ candidate snapshot is immutable across in-flight source and adapter mutations (0.449639ms)
+✔ all source and authority checks fail closed (0.386494ms)
+✔ decisions are recomputed after policy or candidate edits, with no positive cache (1.158071ms)
+✔ classifier failures and malformed probabilities withhold, even when a model was previously available (3.776963ms)
+✔ work is bounded and cutoff cannot disable the check (0.889222ms)
+✔ candidate batches share the eight-call ceiling and retain source order (14.356015ms)
+✔ revocation cancels concurrent provider work and never starts the next batch (2.511787ms)
+✔ caller cancellation discards concurrent approvals and cancels pending calls (2.598611ms)
+✔ benchmark reports missing provider as blocked, never model success (0.878461ms)
+✔ actual MCP stdio routes only permitted excerpts and cannot spoof identity or open the raw archive (78.509933ms)
+✖ bounded-source metadata reaches Decisions as explicit incomplete context without private identifiers (1.452206ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 26
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 465.852685
+
+✖ failing tests:
+
+test at tests/policy-context.test.mjs:214:1
+✖ bounded-source metadata reaches Decisions as explicit incomplete context without private identifiers (1.452206ms)
+  Error: provider_unavailable
+      at fail (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/perplexity-decisions.mjs:7:36)
+      at PerplexityDecisions.decide (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/perplexity-decisions.mjs:71:13)
+      at async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/policy-context.test.mjs:217:16)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    code: 'provider_unavailable'
+  }

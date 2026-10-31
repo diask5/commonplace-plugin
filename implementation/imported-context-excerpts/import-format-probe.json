@@ -1,0 +1,31 @@
+{
+  "syntheticOnly": true,
+  "calls": 4,
+  "productionChanged": false,
+  "rows": [
+    {
+      "variant": "imported-projection",
+      "rule": "Share Project Aster Meridian product decisions, engineering progress, launch dates and rollout owner with all current and future space members. Synthetic test labels and note headings are allowed.",
+      "probability": 0.9930476045462108,
+      "passes": false
+    },
+    {
+      "variant": "imported-projection",
+      "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+      "probability": 0.9960405083848013,
+      "passes": true
+    },
+    {
+      "variant": "exact-message-body",
+      "rule": "Share Project Aster Meridian product decisions, engineering progress, launch dates and rollout owner with all current and future space members. Synthetic test labels and note headings are allowed.",
+      "probability": 0.9961383096273628,
+      "passes": true
+    },
+    {
+      "variant": "exact-message-body",
+      "rule": "Never share private financial details, customer identities, credentials, personal matters or private audit markers.",
+      "probability": 0.9961255808391075,
+      "passes": true
+    }
+  ]
+}

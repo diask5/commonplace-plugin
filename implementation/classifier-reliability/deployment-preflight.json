@@ -1,0 +1,7 @@
+{
+  "state": "blocked",
+  "action": "Production read-only SSH preflight using existing GCP account through IAP",
+  "reason": "Reauthentication failed. cannot prompt during non-interactive execution.",
+  "productionChanged": false,
+  "alternativeAccountUsed": false
+}

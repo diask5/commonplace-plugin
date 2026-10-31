@@ -1,0 +1,202 @@
+{
+  "date": "2026-10-31",
+  "state": "Published and live. All 160 files/services and public setup/OAuth pass. First two-account signed check on this release passes permitted sharing, private withholding, audit separation and revocation.",
+  "patch": 54,
+  "nativeVersionUnchanged": "0.4.33/runtime66",
+  "modelUnchanged": "pplx-decider-v1.2",
+  "promptVersionUnchanged": 5,
+  "thresholdUnchanged": 0.995,
+  "server": {
+    "baseline": "20261031-classifier-reliability",
+    "candidate": "20261031-imported-excerpts",
+    "published": true,
+    "deployed": true,
+    "files": 160,
+    "changedFiles": [
+      "dist/standalone/account-runtime/space-context.mjs"
+    ],
+    "bundleSha256": "d19a9875081c20a06e676aeb18cf927cff22d13a44f208fea52cbf37a09d72de",
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261031-imported-excerpts",
+    "sourceCommit": "354eb70254327f7f89ddd392342fecca483792b8",
+    "deployment": {
+      "state": "passed",
+      "release": "20261031-imported-excerpts",
+      "filesVerified": 160,
+      "serviceReadableFiles": 160,
+      "services": [
+        "active",
+        "active",
+        "active"
+      ],
+      "migrations": "unchanged; verified code-only activation",
+      "previous": "20261031-classifier-reliability",
+      "finishedAt": 1793484549.1273873
+    }
+  },
+  "behavior": {
+    "exactStoredMessageBodies": true,
+    "fullPrivateContextPreserved": true,
+    "sourceTitleAndMessageIdsNotDisclosed": true,
+    "projectionAndRevisionChecked": true,
+    "largeSourceBoundsUnchanged": true
+  },
+  "checks": {
+    "core": {
+      "pass": 645,
+      "fail": 0
+    },
+    "extracted": {
+      "pass": 14,
+      "fail": 0
+    },
+    "replay": {
+      "patches": 54,
+      "changedFiles": 217,
+      "mismatches": []
+    },
+    "beforeRegression": {
+      "pass": 1,
+      "fail": 4
+    },
+    "firstCoreFailure": "One test expected the untrimmed input rather than stored body; fixture now has an explicit end marker. Original failure retained.",
+    "extractedHttpOAuthMcp": "passed with disposable synthetic profile, compiled authorization placeholder and local source dependencies",
+    "publicSetupOAuth": "passed after final deployment with TLS validation enabled on desktop and phone"
+  },
+  "providerExperiments": {
+    "syntheticOnly": true,
+    "extraCalls": 125,
+    "formatComparisonCalls": 4,
+    "realImportedV5Calls": 8,
+    "v7HoldoutCalls": 41,
+    "v7OriginalNativeCalls": 56,
+    "v7ImportedCalls": 8,
+    "v8ImportedCalls": 8,
+    "v7Selected": false,
+    "v8Selected": false,
+    "selectedPrompt": 5,
+    "conclusion": "Exact-body probe passed both rules, but realistic imported fixtures still withheld the allowed answer. Prompt v7 improved one corpus and worsened native admission; v8 still withheld the public sample. Neither is selected. No forbidden fixture was released."
+  },
+  "limits": [
+    "Not a complete classifier reliability fix.",
+    "Two owned account verification is not independent-human or recipient-host acceptance.",
+    "Full P0 mapping remains open."
+  ],
+  "allP0Ready": false,
+  "evidence": [
+    {
+      "path": "implementation/imported-context-excerpts/before-tests.tap",
+      "sha256": "9c0212626e27f093f4f667441bd7411b42e21e8c709ec5efed284fec82edd360"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/core-final.tap",
+      "sha256": "a305fd5d1459baeceb8ce105707b1d548e58d32689665f191519ffc232490d96"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/core.tap",
+      "sha256": "5c2eb51c24429bc575fbd75bb80b517e3c591b129b2e8974ce925852140f2214"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/deploy54.py",
+      "sha256": "ea61bd677f2c0a38e5e7deaf45483afcd9b8845432613a958070f163580bb242"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/evaluate-imported.mjs",
+      "sha256": "40caf70101472de217169b3065030d2ee8b5436f7d10ec39d56b1662b745f47d"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/extracted.tap",
+      "sha256": "5700013508700425cbbe312b6153c470921638b20eaf3e6c6eed8db770b56396"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/focused-final.tap",
+      "sha256": "0144feb693af331b2d9fa65448a20417739e6105dd14116121505ae790469bc1"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/holdout-v7.json",
+      "sha256": "2f8310a5ec033d4814971d5d2b1855b2a0af1741ccb02b3b8327a849cb38defe"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/import-format-probe.json",
+      "sha256": "7a244977712178e3a7341fe2c4f94f98c5a04949ecf10c31f1ffaa6e0f961045"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/prompt-v7.mjs",
+      "sha256": "61c9ab493844f699677177a8c8ccca369a2720b2428d605fa568e598433901b6"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/prompt-v8.mjs",
+      "sha256": "707f6f4a471539e601ebf331b94a82f043700fad0318156f638fe0d0d018d11f"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/real-imported-v7.json",
+      "sha256": "1475c3627a1e9fd28ecc34de5666c645830da3b577f46331044ccfbc1a3dbb47"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/real-imported-v8.json",
+      "sha256": "3d671229305e4cebad5f56388124b785bb23dd2f66d14255decd81933e7bc5bf"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/real-imported.json",
+      "sha256": "bb887c9ff2597c0a2b2b3a55577b3eff3f6ea56c46214f550908f99c80a489ee"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/replay54-final.json",
+      "sha256": "db0c92f29e16083b3ff8b26f91c4fc3425ed9c818c98b7f3caaa9a904a9d6ac3"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/runtime-update-manifest.json",
+      "sha256": "cfb8eb22a9d274527b4e27a0872b74e30951fc5aa4c7587bc723756a2ecdac26"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/runtime-update.sha256",
+      "sha256": "3fd1f2da2442c7504cd92f3758ebe107106ba1a0e2fda0f455e07ce032d56eaf"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/stress-v7.json",
+      "sha256": "2642a5ca0492002935f2a6da64eb23c3bd726fa5d699f07698ae3a2d4eb53d87"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/stress-v7.log",
+      "sha256": "8672d74dbe28912b5b0c34f468f06b4046ebcfd4f0fee577b26f9d5ecbeb1abf"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/extracted-smoke.log",
+      "sha256": "c9701b667021d372a63c66a1665fcf8d3ed25b8b2a37dd1b1fe3e8d5c8b13bbc"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/deployment-live.json",
+      "sha256": "4975fe2ab7e02e058c455ab993ca6b3fe240b7845486cab1f35f22ea6a2bfd0c"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/published-release.json",
+      "sha256": "62964061e1323fc97539c599dd23b8652611046f9aafcf4f56fbc3cbacf43ac1"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/live-sharing.json",
+      "sha256": "4ca9cd7e3a38054becb36e90d74d01d997c3b4e35648dce3ff713f9cd87a4b10"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/public-smoke-live.json",
+      "sha256": "c235a8f287d2bb56a79386034abf5961655a7e3124481bf86a8bb0e350e710bb"
+    }
+  ],
+  "liveAcceptance": {
+    "path": "implementation/imported-context-excerpts/live-sharing.json",
+    "passed": true,
+    "syntheticContent": true,
+    "signedAccounts": 2,
+    "independentHumans": false,
+    "recipientHostModel": false,
+    "publicScore": 0.9958211029544655,
+    "privateScore": 0.0005519478458556663,
+    "exactBody": true,
+    "sourceMetadataExposed": false,
+    "privateDisclosed": false,
+    "ownerOnlyAudit": true,
+    "sharedHistoryMatches": true,
+    "removalRequestStatus": 404,
+    "removalHistoryStatus": 404,
+    "oldInvitationStatus": 403,
+    "cleanupPassed": true
+  }
+}

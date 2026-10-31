@@ -1,0 +1,124 @@
+✖ imported excerpts select exact stored bodies while private context preserves title and neighboring confidentiality (467.819754ms)
+✖ imported confidentiality labels and embedded role headers never become permission or message boundaries (601.158197ms)
+✖ imported projection mismatch, owner mismatch, exclusion and changed revision cannot release selected bodies (676.505047ms)
+✔ deleting an imported source during classification fences already-approved messages (653.555119ms)
+✖ imported bodies crossing stored chunk boundaries retain exact Unicode bytes and bounded context (630.59256ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 1
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3458.793255
+
+✖ failing tests:
+
+test at .context/classifier-fix/replay53/tests/space-context-message-excerpts.test.mjs:83:1
+✖ imported excerpts select exact stored bodies while private context preserves title and neighboring confidentiality (467.819754ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'no_context'
+  - 'shared'
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/classifier-fix/replay53/tests/space-context-message-excerpts.test.mjs:86:35)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'no_context',
+    expected: 'shared',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at .context/classifier-fix/replay53/tests/space-context-message-excerpts.test.mjs:90:1
+✖ imported confidentiality labels and embedded role headers never become permission or message boundaries (601.158197ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'shared'
+  - 'no_context'
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/classifier-fix/replay53/tests/space-context-message-excerpts.test.mjs:93:35)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'shared',
+    expected: 'no_context',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at .context/classifier-fix/replay53/tests/space-context-message-excerpts.test.mjs:95:1
+✖ imported projection mismatch, owner mismatch, exclusion and changed revision cannot release selected bodies (676.505047ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/classifier-fix/replay53/tests/space-context-message-excerpts.test.mjs:98:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Context changed/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at .context/classifier-fix/replay53/tests/space-context-message-excerpts.test.mjs:107:1
+✖ imported bodies crossing stored chunk boundaries retain exact Unicode bytes and bounded context (630.59256ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+  +   'user [message message0; branch unknown]: Importedpilot café é 👩🏽‍💻\n' +
+  -   'Importedpilot café é 👩🏽‍💻\n' +
+        'café é 👩🏽‍💻\n' +
+        'café é 👩🏽‍💻\n' +
+        'café é 👩🏽‍💻\n' +
+        'café é 👩🏽‍💻\n' +
+        'café é 👩🏽‍💻\n' +
+  ...
+        'café é 👩🏽‍💻\n' +
+  +     'café é 👩🏽‍💻\n' +
+  +     '\n' +
+  +     'assistant [message message1; reply to message0]: Importedpilot second message 🦉\n' +
+  +     'second message 🦉\n',
+  +   'second message 🦉\n' +
+  -     'café é 👩🏽‍💻\n',
+  -   'Importedpilot second message 🦉\n' +
+        'second message 🦉\n' +
+        'second message 🦉\n' +
+        'second message 🦉\n' +
+        'second message 🦉\n' +
+        'second message 🦉\n' +
+  ...
+        'second message 🦉\n' +
+  +     'second message 🦉\n',
+  +   'second message 🦉\n' +
+        'second message 🦉\n' +
+        'second message 🦉\n' +
+        'second message 🦉\n' +
+        'second message 🦉\n' +
+        'second message 🦉\n' +
+  ...
+        'second message 🦉\n' +
+  +     '\n'
+  -     'second message 🦉\n' +
+  -     'second message 🦉\n' +
+  -     'second message 🦉\n' +
+  -     'second message 🦉\n'
+    ]
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/classifier-fix/replay53/tests/space-context-message-excerpts.test.mjs:109:120)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'user [message message0; branch unknown]: Importedpilot café é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\n\nassistant [message message1; reply to message0]: Importedpilot second message 🦉\nsecond message 🦉\n', 'second message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\n', 'second message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\n\n' ],
+    expected: [ 'Importedpilot café é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\ncafé é 👩🏽‍💻\n', 'Importedpilot second message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\nsecond message 🦉\n' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

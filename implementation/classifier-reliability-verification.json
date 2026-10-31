@@ -1,0 +1,291 @@
+{
+  "date": "2026-10-31",
+  "state": "Published and live. Production rollout and public setup/OAuth pass; the first signed sharing check withheld an allowed answer below the unchanged cutoff.",
+  "patch": {
+    "number": 53,
+    "path": "classifier-reliability.patch",
+    "sha256": "3cbc5b40b68bd5fc4490ec36454f8cf3d1c7b8980c595314e1980032dcfa6e92"
+  },
+  "classifier": {
+    "model": "pplx-decider-v1.2",
+    "priorPromptVersion": 3,
+    "candidatePromptVersion": 5,
+    "threshold": 0.995,
+    "thresholdChanged": false,
+    "ownerRulesChanged": false,
+    "candidateBytesRewritten": false,
+    "automaticRetries": false
+  },
+  "scheduler": {
+    "scope": "All instances sharing credential and endpoint in one process",
+    "maximumConcurrentCalls": 4,
+    "minimumStartIntervalMs": 125,
+    "maximumWaitingCalls": 128,
+    "queueTimeWithinProviderDeadline": true,
+    "crossProcessCoordination": false
+  },
+  "native": {
+    "version": "0.4.33",
+    "runtime": 66,
+    "changed": false
+  },
+  "server": {
+    "baseline": "20261029-cross-host-sync",
+    "candidate": "20261031-classifier-reliability",
+    "published": true,
+    "deployed": true,
+    "bundleSha256": "bc4c6c60f709a8773cd78fecd87e060b38196c807026452a52ed119f36324c12",
+    "files": 160,
+    "changedModules": [
+      "decisions-scheduler.mjs",
+      "perplexity-decisions.mjs",
+      "policy-context.mjs"
+    ],
+    "migrationsChanged": false,
+    "draftReleaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/untagged-fe5c79e24a1f4f44aad0",
+    "pullRequestUrl": "https://github.com/diask5/commonplace-plugin/pull/48",
+    "sourceCommit": "5982da69ccfea5fa2dd1e387690e2e46d8828824",
+    "releaseAssetsVerified": true,
+    "deploymentRunner": "implementation/classifier-reliability/deploy53.py",
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261031-classifier-reliability",
+    "deployment": {
+      "state": "passed",
+      "release": "20261031-classifier-reliability",
+      "filesVerified": 160,
+      "serviceReadableFiles": 160,
+      "services": [
+        "active",
+        "active",
+        "active"
+      ],
+      "migrations": "unchanged; verified code-only activation",
+      "previous": "20261029-cross-host-sync",
+      "finishedAt": 1793483963.1129935
+    }
+  },
+  "realProviderEvaluation": {
+    "syntheticOnly": true,
+    "totalCallsAcrossAllRuns": 367,
+    "baselineRepeated": {
+      "corpusFalseWithholds": 7,
+      "nativeFalseWithholds": 1,
+      "falseAllows": 0,
+      "providerErrors": 0
+    },
+    "selectedCandidate": {
+      "corpusFalseWithholds": 3,
+      "nativeFalseWithholds": 1,
+      "falseAllows": 0,
+      "providerErrors": 0,
+      "allowedExamples": 16,
+      "allowedShared": 12
+    },
+    "fixedAdditionalCorpus": {
+      "cases": 40,
+      "allowed": 20,
+      "forbidden": 20,
+      "baselineFalseWithholds": 19,
+      "candidateFalseWithholds": 8,
+      "baselineFalseAllows": 0,
+      "candidateFalseAllows": 0,
+      "baselineProviderErrors": 0,
+      "candidateProviderErrors": 0,
+      "fixtureWrittenBeforeCandidateChanges": true,
+      "independentlyAuthored": false
+    },
+    "tenOwnerBurst": {
+      "requests": 10,
+      "providerCalls": 40,
+      "baselinePublicShared": 0,
+      "candidatePublicShared": 10,
+      "candidatePrivateShared": 0,
+      "candidateMetadataLeaks": 0,
+      "baselineProviderErrors": 30,
+      "candidateProviderErrors": 0,
+      "candidatePeakNetworkCalls": 3,
+      "candidatePendingDecisionPeak": 40,
+      "candidateElapsedMs": 5229,
+      "allRequestsCompleted": true
+    },
+    "rejectedExperiments": [
+      "Prompt v4 worsened original corpus false withholding from 7 to 9; retained, not selected.",
+      "Inverted withholding prototype v6 had three original corpus misses and seven additional-corpus misses; not selected because the gain over v5 was small and requires changing score interpretation."
+    ]
+  },
+  "checks": {
+    "core": {
+      "pass": 640,
+      "fail": 0
+    },
+    "sharingFocusedBeforeFinalAddedTest": {
+      "pass": 88,
+      "fail": 0
+    },
+    "extractedScheduler": {
+      "pass": 8,
+      "fail": 0
+    },
+    "extractedHttpOAuthMcp": "passed with synthetic profile, compiled authorization placeholder and local source dependencies",
+    "replay": {
+      "patches": 53,
+      "changedFiles": 217,
+      "mismatches": [],
+      "matched": true
+    },
+    "firstHarnessFailure": "One prior prompt-wording assertion failed; revised to assert the unchanged incomplete-context refusal meaning. Original failure retained."
+  },
+  "limits": [
+    "Permitted information is still withheld; this improves usefulness and capacity, not complete semantic reliability.",
+    "Classifier scores are not calibrated privacy probabilities; small synthetic evaluations do not prove universal safety.",
+    "The additional corpus was authored by this agent before changes, then used to compare candidates; it is not an independent final holdout.",
+    "Admission scheduling is process-local; other processes or applications using the same provider credential can still consume capacity.",
+    "Search recall, answer-only privacy, complete shared Q/A, fresh-host onboarding and independent-human acceptance remain separate.",
+    "No production accounts, policies, provider limits or host permissions were changed by evaluations.",
+    "The first two-account production check withheld its allowed imported excerpt at 0.9921505; deployment is not proof of useful-sharing readiness."
+  ],
+  "allP0Ready": false,
+  "evidence": [
+    {
+      "path": "implementation/classifier-reliability/baseline-real.json",
+      "sha256": "af3f4adbae0a99f149e7b90533f2ef5fe46667715e60fc32bc030aab8215e66f"
+    },
+    {
+      "path": "implementation/classifier-reliability/baseline-real.log",
+      "sha256": "22899e96620f8f13a328586237697d64db40829a0c3bb28ee27a55685ba3c543"
+    },
+    {
+      "path": "implementation/classifier-reliability/bundle-diff.json",
+      "sha256": "884be48aebe79924d84b64369f68f535bc37e7514fa807749e78d354e2ed6d70"
+    },
+    {
+      "path": "implementation/classifier-reliability/candidate-load-v5.json",
+      "sha256": "4e8f993b0e76f9f053c7ee1b8eb752908c9db43c37f822bb399edb7be328a5e0"
+    },
+    {
+      "path": "implementation/classifier-reliability/candidate-load-v5.log",
+      "sha256": "e927c54eccbe055a402e66bf095af0a86de518f61ddb416ed1038b7a03ebd4bd"
+    },
+    {
+      "path": "implementation/classifier-reliability/candidate-real-v4.json",
+      "sha256": "1a976ef347d14a03b168296b583785d31f6d4743a076497b24ed3261c017bedf"
+    },
+    {
+      "path": "implementation/classifier-reliability/candidate-real-v4.log",
+      "sha256": "a0779ac6c2584d69256539ad22e287c3e51020b8d82a0d9e0adefb37122641e4"
+    },
+    {
+      "path": "implementation/classifier-reliability/candidate-real-v5.json",
+      "sha256": "0ae7783186f94ec792012e4dcd48e20ab377a632e9d1740c55c680524cbfae8e"
+    },
+    {
+      "path": "implementation/classifier-reliability/candidate-real-v5.log",
+      "sha256": "41a2968383499f6b60b996b08430b1159d90292a5369661f399f91f3dc07685e"
+    },
+    {
+      "path": "implementation/classifier-reliability/core.tap",
+      "sha256": "dc2bb26e56ee74e6d0eab3fd30bb7ce68f507953d82f79b47e52082381487a12"
+    },
+    {
+      "path": "implementation/classifier-reliability/deployment-preflight.json",
+      "sha256": "cdea2d8fc644e986f3c87cac147bcd7670961706d255d483cfd12b3a5bd6a34d"
+    },
+    {
+      "path": "implementation/classifier-reliability/extracted-scheduler.tap",
+      "sha256": "55be15a31463d41b3284f3a26ebd8d5836968e18ee1d6bd98c4aee9ce2a6b3e2"
+    },
+    {
+      "path": "implementation/classifier-reliability/extracted-smoke.log",
+      "sha256": "ecf740fa2e435a5383a3cbd1240ee93bad5af3af39dedfd45fe8f33f1bceac2d"
+    },
+    {
+      "path": "implementation/classifier-reliability/focused.tap",
+      "sha256": "1879e1587c9e69bc15ac6bc1e506e8e9d267cd5c1d32aa6b5f77e226adf066f5"
+    },
+    {
+      "path": "implementation/classifier-reliability/holdout-baseline-v3.json",
+      "sha256": "8f3101c789abe36359d0bcc47016d4a6ebe492d15f0ff63968d0589b3f165146"
+    },
+    {
+      "path": "implementation/classifier-reliability/holdout-before.sha256",
+      "sha256": "76cd43a7073b43d995762986e1ba3d59a7d70b255311c3c5743289b29c46f9f9"
+    },
+    {
+      "path": "implementation/classifier-reliability/holdout-inverted-v6.json",
+      "sha256": "87d2ec82bdb283e74055ca72068dd4ad2e061e1ef7910fbc4983c1a7e9ce481d"
+    },
+    {
+      "path": "implementation/classifier-reliability/holdout-v5.json",
+      "sha256": "70406f9cfcd6ebf042b8a8784b7fecd03fd2c7b1db77268dcca59e6ef76048d8"
+    },
+    {
+      "path": "implementation/classifier-reliability/inverted-v6.json",
+      "sha256": "ee20ca3fecf392ad65a69add3cc225a36d6f542375abdaaaa58325141b98698e"
+    },
+    {
+      "path": "implementation/classifier-reliability/policy-first.tap",
+      "sha256": "676c9d5eb2c0caed6eb81ccd244f575e1ec73147bcd5794a975887c6e89e664d"
+    },
+    {
+      "path": "implementation/classifier-reliability/replay53.json",
+      "sha256": "d12f06d85228bbfe3d4504713e6fb9ffcf0078068559b0dbb67944a5e0d29cc1"
+    },
+    {
+      "path": "implementation/classifier-reliability/runtime-update-manifest.json",
+      "sha256": "c5ba3f36b60353b728fb7f0e5601b6ddc6de2efedae1cb68bf01f7b5e7809324"
+    },
+    {
+      "path": "implementation/classifier-reliability/runtime-update.sha256",
+      "sha256": "042421604f64301d472cbc426be3974c9df2508c8d77d50f26d2a158eb52aa96"
+    },
+    {
+      "path": "implementation/classifier-reliability/sharing-tests.tap",
+      "sha256": "9e2af0c488b0e319196d56d4f5f09003505141022cdf73e1485269daf02336dd"
+    },
+    {
+      "path": "implementation/classifier-reliability/draft-release.json",
+      "sha256": "dfe7d2f3136575f116ab5f5f744cb67d958259912a4092b46b561b486c36d1e8"
+    },
+    {
+      "path": "implementation/classifier-reliability/deploy53.py",
+      "sha256": "d920745486eeb19f737b89b9fd8bc2bb710f1cc7e3e3e7b1885fed7b8937e3d6"
+    },
+    {
+      "path": "implementation/classifier-reliability/reauthentication-status.json",
+      "sha256": "20e105b44778c112e5c36bdccfb74b40a6c42e247c29e81b24386b8034ebeac0"
+    },
+    {
+      "path": "implementation/classifier-reliability/deployment-live.json",
+      "sha256": "0b291511678a67137a533cd9a2c31ce0cf21d394dbae8948bb9ee1083420365a"
+    },
+    {
+      "path": "implementation/classifier-reliability/public-smoke-live.json",
+      "sha256": "c235a8f287d2bb56a79386034abf5961655a7e3124481bf86a8bb0e350e710bb"
+    },
+    {
+      "path": "implementation/classifier-reliability/public-tls-live.json",
+      "sha256": "511698f6b1f5aeee3fae7657607d7767537bae380b32d710dfdbd55873b30dcf"
+    },
+    {
+      "path": "implementation/classifier-reliability/published-release.json",
+      "sha256": "33a5650d8adb0cf6af54df5d4dffa4e035ed686c90c2c7898a7c022b2a70e3c2"
+    },
+    {
+      "path": "implementation/classifier-reliability/live-sharing-first.json",
+      "sha256": "8d5c01581ea5074007b680ae2958479e20e4f5355ba088ceac009ec9838f882e"
+    }
+  ],
+  "liveAcceptance": {
+    "path": "implementation/classifier-reliability/live-sharing-first.json",
+    "publicShared": false,
+    "privateDisclosed": false,
+    "privateCandidateFound": true,
+    "ownerOnlyAudit": true,
+    "sharedHistoryMatches": true,
+    "removalRequestStatus": 404,
+    "removalHistoryStatus": 404,
+    "oldInvitationStatus": 403,
+    "cleanupPassed": true,
+    "independentHumans": false,
+    "recipientHostModel": false
+  }
+}

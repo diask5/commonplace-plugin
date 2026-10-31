@@ -1,0 +1,23 @@
+{
+  "url": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261031-imported-excerpts",
+  "isDraft": false,
+  "targetCommit": "354eb70254327f7f89ddd392342fecca483792b8",
+  "assets": [
+    {
+      "name": "deploy-cloud-update.py",
+      "sha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32"
+    },
+    {
+      "name": "runtime-update-manifest.json",
+      "sha256": "cfb8eb22a9d274527b4e27a0872b74e30951fc5aa4c7587bc723756a2ecdac26"
+    },
+    {
+      "name": "runtime-update.json",
+      "sha256": "d19a9875081c20a06e676aeb18cf927cff22d13a44f208fea52cbf37a09d72de"
+    },
+    {
+      "name": "runtime-update.sha256",
+      "sha256": "3fd1f2da2442c7504cd92f3758ebe107106ba1a0e2fda0f455e07ce032d56eaf"
+    }
+  ]
+}

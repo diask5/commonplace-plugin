@@ -1,0 +1,43 @@
+✔ separate owners using the same provider credential share one scheduler (2.195863ms)
+✔ shared queue bounds concurrent network work and preserves FIFO starts (57.962743ms)
+✔ fast completions still respect the provider start rate (144.703474ms)
+✔ cancelled queued work never reaches the provider and does not block later work (26.391623ms)
+✔ queue exhaustion is bounded and does not include candidate contents (21.6782ms)
+✔ classifier deadline includes queue wait and expired work sends no request (41.883435ms)
+✔ caller abort while queued remains cancellation and later requests can continue (57.717359ms)
+✔ HTTP 429 remains withheld without an automatic retry or model fallback (1.889258ms)
+✔ Decisions request uses the documented API with one candidate, one noul question and no private identifiers (34.271677ms)
+✔ loopback Decider gets no hosted key and defaults to the local Flash model (1.309961ms)
+✔ arbitrary outbound hosts, URL credentials, aliases and malformed endpoints are refused (0.709453ms)
+✔ missing credentials do not call any provider (0.865986ms)
+✔ invalid, truncated, oversize, non-probabilistic and wrong-model responses are refused (7.374444ms)
+✔ HTTP failure bodies and transport errors never echo private input (10.678548ms)
+✔ caller cancellation stops provider work and remains distinct from provider timeouts (1.789916ms)
+✔ oversize candidates are withheld whole instead of silently truncating sensitive tails (2.459747ms)
+✔ the gate validates proposed fields even when an injected classifier accepts everything (0.785294ms)
+✔ only the exact approved title and text enter the recipient response (1.389318ms)
+✔ denied and uncertain chunks do not leak titles, IDs, counts, probabilities or reasons to recipients (1.11577ms)
+✔ owner audit and recipient reads have distinct authenticated principals (3.751995ms)
+✔ inactive, expired or invalid policy authority does not call the classifier (0.974017ms)
+✔ excluded and foreign-owner sources never reach Perplexity (0.485521ms)
+✔ rule edits, recipient changes, expiry and revocation during classification fence all results (1.674598ms)
+✔ excluding an earlier approved source during later classification fences the batch (0.680332ms)
+✔ candidate snapshot is immutable across in-flight source and adapter mutations (0.57743ms)
+✔ all source and authority checks fail closed (0.541132ms)
+✔ decisions are recomputed after policy or candidate edits, with no positive cache (1.104158ms)
+✔ classifier failures and malformed probabilities withhold, even when a model was previously available (3.699899ms)
+✔ work is bounded and cutoff cannot disable the check (0.586982ms)
+✔ candidate batches share the eight-call ceiling and retain source order (16.510414ms)
+✔ revocation cancels concurrent provider work and never starts the next batch (3.748084ms)
+✔ caller cancellation discards concurrent approvals and cancels pending calls (2.312472ms)
+✔ benchmark reports missing provider as blocked, never model success (0.714529ms)
+✔ actual MCP stdio routes only permitted excerpts and cannot spoof identity or open the raw archive (61.028481ms)
+✔ bounded-source metadata reaches Decisions as explicit incomplete context without private identifiers (0.869728ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 543.121008

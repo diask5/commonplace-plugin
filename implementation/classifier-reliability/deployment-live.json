@@ -1,0 +1,14 @@
+{
+  "state": "passed",
+  "release": "20261031-classifier-reliability",
+  "filesVerified": 160,
+  "serviceReadableFiles": 160,
+  "services": [
+    "active",
+    "active",
+    "active"
+  ],
+  "migrations": "unchanged; verified code-only activation",
+  "previous": "20261029-cross-host-sync",
+  "finishedAt": 1793483963.1129935
+}

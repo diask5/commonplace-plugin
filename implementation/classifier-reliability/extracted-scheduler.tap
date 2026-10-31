@@ -1,0 +1,16 @@
+✔ separate owners using the same provider credential share one scheduler (2.037457ms)
+✔ shared queue bounds concurrent network work and preserves FIFO starts (58.54053ms)
+✔ fast completions still respect the provider start rate (143.621837ms)
+✔ cancelled queued work never reaches the provider and does not block later work (26.361779ms)
+✔ queue exhaustion is bounded and does not include candidate contents (20.468841ms)
+✔ classifier deadline includes queue wait and expired work sends no request (48.829984ms)
+✔ caller abort while queued remains cancellation and later requests can continue (62.914425ms)
+✔ HTTP 429 remains withheld without an automatic retry or model fallback (1.323258ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 532.570079

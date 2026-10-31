@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-31T21:05:14Z",
+  "activeRevision": 66,
+  "backgroundVersion": "0.4.33",
+  "enabled": true,
+  "secondsSinceSync": 3,
+  "syncError": null,
+  "total": 195,
+  "complete": 195,
+  "errors": 0,
+  "launchers": [
+    {
+      "version33": true,
+      "runAtLoad": true,
+      "startInterval": 60
+    }
+  ]
+}
