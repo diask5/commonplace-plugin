@@ -1,5 +1,16 @@
 # Meet Proxy product contract
 
+31 October upload optimization: patch 59 publishes native 0.4.35/runtime68 and
+server `20261031-compressed-context`. Gzip is negotiated
+per relay, retaining the 64,000-byte decoded limit, durable retry identity,
+complete captures, account ownership, exclusions and sync opt-out. Native batches
+rise from 40 to 100 messages within the same six-upload ceiling; JSONL reads use
+256 KiB windows. A 30,000-message synthetic backlog uses 77% fewer payload bytes
+and 39% fewer requests; this is not a live Mac measurement. 665 core tests,
+13 extracted-native checks, both-alias integrity and exact 59-patch replay across
+226 files pass. Neither native activation nor production deployment is complete;
+the previous Mac execution denial remains. See [faster uploads](docs/FASTER-CHAT-UPLOADS.md).
+
 31 October multiple-account release: patch 58 adds isolated native account
 profiles and a selected account per actual native chat. Context and messaging pin
 that choice; existing threads remain on their original account. Capture in an

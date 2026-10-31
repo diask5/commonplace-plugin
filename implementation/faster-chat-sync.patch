@@ -1,0 +1,555 @@
+diff --git a/apps/commonplace-account/server/cloud-http.mjs b/apps/commonplace-account/server/cloud-http.mjs
+index 22d56dd..867c942 100644
+--- a/apps/commonplace-account/server/cloud-http.mjs
++++ b/apps/commonplace-account/server/cloud-http.mjs
+@@ -1,3 +1,5 @@
++import {gunzip} from 'node:zlib';
++import {promisify} from 'node:util';
+ import {ContextSetup} from './context-setup.mjs';
+ import {UnifiedContext} from './unified-context.mjs';
+ import {SpaceContext} from './space-context.mjs';
+@@ -21,6 +23,17 @@ async function input(request) {
+   if(!value || typeof value!=='object' || Array.isArray(value))throw new WorkProblem(400,'Expected an object.');
+   return value;
+ }
++const unzip=promisify(gunzip);
++export async function decodeContextUpload(body){
++ if(body.encoding===undefined)return body;
++ if(body.encoding!=='gzip-base64-v1'||Object.keys(body).some(k=>!['encoding','data'].includes(k))||typeof body.data!=='string'||body.data.length>64000||!body.data.length||body.data.length%4||!/^[A-Za-z0-9+/]*={0,2}$/.test(body.data))throw new WorkProblem(400,'Invalid compressed context upload.');
++ let raw;
++ try{raw=await unzip(Buffer.from(body.data,'base64'),{maxOutputLength:64000});}
++ catch(error){if(error.code==='ERR_BUFFER_TOO_LARGE')throw new WorkProblem(413,'Request too large.');throw new WorkProblem(400,'Invalid compressed context upload.');}
++ let value;try{value=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));}catch{throw new WorkProblem(400,'Invalid compressed context JSON.');}
++ if(!value||typeof value!=='object'||Array.isArray(value)||value.encoding!==undefined)throw new WorkProblem(400,'Expected a context object.');
++ return value;
++}
+ export async function cloudHttp(request,service,{identity=readBrowserIdentity,config=publicAuthConfig}={}) {
+   const route=new URL(request.url).pathname;
+   if(!['/','/auth/google.js','/work-agent','/workspaces','/settings','/signin'].includes(route) && !/^\/account\/(web|api)\/cloud\//.test(route))return null;
+@@ -61,14 +74,21 @@ export async function cloudHttp(request,service,{identity=readBrowserIdentity,co
+     if(spaceManagementTools.some(t=>t.action===method)){if(device?.workspaceId)return json({error:'Use your personal chat for context spaces.'},403);return json(await manageSpace(service,owner,method,body));}
+     if(['space-list','space-activity','space-request'].includes(method)){if(device?.workspaceId)return json({error:'Use your personal chat for context spaces.'},403);const spaces=new SpaceContext(service);if(method==='space-list')return json(spaces.list(owner));if(method==='space-activity')return json(spaces.board(owner,body));await service.limit('space-request:'+owner,12,60000);return json(await spaces.request(owner,body));}
+     if(method==='status')void warmSharedContext(service,owner).catch(()=>{});
+-    if(method==='status')return json({contextProtocol:1,contextAtomicCaptures:true,contextCollectorProgress:true,setup:agentSetupStatus(work,owner),syncEnabled:!!work.get('SELECT sync_enabled FROM cp_cloud_settings WHERE owner=?',owner)?.sync_enabled,companions:work.companions(owner),accounts:work.accounts(owner),tasks:work.list(owner),agentId:work.get('SELECT agent FROM cp_cloud_agents WHERE owner=?',owner)?.agent || null,sources:work.sourceStatus(owner),archive:work.archiveStatus(owner),agents:work.all('SELECT a.id,b.label,b.machine,b.provider,b.host,b.delivery,b.seen_at AS lastSeenAt FROM cp_agent_addresses a JOIN cp_agent_bindings b ON b.agent=a.id JOIN cp_devices d ON d.id=b.device WHERE a.owner=? AND a.revoked_at IS NULL AND d.revoked=0 ORDER BY b.label',owner).map(agent=>({...agent,shortId:agent.id.slice(-6),displayName:agent.label+' ('+agent.provider+', '+agent.id.slice(-6)+')',availability:!agent.lastSeenAt?'unknown':agent.lastSeenAt>Date.now()-90000?'recently_seen':'offline'}))});
++    if(method==='status')return json({contextProtocol:1,contextAtomicCaptures:true,contextCollectorProgress:true,contextUploadEncoding:'gzip-base64-v1',setup:agentSetupStatus(work,owner),syncEnabled:!!work.get('SELECT sync_enabled FROM cp_cloud_settings WHERE owner=?',owner)?.sync_enabled,companions:work.companions(owner),accounts:work.accounts(owner),tasks:work.list(owner),agentId:work.get('SELECT agent FROM cp_cloud_agents WHERE owner=?',owner)?.agent || null,sources:work.sourceStatus(owner),archive:work.archiveStatus(owner),agents:work.all('SELECT a.id,b.label,b.machine,b.provider,b.host,b.delivery,b.seen_at AS lastSeenAt FROM cp_agent_addresses a JOIN cp_agent_bindings b ON b.agent=a.id JOIN cp_devices d ON d.id=b.device WHERE a.owner=? AND a.revoked_at IS NULL AND d.revoked=0 ORDER BY b.label',owner).map(agent=>({...agent,shortId:agent.id.slice(-6),displayName:agent.label+' ('+agent.provider+', '+agent.id.slice(-6)+')',availability:!agent.lastSeenAt?'unknown':agent.lastSeenAt>Date.now()-90000?'recently_seen':'offline'}))});
+     if(['archive-list','archive-search','archive-read','context-coverage','context-configure','project-context'].includes(method))return json(await sharedContext(service,owner,method,body));
+     if(['archive-manifest','archive-files'].includes(method)){if(!device)return json({error:'Mirror context from your connected installation.'},403);return json(await sharedContext(service,owner,method,body));}
+     if(['context-ingest','context-checkpoint'].includes(method)){
+       if(!device)return json({error:'Collect from your connected installation.'},403);
+       await service.authenticate(request,'commonplace:upload');
+       if(method==='context-ingest'&&!work.get('SELECT sync_enabled FROM cp_cloud_settings WHERE owner=?',owner)?.sync_enabled)return json({error:'Enable work chat sync first.'},403);
+-      return json(new UnifiedContext(service)[method==='context-ingest'?'ingest':'checkpoint'](owner,device,body));
++      let payload=body;
++      if(method==='context-ingest'&&body.encoding!==undefined){
++        payload=await decodeContextUpload(body);
++        // Async decompression yields to account-setting changes. Recheck opt-in
++        // before the synchronous ingest transaction rechecks device/owner scope.
++        if(!work.get('SELECT sync_enabled FROM cp_cloud_settings WHERE owner=?',owner)?.sync_enabled)return json({error:'Enable work chat sync first.'},403);
++      }
++      return json(new UnifiedContext(service)[method==='context-ingest'?'ingest':'checkpoint'](owner,device,payload));
+     }
+     if(method==='configure') {
+       if(typeof body.syncEnabled!=='boolean')return json({error:'Choose whether to sync work chats.'},400);
+diff --git a/apps/commonplace/server/canonical-sync.mjs b/apps/commonplace/server/canonical-sync.mjs
+index 17a09c4..e443231 100644
+--- a/apps/commonplace/server/canonical-sync.mjs
++++ b/apps/commonplace/server/canonical-sync.mjs
+@@ -1,3 +1,5 @@
++import {gzip} from 'node:zlib';
++import {promisify} from 'node:util';
+ import {withAccountContext} from './account-profiles.mjs';
+ import {open,readFile,writeFile,rename,readdir,lstat,realpath} from 'node:fs/promises';
+ import {createHash,randomBytes} from 'node:crypto';
+@@ -9,6 +11,38 @@ const hash=v=>createHash('sha256').update(v).digest('hex');
+ const safeId=v=>typeof v==='string'&&v.length>0&&v.length<=500&&!/[\x00-\x1f]/.test(v);
+ const timestamp=v=>typeof v==='number'?v<1e11?Math.floor(v*1000):Math.floor(v):typeof v==='string'?Date.parse(v):NaN;
+ const uuid=v=>typeof v==='string'&&/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(v);
++// The relay already accepts 100 messages and a 64 KB request. Leave room for
++// provenance/envelope fields; the upload count remains capped at six per tick.
++const MESSAGE_LIMIT=100, MESSAGE_BYTES=52000;
++const zip=promisify(gzip);
++// This envelope also travels through the signed Agent Auth capability, whose
++// outer HTTP body is managed by the SDK. Persist the original input for retries.
++export async function encodeContextUpload(input,encoding){
++ if(encoding!=='gzip-base64-v1')return input;
++ const raw=Buffer.from(JSON.stringify(input));
++ if(raw.length>64000)throw Object.assign(Error('Context upload exceeds the request limit.'),{status:413});
++ if(raw.length<2048)return input;
++ const data=(await zip(raw,{level:1})).toString('base64'),body={encoding:'gzip-base64-v1',data};
++ return Buffer.byteLength(JSON.stringify(body))<raw.length*0.9?body:input;
++}
++// Read only as far as the next bounded batch needs. Each complete UTF-8 line
++// is decoded once; a large record can span windows up to the existing 8 MB cap.
++export async function* transcriptLines(fh,{offset,size,metrics}){
++ let position=offset,readBytes=0,parts=[],length=0;
++ while(position<size&&readBytes<8000000){
++  const buffer=Buffer.alloc(Math.min(256*1024,size-position,8000000-readBytes));
++  const n=(await fh.read(buffer,0,buffer.length,position)).bytesRead;
++  if(!n)break;position+=n;readBytes+=n;metrics.readBytes+=n;metrics.readCalls++;
++  let start=0;
++  for(let end=buffer.indexOf(10,start);end>=0&&end<n;end=buffer.indexOf(10,start)){
++   const part=buffer.subarray(start,end),bytes=length+part.length+1;
++   const line=parts.length?Buffer.concat([...parts,part],bytes-1).toString('utf8'):part.toString('utf8');
++   parts=[];length=0;start=end+1;yield {line,bytes};
++  }
++  if(start<n){parts.push(buffer.subarray(start,n));length+=n-start;}
++ }
++}
++
+ // This is content provenance, never a native execution identity or environment.
+ export function transcriptRecord(raw,{index,conversation,provider='native',fallbackId,project=''}){
+  const r=JSON.parse(raw),payload=r.payload||r.message||r;
+@@ -45,7 +79,7 @@ export class CanonicalSync {
+  async flush(){
+   const p=this.state.pending;if(!p)return;
+   let result;
+-  try{result=await withAccountContext(this.app.dir,p.input.conversation,()=>this.app.accountClient.request('/account/api/cloud/context-ingest',p.input),{ownerId:this.state.owner});
++  try{result=await withAccountContext(this.app.dir,p.input.conversation,async()=>this.app.accountClient.request('/account/api/cloud/context-ingest',await encodeContextUpload(p.input,this.uploadEncoding)),{ownerId:this.state.owner});
+    if(result?.accountWithheld){this.state.files[p.key]={accountWithheld:true};delete this.state.pending;await this.save();return;}
+   }
+   catch(error){
+@@ -61,8 +95,9 @@ export class CanonicalSync {
+   delete this.state.pending;await this.save();
+  }
+  async send(key,input,next){input={...input,ownerId:this.state.owner};this.state.pending={key,input,next};await this.save();await this.flush();}
+- async tick(owner,roots){
+-  await this.load(owner);let budget=Math.min(this.budget,6);
++ async tick(owner,roots,{uploadEncoding}={}){
++  this.uploadEncoding=uploadEncoding;
++  await this.load(owner);let budget=Math.min(this.budget,6);const io={readBytes:0,readCalls:0};
+   if(this.state.format!==3){
+    // Old collectors admitted host API-request envelopes. Never replay their
+    // pending text. Reconcile its possibly accepted revision, then recapture
+@@ -161,17 +196,17 @@ export class CanonicalSync {
+      if(!full&&record.queued?.length){messages=record.queued;next.queued=[];complete=record.scanComplete===true;}
+      else if(file.endsWith('.jsonl')){
+       // Bounded reads and a byte cursor: a partial final line waits for completion.
+-      const bytes=Buffer.alloc(Math.min(8000000,stat.size-offset));const n=(await fh.read(bytes,0,bytes.length,offset)).bytesRead;
+-      const chunk=bytes.subarray(0,n),end=chunk.lastIndexOf(10);let position=0;
+-      if(end<0&&n>0){partial=true;next.error='A transcript record is incomplete or exceeds the collector record limit.';}
+-      else for(const line of chunk.subarray(0,end+1).toString('utf8').split('\n')){
+-       if(!line){if(position<end+1)position++;continue;}
++      let progressed=false,encodedBytes=0;
++      for await(const {line,bytes} of transcriptLines(fh,{offset,size:stat.size,metrics:io})){
++       if(!line){offset+=bytes;progressed=true;continue;}
+        let parsed;try{parsed=transcriptRecord(line,{index,conversation,provider:root.kind||'native',fallbackId:'file:'+key,project:root.project||''});}catch{partial=true;next.error='A transcript record could not be parsed.';break;}
+-       if(JSON.stringify(messages).length+JSON.stringify(parsed.messages).length>44000&&messages.length)break;
+-       conversation=parsed.conversation;messages.push(...parsed.messages);index++;position+=Buffer.byteLength(line)+1;
+-       if(messages.length>=40)break;
++       const size=Buffer.byteLength(JSON.stringify(parsed.messages));
++       if(encodedBytes+size>MESSAGE_BYTES&&messages.length)break;
++       conversation=parsed.conversation;messages.push(...parsed.messages);encodedBytes+=size;index++;offset+=bytes;progressed=true;
++       if(messages.length>=MESSAGE_LIMIT)break;
+       }
+-      offset+=position;complete=offset===stat.size;
++      if(!progressed&&stat.size>offset&&!next.error){partial=true;next.error='A transcript record is incomplete or exceeds the collector record limit.';}
++      complete=offset===stat.size;
+      }else{
+       if(stat.size>50000000){partial=true;continue;}
+       const raw=JSON.parse(await fh.readFile('utf8')),rows=Array.isArray(raw)?raw:!raw.type&&Array.isArray(raw.messages)?raw.messages:[raw];
+@@ -179,14 +214,15 @@ export class CanonicalSync {
+       // Retain an export's real session and project metadata without treating
+       // its entire message array as one synthetic user message.
+       if(!Array.isArray(raw)&&Array.isArray(raw.messages))conversation=transcriptRecord(JSON.stringify({sessionId:raw.sessionId,cwd:raw.cwd}),{index:0,conversation,provider:root.kind||'native',fallbackId:'file:'+key,project:root.project||''}).conversation;
+-      while(index<rows.length){const p=transcriptRecord(JSON.stringify(rows[index]),{index,conversation,provider:root.kind||'native',fallbackId:'file:'+key,project:root.project||''});if(JSON.stringify(messages).length+JSON.stringify(p.messages).length>44000&&messages.length)break;conversation=p.conversation;messages.push(...p.messages);index++;if(messages.length>=40)break;}
++      let encodedBytes=0;
++      while(index<rows.length){const p=transcriptRecord(JSON.stringify(rows[index]),{index,conversation,provider:root.kind||'native',fallbackId:'file:'+key,project:root.project||''});const size=Buffer.byteLength(JSON.stringify(p.messages));if(encodedBytes+size>MESSAGE_BYTES&&messages.length)break;conversation=p.conversation;messages.push(...p.messages);encodedBytes+=size;index++;if(messages.length>=MESSAGE_LIMIT)break;}
+       complete=index===rows.length;offset=complete?stat.size:0;
+      }
+      if(!conversation&&complete)conversation=record.conversation;
+      if(!conversation){next={...next,offset,index,version:complete?version:null};this.state.files[key]=next;await this.save();continue;}
+      if(relative.split(path.sep).includes('subagents')&&!conversation.id.includes(':subagent:'))conversation={...conversation,id:conversation.id+':subagent:'+path.basename(file,path.extname(file))};
+      if(relative.split(path.sep).includes('subagents')){delete conversation.nativeId;delete conversation.nativeProvider;}
+-     const batch=[];let bytes=0;for(const m of messages){const size=Buffer.byteLength(JSON.stringify(m));if(batch.length&&(bytes+size>46000||batch.length>=40))break;batch.push(m);bytes+=size;}
++     const batch=[];let bytes=0;for(const m of messages){const size=Buffer.byteLength(JSON.stringify(m));if(batch.length&&(bytes+size>MESSAGE_BYTES||batch.length>=MESSAGE_LIMIT))break;batch.push(m);bytes+=size;}
+      if(batch.length<messages.length){next.queued=messages.slice(batch.length);next.scanComplete=complete;complete=false;}messages=batch;
+      const observed=Math.min(this.now(),Math.floor(stat.mtimeMs));
+      next.values={...record.values};
+@@ -196,7 +232,8 @@ export class CanonicalSync {
+      // Conductor snapshots never erase messages merely because a page vanished.
+      if(complete&&!root.name.startsWith('Conductor')&&!next.error){
+       const removed=(record.known||[]).filter(id=>!next.seen.includes(id));
+-      const deletes=removed.slice(0,Math.max(0,40-messages.length)).map(id=>({id,role:'assistant',deleted:true,modifiedAt:observed,position:0}));
++      const deletes=[];let deleteBytes=Buffer.byteLength(JSON.stringify(messages));
++      for(const id of removed){const d={id,role:'assistant',deleted:true,modifiedAt:observed,position:0},size=Buffer.byteLength(JSON.stringify(d))+1;if(messages.length+deletes.length>=MESSAGE_LIMIT||deleteBytes+size>MESSAGE_BYTES)break;deletes.push(d);deleteBytes+=size;}
+       messages.push(...deletes);if(deletes.length<removed.length){next.version=null;next.known=(record.known||[]).filter(id=>!deletes.some(d=>d.id===id));complete=false;}else next.known=next.seen;
+      }
+      next.captureComplete=complete&&!next.error;
+@@ -223,6 +260,6 @@ export class CanonicalSync {
+   const beatSkips=served||!beat.length?0:(this.state.beatSkips||0)+1;if(beatSkips!==(this.state.beatSkips||0)){this.state.beatSkips=beatSkips;await this.save();}
+   // Missing files are unavailable replicas, not global deletion commands.
+   if(!incomplete)for(const [key,r] of Object.entries(this.state.files))if(!seen.has(key)&&r.conversation&&budget>0&&this.now()-(r.lastReported||0)>30000){await this.send(key,{conversation:{...r.conversation,title:r.conversation.title||'Unavailable conversation'},sourceKey:key,epoch:r.epoch||1,revision:(r.revision||0)+1,capturedAt:r.capturedAt||0,state:'unavailable',messages:[]},{...r,revision:(r.revision||0)+1});budget--;}
+-  return {partial,files:Object.keys(this.state.files).length,protocol:1,sent,deferred,backedOff,scanned:scanList.length,discovered:candidates.length};
++  return {partial,files:Object.keys(this.state.files).length,protocol:1,sent,deferred,backedOff,scanned:scanList.length,discovered:candidates.length,io};
+  }
+ }
+diff --git a/apps/commonplace/server/cloud-sync.mjs b/apps/commonplace/server/cloud-sync.mjs
+index 26c70e2..978b01e 100644
+--- a/apps/commonplace/server/cloud-sync.mjs
++++ b/apps/commonplace/server/cloud-sync.mjs
+@@ -64,7 +64,7 @@ export class CloudSync {
+       roots.push(...conductor.roots);partial ||= conductor.coverage.partial;
+       this.state.coverage={conductor:conductor.coverage,transcriptRoots:roots.length,discoveryPartial:this.discoveryPartial};
+       if(status.contextProtocol===1&&!status.contextAtomicCaptures){this.state.error='Update the relay to enable complete capture publication.';phase='error';return;}
+-      if(status.contextProtocol===1){const result=await this.canonical.tick(owner,roots);this.state.coverage.canonical=result;this.state.lastSyncedAt=this.now();this.state.error=result.partial||partial?'Collection is continuing; see source coverage for missing or partial chats.':null;phase=result.partial||partial?'partial':'current';return;}
++      if(status.contextProtocol===1){const result=await this.canonical.tick(owner,roots,{uploadEncoding:status.contextUploadEncoding});this.state.coverage.canonical=result;this.state.lastSyncedAt=this.now();this.state.error=result.partial||partial?'Collection is continuing; see source coverage for missing or partial chats.':null;phase=result.partial||partial?'partial':'current';return;}
+       for(const root of roots) {
+         const files=[],rootId=hash(root.path),seen=new Set();
+         const walk=async dir=>{for(const e of await readdir(dir,{withFileTypes:true})) {
+diff --git a/apps/commonplace/server/local-client.mjs b/apps/commonplace/server/local-client.mjs
+index 84e97ca..6bead74 100644
+--- a/apps/commonplace/server/local-client.mjs
++++ b/apps/commonplace/server/local-client.mjs
+@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
+ import { spawn } from 'node:child_process';
+ import { setTimeout as delay } from 'node:timers/promises';
+ 
+-export const RUNTIME_REVISION = 67;
++export const RUNTIME_REVISION = 68;
+ 
+ export function createLocalClient({
+   dir = process.env.COMMONPLACE_DATA_DIR ||
+diff --git a/apps/commonplace/server/setup-status.mjs b/apps/commonplace/server/setup-status.mjs
+index fa72e67..92851a9 100644
+--- a/apps/commonplace/server/setup-status.mjs
++++ b/apps/commonplace/server/setup-status.mjs
+@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
+ import path from 'node:path';
+ import {acquireProcessLock} from './process-lock.mjs';
+ 
+-export const PLUGIN_VERSION='0.4.34';
++export const PLUGIN_VERSION='0.4.35';
+ export const setupActions={
+   link_account:'Link another verified Google account in an isolated profile, preserving existing accounts.',
+   use_account:'Choose the account for this personal native chat.',
+diff --git a/scripts/benchmark-chat-upload.mjs b/scripts/benchmark-chat-upload.mjs
+new file mode 100644
+index 0000000..ae0c2e0
+--- /dev/null
++++ b/scripts/benchmark-chat-upload.mjs
+@@ -0,0 +1,42 @@
++// Synthetic collector/transport benchmark. No real accounts, upload traffic or
++// wall-clock network claims. Run in a fresh process for each collector revision.
++import {mkdtemp,mkdir,writeFile,readFile,rm} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {pathToFileURL} from 'node:url';
++import {createHash} from 'node:crypto';
++import {gunzipSync} from 'node:zlib';
++import assert from 'node:assert/strict';
++const args=process.argv.slice(2),option=name=>args[args.indexOf(name)+1];
++const collector=args.includes('--collector')?path.resolve(option('--collector')):path.resolve('apps/commonplace/server/canonical-sync.mjs');
++const {CanonicalSync}=await import(pathToFileURL(collector));
++const encoding=args.includes('--gzip')?'gzip-base64-v1':undefined;
++const directory=await mkdtemp(path.join(tmpdir(),'chat-upload-benchmark-')),root=path.join(directory,'chats');await mkdir(root);
++const base=Date.now(),expected=new Map(),received=new Map(),completed=new Set();
++let uploads=0,wireBytes=0,plainBytes=0,compressedUploads=0,maxWireBytes=0,maxMessages=0,now=base,ticks=0;
++const digest=s=>createHash('sha256').update(s).digest('hex');
++try{
++ for(let n=0;n<=200;n++){
++  const session='synthetic-'+n,count=n===200?6000:120,rows=[];
++  for(let i=0;i<count;i++){
++   const text=`Project ${n}, turn ${i}: Review the deployment plan and record the owner, decision and unresolved follow-up. `+digest(session+':'+i)+'. The launch time remains undecided.';
++   expected.set(session+':m'+i+':0',text);
++   rows.push(JSON.stringify({sessionId:session,uuid:'m'+i,type:'user',message:{role:'user',content:text}})+'\n');
++  }
++  await writeFile(path.join(root,session+'.jsonl'),rows.join(''));
++ }
++ const app={dir:directory,accountClient:{request:async(route,wire)=>{
++  assert.ok(route.endsWith('/context-ingest'));const bytes=Buffer.byteLength(JSON.stringify(wire));assert.ok(bytes<=64000);
++  const input=wire.encoding?(compressedUploads++,JSON.parse(gunzipSync(Buffer.from(wire.data,'base64')))):wire;
++  uploads++;wireBytes+=bytes;plainBytes+=Buffer.byteLength(JSON.stringify(input));maxWireBytes=Math.max(maxWireBytes,bytes);maxMessages=Math.max(maxMessages,input.messages.length);
++  for(const m of input.messages)if(!m.deleted){const key=input.conversation.id+':'+m.id;assert.equal(m.text,expected.get(key));received.set(key,m.text);}
++  if(input.state==='current')completed.add(input.conversation.id);
++  return {id:input.sourceKey};
++ }}};
++ const sync=new CanonicalSync(app,{now:()=>now});
++ const io=async()=>Object.fromEntries((await readFile('/proc/self/io','utf8')).trim().split('\n').map(l=>{const [k,v]=l.split(':');return [k,Number(v.trim())];}));
++ const before=await io(),start=performance.now();let windowReadBytes=0;
++ while(completed.size<201&&ticks<1000){const count=uploads;const result=await sync.tick('synthetic-owner',[{path:root,name:'Claude chats',kind:'claude'}],{uploadEncoding:encoding});assert.ok(uploads-count<=6);windowReadBytes+=result.io?.readBytes||0;ticks++;now=base+ticks*5000;}
++ const wallMs=performance.now()-start,after=await io();assert.equal(completed.size,201);assert.equal(received.size,expected.size);
++ console.log(JSON.stringify({scenario:'200 chats of 120 messages plus one 6000-message chat; synthetic local collection, mocked uploader',collectorSha256:digest(await readFile(collector)),encoding:encoding||'none',chats:201,messages:expected.size,ticks,uploads,compressedUploads,wireBytes,plainBytes,maxWireBytes,maxMessages,collectorWallMs:Math.round(wallMs),logicalReadBytes:after.rchar-before.rchar,logicalWriteBytes:after.wchar-before.wchar,windowReadBytes:windowReadBytes||null,modeledSchedulingSeconds:(ticks-1)*5,allContentVerified:true,limits:'Local filesystem/serialization/compression timings; five-second scheduling is modeled. No network, Mac, browser-history or production throughput measurement.'},null,2));
++}finally{await rm(directory,{recursive:true,force:true});}
+diff --git a/scripts/build-plugin.py b/scripts/build-plugin.py
+index 0e17c0e..2dcf299 100644
+--- a/scripts/build-plugin.py
++++ b/scripts/build-plugin.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Build candidate 0.4.34 from checksum-pinned 0.3.0, preserving all bundled runtimes, hooks, assets and licenses outside the explicit overlay."""
++"""Build candidate 0.4.35 from checksum-pinned 0.3.0, preserving all bundled runtimes, hooks, assets and licenses outside the explicit overlay."""
+ import argparse
+ import hashlib
+ import json
+@@ -11,7 +11,7 @@ import zipfile
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+ BASE_VERSION = "0.3.0"
+-VERSION = "0.4.34"
++VERSION = "0.4.35"
+ BASE_SHA256 = "146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968"
+ BASE_URL = "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.3.0/meet-proxy-0.3.0.zip"
+ OVERLAY_FILES = {
+@@ -91,9 +91,9 @@ def overrides(baseline, alias="meet-proxy"):
+         assert metadata["version"] == BASE_VERSION and metadata["name"] == "meet-proxy"
+         metadata.update(name=alias, version=VERSION)
+         changes[name] = (json.dumps(metadata, indent=2) + "\n").encode()
+-    assert b"PLUGIN_VERSION='0.4.34'" in changes["server/setup-status.mjs"]
++    assert b"PLUGIN_VERSION='0.4.35'" in changes["server/setup-status.mjs"]
+     assert b"BACKGROUND_VERSION=PLUGIN_VERSION" in changes["server/cloud-background.mjs"]
+-    assert b"RUNTIME_REVISION = 67;" in changes["server/local-client.mjs"]
++    assert b"RUNTIME_REVISION = 68;" in changes["server/local-client.mjs"]
+     readme = baseline.read("README.md").decode().replace("0.3.0", VERSION)
+     section = """## Your personal agent network
+ 
+diff --git a/tests/cloud-unified-context.test.mjs b/tests/cloud-unified-context.test.mjs
+index 65bc45a..1e0efb3 100644
+--- a/tests/cloud-unified-context.test.mjs
++++ b/tests/cloud-unified-context.test.mjs
+@@ -312,7 +312,7 @@ test('a collector recovers a completed partial line without publishing its earli
+ 
+ test('automatic JSON backfill survives restarts and publishes every message together',async t=>{
+  const f=await fixture(t),root=path.join(f.a.client.app.dir,'json-backfill');await mkdir(root);
+- const file=path.join(root,'export.json'),rows=Array.from({length:95},(_,i)=>({id:'json-'+i,role:i%2?'assistant':'user',content:'Turn '+i+' JSON_COMPLETE',timestamp:1000+i}));
++ const file=path.join(root,'export.json'),rows=Array.from({length:250},(_,i)=>({id:'json-'+i,role:i%2?'assistant':'user',content:'Turn '+i+' JSON_COMPLETE',timestamp:1000+i}));
+  await writeFile(file,JSON.stringify({sessionId:'json-conversation',cwd:'/projects/product-launch',messages:rows}));
+  const app={dir:f.a.client.app.dir,accountClient:{request:async(route,input)=>f.unified.ingest(f.a.owner,f.a.device,input)}};
+  const roots=[{path:root,name:'Claude chats',kind:'claude'}];
+@@ -320,15 +320,15 @@ test('automatic JSON backfill survives restarts and publishes every message toge
+   await new CanonicalSync(app,{budget:1}).tick(f.a.owner,roots);
+   if(i<2)assert.equal([...f.unified.sections(f.a.owner)].length,0,'unfinished capture stays private');
+  }
+- const coverage=f.unified.coverage(f.a.owner).conversations;assert.equal(coverage.length,1);assert.equal(coverage[0].messages,95);assert.equal(coverage[0].project,'product-launch');
++ const coverage=f.unified.coverage(f.a.owner).conversations;assert.equal(coverage.length,1);assert.equal(coverage[0].messages,250);assert.equal(coverage[0].project,'product-launch');
+  const snapshot=await f.archive.prepare(f.a.owner),reader=await ArchiveTools.open(snapshot.directory);
+  const hits=await reader.call('archive_search',{query:'JSON_COMPLETE',project:'product-launch'});assert.equal(hits.results.length,1);
+- const read=await reader.call('archive_read',{documentId:hits.results[0].documentId,limit:16000});assert.match(read.text,/Turn 0 /);assert.match(read.text,/Turn 94 /);assert.doesNotMatch(read.text,/\/projects\//);await snapshot.release();
++ const read=await reader.call('archive_read',{documentId:hits.results[0].documentId,limit:16000});assert.match(read.text,/Turn 0 /);assert.match(read.text,/Turn 249 /);assert.doesNotMatch(read.text,/\/projects\//);await snapshot.release();
+  // A changed export restarts from the first turn instead of continuing an old index.
+  await writeFile(file,JSON.stringify({sessionId:'json-conversation',cwd:'/projects/product-launch',messages:rows.map(r=>({...r,content:r.content.replace('JSON_COMPLETE','JSON_UPDATED'),updated_at:2000}))}));
+  await new CanonicalSync(app,{budget:1}).tick(f.a.owner,roots);assert.match([...f.unified.sections(f.a.owner)][0].section.body,/JSON_COMPLETE/);
+  for(let i=0;i<3;i++)await new CanonicalSync(app,{budget:1}).tick(f.a.owner,roots);
+- const sections=[...f.unified.sections(f.a.owner)];assert.equal(sections.length,95);assert.ok(sections.every(s=>s.section.body.includes('JSON_UPDATED')));
++ const sections=[...f.unified.sections(f.a.owner)];assert.equal(sections.length,250);assert.ok(sections.every(s=>s.section.body.includes('JSON_UPDATED')));
+ });
+ 
+ test('metadata before visible text keeps the real identity and groups projects across providers',async t=>{
+diff --git a/tests/cloud-upload-compression.test.mjs b/tests/cloud-upload-compression.test.mjs
+new file mode 100644
+index 0000000..7f87960
+--- /dev/null
++++ b/tests/cloud-upload-compression.test.mjs
+@@ -0,0 +1,108 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {gzipSync} from 'node:zlib';
++import {randomBytes} from 'node:crypto';
++import {mkdtemp,mkdir,writeFile,readFile,rm} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {pathToFileURL} from 'node:url';
++const nativeRoot=process.env.COMMONPLACE_TEST_PLUGIN?pathToFileURL(path.resolve(process.env.COMMONPLACE_TEST_PLUGIN,'server')+'/'):new URL('../apps/commonplace/server/',import.meta.url);
++const {CanonicalSync,encodeContextUpload,transcriptLines}=await import(new URL('canonical-sync.mjs',nativeRoot));
++const {CloudSync}=await import(new URL('cloud-sync.mjs',nativeRoot));
++import {decodeContextUpload,cloudHttp} from '../apps/commonplace-account/server/cloud-http.mjs';
++import {UnifiedContext} from '../apps/commonplace-account/server/unified-context.mjs';
++import {signedFixture} from './signed-fixture.mjs';
++const encoding='gzip-base64-v1';
++const packed=raw=>({encoding,data:gzipSync(raw).toString('base64')});
++const sample=()=>({conversation:{provider:'claude',id:'compression-chat',title:'Unicode 😀 日本語'},sourceKey:'c'.repeat(64),revision:1,capturedAt:Date.now(),messages:Array.from({length:100},(_,i)=>({id:'m'+i,role:'user',text:('Decision '+i+' 😀 日本語. ').repeat(8),position:i,timestamp:1000}))});
++async function local(t){const dir=await mkdtemp(path.join(tmpdir(),'compression-'));t.after(()=>rm(dir,{recursive:true,force:true}));const root=path.join(dir,'chats');await mkdir(root);return {dir,root,roots:[{path:root,name:'Claude chats',kind:'claude'}]};}
++const line=(i,text)=>JSON.stringify({sessionId:'compressed',uuid:'m'+i,type:'user',message:{role:'user',content:text}})+'\n';
++
++test('negotiated gzip saves transfer bytes and preserves Unicode and the complete object',async()=>{
++ const input=sample(),raw=JSON.stringify(input),wire=await encodeContextUpload(input,encoding);
++ assert.equal(wire.encoding,encoding);assert.ok(Buffer.byteLength(JSON.stringify(wire))<Buffer.byteLength(raw)/4);
++ assert.deepEqual(await decodeContextUpload(wire),input);assert.equal(JSON.stringify(input),raw);
++ assert.equal(await encodeContextUpload(input,undefined),input);assert.equal(await encodeContextUpload(input,'future'),input);
++ const small={messages:[]};assert.equal(await encodeContextUpload(small,encoding),small);
++ const random={text:randomBytes(15000).toString('base64')};assert.equal(await encodeContextUpload(random,encoding),random,'base64 overhead cannot enlarge uploads');
++});
++
++test('compressed uploads enforce the original 64000-byte decompressed limit and reject malformed data',async()=>{
++ const exact=JSON.stringify({text:'x'.repeat(63989)});assert.equal(Buffer.byteLength(exact),64000);
++ assert.equal((await decodeContextUpload(packed(exact))).text.length,63989);
++ await assert.rejects(decodeContextUpload(packed(JSON.stringify({text:'x'.repeat(63990)}))),e=>e.status===413);
++ await assert.rejects(decodeContextUpload(packed(' '.repeat(1000000))),e=>e.status===413);
++ for(const raw of ['not json','[]','null','4',JSON.stringify({encoding,messages:[]})])await assert.rejects(decodeContextUpload(packed(raw)),e=>e.status===400);
++ for(const body of [{encoding,data:'!'},{encoding,data:'AAAA'},{encoding:'other',data:'AAAA'},{...packed('{}'),ownerId:'untrusted'}, {encoding,data:'A'.repeat(64004)}, {encoding,data:packed('{}').data.slice(0,-4)}])await assert.rejects(decodeContextUpload(body),e=>e.status===400);
++ await assert.rejects(decodeContextUpload(packed(Buffer.from([0xff]))),e=>e.status===400);
++ await assert.rejects(encodeContextUpload({text:'x'.repeat(64000)},encoding),e=>e.status===413);
++});
++
++test('signed Agent Auth accepts compressed context with unchanged replay, scope, opt-in and exclusion checks',async t=>{
++ const f=await signedFixture(t);
++ async function native(name){const p=await f.fresh(name,'Claude'),link=await p.client.request('/account/api/identity/start',{}),owner=await f.service.profile({userId:'firebase:compression-'+name,email:name+'@example.test'});f.service.mailboxes.approveLink(owner,new URL(link.authorizationUrl).hash.slice(1));await p.call('discover_agents');return {...p,owner:owner.id};}
++ const a=await native('A'),b=await native('B'),input={...sample(),ownerId:a.owner},wire=await encodeContextUpload(input,encoding);
++ const status=await a.client.request('/account/api/cloud/status',{});assert.equal(status.contextUploadEncoding,encoding);
++ await assert.rejects(a.client.request('/account/api/cloud/context-ingest',wire),/403/);
++ await a.client.request('/account/api/cloud/configure',{syncEnabled:true});await b.client.request('/account/api/cloud/configure',{syncEnabled:true});
++ const first=await a.client.request('/account/api/cloud/context-ingest',wire);assert.equal(first.received,100);
++ assert.equal((await a.client.request('/account/api/cloud/context-ingest',input)).replayed,true,'plain retry of compressed write has same digest');
++ assert.equal((await a.client.request('/account/api/cloud/context-ingest',wire)).replayed,true);
++ await assert.rejects(b.client.request('/account/api/cloud/context-ingest',wire),/403/);
++ await assert.rejects(a.client.request('/account/api/cloud/context-ingest',await encodeContextUpload({...input,messages:[{...input.messages[0],text:'changed'}]},encoding)),/409/);
++ const unified=new UnifiedContext(f.service);assert.equal(unified.coverage(b.owner).conversations.length,0);
++ unified.configure(a.owner,{id:first.id,excluded:true});
++ const excluded=await a.client.request('/account/api/cloud/context-ingest',await encodeContextUpload({...input,revision:2},encoding));assert.equal(excluded.reset,true);assert.equal([...unified.sections(a.owner)].length,0);
++ await a.client.request('/account/api/cloud/configure',{syncEnabled:false});
++ await assert.rejects(a.client.request('/account/api/cloud/context-ingest',{encoding,data:'!'}),/403/,'sync opt-out is enforced before decompression');
++ const anonymous=await fetch(f.origin+'/account/api/cloud/context-ingest',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(wire)});assert.equal(anonymous.status,401);
++ const browser=await cloudHttp(new Request(f.origin+'/account/web/cloud/context-ingest',{method:'POST',headers:{'Content-Type':'application/json',origin:f.origin},body:JSON.stringify(wire)}),f.service,{identity:async()=>({userId:'firebase:compression-A',email:'A@example.test'})});assert.equal(browser.status,403);
++});
++
++test('a lost compressed acknowledgement persists plaintext input and can replay on an older relay',async t=>{
++ const f=await local(t),calls=[];await writeFile(path.join(f.root,'chat.jsonl'),Array.from({length:200},(_,i)=>line(i,'Synthetic visible message '+i)).join(''));
++ let fail=true;const app={dir:f.dir,accountClient:{request:async(route,body)=>{calls.push(body);if(fail)throw Object.assign(Error('lost acknowledgement'),{status:503});return {id:'stream'};}}};
++ await assert.rejects(new CanonicalSync(app).tick('owner',f.roots,{uploadEncoding:encoding}),/lost acknowledgement/);
++ assert.equal(calls.length,1,'uncertain write is never retried with a different encoding');assert.equal(calls[0].encoding,encoding);
++ const pending=JSON.parse(await readFile(path.join(f.dir,'canonical-sync.json'),'utf8')).pending.input;assert.equal(pending.encoding,undefined);assert.deepEqual(await decodeContextUpload(calls[0]),pending);
++ fail=false;await new CanonicalSync(app).tick('owner',f.roots);assert.deepEqual(calls[1],pending);assert.equal(calls.at(-1).state,'current');
++ assert.equal(new Set(calls.slice(1).flatMap(b=>b.messages.map(m=>m.id))).size,200);
++});
++
++test('CloudSync negotiates each tick and removes compression when the server no longer advertises it',async t=>{
++ const f=await local(t),calls=[];let supported=true;
++ await writeFile(path.join(f.root,'chat.jsonl'),Array.from({length:150},(_,i)=>line(i,'Synthetic visible message '+i)).join(''));
++ const app={dir:f.dir,accountClient:{view:()=>({connected:true}),state:{session:{humanAccount:{id:'owner'}}},request:async(route,body)=>{if(route.endsWith('/status'))return {contextProtocol:1,contextAtomicCaptures:true,syncEnabled:true,...supported?{contextUploadEncoding:encoding}:{}};calls.push(body);return {id:'stream'};}}};
++ const sync=new CloudSync(app,{files:{}},{budget:1,discover:async()=>[...f.roots],prepareHistory:async()=>({roots:[],coverage:{partial:false}})});
++ await sync.tick();assert.equal(calls[0].encoding,encoding);supported=false;await sync.tick();assert.equal(calls[1].encoding,undefined);assert.equal(calls[1].state,'current');
++});
++
++test('windowed parser stops early and preserves split UTF-8 records and byte cursors',async()=>{
++ const first='x'.repeat(256*1024-2)+'😀日本語',source=Buffer.from(first+'\nlast\nunfinished'),metrics={readBytes:0,readCalls:0};
++ const fh={read:async(b,start,length,position)=>({bytesRead:source.copy(b,start,position,position+length)})};
++ const lines=[];for await(const l of transcriptLines(fh,{offset:0,size:source.length,metrics}))lines.push(l);
++ assert.deepEqual(lines,[{line:first,bytes:Buffer.byteLength(first)+1},{line:'last',bytes:5}]);assert.equal(metrics.readBytes,source.length);
++ const big=Buffer.from('small\n'.repeat(1000000)),io={readBytes:0,readCalls:0};const handle={read:async(b,s,n,p)=>({bytesRead:big.copy(b,s,p,p+n)})};
++ for await(const l of transcriptLines(handle,{offset:0,size:big.length,metrics:io})){assert.equal(l.line,'small');break;}
++ assert.equal(io.readBytes,256*1024);assert.equal(io.readCalls,1);
++});
++
++test('larger batches keep escaped Unicode and deletion envelopes below the wire limit',async t=>{
++ const f=await local(t),calls=[],app={dir:f.dir,accountClient:{request:async(route,input)=>{assert.ok(Buffer.byteLength(JSON.stringify(input))<=64000);assert.ok(input.messages.length<=100);calls.push(input);return {id:'stream'};}}};
++ const rows=Array.from({length:180},(_,i)=>JSON.stringify({sessionId:'batch',uuid:'界'.repeat(490)+i,type:'user',message:{role:'user',content:i<5?'\u0001'.repeat(7999):'😀 message '+i}})+'\n');
++ const file=path.join(f.root,'chat.jsonl');await writeFile(file,rows.join(''));const sync=new CanonicalSync(app);
++ for(let i=0;i<30&&!calls.some(c=>c.state==='current');i++)await sync.tick('owner',f.roots);
++ assert.equal(calls.at(-1).state,'current');const before=calls.length;await writeFile(file,line('edited','Remaining message'));
++ for(let i=0;i<30;i++){await sync.tick('owner',f.roots);if(calls.length>before&&calls.at(-1).state==='current')break;}
++ assert.equal(calls.at(-1).state,'current');assert.equal(calls.slice(before).flatMap(c=>c.messages).filter(m=>m.deleted).length,180);
++});
++
++test('turning sync off while gzip is decoding prevents the pending write',async t=>{
++ const {CloudWork}=await import('../apps/commonplace-account/server/cloud-work.mjs');
++ const f=await signedFixture(t),p=await f.fresh('PauseDuringDecode','Claude'),link=await p.client.request('/account/api/identity/start',{}),owner=await f.service.profile({userId:'firebase:pause-gzip',email:'pause@example.test'});
++ f.service.mailboxes.approveLink(owner,new URL(link.authorizationUrl).hash.slice(1));await p.call('discover_agents');await p.client.request('/account/api/cloud/configure',{syncEnabled:true});
++ const original=CloudWork.prototype.get;let armed=true;
++ t.mock.method(CloudWork.prototype,'get',function(sql,...args){const result=original.call(this,sql,...args);if(armed&&sql==='SELECT sync_enabled FROM cp_cloud_settings WHERE owner=?'){armed=false;queueMicrotask(()=>f.service.db.sqlite.prepare('UPDATE cp_cloud_settings SET sync_enabled=0 WHERE owner=?').run(owner.id));}return result;});
++ await assert.rejects(p.client.request('/account/api/cloud/context-ingest',await encodeContextUpload({...sample(),ownerId:owner.id},encoding)),/403/);
++ assert.equal([...new UnifiedContext(f.service).sections(owner.id)].length,0);
++});
+diff --git a/tests/conductor-history.test.mjs b/tests/conductor-history.test.mjs
+index 27e5736..2c41e3a 100644
+--- a/tests/conductor-history.test.mjs
++++ b/tests/conductor-history.test.mjs
+@@ -122,7 +122,7 @@ test('Conductor uses explicit native message IDs without interpreting literal us
+ 
+ for(const host of ['mac','cloud'])test(`${host} Conductor backfill finishes while new messages keep arriving`,async t=>{
+  const f=await fixture(t),uploads=[],nativeId='22222222-2222-2222-2222-222222222222';
+- let count=100;
++ let count=250;
+  for(let i=0;i<count;i++)f.add('user','Visible message '+i);
+  f.complete();
+  const execute=async(command,args)=>{
+@@ -142,14 +142,14 @@ for(const host of ['mac','cloud'])test(`${host} Conductor backfill finishes whil
+  }
+  assert.equal(uploads.at(-1).state,'current','backfill must catch up even while the chat grows');
+  assert.equal(new Set(uploads.map(x=>x.captureId)).size,1,'new messages must not discard the unfinished capture');
+- assert.deepEqual(uploads.flatMap(x=>x.messages.map(m=>m.text)),Array.from({length:102},(_,i)=>'Visible message '+i));
++ assert.deepEqual(uploads.flatMap(x=>x.messages.map(m=>m.text)),Array.from({length:252},(_,i)=>'Visible message '+i));
+  const {roots}=await prepare();await sync.tick(owner,roots);
+- assert.equal(uploads.at(-1).state,'current');assert.deepEqual(uploads.at(-1).messages.map(m=>m.text),['Visible message 102']);
++ assert.equal(uploads.at(-1).state,'current');assert.deepEqual(uploads.at(-1).messages.map(m=>m.text),['Visible message 252']);
+ });
+ 
+ test('editing earlier Conductor messages still replaces the source and starts a new capture',async t=>{
+  const f=await fixture(t),uploads=[];
+- for(let i=0;i<80;i++)f.add('user','Original message '+i);f.complete();
++ for(let i=0;i<180;i++)f.add('user','Original message '+i);f.complete();
+  const sync=new CanonicalSync({dir:f.dir,accountClient:{request:async(route,input)=>{uploads.push(structuredClone(input));return {id:'b'.repeat(24)};}}},{budget:1});
+  await sync.tick(owner,(await f.prepare()).roots);
+  f.db.exec("UPDATE session_messages SET content='Edited first message' WHERE created_at='00000000'");
+diff --git a/tests/packaging.test.mjs b/tests/packaging.test.mjs
+index 0b42705..69dace9 100644
+--- a/tests/packaging.test.mjs
++++ b/tests/packaging.test.mjs
+@@ -12,8 +12,8 @@ const run=(cmd,args)=>exec(cmd,args,{cwd:root,timeout:240000,maxBuffer:1024*1024
+ test('stable cloud plugin preserves baseline assets, dependencies and executable modes', {timeout:300000},async t=>{
+   const scratch=await mkdtemp(path.join(tmpdir(),'cloud-package-'));t.after(()=>rm(scratch,{recursive:true,force:true}));
+   const baseline=process.env.COMMONPLACE_TEST_BASELINE||path.resolve('artifacts/.cache/meet-proxy-0.3.0.zip');
+-  let output=path.resolve(process.env.COMMONPLACE_TEST_PACKAGE_DIR||'artifacts/public-0.4.34');
+-  if(!existsSync(output+'/meet-proxy-0.4.34.zip')){output=path.join(scratch,'build');await run('python3',['scripts/build-plugin.py','--baseline',baseline,'--output',output]);}
++  let output=path.resolve(process.env.COMMONPLACE_TEST_PACKAGE_DIR||'artifacts/public-0.4.35');
++  if(!existsSync(output+'/meet-proxy-0.4.35.zip')){output=path.join(scratch,'build');await run('python3',['scripts/build-plugin.py','--baseline',baseline,'--output',output]);}
+   const bad=path.join(scratch,'bad.zip');await writeFile(bad,'wrong');
+   await assert.rejects(run('python3',['scripts/build-plugin.py','--baseline',bad,'--output',path.join(scratch,'bad')]),/SHA-256 mismatch/);
+   await run('python3',['-c',`
+@@ -30,7 +30,7 @@ def digest(stream):
+ with open(baseline,'rb') as f:assert digest(f)=='146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968'
+ with zipfile.ZipFile(baseline) as old:
+  for alias in ('meet-proxy','commonplace'):
+-  candidate=pathlib.Path(output)/(alias+'-0.4.34.zip')
++  candidate=pathlib.Path(output)/(alias+'-0.4.35.zip')
+   report=json.loads(candidate.with_name(candidate.stem+'-build.json').read_text())
+   with candidate.open('rb') as f:assert digest(f)==report['sha256']
+   with zipfile.ZipFile(candidate) as new:
+@@ -54,7 +54,7 @@ with zipfile.ZipFile(baseline) as old:
+       dep=posixpath.normpath(posixpath.join(posixpath.dirname(name),rel[1]))
+       assert dep in new.namelist(),name+' missing '+dep
+    for name in ('.claude-plugin/plugin.json','.codex-plugin/plugin.json'):
+-    metadata=json.loads(new.read(name));assert metadata['name']==alias and metadata['version']=='0.4.34'
++    metadata=json.loads(new.read(name));assert metadata['name']==alias and metadata['version']=='0.4.35'
+    if alias=='meet-proxy':
+     for item in new.infolist():
+      target=pathlib.Path(extracted)/item.filename;target.parent.mkdir(parents=True,exist_ok=True)
+@@ -64,11 +64,11 @@ with zipfile.ZipFile(baseline) as old:
+   const checked=await run(process.execPath,['--input-type=module','-e',`
+ import assert from 'node:assert/strict';import {pathToFileURL} from 'node:url';
+ const root=process.argv[1];const {pluginResponse}=await import(pathToFileURL(root+'/server/plugin-surface.mjs'));const {accountInboxMcp}=await import(pathToFileURL(root+'/server/account-inbox.mjs'));
+-const init=pluginResponse({method:'initialize'},{result:{}});assert.equal(init.result.serverInfo.version,'0.4.34');
++const init=pluginResponse({method:'initialize'},{result:{}});assert.equal(init.result.serverInfo.version,'0.4.35');
+ const r={jsonrpc:'2.0',id:1,method:'tools/list'};const tools=pluginResponse(r,await accountInboxMcp({},r)).result.tools.map(t=>t.name);
+ for(const name of ['invite_agent_connection','preview_agent_connection','accept_agent_connection','read_agent_connection','list_agent_connections','sever_agent_connection','cloud_agent_status','connect_cloud_agent','run_cloud_task','read_cloud_task','cancel_cloud_task','configure_cloud_sync','send_agent_message','list_my_agent_conversations','read_agent_context','publish_agent_context','search_my_chats','read_my_chat','configure_my_chat_history','setup_status','add_person_to_chat','search_shared_context','read_shared_context','context_sync_status','configure_context_source','read_project_context'])assert.ok(tools.includes(name),name);
+-const {RUNTIME_REVISION}=await import(pathToFileURL(root+'/server/local-client.mjs'));assert.equal(RUNTIME_REVISION,67);
+-const {BACKGROUND_VERSION}=await import(pathToFileURL(root+'/server/cloud-background.mjs'));assert.equal(BACKGROUND_VERSION,'0.4.34');
++const {RUNTIME_REVISION}=await import(pathToFileURL(root+'/server/local-client.mjs'));assert.equal(RUNTIME_REVISION,68);
++const {BACKGROUND_VERSION}=await import(pathToFileURL(root+'/server/cloud-background.mjs'));assert.equal(BACKGROUND_VERSION,'0.4.35');
+ // setup_status is added by the stdio surface, even while an older companion is busy.
+ const surfaced=pluginResponse(r,{result:{tools:[]}}).result.tools.find(t=>t.name==='setup_status');
+ for(const name of ['invite_agent_connection','accept_agent_connection','sever_agent_connection'])assert.ok(surfaced.inputSchema.properties.blockedTool.enum.includes(name));
+diff --git a/tests/seamless-collection.test.mjs b/tests/seamless-collection.test.mjs
+index 071d9bb..8e2af59 100644
+--- a/tests/seamless-collection.test.mjs
++++ b/tests/seamless-collection.test.mjs
+@@ -204,12 +204,12 @@ test('one long active conversation uses remaining upload slots before unchanged
+  const f=await fixture(t),sync=f.sync();
+  for(let i=0;i<6;i++)await f.chat('quiet'+i,'Quiet '+i,{age:600000});
+  await sync.tick('owner',f.roots);f.clock.now+=31000;
+- await writeFile(path.join(f.root,'long.jsonl'),Array.from({length:240},(_,i)=>line('long','m'+i,'Long message '+i)).join(''));
++ await writeFile(path.join(f.root,'long.jsonl'),Array.from({length:600},(_,i)=>line('long','m'+i,'Long message '+i)).join(''));
+  const start=f.uploads.length;await sync.tick('owner',f.roots);const uploads=f.uploads.slice(start);
+  assert.equal(uploads.length,6,'existing six-upload bound is unchanged');
+  assert.equal(uploads.filter(u=>u.conversation.id==='long').length,6,'spare slots advance the long source');
+  assert.equal(uploads.at(-1).state,'current');assert.equal(new Set(uploads.map(u=>u.captureId)).size,1,'one atomic capture through every batch');
+- assert.equal(new Set(uploads.flatMap(u=>u.messages.map(m=>m.id))).size,240);
++ assert.equal(new Set(uploads.flatMap(u=>u.messages.map(m=>m.id))).size,600);
+ });
+ 
+ test('requeued chunks rotate across active sources and reserve overdue heartbeats',async t=>{
+@@ -230,5 +230,5 @@ test('failed later chunk resumes exactly without losing the earlier chunk',async
+  const failed=structuredClone(f.uploads.at(-1));assert.equal(f.uploads[0].revision,1);f.fail=null;
+  const start=f.uploads.length;await f.sync().tick('owner',f.roots);
+  assert.deepEqual(f.uploads[start],failed);assert.equal(f.uploads.at(-1).state,'current');
+- assert.equal(new Set(f.uploads.filter(u=>u.revision!==2).flatMap(u=>u.messages.map(m=>m.id))).size,80);
++ assert.equal(new Set(f.uploads.filter(u=>u.revision!==2).flatMap(u=>u.messages.map(m=>m.id))).size,100);
+ });
