@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-31",
+  "patch": 58,
+  "native": {
+    "version": "0.4.34",
+    "runtimeRevision": 67,
+    "state": "packaging",
+    "published": false,
+    "installed": false,
+    "active": false
+  },
+  "server": {
+    "changed": false,
+    "live": "20261031-setup-activation",
+    "patch57": "published, not deployed"
+  },
+  "checks": {
+    "core": {
+      "passed": 657,
+      "failed": 0,
+      "log": "implementation/multiple-accounts/core-release.log"
+    },
+    "accountRegressions": {
+      "passed": 9,
+      "failed": 0,
+      "log": "implementation/multiple-accounts/account-final.log"
+    },
+    "signedNativeStdio": {
+      "passed": 1,
+      "failed": 0,
+      "log": "implementation/multiple-accounts/native.log"
+    },
+    "replay": {
+      "patches": 58,
+      "changedFiles": 223,
+      "mismatches": [],
+      "matched": true
+    }
+  },
+  "limits": [
+    "Synthetic verified identities and signed native stdio; no real Google, clean-machine, installed Mac or default-host approval proof.",
+    "A used chat remains pinned to its account; another account uses another chat.",
+    "Selecting an account pauses this chat capture; opt-in to syncing includes its existing visible turns. Existing archives stay in the original account.",
+    "Secondary profiles collect only explicitly assigned native chats, never all unassigned history. Regular web-only chat history is not collected.",
+    "Existing source exclusions, scoped conversations, private sharing gates and host permission decisions are preserved.",
+    "Work-machine missing-history diagnosis remains unresolved."
+  ],
+  "hostBlock": {
+    "tool": "mcp__conductor__RunLocalCommand",
+    "reason": "Local execution is not enabled for this session",
+    "source": "Preserved prior host denial; not retried or bypassed."
+  }
+}

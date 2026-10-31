@@ -1,0 +1,22 @@
+2026-10-31T23:16:10.672Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ actual stdio chooses a second signed account, retains first chat routing, and pins subsequent requests (1688.742138ms)
+✔ two linked identities retain separate credentials and independent chat selections (56.942261ms)
+✔ newly selected account never copies old transcript by default; explicit consent assigns only this chat (14.805585ms)
+✔ unknown sources, subagents, and mismatching aliases cannot leak into another account (28.628623ms)
+✔ selection waits for in-flight capture and then blocks subsequent old-account captures (66.087857ms)
+✔ paused chat disables on-demand reads, routing rejects stale profiles and preserves legacy defaults (14.460204ms)
+✔ mismatching Google identity, unverified profile, and path injection never select a profile (14.912512ms)
+✔ link retries reuse profile, selection verifies live identity, scoped chats cannot widen authority (14.121707ms)
+✔ canonical pending retry and real transcript upload are fenced by profile ownership (27.087025ms)
+✔ upgrade retries a startup that lost its process lock while concurrent calls share one reconnect (98.591294ms)
+✔ slow live startup is not multiplied and failed startup remains bounded (59.342034ms)
+✔ actual plugin legacy discovery never creates setup state or starts a receiver (326.841735ms)
+✔ actual plugin modern probe never creates setup state or starts a receiver (337.949132ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2857.464739

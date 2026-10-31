@@ -1,5 +1,15 @@
 # Meet Proxy Draft v3 compliance
 
+31 October multiple-account candidate: patch 58 adds isolated native account
+profiles and a selected account per actual native chat. Context and messaging pin
+that choice; existing threads remain on their original account. Capture in an
+explicitly selected profile starts paused and requires the owner choosing to sync
+that whole chat. Canonical uploads and pending retries enforce the account fence;
+secondary profiles never bulk-upload unassigned histories. Host permissions and
+browser account scopes are unchanged. Native 0.4.34/runtime67 packaging is in
+progress; it is not installed or active on the Mac. The previous Mac execution
+block remains; no retry or alternate route was used. See [multiple accounts](MULTIPLE-ACCOUNTS.md).
+
 31 October contextual invitation follow-up: patch 57 is published, NOT deployed,
 as `20261031-current-space-invite`. Conductor blocked RunLocalCommand with
 “Local execution is not enabled for this session” before execution. No retry or
