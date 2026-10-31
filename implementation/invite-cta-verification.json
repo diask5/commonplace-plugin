@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-31",
+  "state": "Packaged; production deployment pending.",
+  "patch": 55,
+  "nativeVersionUnchanged": "0.4.33/runtime66",
+  "server": {
+    "baseline": "20261031-imported-excerpts",
+    "candidate": "20261031-invite-cta",
+    "published": false,
+    "deployed": false,
+    "files": 160,
+    "bundleSha256": "3ae5558c081b726abd7f40467bb8b46856240ce7fb88e54d38d9c7c88bd52a60",
+    "changedFiles": [
+      "context-product-ui.mjs",
+      "context-product-style.mjs",
+      "context-assets/context-space-invitations.mjs"
+    ]
+  },
+  "checks": {
+    "invitationBrowser": {
+      "pass": 13,
+      "fail": 0
+    },
+    "uiRegression": "running",
+    "replay": {
+      "patches": 55,
+      "changedFiles": 217,
+      "mismatches": [],
+      "matched": true
+    },
+    "responsiveWidths": [
+      320,
+      390,
+      1440
+    ],
+    "axeViolations": []
+  },
+  "behavior": [
+    "Top-bar Invite across authenticated pages",
+    "Signed-in email displayed in the invitation dialog",
+    "Owner spaces only; explicit choice or creation of a new space",
+    "Existing 14-day invitations, stable retries and clipboard fallback",
+    "Private sharing stays off; no classifier or authority changes"
+  ],
+  "limits": [
+    "Browser interaction tests use isolated synthetic accounts.",
+    "No new native package, real-person acceptance or classifier reliability claim."
+  ]
+}
