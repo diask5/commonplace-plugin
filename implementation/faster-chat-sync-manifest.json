@@ -63,7 +63,7 @@
   ],
   "patch": "faster-chat-sync.patch",
   "sha256": "88b657076badf0ae3b9a7b213a881da5efdf77ca11fc5a5781aed0976df43857",
-  "state": "Packaged native 0.4.35/runtime68 and server 20261031-compressed-context; validated, publication pending. Not installed or deployed.",
+  "state": "Published native 0.4.35/runtime68 and server 20261031-compressed-context. Not installed, activated or deployed.",
   "files": [
     {
       "path": "apps/commonplace-account/server/cloud-http.mjs",

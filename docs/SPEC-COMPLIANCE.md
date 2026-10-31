@@ -1,7 +1,7 @@
 # Meet Proxy Draft v3 compliance
 
-31 October upload optimization: patch 59 packages native 0.4.35/runtime68 and
-server `20261031-compressed-context`; publication is pending. Gzip is negotiated
+31 October upload optimization: patch 59 publishes native 0.4.35/runtime68 and
+server `20261031-compressed-context`. Gzip is negotiated
 per relay, retaining the 64,000-byte decoded limit, durable retry identity,
 complete captures, account ownership, exclusions and sync opt-out. Native batches
 rise from 40 to 100 messages within the same six-upload ceiling; JSONL reads use

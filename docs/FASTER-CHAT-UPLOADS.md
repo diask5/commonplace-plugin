@@ -1,7 +1,7 @@
 # Faster chat uploads
 
-31 October 2026 — patch 59 prepares native **0.4.35/runtime68** and server
-**20261031-compressed-context**. Release validation is in progress; neither is
+31 October 2026 — patch 59 publishes native **0.4.35/runtime68** and server
+**20261031-compressed-context**. Both releases and their asset hashes are verified; neither is
 installed or deployed. The server bundle includes the previously published,
 undeployed patch 57 invitation changes and targets the exact live patch 56 release,
 `20261031-setup-activation`.
@@ -64,7 +64,8 @@ account isolation, opt-out, exclusions, changing server capabilities, bounded
 window reads, large deletion batches and opt-out during decompression. The last
 race was reproduced as a failure on the initial candidate, then fixed; its
 original failure log is retained. The final broader suite passes 665 tests. Thirteen extracted-native checks,
-both-alias integrity and exact 59-patch replay across 226 files also pass.
+both-alias integrity, 35 extracted-server checks and exact 59-patch replay
+across 226 files also pass.
 
 Evidence, package hashes and final results are in
 `implementation/faster-chat-sync-verification.json`. The portable patch applies
@@ -74,5 +75,5 @@ the new native runtime and the server advertising support.
 
 Mac activation and production deployment remain blocked by the earlier
 Conductor `RunLocalCommand` result: **“Local execution is not enabled for this
-session.”** That denial has not been retried or bypassed. Published assets will
+session.”** That denial has not been retried or bypassed. Published assets do
 not establish an installed runtime or a live gzip transfer.

@@ -1,11 +1,11 @@
 {
   "date": "2026-10-31",
   "patch": 59,
-  "state": "Packaged and validated; publication pending. Not installed or deployed.",
+  "state": "Published native and server artifacts. Not installed, activated or deployed.",
   "native": {
     "version": "0.4.35",
     "runtimeRevision": 68,
-    "published": false,
+    "published": true,
     "installed": false,
     "active": false,
     "artifacts": [
@@ -233,6 +233,39 @@
         ],
         "preservedFiles": 67
       }
+    ],
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.35",
+    "publishedAssets": [
+      {
+        "name": "commonplace-0.4.35-build.json",
+        "size": 7917,
+        "digest": "sha256:7f5c5f6e4b999df78b22ca790ff8702e93eb30c15bf6c585edbb9775cbdd983e"
+      },
+      {
+        "name": "commonplace-0.4.35.sha256",
+        "size": 89,
+        "digest": "sha256:27e8ef5e0e6ac0da6def907f10849e4bd8d3e542e3a41780afb70552a38f25fa"
+      },
+      {
+        "name": "commonplace-0.4.35.zip",
+        "size": 230166626,
+        "digest": "sha256:ea83ec489726187efd5492c08788738d784e7106ec39825760c40a9de751b1e5"
+      },
+      {
+        "name": "meet-proxy-0.4.35-build.json",
+        "size": 7915,
+        "digest": "sha256:3d2e969f329461f37b2f6aa8905f571ace7da5391ed0a38eab3f86f1a61486ff"
+      },
+      {
+        "name": "meet-proxy-0.4.35.sha256",
+        "size": 88,
+        "digest": "sha256:f4db44b6ec5abd3dd17742c2a1f2a736338a5c39553b725264ccdcb1d5b8bb9a"
+      },
+      {
+        "name": "meet-proxy-0.4.35.zip",
+        "size": 230166626,
+        "digest": "sha256:a3351b4cb26d1c084d260a524a630127dc7f42b665ecc8d7774312ae919dda1c"
+      }
     ]
   },
   "server": {
@@ -249,9 +282,32 @@
     "helperSha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
     "allHashesVerified": true,
     "changedModulesSyntax": "passed",
-    "state": "packaged; not deployed",
-    "published": false,
-    "deployed": false
+    "state": "Published; not deployed. Live baseline remains 20261031-setup-activation.",
+    "published": true,
+    "deployed": false,
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261031-compressed-context",
+    "publishedAssets": [
+      {
+        "name": "deploy-cloud-update.py",
+        "size": 12916,
+        "digest": "sha256:6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32"
+      },
+      {
+        "name": "runtime-update-manifest.json",
+        "size": 19918,
+        "digest": "sha256:39a6b1abab153c56380cd704110ba6c0746687dfd16e372b66660b1e18248717"
+      },
+      {
+        "name": "runtime-update.json",
+        "size": 2783920,
+        "digest": "sha256:4c9491bacaf44117f3cc511fc7d86c1d29795e76a8a44558ca5b2d138eeb17cb"
+      },
+      {
+        "name": "runtime-update.sha256",
+        "size": 86,
+        "digest": "sha256:a6e3f650e52230b3199f9bc51f6fe04e7ecae577be9fae5a421eb4b47a66df1d"
+      }
+    ]
   },
   "checks": {
     "core": {
@@ -321,5 +377,6 @@
   "retainedFailures": [
     "Candidate opt-out-during-decompression race reproduced before final recheck fix; see opt-out-race-before.log",
     "Extracted server harness initially used incorrect cwd, then assumed generated ui.css had a source file; corrected fixture extraction before tests. No production calls."
-  ]
+  ],
+  "sourcePr": "https://github.com/diask5/commonplace-plugin/pull/54"
 }
