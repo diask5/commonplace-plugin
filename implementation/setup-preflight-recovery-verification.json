@@ -1,13 +1,13 @@
 {
   "date": "2026-10-31",
-  "state": "Packaged; 34 browser checks, 11 contract checks and exact patch replay pass. Production deployment pending.",
+  "state": "Published and live. All 160 files/service readability, three services and public TLS/setup/OAuth checks pass.",
   "patch": 56,
   "nativeVersionUnchanged": "0.4.33/runtime66",
   "server": {
     "baseline": "20261031-invite-cta",
     "candidate": "20261031-setup-activation",
-    "published": false,
-    "deployed": false,
+    "published": true,
+    "deployed": true,
     "files": 160,
     "bundleSha256": "b728e826f3af0753a488aa46be442a151a410ea2d6b5950e185143c3345022d7",
     "manifestSha256": "4af282abf315d35862ff04a5fdbec7bf6becacf20593627022f1c55c6a4781e8",
@@ -16,7 +16,23 @@
       "dist/standalone/account-runtime/context-assets/context-native-setup.mjs",
       "dist/standalone/account-runtime/context-assets/context-setup-request.mjs",
       "dist/standalone/account-runtime/context-product-ui.mjs"
-    ]
+    ],
+    "sourceCommit": "286a88672116b9ed44e5c33cd9e52b86daab6603",
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261031-setup-activation",
+    "deployment": {
+      "state": "passed",
+      "release": "20261031-setup-activation",
+      "filesVerified": 160,
+      "serviceReadableFiles": 160,
+      "services": [
+        "active",
+        "active",
+        "active"
+      ],
+      "migrations": "unchanged; verified code-only activation",
+      "previous": "20261031-invite-cta",
+      "finishedAt": 1793487103.216642
+    }
   },
   "checks": {
     "contracts": {
@@ -54,7 +70,8 @@
       1920
     ],
     "axeViolations": [],
-    "visualInspection": "Desktop and phone activation controls reviewed; primary copy and app link precede progress."
+    "visualInspection": "Desktop and phone activation controls reviewed; primary copy and app link precede progress.",
+    "publicSmoke": "passed; seven live assets match source, fresh-chat action present and stale GUI reload guidance absent, desktop/phone TLS and OAuth checks passed"
   },
   "behavior": [
     "Account/server preflight preserves any existing linked account",
@@ -71,12 +88,14 @@
   ],
   "testNotes": [
     "Initial browser run: 32 pass, 2 reported failures (one subtest plus parent) because the new expiry test tried to click the hidden app-switch button after reset had already returned to the chooser. Corrected the test to use the displayed app card.",
-    "Host documentation distinguishes MCP status refresh from a new tool context. No actual host-denied action was retried or bypassed."
+    "Host documentation distinguishes MCP status refresh from a new tool context. No actual host-denied action was retried or bypassed.",
+    "The retained first-attempt test log omits ANSI coloring and trailing whitespace only; the failure and stack location are unchanged.",
+    "The first rollout receipt read preceded completion. The final rollout receipt passed."
   ],
   "evidence": [
     {
       "path": "implementation/setup-preflight-recovery/browser-first-attempt.tap",
-      "sha256": "6559b7ddb6c774828281911e2ce1a2aa1f8f06e4c8ff07886f676bad2e3d68d5"
+      "sha256": "adda1c71d0b4402c8effb7a62c57f7a47b3b779cc4b7f6777a284596bf8d0d2e"
     },
     {
       "path": "implementation/setup-preflight-recovery/browser.tap",
@@ -91,8 +110,16 @@
       "sha256": "58f8b3336be0ae4b33165ed9372e1df8a32167b4e6fbda24d7e8082458387097"
     },
     {
+      "path": "implementation/setup-preflight-recovery/deployment-live.json",
+      "sha256": "861755d4734cbca8493bbf1e03c3b71676a7f38ad6a9968b0a5005c4858f0c05"
+    },
+    {
       "path": "implementation/setup-preflight-recovery/package-check.json",
       "sha256": "abd13c98902bf7c9b2a54dd0d5b2fa63a503a65833b4043ae28d03c9d1d971db"
+    },
+    {
+      "path": "implementation/setup-preflight-recovery/public-smoke-live.json",
+      "sha256": "5e06ff17e1b5877aad16f839bbbfb0c4ec16103a3e48a79f9d4612b7a58681a1"
     },
     {
       "path": "implementation/setup-preflight-recovery/public-smoke.mjs",

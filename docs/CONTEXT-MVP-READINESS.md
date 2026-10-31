@@ -1,7 +1,8 @@
 # Context MVP readiness — 26 October 2026
 
-31 October setup recovery: patch 56 is packaged for server
-`20261031-setup-activation`; production verification is pending. Setup now
+31 October setup recovery: patch 56 is published and live as server
+`20261031-setup-activation`. All 34 browser checks, 11 setup/protocol checks,
+56-patch replay, 160 deployed files/readability and three services pass. Setup now
 preflights the existing account and actual host CLI. The browser prepares a
 fresh-chat activation using the same unclaimed handoff instead of prescribing
 a terminal-only plugin reload in Conductor or Claude Desktop. Send and host

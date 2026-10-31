@@ -60,7 +60,7 @@
   ],
   "patch": "setup-preflight-recovery.patch",
   "sha256": "7e5e8900d67b4bd4a6701623f1301d03d0d80a79d86c0d482a4d76453e452987",
-  "state": "Packaged; production deployment pending.",
+  "state": "Published and live as 20261031-setup-activation; native package unchanged.",
   "files": [
     {
       "path": "apps/commonplace-account/server/context-assets/context-native-setup.mjs",

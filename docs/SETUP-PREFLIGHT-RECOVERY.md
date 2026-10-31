@@ -1,7 +1,9 @@
 # Native setup without a GUI reload command — 31 October 2026
 
-Patch 56 is packaged for server `20261031-setup-activation`. Publication and
-production verification are pending. Native 0.4.33/runtime66 is unchanged.
+**Patch 56 is published and live as server `20261031-setup-activation`.**
+All 160 files and service readability match the bundle, three services are
+healthy, and public desktop/phone TLS, asset and OAuth checks pass.
+Native 0.4.33/runtime66 is unchanged.
 
 The supplied setup transcript exposed three separate problems: an obsolete
 PATH executable interpreted plugin commands as model prompts, the current
