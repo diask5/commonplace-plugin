@@ -8,15 +8,21 @@ simple membership controls.
 The [production application](https://34.27.253.220/) includes context-sharing
 spaces, one-request native plugin/MCP setup, automatic private collection,
 natural-language invitations, timed rules and leave/archive controls.
-The latest release is **0.4.31/runtime64**, installed for Claude and Codex, with server
-`20261027-context-guidance-r2` live. Two real native CLI synthesis checks passed
-after runtime64 activation; every final citation had a successful source read.
-The original failed runs remain preserved, and the historical connection-error
-cause remains unconfirmed. [Live acceptance](docs/P0-LIVE-ACCEPTANCE.md) records
-the rollout and remaining default-host, real-person sharing and clean-setup gates.
-Earlier Google and
-Desktop handoffs are documented in [P0 readiness](docs/P0-NATIVE-READINESS.md).
-Direct Mail/iMessage sends remain P1.
+Native **0.4.33/runtime66** is published and active on the verified Mac. Server
+**20261031-classifier-reliability** is live, with all 160 files and all three
+services verified. [Current release evidence](docs/CLASSIFIER-RELIABILITY.md).
+
+Start at the production application, choose **Continue with Google**, then
+connect your app from **My context**. Copy and send the prepared setup request
+in your chosen native chat, complete any host-required approval or reload, and
+wait for collection receipts and a successful source-read check. Regular Claude
+and ChatGPT MCP connections read existing context; they do not automatically
+upload web-only conversations.
+
+Create a **Space**, invite the other person, and set **My sharing rules** for
+that space. [Handoff steps and current limits](docs/ZANE-HANDOFF.md). Some allowed
+information is still withheld. Clean-machine and independent-human acceptance
+remain open. Direct Mail/iMessage sends remain P1.
 
 [See the desktop and phone walkthrough](https://kyle-cloud-w3.conductor.show/review)
 or [open the interactive preview](https://kyle-cloud-w3.conductor.show/preview/sample?view=conversations).
@@ -57,7 +63,7 @@ and simulated model/host responses. In the implementation repository, run
 
 ## One private cloud workspace
 
-[Download Meet Proxy / Commonplace 0.4.31](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.31)
+[Download Meet Proxy / Commonplace 0.4.33](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.33)
 for a cloud workspace containing supported synced chats, permitted agent-message
 threads, published working context, and previous cloud results. Your cloud agent
 can query the live message board, consult your connected native agents, wait for
@@ -71,7 +77,7 @@ See [personal agents](docs/PERSONAL-AGENTS.md),
 
 Add marketplace **diask5/commonplace-plugin** in your host's plugin manager.
 New installations use **meet-proxy**. Existing **commonplace** users should
-update that alias to **0.4.31**. Enable only one alias. Existing accounts and
+update that alias to **0.4.33**. Enable only one alias. Existing accounts and
 connections are preserved. Reload or resume the intended chat after updating.
 
 Node is bundled for Windows x64, macOS arm64/x64 and Linux arm64/x64. No separate

@@ -1,0 +1,7 @@
+{
+  "url": "https://34.27.253.220/",
+  "status": 200,
+  "defaultCertificateValidation": true,
+  "googleSignInPresent": true,
+  "firstHarnessAssertion": "urllib response was compressed; decoded Content-Encoding before checking text"
+}

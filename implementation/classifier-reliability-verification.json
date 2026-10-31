@@ -1,6 +1,6 @@
 {
   "date": "2026-10-31",
-  "state": "Packaged and uploaded as a GitHub draft; not deployed. Production preflight blocked by existing-account Google Cloud reauthentication.",
+  "state": "Published and live. Production rollout and public setup/OAuth pass; the first signed sharing check withheld an allowed answer below the unchanged cutoff.",
   "patch": {
     "number": 53,
     "path": "classifier-reliability.patch",
@@ -32,8 +32,8 @@
   "server": {
     "baseline": "20261029-cross-host-sync",
     "candidate": "20261031-classifier-reliability",
-    "published": false,
-    "deployed": false,
+    "published": true,
+    "deployed": true,
     "bundleSha256": "bc4c6c60f709a8773cd78fecd87e060b38196c807026452a52ed119f36324c12",
     "files": 160,
     "changedModules": [
@@ -46,7 +46,22 @@
     "pullRequestUrl": "https://github.com/diask5/commonplace-plugin/pull/48",
     "sourceCommit": "5982da69ccfea5fa2dd1e387690e2e46d8828824",
     "releaseAssetsVerified": true,
-    "deploymentRunner": "implementation/classifier-reliability/deploy53.py"
+    "deploymentRunner": "implementation/classifier-reliability/deploy53.py",
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261031-classifier-reliability",
+    "deployment": {
+      "state": "passed",
+      "release": "20261031-classifier-reliability",
+      "filesVerified": 160,
+      "serviceReadableFiles": 160,
+      "services": [
+        "active",
+        "active",
+        "active"
+      ],
+      "migrations": "unchanged; verified code-only activation",
+      "previous": "20261029-cross-host-sync",
+      "finishedAt": 1793483963.1129935
+    }
   },
   "realProviderEvaluation": {
     "syntheticOnly": true,
@@ -126,7 +141,7 @@
     "Admission scheduling is process-local; other processes or applications using the same provider credential can still consume capacity.",
     "Search recall, answer-only privacy, complete shared Q/A, fresh-host onboarding and independent-human acceptance remain separate.",
     "No production accounts, policies, provider limits or host permissions were changed by evaluations.",
-    "No live deployment or live candidate acceptance is claimed."
+    "The first two-account production check withheld its allowed imported excerpt at 0.9921505; deployment is not proof of useful-sharing readiness."
   ],
   "allP0Ready": false,
   "evidence": [
@@ -237,6 +252,40 @@
     {
       "path": "implementation/classifier-reliability/reauthentication-status.json",
       "sha256": "20e105b44778c112e5c36bdccfb74b40a6c42e247c29e81b24386b8034ebeac0"
+    },
+    {
+      "path": "implementation/classifier-reliability/deployment-live.json",
+      "sha256": "0b291511678a67137a533cd9a2c31ce0cf21d394dbae8948bb9ee1083420365a"
+    },
+    {
+      "path": "implementation/classifier-reliability/public-smoke-live.json",
+      "sha256": "c235a8f287d2bb56a79386034abf5961655a7e3124481bf86a8bb0e350e710bb"
+    },
+    {
+      "path": "implementation/classifier-reliability/public-tls-live.json",
+      "sha256": "511698f6b1f5aeee3fae7657607d7767537bae380b32d710dfdbd55873b30dcf"
+    },
+    {
+      "path": "implementation/classifier-reliability/published-release.json",
+      "sha256": "33a5650d8adb0cf6af54df5d4dffa4e035ed686c90c2c7898a7c022b2a70e3c2"
+    },
+    {
+      "path": "implementation/classifier-reliability/live-sharing-first.json",
+      "sha256": "8d5c01581ea5074007b680ae2958479e20e4f5355ba088ceac009ec9838f882e"
     }
-  ]
+  ],
+  "liveAcceptance": {
+    "path": "implementation/classifier-reliability/live-sharing-first.json",
+    "publicShared": false,
+    "privateDisclosed": false,
+    "privateCandidateFound": true,
+    "ownerOnlyAudit": true,
+    "sharedHistoryMatches": true,
+    "removalRequestStatus": 404,
+    "removalHistoryStatus": 404,
+    "oldInvitationStatus": 403,
+    "cleanupPassed": true,
+    "independentHumans": false,
+    "recipientHostModel": false
+  }
 }

@@ -1,5 +1,12 @@
 # Context MVP readiness — 26 October 2026
 
+31 October production update: classifier server `20261031-classifier-reliability`
+is published and live; all 160 files and three services pass. The first signed
+production public request was still withheld below the unchanged cutoff.
+Private withholding, shared history, owner-only audit and revocation passed.
+[Exact release and first-attempt evidence](CLASSIFIER-RELIABILITY.md). The
+candidate-only and authentication-blocked observations below are historical.
+
 31 October [classifier reliability candidate](CLASSIFIER-RELIABILITY.md): patch
 53 improves allowed-context admission and bounds provider calls across owners.
 The real ten-owner candidate burst shared all 10 public requests with no provider

@@ -1,11 +1,21 @@
 # Classifier reliability candidate — 31 October 2026
 
-Patch 53 improves permitted-context admission and bounds provider traffic across
-owners sharing the same server process. It is packaged and uploaded as a draft for server
-`20261031-classifier-reliability`, but **not deployed**: the existing Google Cloud
-account requires reauthentication, so the production SSH preflight could not run.
-Production remains on the last verified `20261029-cross-host-sync` release.
-Native 0.4.33/runtime66 is unchanged.
+Patch 53 is published and live as server **20261031-classifier-reliability**.
+Existing-account Google authentication completed; the checked rollout verified
+all 160 files, service-account readability and all three healthy services.
+The production login page, TLS certificate, OAuth discovery, unauthenticated MCP
+rejection and desktop/phone rendering pass. Native 0.4.33/runtime66 is unchanged.
+The previous server remains retained for rollback.
+
+A fresh two-account signed production check imported two synthetic notes,
+created and accepted a disposable Space invitation, enabled two rules, requested
+public/private context and removed the requester. The public answer was withheld
+at **0.9921505**, below 0.995. The private candidate was found and withheld at
+0.0006600. Both accounts saw the same shared history; only the owner saw checks.
+Removal rejected requests/history (404) and the old invitation (403). Sharing
+was paused, links revoked, the space archived and both imports deleted.
+This is a real signed API/browser-session check using two selected accounts,
+not independent-human or recipient-host model acceptance.
 
 ## Changes
 
@@ -77,10 +87,11 @@ is unchanged.
 - Bundle SHA-256:
   `bc4c6c60f709a8773cd78fecd87e060b38196c807026452a52ed119f36324c12`.
 
-The production preflight stopped at Google Cloud reauthentication. No alternative
-account, permission change or deployment workaround was used. The candidate is
-ready for the checked deployment path once existing-account access is restored;
-no live candidate acceptance is claimed.
+The first preflight stopped at Google Cloud reauthentication. That failure and
+the initial draft-release evidence remain intact. The subsequent authentication
+and deployment succeeded without an alternative account or host-policy change.
+The first live sharing failure is also retained; publication and service health
+do not establish useful-sharing readiness.
 
 Permitted content is still sometimes withheld. Retrieval recall, answer-only
 privacy, full shared Q/A, clean onboarding and independent-human acceptance
@@ -90,9 +101,9 @@ remain open. This is a measured reliability improvement, not all-P0 completion.
 · [Portable patch order](../implementation/classifier-reliability-manifest.json)
 · [Preserved stress baseline](SHARING-STRESS.md)
 
-Source and evidence: [draft PR #48](https://github.com/diask5/commonplace-plugin/pull/48).
-The [draft server release](https://github.com/diask5/commonplace-plugin/releases/tag/untagged-fe5c79e24a1f4f44aad0) contains all four verified assets, pinned to source commit
-`5982da69ccfea5fa2dd1e387690e2e46d8828824`. The prepared deployment runner
-requires the exact prior release and all prior file hashes, restricts changes to
-the three reviewed modules, and verifies all 160 files plus service readability
-after activation. It has not been executed against production.
+Source and evidence: [PR #48](https://github.com/diask5/commonplace-plugin/pull/48).
+The [published server release](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261031-classifier-reliability)
+contains four verified assets, pinned to source commit
+`5982da69ccfea5fa2dd1e387690e2e46d8828824`. The checked deployment verified the exact
+prior release and limited the runtime diff to three modules. The original draft
+asset hashes and authentication-blocked observations remain historical evidence.

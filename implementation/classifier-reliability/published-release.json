@@ -1,0 +1,23 @@
+{
+  "url": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261031-classifier-reliability",
+  "isDraft": false,
+  "targetCommit": "5982da69ccfea5fa2dd1e387690e2e46d8828824",
+  "assets": [
+    {
+      "name": "deploy-cloud-update.py",
+      "sha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32"
+    },
+    {
+      "name": "runtime-update-manifest.json",
+      "sha256": "c5ba3f36b60353b728fb7f0e5601b6ddc6de2efedae1cb68bf01f7b5e7809324"
+    },
+    {
+      "name": "runtime-update.json",
+      "sha256": "bc4c6c60f709a8773cd78fecd87e060b38196c807026452a52ed119f36324c12"
+    },
+    {
+      "name": "runtime-update.sha256",
+      "sha256": "042421604f64301d472cbc426be3974c9df2508c8d77d50f26d2a158eb52aa96"
+    }
+  ]
+}
