@@ -1,6 +1,11 @@
 # Multiple native accounts
 
-31 October 2026 — patch 58, native candidate **0.4.34/runtime67**.
+31 October 2026 — patch 58, native **0.4.34/runtime67 is published**:
+https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.34
+
+657 core tests, nine isolation regressions, five extracted-package checks,
+both-alias integrity checks and exact 58-patch replay across 223 files pass.
+Installation and activation on the Mac remain blocked.
 
 One native installation can keep up to eight independently verified Google
 accounts. `link_account` takes the requested email, keeps a separate credential

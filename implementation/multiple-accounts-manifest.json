@@ -61,8 +61,8 @@
     "current-space-invite.patch"
   ],
   "patch": "multiple-accounts.patch",
-  "sha256": "1c8b81601c86f0e20186a4bb983d63cb2cdf1536c6b39df33044a08244bc2bfb",
-  "state": "Source candidate; native packaging and verification in progress. Not installed or activated.",
+  "sha256": "243eea5c83ba024bd61a2a35584e4ecdc72bd3009bfb664e5be0507706a2e14c",
+  "state": "Native 0.4.34/runtime67 published; Mac installation and activation blocked by Conductor local-execution availability. No server deployment.",
   "files": [
     {
       "path": "apps/commonplace/plugin/commonplace/skills/setup/SKILL.md",
@@ -152,7 +152,7 @@
     {
       "path": "tests/packaging.test.mjs",
       "beforeSha256": "a9a7e624f7a7ea29d0f8554b58f2bb8aa9b0fce2cb75e9e1895d26fa5d0b0514",
-      "sha256": "56c5f1f755926046a5c83a1ca6511e62875c8f2f48a4b0e6f5897210483e8bf0"
+      "sha256": "3cd67885af6035d5cdf1b48a63569f034ec017129924694fbb536f9e31c33d91"
     }
   ]
 }

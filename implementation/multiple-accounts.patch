@@ -742,7 +742,7 @@ index 0000000..5749efe
 + assert.deepEqual(Object.keys((await p.read()).profiles),before);
 +});
 diff --git a/tests/packaging.test.mjs b/tests/packaging.test.mjs
-index fa3c8e6..7305827 100644
+index fa3c8e6..0b42705 100644
 --- a/tests/packaging.test.mjs
 +++ b/tests/packaging.test.mjs
 @@ -12,14 +12,14 @@ const run=(cmd,args)=>exec(cmd,args,{cwd:root,timeout:240000,maxBuffer:1024*1024
@@ -772,6 +772,15 @@ index fa3c8e6..7305827 100644
    report=json.loads(candidate.with_name(candidate.stem+'-build.json').read_text())
    with candidate.open('rb') as f:assert digest(f)==report['sha256']
    with zipfile.ZipFile(candidate) as new:
+@@ -40,7 +40,7 @@ with zipfile.ZipFile(baseline) as old:
+    assert new.read('runtime/Windows_NT.exe')==old.read('runtime/node.exe')
+    for name in added_launchers:assert new.getinfo(name).external_attr>>16&0o111,name
+    assert list(json.loads(new.read('.mcp.json'))['mcpServers'])==[alias]
+-   assert set(new.namelist())==set(old.namelist())|added_launchers|{'server/contact-delivery.mjs','server/mcp-resource-ingestion.mjs','server/mcp-resource-tools.mjs','server/mcp-resource-transport.mjs','server/mcp-resource-transport.LICENSE.txt','server/account-errors.mjs','docs/PRODUCTION-VERIFICATION.md','docs/UNIFIED-CONTEXT.md','server/canonical-sync.mjs','docs/PERSONAL-AGENTS.md','server/agent-history.mjs','server/conductor-history.mjs','server/cloud-sync.mjs','server/cloud-background.mjs','server/cloud-browser-login.mjs','server/setup-status.mjs','server/conductor-session-inbox.mjs','server/codex-host-context.mjs','server/codex-config.mjs','server/configure-codex.mjs','server/conductor-receiver.mjs','server/context-mirror.mjs','server/context-index.mjs','server/context-search.mjs','server/mcp-adapter.mjs','server/mcp-adapter.LICENSE.txt','skills/setup/SKILL.md','skills/context/SKILL.md','docs/SETUP.md'}
++   assert set(new.namelist())==set(old.namelist())|added_launchers|{'server/account-profiles.mjs','server/account-profile-tools.mjs','server/contact-delivery.mjs','server/mcp-resource-ingestion.mjs','server/mcp-resource-tools.mjs','server/mcp-resource-transport.mjs','server/mcp-resource-transport.LICENSE.txt','server/account-errors.mjs','docs/PRODUCTION-VERIFICATION.md','docs/UNIFIED-CONTEXT.md','server/canonical-sync.mjs','docs/PERSONAL-AGENTS.md','server/agent-history.mjs','server/conductor-history.mjs','server/cloud-sync.mjs','server/cloud-background.mjs','server/cloud-browser-login.mjs','server/setup-status.mjs','server/conductor-session-inbox.mjs','server/codex-host-context.mjs','server/codex-config.mjs','server/configure-codex.mjs','server/conductor-receiver.mjs','server/context-mirror.mjs','server/context-index.mjs','server/context-search.mjs','server/mcp-adapter.mjs','server/mcp-adapter.LICENSE.txt','skills/setup/SKILL.md','skills/context/SKILL.md','docs/SETUP.md'}
+    assert set(report['overlay'])==expected
+    for item in new.infolist():
+     name=item.filename
 @@ -54,7 +54,7 @@ with zipfile.ZipFile(baseline) as old:
        dep=posixpath.normpath(posixpath.join(posixpath.dirname(name),rel[1]))
        assert dep in new.namelist(),name+' missing '+dep
