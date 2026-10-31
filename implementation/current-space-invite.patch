@@ -1,0 +1,113 @@
+diff --git a/apps/commonplace-account/server/context-assets/context-space-invitations.mjs b/apps/commonplace-account/server/context-assets/context-space-invitations.mjs
+index a60f086..8e768c7 100644
+--- a/apps/commonplace-account/server/context-assets/context-space-invitations.mjs
++++ b/apps/commonplace-account/server/context-assets/context-space-invitations.mjs
+@@ -4,19 +4,22 @@ export function spaceInvitations({call,getAccount,authenticate,onJoined}){
+  let selected=null,epoch=0,attempt=null,joinEpoch=0,shownFor=undefined,dismissed=false,retry=false;
+  const invitation=new URLSearchParams(location.search).get('space-invite');
+  // A global shortcut uses the same owner-only invitation endpoint as Members.
+- let quickEpoch=0,quickBusy=false,quickReady=false,quickAttempt=null,quickTrigger=null;
++ let quickEpoch=0,quickBusy=false,quickReady=false,quickAttempt=null,quickTrigger=null,quickContext=undefined,quickGroups=[],quickWanted=null;
+  const quickDialog=el('quick-invite-dialog');
+  function quickControls(){
+-  const fresh=!el('quick-invite-space').value;
++  const target=el('quick-invite-space').value,fresh=!target,group=quickGroups.find(g=>g.id===target),allowed=fresh||group?.role==='owner';
++  const owner=group?.members?.find(m=>m.role==='owner')?.name;
++  el('quick-invite-permission').hidden=!quickReady||allowed;el('quick-invite-permission').textContent=!quickReady||allowed?'':group?'Only '+(owner?owner+', the space owner':'the space owner')+' can invite people to '+group.name+'. You’re a member on this account. Ask the owner for an invitation link, or sign in with the account that owns this space.':'This space is no longer available to this account. Choose another space.';
++  el('quick-invite-members').hidden=!quickReady||allowed||target!==selected?.id;
+   el('quick-invite-name-field').hidden=!fresh;el('quick-invite-name').required=fresh;
+   for(const id of ['quick-invite-space','quick-invite-name'])el(id).disabled=quickBusy||!quickReady;
+-  el('quick-invite-submit').disabled=quickBusy||!quickReady||(fresh&&!el('quick-invite-name').value.trim());
++  el('quick-invite-submit').disabled=quickBusy||!quickReady||!allowed||(fresh&&!el('quick-invite-name').value.trim());
+   el('quick-invite-submit').setAttribute('aria-busy',String(quickBusy));
+  }
+  function clearQuickResult(){el('quick-invite-result').hidden=true;el('quick-invite-url').value='';el('quick-invite-open').href='/';el('quick-invite-submit').hidden=false;}
+  function editQuick(){quickAttempt=null;clearQuickResult();el('quick-invite-status').textContent='';quickControls();}
+  function resetQuick(){
+-  quickEpoch++;quickBusy=false;quickReady=false;quickAttempt=null;
++  quickEpoch++;quickBusy=false;quickReady=false;quickAttempt=null;quickContext=undefined;quickGroups=[];quickWanted=null;
+   if(quickDialog.open)quickDialog.close();el('quick-invite-form').reset();
+   el('quick-invite-space').replaceChildren(new Option('A new space',''));
+   el('quick-invite-account').textContent='';el('quick-invite-status').textContent='';el('quick-invite-retry').hidden=true;
+@@ -28,15 +31,22 @@ export function spaceInvitations({call,getAccount,authenticate,onJoined}){
+   if(!quickDialog.open)quickDialog.showModal();
+   el('quick-invite-account').textContent='Inviting as '+(getAccount().email||getAccount().name);
+   if(quickBusy)return;
++  const context=document.body.dataset.currentPage==='conversations'&&selected?.type==='group'?selected.id:null;
++  const contextChanged=context!==quickContext;quickContext=context;
++  const choice=contextChanged?context:quickReady?el('quick-invite-space').value:quickWanted;quickWanted=choice;
++  if(contextChanged){quickAttempt=null;clearQuickResult();}
+   const version=++quickEpoch;quickReady=false;quickControls();
+   el('quick-invite-retry').hidden=true;el('quick-invite-status').textContent='Loading your spaces…';
+   try{
+    const data=await call('groups');if(version!==quickEpoch)return;
+-   const choice=el('quick-invite-space').value,owned=data.groups.filter(g=>g.role==='owner');
++   quickGroups=data.groups;
+    el('quick-invite-space').replaceChildren(new Option('A new space',''));
+-   for(const g of owned)el('quick-invite-space').add(new Option(g.name,g.id));
+-   if(choice&&owned.some(g=>g.id===choice))el('quick-invite-space').value=choice;
+-   else if(choice){quickAttempt=null;clearQuickResult();}
++   for(const g of quickGroups.filter(g=>g.role==='owner'||g.id===choice))el('quick-invite-space').add(new Option(g.name,g.id));
++   if(choice){
++    if(!quickGroups.some(g=>g.id===choice))el('quick-invite-space').add(new Option('Unavailable space',choice));
++    el('quick-invite-space').value=choice;
++    if(quickGroups.find(g=>g.id===choice)?.role!=='owner'){quickAttempt=null;clearQuickResult();}
++   }
+    quickReady=true;el('quick-invite-status').textContent=el('quick-invite-result').hidden?'':'Link ready. Copy it and send it to the person you want to invite.';
+   }catch(e){if(version===quickEpoch&&!e.stale){el('quick-invite-status').textContent=e.message;el('quick-invite-retry').hidden=false;}}
+   finally{if(version===quickEpoch)quickControls();}
+@@ -44,6 +54,7 @@ export function spaceInvitations({call,getAccount,authenticate,onJoined}){
+  el('invite-people').onclick=openQuick;
+  el('quick-invite-retry').onclick=openQuick;
+  el('close-quick-invite').onclick=()=>quickDialog.close();
++ el('quick-invite-members').onclick=()=>{quickDialog.close();el('connection-members-tab').click();};
+  quickDialog.addEventListener('close',()=>{if(quickTrigger?.isConnected)quickTrigger.focus();});
+  el('quick-invite-space').onchange=editQuick;el('quick-invite-name').oninput=editQuick;
+  el('quick-invite-form').onsubmit=async event=>{
+diff --git a/apps/commonplace-account/server/context-product-ui.mjs b/apps/commonplace-account/server/context-product-ui.mjs
+index 99724be..ecef368 100644
+--- a/apps/commonplace-account/server/context-product-ui.mjs
++++ b/apps/commonplace-account/server/context-product-ui.mjs
+@@ -106,7 +106,8 @@ export function contextProductHtml(nonce){return `<!doctype html>
+   <p id="quick-invite-account" class="quick-invite-account"></p>
+   <p>Send a link. They sign in and join you.</p>
+   <form id="quick-invite-form">
+-    <label for="quick-invite-space">Invite to</label><select id="quick-invite-space"><option value="">A new space</option></select>
++    <label for="quick-invite-space">Invite to</label><select id="quick-invite-space" aria-describedby="quick-invite-permission"><option value="">A new space</option></select>
++    <p id="quick-invite-permission" role="status" hidden></p><button id="quick-invite-members" type="button" class="text-button" hidden>View space members</button>
+     <div id="quick-invite-name-field"><label for="quick-invite-name">Space name</label><input id="quick-invite-name" maxlength="80" required value="Shared space" autocomplete="off"></div>
+     <p class="space-members-note">They can read this space’s shared files and message history. Your private context stays private.</p>
+     <button id="quick-invite-submit" class="primary" disabled>Create invitation link ${icon('arrow')}</button>
+diff --git a/tests/space-invitations.test.mjs b/tests/space-invitations.test.mjs
+index 894728d..737415b 100644
+--- a/tests/space-invitations.test.mjs
++++ b/tests/space-invitations.test.mjs
+@@ -67,3 +67,28 @@ test('top-bar Invite works from any page with explicit account and space scope',
+  });
+  assert.deepEqual(errors,[]);
+ });
++
++test('Invite keeps the visible space selected and explains member-only access without creating another space',async t=>{
++ const p=await startContextPreview();t.after(()=>p.close());const owner=p.people.ready.owner,invites=new SpaceInvitations(p.service);
++ const member=p.spaces.groups.create(p.spaces.maya.id,{name:'Work',personIds:[owner],nonce:randomBytes(12).toString('hex')});
++ const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',headless:true,args:['--no-sandbox']});t.after(()=>browser.close());const context=await browser.newContext({viewport:{width:1440,height:1000}}),page=await context.newPage();page.setDefaultTimeout(12000);
++ const open=async()=>{await page.locator('#invite-people').click();await page.waitForFunction(()=>!document.getElementById('quick-invite-space').disabled);};
++ await t.test('owner space is preselected from its header and its invitation targets exactly that space',async()=>{
++  await page.goto(p.origin+'/?space='+p.spaces.launch.id+'#conversations');await page.locator('#board-thread-title').filter({hasText:'Website launch'}).waitFor();const before=p.spaces.groups.list(owner).groups.length;await open();
++  assert.equal(await page.locator('#quick-invite-space').inputValue(),p.spaces.launch.id);assert.equal(await page.locator('#quick-invite-name-field').isVisible(),false);assert.equal(await page.locator('#quick-invite-permission').isVisible(),false);assert.equal(await page.locator('#quick-invite-permission').textContent(),'');
++  await page.locator('#quick-invite-submit').click();await page.locator('#quick-invite-result').waitFor();const code=new URL(await page.locator('#quick-invite-url').inputValue()).searchParams.get('space-invite');assert.equal(invites.preview({code}).groupId,p.spaces.launch.id);assert.equal(p.spaces.groups.list(owner).groups.length,before);await page.locator('#close-quick-invite').click();
++ });
++ await t.test('navigating to a member space replaces the earlier target and shows the actual restriction',async()=>{
++  await page.locator('[data-conversation="group:'+member.id+'"]').click();await page.locator('#board-thread-title').filter({hasText:'Work'}).waitFor();const before=invites.all('SELECT * FROM cp_space_invites').length;
++  let fail=true;await page.route('**/account/web/social/groups',route=>{if(fail){fail=false;return route.fulfill({status:503,json:{error:'Temporary space loading failure'}});}return route.continue();});
++  await page.locator('#invite-people').click();await page.locator('#quick-invite-retry').waitFor();await page.locator('#quick-invite-retry').click();await page.waitForFunction(()=>!document.getElementById('quick-invite-space').disabled);await page.unroute('**/account/web/social/groups');
++  assert.equal(await page.locator('#quick-invite-space').inputValue(),member.id);assert.equal(await page.locator('#quick-invite-name-field').isVisible(),false);assert.equal(await page.locator('#quick-invite-submit').isDisabled(),true);assert.equal(await page.locator('#quick-invite-result').isVisible(),false);
++  assert.match(await page.locator('#quick-invite-permission').innerText(),/space owner.*invite people to Work.*You’re a member/);assert.equal(invites.all('SELECT * FROM cp_space_invites').length,before);assert.throws(()=>invites.create(owner,{groupId:member.id,code:token()}));
++  for(const width of [320,390,1440]){await page.setViewportSize({width,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);assert.deepEqual((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze()).violations,[]);}
++  await page.locator('#quick-invite-members').click();assert.equal(await page.locator('#quick-invite-dialog').isVisible(),false);assert.equal(await page.locator('#connection-members-tab').getAttribute('aria-selected'),'true');
++ });
++ await t.test('a new space remains an explicit choice and unrelated pages do not reuse a hidden selected space',async()=>{
++  await open();await page.locator('#quick-invite-space').selectOption('');assert.equal(await page.locator('#quick-invite-name-field').isVisible(),true);assert.equal(await page.locator('#quick-invite-permission').isVisible(),false);assert.equal(await page.locator('#quick-invite-permission').textContent(),'');assert.equal(await page.locator('#quick-invite-submit').isDisabled(),false);await page.locator('#close-quick-invite').click();
++  await page.getByRole('link',{name:'My context',exact:true}).click();await open();assert.equal(await page.locator('#quick-invite-space').inputValue(),'');assert.equal(await page.locator('#quick-invite-space option[value="'+member.id+'"]').count(),0);
++ });
++});

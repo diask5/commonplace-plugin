@@ -1,5 +1,13 @@
 # Meet Proxy Draft v3 compliance
 
+31 October contextual invitation follow-up: patch 57 is packaged for
+`20261031-current-space-invite`, pending deployment. Invite now defaults to the
+visible space and explains owner-only invitation access for members instead of
+hiding their space. Loading retries keep the selected scope; My context does not
+reuse a hidden board selection. All 17 invitation/browser checks and the exact
+57-patch replay pass. This does not change permissions or fix work-machine
+collection. See [current-space invitations](CURRENT-SPACE-INVITE.md).
+
 31 October setup recovery: patch 56 is published and live as server
 `20261031-setup-activation`. All 34 browser checks, 11 setup/protocol checks,
 56-patch replay, 160 deployed files/readability and three services pass. Setup now

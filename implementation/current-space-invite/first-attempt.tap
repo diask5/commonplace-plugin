@@ -1,0 +1,78 @@
+▶ space invite joins a new person after sign-in without granting their personal context
+  ✔ only owner issues links; stable retries, expiry and revocation preserve membership (5.267921ms)
+  ✔ public preview survives Google sign-in and opens exactly the invited group (1467.723158ms)
+  ✔ removed members cannot use an old reusable link to undo removal (2.57669ms)
+  ✔ owner can create, copy and revoke actual links from Members (297.380902ms)
+  ✔ invalid links are unavailable; temporary failures have a retry (275.606819ms)
+✔ space invite joins a new person after sign-in without granting their personal context (2793.703449ms)
+▶ top-bar Invite works from any page with explicit account and space scope
+  ✔ visible from My context; opening never creates an invitation or opts into sharing (140.461299ms)
+  ✔ lost responses retry the same new space and link without duplicates (390.896546ms)
+  ✔ existing-space invitation uses only the explicitly selected owner space (143.162227ms)
+  ✔ loading failure offers a retry without creating anything (136.822162ms)
+  ✔ desktop and phone controls have no overflow or accessibility violations (2699.206271ms)
+  ✔ expired browser sign-in clears invitation state and hides the CTA (73.244395ms)
+✔ top-bar Invite works from any page with explicit account and space scope (4494.567217ms)
+▶ Invite keeps the visible space selected and explains member-only access without creating another space
+  ✔ owner space is preselected from its header and its invitation targets exactly that space (453.369005ms)
+  ✖ navigating to a member space replaces the earlier target and shows the actual restriction (662.563725ms)
+  ✖ a new space remains an explicit choice and unrelated pages do not reuse a hidden selected space (12029.881029ms)
+✖ Invite keeps the visible space selected and explains member-only access without creating another space (13652.786999ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 14
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21565.556495
+
+✖ failing tests:
+
+test at .context/commonplace-source/tests/space-invitations.test.mjs:81:10
+✖ navigating to a member space replaces the earlier target and shows the actual restriction (662.563725ms)
+  Error: Please use browser.newContext()
+   Please check out https://github.com/dequelabs/axe-core-npm/blob/develop/packages/playwright/error-handling.md
+      at AxeBuilder.analyze (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/node_modules/@axe-core/playwright/dist/index.mjs:218:13)
+      at runNextTicks (node:internal/process/task_queues:65:5)
+      at process.processImmediate (node:internal/timers:541:9)
+      at async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-invitations.test.mjs:85:196)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-invitations.test.mjs:81:2)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at .context/commonplace-source/tests/space-invitations.test.mjs:88:10
+✖ a new space remains an explicit choice and unrelated pages do not reuse a hidden selected space (12029.881029ms)
+  locator.click: Timeout 12000ms exceeded.
+  Call log:
+    - waiting for locator('#invite-people')
+      - locator resolved to <button class="primary" id="invite-people" aria-haspopup="dialog">…</button>
+    - attempting click action
+      2 × waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+        - <dialog open="" id="quick-invite-dialog" class="quick-invite-dialog" aria-labelledby="quick-invite-title">…</dialog> intercepts pointer events
+      - retrying click action
+      - waiting 20ms
+      2 × waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+        - <dialog open="" id="quick-invite-dialog" class="quick-invite-dialog" aria-labelledby="quick-invite-title">…</dialog> intercepts pointer events
+      - retrying click action
+        - waiting 100ms
+      23 × waiting for element to be visible, enabled and stable
+         - element is visible, enabled and stable
+         - scrolling into view if needed
+         - done scrolling
+         - <dialog open="" id="quick-invite-dialog" class="quick-invite-dialog" aria-labelledby="quick-invite-title">…</dialog> intercepts pointer events
+       - retrying click action
+         - waiting 500ms
+
+      at open (/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-invitations.test.mjs:75:60)
+      at TestContext.<anonymous> (/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-invitations.test.mjs:89:9)
+      at TestContext.<anonymous> (/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/space-invitations.test.mjs:88:10) {
+    name: 'TimeoutError'
+  }

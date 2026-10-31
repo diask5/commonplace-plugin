@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-31",
+  "state": "Packaged; production deployment pending.",
+  "patch": 57,
+  "nativeVersionUnchanged": "0.4.33/runtime66",
+  "server": {
+    "baseline": "20261031-setup-activation",
+    "candidate": "20261031-current-space-invite",
+    "published": false,
+    "deployed": false,
+    "files": 160,
+    "bundleSha256": "6713cbe66af9bd8f00f38dbc0161051c8e0028b17548da4bd4c9ece590a656c9",
+    "manifestSha256": "1ab1d37c76ab8d663de2fac4e631207fd6a97c38921bac951d5ba9d9ac21b16d",
+    "helperSha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
+    "changedFiles": [
+      "dist/standalone/account-runtime/context-assets/context-space-invitations.mjs",
+      "dist/standalone/account-runtime/context-product-ui.mjs"
+    ]
+  },
+  "checks": {
+    "invitationBrowser": {
+      "pass": 17,
+      "fail": 0
+    },
+    "replay": {
+      "patches": 57,
+      "changedFiles": 217,
+      "mismatches": [],
+      "matched": true
+    },
+    "packageHashesAndSyntax": "passed",
+    "responsiveWidths": [
+      320,
+      390,
+      1440
+    ],
+    "axeViolations": []
+  },
+  "behavior": [
+    "Invite defaults to the visible space on Spaces",
+    "Member spaces remain selected with owner name and explanation; no unauthorized invitation or silent new space",
+    "View space members action opens the existing Members tab",
+    "Load retry preserves intended scope; account reset and old operation nonces retained",
+    "My context does not use a hidden selected group"
+  ],
+  "limits": [
+    "Does not change owner-only invitation authority, account identity, or sharing rules.",
+    "This UI update does not fix incomplete work-machine collection.",
+    "Browser tests use isolated synthetic accounts."
+  ],
+  "testNotes": [
+    "The initial new browser test used browser.newPage rather than an explicit context, which axe rejected. Fixed the test harness; the dependent subtest then ran normally. Raw failure evidence is retained without ANSI styling/trailing whitespace."
+  ]
+}
