@@ -1,0 +1,72 @@
+▶ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline
+  ✔ one-tap app chooser is accessible from phone to desktop (6753.003212ms)
+  ✔ open app is primary, auto collection is disclosed, and unrelated connected chats/uploads never complete setup (3087.014225ms)
+  ✔ slow host setup stays explicit and does not invent installation progress (159.590109ms)
+  ✔ all app surfaces carry server/account and recover the same handoff when reopened (8628.975971ms)
+  ✔ registration confirms plugin and MCP together; no manual receiver picker and no false content success (2500.945142ms)
+  ✔ empty and interrupted collection are honest; incoming context becomes ready without a refresh click (7484.80528ms)
+  ✔ a delayed confirmation from another app cannot complete the selected setup (573.975052ms)
+  ✔ live setup accessible at 320px (1199.3385ms)
+  ✔ live setup accessible at 390px (1084.160056ms)
+  ✔ live setup accessible at 768px (1250.717247ms)
+  ✔ live setup accessible at 1440px (1160.940321ms)
+  ✔ live setup accessible at 1920px (1160.746083ms)
+  ✔ polling failure visibly reconnects and recovers, offline collectors never claim all sources are current (3912.485268ms)
+  ✔ saved context never masks a paused or interrupted collector (331.697344ms)
+  ✔ expired handoff renews without a second Google ceremony (434.047254ms)
+  ✔ changed browser account clears the old setup token and progress (269.664711ms)
+✔ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline (41806.923707ms)
+✔ a newly signed-in account goes straight to desktop setup with collection already included (1400.906162ms)
+✔ account changes before app launch automatically invalidate every prepared app link (3641.031142ms)
+✔ preparing a setup has visible progress and a failed preparation can retry (1649.832525ms)
+▶ fresh-chat activation keeps the unclaimed handoff and never fabricates installation or collection
+  ✔ each app offers a short activation request with the same account, space and token (1467.193712ms)
+  ✔ copy, app launch and reopening preserve the request without reporting success (4134.311924ms)
+  ✔ clipboard refusal leaves the activation request selected for manual copying (91.703773ms)
+  ✔ only the selected real claim binds the chat; another chat cannot reuse the handoff (173.604896ms)
+  ✔ a disconnected claimed request cannot offer another activation chat (83.197386ms)
+  ✖ expired requests stop activation; renewal retains browser sign-in with a fresh install request (12078.57403ms)
+  ✔ account changes clear the activation prompt and prepared app links (1309.286922ms)
+✖ fresh-chat activation keeps the unclaimed handoff and never fabricates installation or collection (20746.746356ms)
+▶ seamless setup: copy is primary, host steps are explicit, progress is installation-specific and MCP is the default route
+  ✔ choosing an app launches directly; no extra settings or filesystem grant is requested (3197.035093ms)
+  ✔ after selection Copy setup prompt is primary above live progress with explicit host steps (2936.633904ms)
+  ✔ registration recedes the copy action; scanning shows actual file counts only from this installation (7092.536383ms)
+  ✔ partial collection reports received vs searchable and last updated; ready never claims more than indexed (9274.496371ms)
+  ✔ local folder is optional in copy and no setting or grant is added (25.333484ms)
+✔ seamless setup: copy is primary, host steps are explicit, progress is installation-specific and MCP is the default route (24522.074199ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 32
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 70262.810525
+
+✖ failing tests:
+
+test at .context/commonplace-source/tests/context-setup-browser.test.mjs:148:10
+✖ expired requests stop activation; renewal retains browser sign-in with a fresh install request (12078.57403ms)
+  locator.click: Timeout 12000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('#setup-another')[22m
+  [2m    - locator resolved to <button hidden="" id="setup-another" class="text-button">Use another app</button>[22m
+  [2m  - attempting click action[22m
+  [2m    2 × waiting for element to be visible, enabled and stable[22m
+  [2m      - element is not visible[22m
+  [2m    - retrying click action[22m
+  [2m    - waiting 20ms[22m
+  [2m    2 × waiting for element to be visible, enabled and stable[22m
+  [2m      - element is not visible[22m
+  [2m    - retrying click action[22m
+  [2m      - waiting 100ms[22m
+  [2m    22 × waiting for element to be visible, enabled and stable[22m
+  [2m       - element is not visible[22m
+  [2m     - retrying click action[22m
+  [2m       - waiting 500ms[22m
+  
+      at TestContext.<anonymous> (/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-browser.test.mjs:149:85)
+      at async TestContext.<anonymous> (/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-browser.test.mjs:148:2) {
+    name: 'TimeoutError'
+  }

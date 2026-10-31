@@ -1,0 +1,22 @@
+2026-10-31T22:47:41.397Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ native collection updates one library read by three native and two independent OAuth clients (6394.645549ms)
+ℹ Five protocol clients read initial content, edits and recovered uploads; exclusions propagated to all five and another account read nothing. Native and Google identities are synthetic.
+✔ sync presentation distinguishes saved context from current collection (0.656408ms)
+✔ each app gets a complete install-and-connect request with one exact private handoff (2.299566ms)
+✔ missing account, unknown app or invalid handoff never produces a setup authorization (0.231522ms)
+✔ setup preflights identity and the host CLI before installation, then resumes the original handoff (0.329092ms)
+✔ activation carries the exact handoff and scope without rerunning installation or bypassing host gates (0.474087ms)
+2026-10-31T22:47:41.407Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ signed native handoff carries browser identity once, routes the exact chat, and collects searchable updates automatically (1425.808779ms)
+✔ setup rejects account mismatches, wrong apps, unverified chats and expired tokens without linking or enabling sync (764.275876ms)
+✔ setup cannot override a receiver changed after handoff or accept a revoked group; private status is owner-only (599.093073ms)
+✔ private setup codes are removed by both native collection and server import sanitizers (0.890665ms)
+✔ setup readiness follows what direct canonical retrieval returns, without waiting for an archive snapshot (715.787177ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7852.808137
