@@ -1,7 +1,7 @@
 # Classifier reliability candidate — 31 October 2026
 
 Patch 53 improves permitted-context admission and bounds provider traffic across
-owners sharing the same server process. It is packaged for server
+owners sharing the same server process. It is packaged and uploaded as a draft for server
 `20261031-classifier-reliability`, but **not deployed**: the existing Google Cloud
 account requires reauthentication, so the production SSH preflight could not run.
 Production remains on the last verified `20261029-cross-host-sync` release.
@@ -89,3 +89,10 @@ remain open. This is a measured reliability improvement, not all-P0 completion.
 [Verification and artifact hashes](../implementation/classifier-reliability-verification.json)
 · [Portable patch order](../implementation/classifier-reliability-manifest.json)
 · [Preserved stress baseline](SHARING-STRESS.md)
+
+Source and evidence: [draft PR #48](https://github.com/diask5/commonplace-plugin/pull/48).
+The [draft server release](https://github.com/diask5/commonplace-plugin/releases/tag/untagged-fe5c79e24a1f4f44aad0) contains all four verified assets, pinned to source commit
+`5982da69ccfea5fa2dd1e387690e2e46d8828824`. The prepared deployment runner
+requires the exact prior release and all prior file hashes, restricts changes to
+the three reviewed modules, and verifies all 160 files plus service readability
+after activation. It has not been executed against production.

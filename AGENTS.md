@@ -11,7 +11,7 @@ A credential/endpoint-shared per-process FIFO (four active, 125 ms start spacing
 model, rules, authority and source fences are unchanged. Rejected prompt variants
 and original failures remain retained. All 640 core tests, eight extracted queue
 tests, extracted HTTP/OAuth/MCP checks and exact 53-patch replay across 217 files
-pass. The 160-file server candidate `20261031-classifier-reliability` is packaged,
+pass. The 160-file server candidate `20261031-classifier-reliability` is packaged and uploaded as a draft (PR #48),
 not deployed: existing-account GCP reauthentication blocked preflight. Native
 0.4.33/runtime66 is unchanged. False withholding, cross-process provider capacity,
 search recall and full P0 acceptance remain open. Do not claim this candidate live.

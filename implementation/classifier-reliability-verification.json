@@ -1,6 +1,6 @@
 {
   "date": "2026-10-31",
-  "state": "Packaged candidate; not deployed. Production preflight blocked by existing-account Google Cloud reauthentication.",
+  "state": "Packaged and uploaded as a GitHub draft; not deployed. Production preflight blocked by existing-account Google Cloud reauthentication.",
   "patch": {
     "number": 53,
     "path": "classifier-reliability.patch",
@@ -41,7 +41,12 @@
       "perplexity-decisions.mjs",
       "policy-context.mjs"
     ],
-    "migrationsChanged": false
+    "migrationsChanged": false,
+    "draftReleaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/untagged-fe5c79e24a1f4f44aad0",
+    "pullRequestUrl": "https://github.com/diask5/commonplace-plugin/pull/48",
+    "sourceCommit": "5982da69ccfea5fa2dd1e387690e2e46d8828824",
+    "releaseAssetsVerified": true,
+    "deploymentRunner": "implementation/classifier-reliability/deploy53.py"
   },
   "realProviderEvaluation": {
     "syntheticOnly": true,
@@ -220,6 +225,18 @@
     {
       "path": "implementation/classifier-reliability/sharing-tests.tap",
       "sha256": "9e2af0c488b0e319196d56d4f5f09003505141022cdf73e1485269daf02336dd"
+    },
+    {
+      "path": "implementation/classifier-reliability/draft-release.json",
+      "sha256": "dfe7d2f3136575f116ab5f5f744cb67d958259912a4092b46b561b486c36d1e8"
+    },
+    {
+      "path": "implementation/classifier-reliability/deploy53.py",
+      "sha256": "d920745486eeb19f737b89b9fd8bc2bb710f1cc7e3e3e7b1885fed7b8937e3d6"
+    },
+    {
+      "path": "implementation/classifier-reliability/reauthentication-status.json",
+      "sha256": "20e105b44778c112e5c36bdccfb74b40a6c42e247c29e81b24386b8034ebeac0"
     }
   ]
 }

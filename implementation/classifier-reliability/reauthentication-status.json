@@ -1,0 +1,14 @@
+{
+  "state": "browser_sign_in_waiting",
+  "account": "existing GCP deployment account",
+  "staleAttemptClosed": true,
+  "staleAttemptAge": "five days",
+  "freshAttemptStarted": true,
+  "browserLaunchObserved": true,
+  "successObserved": false,
+  "errorObserved": false,
+  "boundedSeconds": 600,
+  "credentialsOrOAuthUrlsRecorded": false,
+  "productionChanged": false,
+  "hostPermissionsChanged": false
+}
