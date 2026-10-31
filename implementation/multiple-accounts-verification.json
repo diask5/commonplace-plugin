@@ -308,7 +308,11 @@
     "initialFailures": [
       "First broad run caught discovery creating native-inbox state; fixed with read-only scope inspection.",
       "Package guards exposed stale runtime/version and added-file expectations; corrected without weakening integrity checks."
-    ]
+    ],
+    "publishedDigests": {
+      "matched": true,
+      "file": "implementation/multiple-accounts/published-digests.json"
+    }
   },
   "limits": [
     "Synthetic verified identities and signed native stdio; no real Google, clean-machine, installed Mac or default-host approval proof.",
