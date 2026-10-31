@@ -1,0 +1,51 @@
+▶ context product: real retrieval, privacy-preserving selection, apps, responsive pages and recovery
+  ✔ home is Spaces with messages first and Context reads real archive text (794.582836ms)
+  ✔ search matches body text and filters by source (926.006695ms)
+  ✔ Add context opens one app setup sheet with no sync settings or intermediate screen (231.605679ms)
+  ✔ newly ingested context appears in the open library without a manual reload (3932.956329ms)
+  ✔ a live archive refresh never combines old and new pages of a document (777.449065ms)
+  ✔ sharing is one sheet with exact selection, default expiry and an honest invite preview (1128.971222ms)
+  ✔ account profile shows the signed-in person, private context and account settings (209.450624ms)
+  ✔ conversation board reads actual pair and mailbox histories and updates while open (10604.234134ms)
+  ✔ desktop channel navigation preserves reading and switches the visible conversation (509.853185ms)
+  ✔ sharing starts with the selected connection and preserves exact document choices through search and review (1783.752046ms)
+  ✔ picker recovers failure and ignores a delayed search after changing its recipient (1435.377402ms)
+  ✔ responsive context/shared/settings and setup at 320 (16530.612717ms)
+  ✔ responsive context/shared/settings and setup at 390 (15487.431959ms)
+  ✔ responsive context/shared/settings and setup at 768 (15597.283265ms)
+  ✔ responsive context/shared/settings and setup at 1440 (17160.715171ms)
+  ✔ older message pages fill a live burst gap in order and read errors can retry (1476.279017ms)
+  ✔ phone reader returns to the list (491.287255ms)
+  ✔ failed reads can retry without claiming completion (258.647886ms)
+  ✔ empty account and sign-out clear prior context and delayed conversation reads (1208.4123ms)
+  ✔ sample entry opens the populated account after sign-out (533.981279ms)
+  ✔ reset sample recovers a previously persisted empty preview account (947.19036ms)
+  ✔ signed-in conversations are usable while context is still loading (215.154631ms)
+  ✔ initial service failure has working retry (388.641496ms)
+✔ context product: real retrieval, privacy-preserving selection, apps, responsive pages and recovery (93793.081966ms)
+▶ Spaces: real groups, messages, explicit file sharing, per-owner rules and responsive controls
+  ✔ one space combines sharing and messages under a two-link navigation (128.917093ms)
+  ✔ rules persist per owner and per space with sharing explicitly off (919.524672ms)
+  ✔ create a project with multiple connected people using real group membership (359.554222ms)
+  ✔ message retries reuse their nonce after a lost response and never duplicate a post (430.92794ms)
+  ✔ review and explicitly share a file; retries, member reads and foreign-space refusal work (719.768347ms)
+  ✔ outsiders cannot list, read or upload files and removal stops member access (55.881542ms)
+  ✔ file endpoints require authentication and same-origin requests (6.410834ms)
+  ✔ MCP setup names the exact shared space without granting private archive access (189.732522ms)
+  ✔ shared context, messages and access work at 320px without overflow or accessibility violations (6146.196983ms)
+  ✔ shared context, messages and access work at 390px without overflow or accessibility violations (5967.924557ms)
+  ✔ shared context, messages and access work at 768px without overflow or accessibility violations (5716.235441ms)
+  ✔ shared context, messages and access work at 1024px without overflow or accessibility violations (6342.917278ms)
+  ✔ shared context, messages and access work at 1440px without overflow or accessibility violations (6649.031812ms)
+  ✔ shared context, messages and access work at 1920px without overflow or accessibility violations (5702.027272ms)
+  ✔ create and file-review dialogs remain usable at phone and desktop widths (7661.849994ms)
+  ✔ reduced motion is respected and owner reset clears private rule fields (224.172192ms)
+✔ Spaces: real groups, messages, explicit file sharing, per-owner rules and responsive controls (48833.647542ms)
+ℹ tests 41
+ℹ suites 0
+ℹ pass 41
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 94772.501186

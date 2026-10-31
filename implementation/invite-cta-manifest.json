@@ -59,7 +59,7 @@
   ],
   "patch": "invite-cta.patch",
   "sha256": "866154372304c9c971a9e7c645991cbcaebd5cab8726663763130a927a15be9b",
-  "state": "Packaged; production deployment pending.",
+  "state": "Published and live as 20261031-invite-cta; native package unchanged.",
   "files": [
     {
       "path": "apps/commonplace-account/server/context-assets/context-space-invitations.mjs",

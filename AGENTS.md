@@ -1,5 +1,14 @@
 # Meet Proxy product contract
 
+31 October invitation shortcut: patch 55 is published and live as server
+`20261031-invite-cta`. A top-bar **Invite** button shows the sender’s email and
+creates a link for a new or explicitly selected owned space. Private sharing
+stays off; existing expiry, acceptance and revocation checks are unchanged.
+All 13 invitation/browser checks, 41 broader UI checks, 55-patch exact replay,
+160 live files/readability, three services and public TLS/setup/OAuth checks pass.
+Native 0.4.33/runtime66 and classifier settings are unchanged. These UI checks
+use synthetic accounts; prior P0 limits remain. See [top-bar Invite](docs/INVITE-CTA.md).
+
 31 October imported-excerpt correction: patch 54 is published and live as
 server `20261031-imported-excerpts`, with all 160 files/service readability and
 three healthy services verified. The first signed two-account synthetic check

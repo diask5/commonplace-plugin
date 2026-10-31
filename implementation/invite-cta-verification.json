@@ -1,27 +1,46 @@
 {
   "date": "2026-10-31",
-  "state": "Packaged; production deployment pending.",
+  "state": "Published and live. All 160 files/service readability, three services and public TLS/setup/OAuth checks pass.",
   "patch": 55,
   "nativeVersionUnchanged": "0.4.33/runtime66",
   "server": {
     "baseline": "20261031-imported-excerpts",
     "candidate": "20261031-invite-cta",
-    "published": false,
-    "deployed": false,
+    "published": true,
+    "deployed": true,
     "files": 160,
     "bundleSha256": "3ae5558c081b726abd7f40467bb8b46856240ce7fb88e54d38d9c7c88bd52a60",
     "changedFiles": [
       "context-product-ui.mjs",
       "context-product-style.mjs",
       "context-assets/context-space-invitations.mjs"
-    ]
+    ],
+    "sourceCommit": "db41d890b13a207e368a2ae3b5e690dd195f05a9",
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261031-invite-cta",
+    "deployment": {
+      "state": "passed",
+      "release": "20261031-invite-cta",
+      "filesVerified": 160,
+      "serviceReadableFiles": 160,
+      "services": [
+        "active",
+        "active",
+        "active"
+      ],
+      "migrations": "unchanged; verified code-only activation",
+      "previous": "20261031-imported-excerpts",
+      "finishedAt": 1793485632.7413588
+    }
   },
   "checks": {
     "invitationBrowser": {
       "pass": 13,
       "fail": 0
     },
-    "uiRegression": "running",
+    "uiRegression": {
+      "pass": 41,
+      "fail": 0
+    },
     "replay": {
       "patches": 55,
       "changedFiles": 217,
@@ -33,7 +52,9 @@
       390,
       1440
     ],
-    "axeViolations": []
+    "axeViolations": [],
+    "publicSmoke": "passed; live assets match source and CTA is hidden until signed in",
+    "coreSuite": "Not repeated for this three-file UI-only update; latest core evidence is retained with patch 54."
   },
   "behavior": [
     "Top-bar Invite across authenticated pages",
@@ -45,5 +66,43 @@
   "limits": [
     "Browser interaction tests use isolated synthetic accounts.",
     "No new native package, real-person acceptance or classifier reliability claim."
+  ],
+  "releaseNotes": [
+    "Initial publication with an abbreviated target SHA was rejected by GitHub (422) before publishing; the full source commit SHA succeeded.",
+    "First receipt read preceded rollout completion; the final rollout result passed."
+  ],
+  "evidence": [
+    {
+      "path": "implementation/invite-cta/deploy55.py",
+      "sha256": "9cceffa524602e6a5e6d2053ca99e52fc838168bf111625b3e973a80d5d57fca"
+    },
+    {
+      "path": "implementation/invite-cta/deployment-live.json",
+      "sha256": "773424b135e36edeb45c37de875f5cf5e123f2d786869966823ee1acad8dfcc2"
+    },
+    {
+      "path": "implementation/invite-cta/invitations.tap",
+      "sha256": "e28e9c4ae7745f5c8b2535ee19ce66c9b2d68f4c62e00d1f919cb7eb5d5f3b1e"
+    },
+    {
+      "path": "implementation/invite-cta/public-smoke-live.json",
+      "sha256": "1262946bb28c36d1abbb2e59a932a762ca8c0ef76fcdb3bc514541fba2dce667"
+    },
+    {
+      "path": "implementation/invite-cta/public-smoke.mjs",
+      "sha256": "d172e8d0b276e8c0bec080a5781950f9cb55143b07694d6152580d806c6ce358"
+    },
+    {
+      "path": "implementation/invite-cta/replay.json",
+      "sha256": "7ddda234e02bd5d2f4f5bcfbecbaf043657741ba742475403752658bb18a2882"
+    },
+    {
+      "path": "implementation/invite-cta/runtime-update-manifest.json",
+      "sha256": "6e02bd8d00e882e24a07a1fcac5c18dd716dd744dd2351db40dc5a4a3cb24b31"
+    },
+    {
+      "path": "implementation/invite-cta/ui-regression.tap",
+      "sha256": "811641659008b536d4bf00fc2d57207c035b193035087dad08a7865965a6c3f1"
+    }
   ]
 }

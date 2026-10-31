@@ -9,8 +9,8 @@ The [production application](https://34.27.253.220/) includes context-sharing
 spaces, one-request native plugin/MCP setup, automatic private collection,
 natural-language invitations, timed rules and leave/archive controls.
 Native **0.4.33/runtime66** is published and active on the verified Mac. Server
-**20261031-imported-excerpts** is live, with all 160 files and all three
-services verified. [Current release evidence](docs/IMPORTED-CONTEXT-EXCERPTS.md).
+**20261031-invite-cta** is live, with all 160 files and all three
+services verified. [Current release evidence](docs/INVITE-CTA.md).
 [Paste-ready work-account Claude setup prompt](docs/WORK-ACCOUNT-CLAUDE-PROMPT.md).
 
 Start at the production application, choose **Continue with Google**, then
@@ -20,8 +20,8 @@ wait for collection receipts and a successful source-read check. Regular Claude
 and ChatGPT MCP connections read existing context; they do not automatically
 upload web-only conversations.
 
-Create a **Space**, invite the other person, and set **My sharing rules** for
-that space. [Handoff steps and current limits](docs/ZANE-HANDOFF.md). Some allowed
+Use **Invite** in the top bar to create a link for a new or existing space.
+The dialog shows the account sending it. Set **My sharing rules** in that space. [Handoff steps and current limits](docs/ZANE-HANDOFF.md). Some allowed
 information is still withheld. Clean-machine and independent-human acceptance
 remain open. Direct Mail/iMessage sends remain P1.
 

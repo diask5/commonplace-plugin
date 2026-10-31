@@ -1,0 +1,14 @@
+{
+  "state": "passed",
+  "release": "20261031-invite-cta",
+  "filesVerified": 160,
+  "serviceReadableFiles": 160,
+  "services": [
+    "active",
+    "active",
+    "active"
+  ],
+  "migrations": "unchanged; verified code-only activation",
+  "previous": "20261031-imported-excerpts",
+  "finishedAt": 1793485632.7413588
+}
