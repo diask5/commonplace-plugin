@@ -1,0 +1,129 @@
+{
+  "name": "Efficient bounded batches and negotiated gzip uploads; 0.4.35/runtime68",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch",
+    "deployment-source-modes.patch",
+    "visible-transcript-envelopes.patch",
+    "native-message-excerpts.patch",
+    "p0-excerpts-candidate.patch",
+    "private-native-titles.patch",
+    "space-request-diagnostics.patch",
+    "bounded-classification.patch",
+    "question-discovery.patch",
+    "sharing-stress.patch",
+    "cross-host-context-sync.patch",
+    "bounded-sync-catchup.patch",
+    "classifier-reliability.patch",
+    "imported-context-excerpts.patch",
+    "invite-cta.patch",
+    "setup-preflight-recovery.patch",
+    "current-space-invite.patch",
+    "multiple-accounts.patch"
+  ],
+  "patch": "faster-chat-sync.patch",
+  "sha256": "88b657076badf0ae3b9a7b213a881da5efdf77ca11fc5a5781aed0976df43857",
+  "state": "Packaged native 0.4.35/runtime68 and server 20261031-compressed-context; validated, publication pending. Not installed or deployed.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/cloud-http.mjs",
+      "beforeSha256": "1df26924c76c1bc29923ff5219e6b5780fd1e9e01fd048a82195a087b1602f23",
+      "sha256": "18a6b3b550b1f02d53a73cff1500d4caa8e679cd6163a0ecf87e4e52955a0679"
+    },
+    {
+      "path": "apps/commonplace/server/canonical-sync.mjs",
+      "beforeSha256": "947c3af7ae145ad0e03f00c6d88fae7767ab4c1187c6d164fd14e2db453e8b0d",
+      "sha256": "49203033f983fe297c5c7b1e22d68413781cb85537226b2c271de08fcddf8fbe"
+    },
+    {
+      "path": "apps/commonplace/server/cloud-sync.mjs",
+      "beforeSha256": "349a0e0f40cbcd775eec5aac559dfd93e16a53860f6a6e0918ccfbbd136a1574",
+      "sha256": "9468eafe657e7968d7453f5e527467e0d6702f03315ba52ff402624ddac6a5d4"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "b7f1b74ca23f94da0055ca9c30081eae2952706b2c54005fcbd554af89f4a3ea",
+      "sha256": "70bf1238ac2ab30b72fc0962e8f72bd71a6a5615f5196ca0b58246b1bd7875c1"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "0a3935fd126c866f58fba31cfd4f00d89cc457f2b9d35d467d9558265af3c2cf",
+      "sha256": "4797946f53ef9c7c40dd1a017b1f8f39c65eb98d603452f483b6d9811fc8252f"
+    },
+    {
+      "path": "scripts/benchmark-chat-upload.mjs",
+      "beforeSha256": null,
+      "sha256": "b44473b1e0c746cb26e2aa285e8d919854279e722cc37230ee792bf925b7c579"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "9c8e8a3cb2cd11ee1f8d5331148a4efec7b873b78d8f44387c90e08d25c32174",
+      "sha256": "ff50d6164efc49a29c7f878f44b8a79bb48aac4fbab1209a2206d0c7bf8410c6"
+    },
+    {
+      "path": "tests/cloud-unified-context.test.mjs",
+      "beforeSha256": "d7cb470506e9cf93d799acb8b4fe81495b512f295f339302807a21940ea219fc",
+      "sha256": "ccb103a19b006d32d72fdd7a537689d454fd44cf1b36f231fce2ee705977eed2"
+    },
+    {
+      "path": "tests/cloud-upload-compression.test.mjs",
+      "beforeSha256": null,
+      "sha256": "f02bae857f82b9ed3ab13c2a550652ec8799e59c1578fa9ef351b20240267d5e"
+    },
+    {
+      "path": "tests/conductor-history.test.mjs",
+      "beforeSha256": "fc4ece35221aaa5096651d8d3976d7fd023ac5e988c99ab982b3d475be21c033",
+      "sha256": "587ebdc2c1e11ee2adae1b84f27d484568ead939fc05ebf7ba1d2ebea7111bdc"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "3cd67885af6035d5cdf1b48a63569f034ec017129924694fbb536f9e31c33d91",
+      "sha256": "ee5186d8fdaf1d3888d650aecba7664cb9072938e29b90e9a510b48e6d1d9324"
+    },
+    {
+      "path": "tests/seamless-collection.test.mjs",
+      "beforeSha256": "25b5781b67609f211e24415f0009dca403f60cd5a22e53939db9d3af25aff3f1",
+      "sha256": "e4c9e5d3f592f4b7a71b19401ab37a48f657865db7488ca48598d44ec5ca31b4"
+    }
+  ]
+}

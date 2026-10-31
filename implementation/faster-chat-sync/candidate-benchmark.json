@@ -1,0 +1,21 @@
+{
+  "scenario": "200 chats of 120 messages plus one 6000-message chat; synthetic local collection, mocked uploader",
+  "collectorSha256": "49203033f983fe297c5c7b1e22d68413781cb85537226b2c271de08fcddf8fbe",
+  "encoding": "gzip-base64-v1",
+  "chats": 201,
+  "messages": 30000,
+  "ticks": 79,
+  "uploads": 474,
+  "compressedUploads": 460,
+  "wireBytes": 2204610,
+  "plainBytes": 9462763,
+  "maxWireBytes": 7035,
+  "maxMessages": 100,
+  "collectorWallMs": 16678,
+  "logicalReadBytes": 24129332,
+  "logicalWriteBytes": 1817542406,
+  "windowReadBytes": 23170288,
+  "modeledSchedulingSeconds": 390,
+  "allContentVerified": true,
+  "limits": "Local filesystem/serialization/compression timings; five-second scheduling is modeled. No network, Mac, browser-history or production throughput measurement."
+}

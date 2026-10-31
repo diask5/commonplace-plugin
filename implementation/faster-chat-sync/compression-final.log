@@ -1,0 +1,17 @@
+✔ negotiated gzip saves transfer bytes and preserves Unicode and the complete object (16.183033ms)
+✔ compressed uploads enforce the original 64000-byte decompressed limit and reject malformed data (23.84911ms)
+2026-10-31T23:30:02.794Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ signed Agent Auth accepts compressed context with unchanged replay, scope, opt-in and exclusion checks (964.732043ms)
+✔ a lost compressed acknowledgement persists plaintext input and can replay on an older relay (39.08734ms)
+✔ CloudSync negotiates each tick and removes compression when the server no longer advertises it (18.403766ms)
+✔ windowed parser stops early and preserves split UTF-8 records and byte cursors (16.73358ms)
+✔ larger batches keep escaped Unicode and deletion envelopes below the wire limit (163.810659ms)
+✔ turning sync off while gzip is decoding prevents the pending write (343.78657ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2809.218959

@@ -1,0 +1,16 @@
+{
+  "baseline": "20261031-setup-activation",
+  "candidate": "20261031-compressed-context",
+  "files": 160,
+  "changedFiles": [
+    "dist/standalone/account-runtime/cloud-http.mjs",
+    "dist/standalone/account-runtime/context-assets/context-space-invitations.mjs",
+    "dist/standalone/account-runtime/context-product-ui.mjs"
+  ],
+  "bundleSha256": "4c9491bacaf44117f3cc511fc7d86c1d29795e76a8a44558ca5b2d138eeb17cb",
+  "manifestSha256": "39a6b1abab153c56380cd704110ba6c0746687dfd16e372b66660b1e18248717",
+  "helperSha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
+  "allHashesVerified": true,
+  "changedModulesSyntax": "passed",
+  "state": "packaged; not deployed"
+}

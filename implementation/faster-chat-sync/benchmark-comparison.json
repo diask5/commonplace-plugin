@@ -1,0 +1,8 @@
+{
+  "payloadReductionPercent": 76.96,
+  "requestReductionPercent": 38.76,
+  "logicalReadReductionPercent": 84.42,
+  "all30000MessagesVerified": true,
+  "elapsedTimingCaveat": "Other validation ran concurrently; elapsed times are exploratory, not an isolated speed comparison.",
+  "productionOrMacMeasurement": false
+}

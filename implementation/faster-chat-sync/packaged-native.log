@@ -1,0 +1,23 @@
+2026-10-31T23:31:22.210Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ actual stdio chooses a second signed account, retains first chat routing, and pins subsequent requests (2607.87044ms)
+✔ negotiated gzip saves transfer bytes and preserves Unicode and the complete object (18.285567ms)
+✔ compressed uploads enforce the original 64000-byte decompressed limit and reject malformed data (30.291897ms)
+2026-10-31T23:31:22.379Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ signed Agent Auth accepts compressed context with unchanged replay, scope, opt-in and exclusion checks (1351.831384ms)
+✔ a lost compressed acknowledgement persists plaintext input and can replay on an older relay (99.859232ms)
+✔ CloudSync negotiates each tick and removes compression when the server no longer advertises it (58.044538ms)
+✔ windowed parser stops early and preserves split UTF-8 records and byte cursors (23.078865ms)
+✔ larger batches keep escaped Unicode and deletion envelopes below the wire limit (273.083218ms)
+✔ turning sync off while gzip is decoding prevents the pending write (494.970713ms)
+✔ Codex transport identity requires matching host fields and cannot replace an established chat (4.43542ms)
+✔ actual native stdio binds per-call Codex metadata before setup and rejects later missing or foreign identity (697.505284ms)
+✔ actual plugin legacy discovery never creates setup state or starts a receiver (641.448193ms)
+✔ actual plugin modern probe never creates setup state or starts a receiver (725.235643ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4653.042584

@@ -1,0 +1,45 @@
+2026-10-31T23:31:52.024Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ bounded collection visits mixed-case paths instead of starving a new chat (828.885183ms)
+✔ replicas converge, edits beat stale copies, conflicts remain attributed and exclusions erase every replica (560.676278ms)
+✔ explicit tombstones survive late replicas and foreign account data never appears (518.091052ms)
+✔ canonical document reads observe current replicas and exclusions without building an index (731.64683ms)
+✔ library removes fully deleted streams, ignores stale replicas and shows newer restored content (514.178238ms)
+✔ canonical collector accepts an aliased root ancestor without following escaped files (408.602195ms)
+✔ collector retries exact persisted batches after a lost acknowledgement, catches append and scans child agents (464.018507ms)
+✔ native MCP and the cloud archive expose the same canonical text; old copies cannot bypass exclusion (1242.26882ms)
+✔ known Conductor/native aliases merge streams without crossing account or exclusion boundaries (440.165284ms)
+✔ collector handles long Unicode messages and durable mid-file progress, edits and deletion (495.089794ms)
+✔ native history exclusion removes canonical text and revoked devices lose their projected evidence (373.331707ms)
+✔ library presents canonical conversations once and deletion removes them from every query (431.193874ms)
+✔ lost checkpoints recover through device-scoped metadata and resume collection (494.481813ms)
+✔ native history restore requires fresh epochs and exclusions prevent first-upload retention (424.745521ms)
+✔ fallback positions remain source-local and rescanned children never enter the parent stream (427.089476ms)
+✔ malformed sources do not stop other chats and an account change cannot receive an old collection batch (381.70147ms)
+✔ incomplete captures preserve the previous complete source until atomic publication (444.662134ms)
+✔ replacement captures discard unfinished edits and stage deletions until completion (387.525775ms)
+✔ exclusion erases staged text and a stale epoch cannot publish it after restoration (393.244669ms)
+✔ native long-message edits remain complete during bounded collection and resume after restart (434.45951ms)
+✔ revoking a device clears its staged capture and rejects its cached authenticated identity (556.9655ms)
+✔ a failed replacement scan preserves a legacy source until the new capture commits (416.480507ms)
+✔ a collector recovers a completed partial line without publishing its earlier incomplete prefix (470.093293ms)
+✔ automatic JSON backfill survives restarts and publishes every message together (729.713615ms)
+✔ metadata before visible text keeps the real identity and groups projects across providers (463.835698ms)
+✔ upgrading the collector repairs incomplete old JSON captures without losing revision checkpoints (367.148635ms)
+✔ automatic collection status includes canonical-only history and hides excluded or revoked sources (413.808044ms)
+✔ negotiated gzip saves transfer bytes and preserves Unicode and the complete object (14.792844ms)
+✔ compressed uploads enforce the original 64000-byte decompressed limit and reject malformed data (17.057192ms)
+2026-10-31T23:31:52.142Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ signed Agent Auth accepts compressed context with unchanged replay, scope, opt-in and exclusion checks (849.669716ms)
+✔ a lost compressed acknowledgement persists plaintext input and can replay on an older relay (26.182527ms)
+✔ CloudSync negotiates each tick and removes compression when the server no longer advertises it (15.170932ms)
+✔ windowed parser stops early and preserves split UTF-8 records and byte cursors (13.804926ms)
+✔ larger batches keep escaped Unicode and deletion envelopes below the wire limit (142.450653ms)
+✔ turning sync off while gzip is decoding prevents the pending write (316.271672ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14877.199002
