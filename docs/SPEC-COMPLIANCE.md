@@ -1,5 +1,13 @@
 # Meet Proxy Draft v3 compliance
 
+31 October final rollout: [imported excerpt correction](IMPORTED-CONTEXT-EXCERPTS.md)
+is live as `20261031-imported-excerpts`. All 645 core tests, 14 extracted tests,
+HTTP/OAuth/MCP smoke and exact 54-patch replay pass. The fresh two-account signed
+production check shared the exact allowed message body, withheld private content,
+kept checks owner-only, matched both histories and passed removal/old-link denial.
+All test sharing and imports were cleaned up. This does not close the retained
+false-withholding, independent-human, clean-host or original P0 design gaps.
+
 31 October production update: classifier server `20261031-classifier-reliability`
 is published and live; all 160 files and three services pass. The first signed
 production public request was still withheld below the unchanged cutoff.

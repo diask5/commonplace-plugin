@@ -58,7 +58,7 @@
   ],
   "patch": "imported-context-excerpts.patch",
   "sha256": "bfb20eac1b140d5d9af311a6e5a0db6bf15c45bc4bcfee8e6ff40e407a66930b",
-  "state": "Packaged; 645 core tests, 14 extracted tests and exact replay pass. Deployment pending.",
+  "state": "Published and live as 20261031-imported-excerpts; native package unchanged.",
   "files": [
     {
       "path": "apps/commonplace-account/server/space-context.mjs",

@@ -1,5 +1,19 @@
 # Meet Proxy product contract
 
+31 October imported-excerpt correction: patch 54 is published and live as
+server `20261031-imported-excerpts`, with all 160 files/service readability and
+three healthy services verified. The first signed two-account synthetic check
+passed exact-body public sharing, private withholding, matching history, owner-only
+checks, removal (404), old-link denial (403) and cleanup. This is not independent-
+human or recipient-host acceptance. Imported conversations use exact stored message
+bodies; generated message IDs and source titles remain private while complete
+source context governs classification. Model, prompt v5, cutoff 0.995, rules and
+native 0.4.33/runtime66 are unchanged. All 645 core tests, 14 extracted tests,
+HTTP/OAuth/MCP smoke and exact 54-patch replay pass. Two additional prompt
+experiments were rejected; neither is deployed. False withholding and broader
+P0 acceptance remain open. See [imported excerpts](docs/IMPORTED-CONTEXT-EXCERPTS.md)
+and `implementation/imported-context-excerpts-verification.json`.
+
 31 October classifier follow-up: [candidate results](docs/CLASSIFIER-RELIABILITY.md)
 and `implementation/classifier-reliability-verification.json` retain 367 actual
 provider calls across baseline and candidate evaluations with synthetic content.

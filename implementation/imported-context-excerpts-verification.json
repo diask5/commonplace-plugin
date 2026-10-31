@@ -1,6 +1,6 @@
 {
   "date": "2026-10-31",
-  "state": "Packaged; deployment pending",
+  "state": "Published and live. All 160 files/services and public setup/OAuth pass. First two-account signed check on this release passes permitted sharing, private withholding, audit separation and revocation.",
   "patch": 54,
   "nativeVersionUnchanged": "0.4.33/runtime66",
   "modelUnchanged": "pplx-decider-v1.2",
@@ -9,13 +9,29 @@
   "server": {
     "baseline": "20261031-classifier-reliability",
     "candidate": "20261031-imported-excerpts",
-    "published": false,
-    "deployed": false,
+    "published": true,
+    "deployed": true,
     "files": 160,
     "changedFiles": [
       "dist/standalone/account-runtime/space-context.mjs"
     ],
-    "bundleSha256": "d19a9875081c20a06e676aeb18cf927cff22d13a44f208fea52cbf37a09d72de"
+    "bundleSha256": "d19a9875081c20a06e676aeb18cf927cff22d13a44f208fea52cbf37a09d72de",
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261031-imported-excerpts",
+    "sourceCommit": "354eb70254327f7f89ddd392342fecca483792b8",
+    "deployment": {
+      "state": "passed",
+      "release": "20261031-imported-excerpts",
+      "filesVerified": 160,
+      "serviceReadableFiles": 160,
+      "services": [
+        "active",
+        "active",
+        "active"
+      ],
+      "migrations": "unchanged; verified code-only activation",
+      "previous": "20261031-classifier-reliability",
+      "finishedAt": 1793484549.1273873
+    }
   },
   "behavior": {
     "exactStoredMessageBodies": true,
@@ -43,7 +59,8 @@
       "fail": 4
     },
     "firstCoreFailure": "One test expected the untrimmed input rather than stored body; fixture now has an explicit end marker. Original failure retained.",
-    "extractedHttpOAuthMcp": "passed with disposable synthetic profile, compiled authorization placeholder and local source dependencies"
+    "extractedHttpOAuthMcp": "passed with disposable synthetic profile, compiled authorization placeholder and local source dependencies",
+    "publicSetupOAuth": "passed after final deployment with TLS validation enabled on desktop and phone"
   },
   "providerExperiments": {
     "syntheticOnly": true,
@@ -145,6 +162,41 @@
     {
       "path": "implementation/imported-context-excerpts/extracted-smoke.log",
       "sha256": "c9701b667021d372a63c66a1665fcf8d3ed25b8b2a37dd1b1fe3e8d5c8b13bbc"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/deployment-live.json",
+      "sha256": "4975fe2ab7e02e058c455ab993ca6b3fe240b7845486cab1f35f22ea6a2bfd0c"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/published-release.json",
+      "sha256": "62964061e1323fc97539c599dd23b8652611046f9aafcf4f56fbc3cbacf43ac1"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/live-sharing.json",
+      "sha256": "4ca9cd7e3a38054becb36e90d74d01d997c3b4e35648dce3ff713f9cd87a4b10"
+    },
+    {
+      "path": "implementation/imported-context-excerpts/public-smoke-live.json",
+      "sha256": "c235a8f287d2bb56a79386034abf5961655a7e3124481bf86a8bb0e350e710bb"
     }
-  ]
+  ],
+  "liveAcceptance": {
+    "path": "implementation/imported-context-excerpts/live-sharing.json",
+    "passed": true,
+    "syntheticContent": true,
+    "signedAccounts": 2,
+    "independentHumans": false,
+    "recipientHostModel": false,
+    "publicScore": 0.9958211029544655,
+    "privateScore": 0.0005519478458556663,
+    "exactBody": true,
+    "sourceMetadataExposed": false,
+    "privateDisclosed": false,
+    "ownerOnlyAudit": true,
+    "sharedHistoryMatches": true,
+    "removalRequestStatus": 404,
+    "removalHistoryStatus": 404,
+    "oldInvitationStatus": 403,
+    "cleanupPassed": true
+  }
 }

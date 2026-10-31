@@ -1,0 +1,168 @@
+{
+  "serverRelease": "20261031-imported-excerpts",
+  "syntheticContent": true,
+  "signedAccounts": 2,
+  "recipientHostModel": false,
+  "records": [
+    {
+      "action": "import",
+      "status": 200
+    },
+    {
+      "action": "import",
+      "status": 200
+    },
+    {
+      "action": "group-create",
+      "status": 200
+    },
+    {
+      "action": "space-invite-create",
+      "status": 200
+    },
+    {
+      "action": "space-invitation-preview",
+      "status": 200
+    },
+    {
+      "action": "space-invitation-accept",
+      "status": 200
+    },
+    {
+      "action": "group-read",
+      "status": 200
+    },
+    {
+      "action": "space-policy",
+      "status": 200
+    },
+    {
+      "action": "space-policy-save",
+      "status": 200
+    },
+    {
+      "action": "archive-search",
+      "status": 200
+    },
+    {
+      "action": "space-request",
+      "status": 200
+    },
+    {
+      "action": "space-request",
+      "status": 200
+    },
+    {
+      "action": "space-activity",
+      "status": 200
+    },
+    {
+      "action": "space-activity",
+      "status": 200
+    },
+    {
+      "action": "group-remove",
+      "status": 200
+    },
+    {
+      "action": "space-request",
+      "status": 404
+    },
+    {
+      "action": "space-activity",
+      "status": 404
+    },
+    {
+      "action": "space-invitation-accept",
+      "status": 403
+    },
+    {
+      "action": "space-policy-save",
+      "status": 200
+    },
+    {
+      "action": "space-invite-revoke",
+      "status": 200
+    },
+    {
+      "action": "group-archive",
+      "status": 200
+    },
+    {
+      "action": "delete",
+      "status": 200
+    },
+    {
+      "action": "delete",
+      "status": 200
+    }
+  ],
+  "cleanup": [
+    {
+      "action": "space-policy-save",
+      "status": 200
+    },
+    {
+      "action": "space-invite-revoke",
+      "status": 200
+    },
+    {
+      "action": "group-archive",
+      "status": 200
+    },
+    {
+      "action": "delete-synthetic-import",
+      "status": 200
+    },
+    {
+      "action": "delete-synthetic-import",
+      "status": 200
+    }
+  ],
+  "joinEnabledSharing": false,
+  "searchMatches": 2,
+  "publicRequest": {
+    "state": "shared",
+    "excerpts": 1,
+    "exactBody": true,
+    "metadataExposed": false,
+    "dateShared": true,
+    "ownerShared": true,
+    "privateLeaked": false
+  },
+  "privateRequest": {
+    "state": "no_context",
+    "excerpts": 0,
+    "privateLeaked": false
+  },
+  "audit": [
+    {
+      "state": "shared",
+      "checks": [
+        {
+          "reason": "above_threshold",
+          "probability": 0.9958211029544655,
+          "promptVersion": null
+        }
+      ]
+    },
+    {
+      "state": "no_context",
+      "checks": [
+        {
+          "reason": "below_threshold",
+          "probability": 0.0005519478458556663,
+          "promptVersion": null
+        }
+      ]
+    }
+  ],
+  "ownerSeesChecks": true,
+  "peerSeesChecks": false,
+  "sharedHistoryMatches": true,
+  "revokedRequestStatus": 404,
+  "revokedHistoryStatus": 404,
+  "oldInvitationStatus": 403,
+  "passed": true,
+  "finishedAt": 1793484589.490897
+}

@@ -9,8 +9,9 @@ The [production application](https://34.27.253.220/) includes context-sharing
 spaces, one-request native plugin/MCP setup, automatic private collection,
 natural-language invitations, timed rules and leave/archive controls.
 Native **0.4.33/runtime66** is published and active on the verified Mac. Server
-**20261031-classifier-reliability** is live, with all 160 files and all three
-services verified. [Current release evidence](docs/CLASSIFIER-RELIABILITY.md).
+**20261031-imported-excerpts** is live, with all 160 files and all three
+services verified. [Current release evidence](docs/IMPORTED-CONTEXT-EXCERPTS.md).
+[Paste-ready work-account Claude setup prompt](docs/WORK-ACCOUNT-CLAUDE-PROMPT.md).
 
 Start at the production application, choose **Continue with Google**, then
 connect your app from **My context**. Copy and send the prepared setup request

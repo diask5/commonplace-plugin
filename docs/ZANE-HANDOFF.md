@@ -28,8 +28,11 @@ are available. This is an early-use handoff with the limits below.
    content cannot be recalled.
 
 The classifier can still withhold permitted information. The first signed check
-after the classifier release did exactly that; no privacy failure was observed
-in that check. Do not promise that every ordinary question will produce an
+after the classifier release did exactly that. After the imported-excerpt
+correction, a fresh signed check shared the exact public answer, withheld private
+content, preserved both sides of history and passed revocation. Both runs used
+synthetic notes and the owner’s two selected accounts; neither is clean-user
+onboarding proof. Do not promise that every ordinary question will produce an
 answer. Explicit file uploads share the whole file and are separate from private
 library classification.
 

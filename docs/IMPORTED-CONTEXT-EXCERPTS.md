@@ -1,5 +1,15 @@
 # Imported conversation excerpts — 31 October 2026
 
+**Published and live.** On the first signed two-account check after deployment,
+the exact permitted launch body was shared at 0.9958211; the private budget
+candidate was found and withheld at 0.0005519. Source titles/message IDs were not
+exposed. Both accounts saw matching shared history; only the contributor saw
+classifier checks. Removal rejected new requests/history (404), and the old
+invitation was rejected (403). Sharing was paused, invitations revoked, the
+space archived and both synthetic imports deleted. These are two selected
+existing accounts with synthetic content; no recipient host model or independent
+human onboarding was tested. Earlier live and isolated failures remain retained.
+
 Patch 54 extends the native message-body boundary to imported ChatGPT
 conversations. It reconstructs the complete indexed conversation from stored
 message rows and compares it byte-for-byte with the pinned archive read before
@@ -31,8 +41,10 @@ synthetic, development-selected evidence, not an independent final holdout.
 Neither prompt is shipped; the already evaluated version 5 remains selected.
 
 The original live failure, rejected experiments and cleanup receipts are retained.
-The candidate is packaged for `20261031-imported-excerpts`; its deployment state
-and any later live acceptance are recorded in the
+Server **20261031-imported-excerpts is published and live**: all 160 files,
+service-account readability and three healthy services are verified. It includes
+the prior classifier scheduling and prompt-v5 update. The retained rollout and
+any later live acceptance are recorded in the
 [verification record](../implementation/imported-context-excerpts-verification.json).
 Do not equate this metadata/privacy correction with complete admission reliability
 or all-P0 readiness.
