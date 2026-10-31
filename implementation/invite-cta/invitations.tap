@@ -1,0 +1,23 @@
+▶ space invite joins a new person after sign-in without granting their personal context
+  ✔ only owner issues links; stable retries, expiry and revocation preserve membership (4.842667ms)
+  ✔ public preview survives Google sign-in and opens exactly the invited group (1573.486506ms)
+  ✔ removed members cannot use an old reusable link to undo removal (5.28959ms)
+  ✔ owner can create, copy and revoke actual links from Members (387.748953ms)
+  ✔ invalid links are unavailable; temporary failures have a retry (364.599453ms)
+✔ space invite joins a new person after sign-in without granting their personal context (3142.75014ms)
+▶ top-bar Invite works from any page with explicit account and space scope
+  ✔ visible from My context; opening never creates an invitation or opts into sharing (207.060963ms)
+  ✔ lost responses retry the same new space and link without duplicates (501.845496ms)
+  ✔ existing-space invitation uses only the explicitly selected owner space (174.684415ms)
+  ✔ loading failure offers a retry without creating anything (131.89821ms)
+  ✔ desktop and phone controls have no overflow or accessibility violations (4782.332067ms)
+  ✔ expired browser sign-in clears invitation state and hides the CTA (93.027057ms)
+✔ top-bar Invite works from any page with explicit account and space scope (7065.568933ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10946.645214
