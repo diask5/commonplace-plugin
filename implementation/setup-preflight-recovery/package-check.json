@@ -1,0 +1,13 @@
+{
+  "files": 160,
+  "bundleSha256": "b728e826f3af0753a488aa46be442a151a410ea2d6b5950e185143c3345022d7",
+  "changedFiles": [
+    "dist/standalone/account-runtime/context-assets/context-native-setup.mjs",
+    "dist/standalone/account-runtime/context-assets/context-setup-request.mjs",
+    "dist/standalone/account-runtime/context-product-ui.mjs"
+  ],
+  "allHashesVerified": true,
+  "changedModulesSyntax": "pass",
+  "baseline": "20261031-invite-cta",
+  "nativePackageChanged": false
+}

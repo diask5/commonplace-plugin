@@ -1,5 +1,16 @@
 # Meet Proxy Draft v3 compliance
 
+31 October setup recovery: patch 56 is published and live as server
+`20261031-setup-activation`. All 34 browser checks, 11 setup/protocol checks,
+56-patch replay, 160 deployed files/readability and three services pass. Setup now
+preflights the existing account and actual host CLI. The browser prepares a
+fresh-chat activation using the same unclaimed handoff instead of prescribing
+a terminal-only plugin reload in Conductor or Claude Desktop. Send and host
+approvals remain explicit; only native claims and collection receipts establish
+progress. Native 0.4.33/runtime66 is unchanged. This does not implement account
+migration or diagnose the separate work-machine companion failure. See
+[setup recovery](SETUP-PREFLIGHT-RECOVERY.md).
+
 31 October invitation shortcut: patch 55 is published and live as server
 `20261031-invite-cta`. A top-bar **Invite** button shows the sender’s email and
 creates a link for a new or explicitly selected owned space. Private sharing

@@ -1,0 +1,137 @@
+{
+  "date": "2026-10-31",
+  "state": "Published and live. All 160 files/service readability, three services and public TLS/setup/OAuth checks pass.",
+  "patch": 56,
+  "nativeVersionUnchanged": "0.4.33/runtime66",
+  "server": {
+    "baseline": "20261031-invite-cta",
+    "candidate": "20261031-setup-activation",
+    "published": true,
+    "deployed": true,
+    "files": 160,
+    "bundleSha256": "b728e826f3af0753a488aa46be442a151a410ea2d6b5950e185143c3345022d7",
+    "manifestSha256": "4af282abf315d35862ff04a5fdbec7bf6becacf20593627022f1c55c6a4781e8",
+    "helperSha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
+    "changedFiles": [
+      "dist/standalone/account-runtime/context-assets/context-native-setup.mjs",
+      "dist/standalone/account-runtime/context-assets/context-setup-request.mjs",
+      "dist/standalone/account-runtime/context-product-ui.mjs"
+    ],
+    "sourceCommit": "286a88672116b9ed44e5c33cd9e52b86daab6603",
+    "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261031-setup-activation",
+    "deployment": {
+      "state": "passed",
+      "release": "20261031-setup-activation",
+      "filesVerified": 160,
+      "serviceReadableFiles": 160,
+      "services": [
+        "active",
+        "active",
+        "active"
+      ],
+      "migrations": "unchanged; verified code-only activation",
+      "previous": "20261031-invite-cta",
+      "finishedAt": 1793487103.216642
+    }
+  },
+  "checks": {
+    "contracts": {
+      "pass": 11,
+      "fail": 0
+    },
+    "browser": {
+      "pass": 34,
+      "fail": 0
+    },
+    "replay": {
+      "patches": 56,
+      "changedFiles": 217,
+      "mismatches": [],
+      "matched": true
+    },
+    "package": {
+      "files": 160,
+      "bundleSha256": "b728e826f3af0753a488aa46be442a151a410ea2d6b5950e185143c3345022d7",
+      "changedFiles": [
+        "dist/standalone/account-runtime/context-assets/context-native-setup.mjs",
+        "dist/standalone/account-runtime/context-assets/context-setup-request.mjs",
+        "dist/standalone/account-runtime/context-product-ui.mjs"
+      ],
+      "allHashesVerified": true,
+      "changedModulesSyntax": "pass",
+      "baseline": "20261031-invite-cta",
+      "nativePackageChanged": false
+    },
+    "responsiveWidths": [
+      320,
+      390,
+      768,
+      1440,
+      1920
+    ],
+    "axeViolations": [],
+    "visualInspection": "Desktop and phone activation controls reviewed; primary copy and app link precede progress.",
+    "publicSmoke": "passed; seven live assets match source, fresh-chat action present and stale GUI reload guidance absent, desktop/phone TLS and OAuth checks passed"
+  },
+  "behavior": [
+    "Account/server preflight preserves any existing linked account",
+    "Verified host executable avoids obsolete PATH plugin commands",
+    "Browser-owned fresh-chat activation reuses exact unclaimed account/space handoff",
+    "Copied/opened prompts cannot establish setup readiness; signed claim and installation receipts required",
+    "Claimed, disconnected, expired or not-yet-confirmed activation requests cannot launch another chat",
+    "No GUI reload slash command or automatic Conductor session creation claim"
+  ],
+  "limits": [
+    "Fresh GUI-host/clean-machine model acceptance was not run; browser/native protocol tests use synthetic identities.",
+    "Work-machine companion failure from supplied transcript is not diagnosed by a different Mac.",
+    "No supported account migration is introduced; native 0.4.33 is unchanged."
+  ],
+  "testNotes": [
+    "Initial browser run: 32 pass, 2 reported failures (one subtest plus parent) because the new expiry test tried to click the hidden app-switch button after reset had already returned to the chooser. Corrected the test to use the displayed app card.",
+    "Host documentation distinguishes MCP status refresh from a new tool context. No actual host-denied action was retried or bypassed.",
+    "The retained first-attempt test log omits ANSI coloring and trailing whitespace only; the failure and stack location are unchanged.",
+    "The first rollout receipt read preceded completion. The final rollout receipt passed."
+  ],
+  "evidence": [
+    {
+      "path": "implementation/setup-preflight-recovery/browser-first-attempt.tap",
+      "sha256": "adda1c71d0b4402c8effb7a62c57f7a47b3b779cc4b7f6777a284596bf8d0d2e"
+    },
+    {
+      "path": "implementation/setup-preflight-recovery/browser.tap",
+      "sha256": "7431b6e537505e2b5f4983e2e03e2126eeef88b119e8e47b4d7ae2f8f6d91291"
+    },
+    {
+      "path": "implementation/setup-preflight-recovery/contracts.tap",
+      "sha256": "4e83af00935917381c569076e532feec8c290e40830bae95b261670d631117a7"
+    },
+    {
+      "path": "implementation/setup-preflight-recovery/deploy56.py",
+      "sha256": "58f8b3336be0ae4b33165ed9372e1df8a32167b4e6fbda24d7e8082458387097"
+    },
+    {
+      "path": "implementation/setup-preflight-recovery/deployment-live.json",
+      "sha256": "861755d4734cbca8493bbf1e03c3b71676a7f38ad6a9968b0a5005c4858f0c05"
+    },
+    {
+      "path": "implementation/setup-preflight-recovery/package-check.json",
+      "sha256": "abd13c98902bf7c9b2a54dd0d5b2fa63a503a65833b4043ae28d03c9d1d971db"
+    },
+    {
+      "path": "implementation/setup-preflight-recovery/public-smoke-live.json",
+      "sha256": "5e06ff17e1b5877aad16f839bbbfb0c4ec16103a3e48a79f9d4612b7a58681a1"
+    },
+    {
+      "path": "implementation/setup-preflight-recovery/public-smoke.mjs",
+      "sha256": "b2cf4c014ea8519f5c8946e5904513c07f9c952bf050b1dc5b9ffd3833d97b2e"
+    },
+    {
+      "path": "implementation/setup-preflight-recovery/replay.json",
+      "sha256": "e671d266b4b6dd585234aa935f42c05d4f6302509c2ed9b515f19a118d515eec"
+    },
+    {
+      "path": "implementation/setup-preflight-recovery/runtime-update-manifest.json",
+      "sha256": "4af282abf315d35862ff04a5fdbec7bf6becacf20593627022f1c55c6a4781e8"
+    }
+  ]
+}

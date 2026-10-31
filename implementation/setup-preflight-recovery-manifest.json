@@ -1,0 +1,96 @@
+{
+  "name": "Host-aware fresh-chat activation and account/installer preflight",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch",
+    "deployment-source-modes.patch",
+    "visible-transcript-envelopes.patch",
+    "native-message-excerpts.patch",
+    "p0-excerpts-candidate.patch",
+    "private-native-titles.patch",
+    "space-request-diagnostics.patch",
+    "bounded-classification.patch",
+    "question-discovery.patch",
+    "sharing-stress.patch",
+    "cross-host-context-sync.patch",
+    "bounded-sync-catchup.patch",
+    "classifier-reliability.patch",
+    "imported-context-excerpts.patch",
+    "invite-cta.patch"
+  ],
+  "patch": "setup-preflight-recovery.patch",
+  "sha256": "7e5e8900d67b4bd4a6701623f1301d03d0d80a79d86c0d482a4d76453e452987",
+  "state": "Published and live as 20261031-setup-activation; native package unchanged.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-native-setup.mjs",
+      "beforeSha256": "4d0fdb2041b4741f0ecc8c560c8cadb77e04436327b9be7f7d10c4723bb7bf61",
+      "sha256": "ca3bc7bd45c1e6301e66bef072333aeb767040757d546e3be63628fea623bce1"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-setup-request.mjs",
+      "beforeSha256": "ea447e932d0357fe9bf78c76a11eb765acc8e3be3af848aea83349b191cdabce",
+      "sha256": "ff13aa252f0a967d918b5b3281a8b2d3b84145d68f57f105a884707bffcd1825"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-ui.mjs",
+      "beforeSha256": "1b4a5f9d6c0e49f1ec38b1cb8d42799711658ba49567149ddea7272afb5acae3",
+      "sha256": "34193160385db516299d9b2a89e69b7fdf60ea5499c8f08fa7b0d4daf89496ca"
+    },
+    {
+      "path": "tests/context-setup-browser.test.mjs",
+      "beforeSha256": "de715bfab13a046570b4f7ad91d068893e57a5b7d79a230e0cc880558ed1a095",
+      "sha256": "ce4a0a1f3eb66d0f6c7ad6f813395ece82067a01cc72637c9d6ffd59b1553dbd"
+    },
+    {
+      "path": "tests/context-setup-request.test.mjs",
+      "beforeSha256": "6259d1f5baf85385b0c88f2b12e9794f1fb532cb733a4da198d4d5bc0d78f694",
+      "sha256": "f40ef361d9087ad92d06ec5260d4adcf5196cd2c601996e54da05f082580596c"
+    },
+    {
+      "path": "tests/seamless-setup-browser.test.mjs",
+      "beforeSha256": "4528ec11f1f2ce18092924ee683fb82b9a91b7eb1aa0e77f4f9ca3f6bca1bb56",
+      "sha256": "12a7e0e6c2e86c92413b8a1e0078e9829b48f271f98443b26a64ac70fec519a0"
+    }
+  ]
+}

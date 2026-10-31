@@ -1,0 +1,276 @@
+diff --git a/apps/commonplace-account/server/context-assets/context-native-setup.mjs b/apps/commonplace-account/server/context-assets/context-native-setup.mjs
+index a5a03d7..eb9a59f 100644
+--- a/apps/commonplace-account/server/context-assets/context-native-setup.mjs
++++ b/apps/commonplace-account/server/context-assets/context-native-setup.mjs
+@@ -1,4 +1,4 @@
+-import {setupApps as apps,contextSetupRequest,contextSetupLink} from './context-setup-request.mjs';
++import {setupApps as apps,contextSetupRequest,contextActivationRequest,contextSetupLink} from './context-setup-request.mjs';
+ const el=id=>document.getElementById(id),count=(n,noun)=>n+' '+noun+(n===1?'':'s');
+ const when=t=>{const d=new Date(t);return Date.now()-t<864e5?d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):d.toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});};
+ const newToken=()=> 'commonplace-context:'+btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(32)))).replaceAll('+','-').replaceAll('/','_').replace(/=+$/,'');
+@@ -18,24 +18,26 @@ export function nativeSetup({call,getAccount,onProgress=()=>{}}){
+  const key=name=>'meetproxy-context-setup:'+getAccount()?.id+':'+(destination?.id||'private')+':'+name;
+  const persist=(name,a)=>{try{sessionStorage.setItem(key(name),JSON.stringify(a));}catch{}};
+  const current=()=>attempts.get(app);
+- const prompt=name=>contextSetupRequest({app:name,origin:location.origin,account:getAccount(),space:destination,token:attempts.get(name)?.token});
+- function links(){for(const link of document.querySelectorAll('[data-native-app]')){const a=attempts.get(link.dataset.nativeApp);if(a?.prepared&&a.expiresAt>Date.now()){link.href=contextSetupLink(link.dataset.nativeApp,prompt(link.dataset.nativeApp));link.removeAttribute('aria-disabled');}else{link.removeAttribute('href');link.setAttribute('aria-disabled','true');}}
+-  const a=current();el('connect-prompt').value=a?.prepared?prompt(app):'';el('setup-copy-app').value=app;el('copy-setup').disabled=!a?.prepared||a.expiresAt<=Date.now();
+-  el('open-app').textContent='Reopen '+apps[app];if(a?.prepared&&a.expiresAt>Date.now())el('open-app').href=contextSetupLink(app,prompt(app));else el('open-app').removeAttribute('href');
++ const usable=a=>a?.prepared&&a.expiresAt>Date.now()&&(!a.activation||a.activatable);
++ const prompt=name=>(attempts.get(name)?.activation?contextActivationRequest:contextSetupRequest)({app:name,origin:location.origin,account:getAccount(),space:destination,token:attempts.get(name)?.token});
++ function links(){for(const link of document.querySelectorAll('[data-native-app]')){const a=attempts.get(link.dataset.nativeApp);if(usable(a)){link.href=contextSetupLink(link.dataset.nativeApp,prompt(link.dataset.nativeApp));link.removeAttribute('aria-disabled');}else{link.removeAttribute('href');link.setAttribute('aria-disabled','true');}}
++  const a=current();el('connect-prompt').value=a?.prepared?prompt(app):'';el('setup-copy-app').value=app;el('copy-setup').disabled=!usable(a);
++  el('open-app').textContent=a?.activation?(app==='claude'?'Open new Code chat':app==='codex'?'Open new Codex chat':'Open Conductor'):'Reopen '+apps[app];if(usable(a))el('open-app').href=contextSetupLink(app,prompt(app));else el('open-app').removeAttribute('href');
+  }
+  function step(name,state,title,detail){const row=el('setup-step-'+name);row.dataset.state=state;row.querySelector('strong').textContent=title;row.querySelector('small').textContent=detail;row.querySelector('.setup-step-icon').textContent=state==='done'?'✓':state==='attention'?'!':'';row.setAttribute('aria-label',title+': '+detail);}
+  function render(s){
+-  const a=current(),started=!!a?.started,linked=s?.linked,collector=s?.collector,receipts=s?.receipts,ready=linked&&s.spaceLinked&&s.syncEnabled&&s.searchableConversations>0;
++  const a=current(),started=!!a?.started,activation=!!a?.activation,linked=s?.linked,collector=s?.collector,receipts=s?.receipts,ready=linked&&s.spaceLinked&&s.syncEnabled&&s.searchableConversations>0;
+   const stage=choosing||!started&&!linked?'choose':ready?'ready':linked?'sync':'send';el('connect-dialog').dataset.stage=stage;
+   for(const [name,index] of [['choose',0],['send',1],['ready',2]]){const row=el('setup-roadmap-'+name),current=stage==='choose'?0:stage==='send'?1:2;row.dataset.state=index<current||ready?'done':index===current?'active':'waiting';if(index===current&&!ready)row.setAttribute('aria-current','step');else row.removeAttribute('aria-current');row.querySelector('span').textContent=row.dataset.state==='done'?'✓':String(index+1);}
+   el('setup-app-options').hidden=!choosing&&(started||!!linked);el('setup-progress').hidden=choosing||!started&&!linked&&!a?.error;el('setup-another').hidden=choosing||!started&&!linked;
+-  const showCopy=!choosing&&started&&!linked,copyHost=el(showCopy?'setup-send':'setup-manual-copy'),copyButton=el('copy-setup');el('setup-send').hidden=!showCopy;if(copyButton.parentElement!==copyHost)copyHost.insertBefore(copyButton,copyHost.querySelector('.setup-send-hint'));copyButton.classList.toggle('primary',showCopy);copyButton.classList.toggle('secondary',!showCopy);el('setup-send-help').textContent='Paste into a chat in '+(app==='claude'?'Claude Desktop’s Code tab or a Claude Code terminal session':apps[app])+' and send.';if(linked)el('copy-status').textContent='';
++  const showCopy=!choosing&&started&&!linked,copyHost=el(showCopy?'setup-send':'setup-manual-copy'),copyButton=el('copy-setup');el('setup-send').hidden=!showCopy;if(copyButton.parentElement!==copyHost)copyHost.insertBefore(copyButton,copyHost.querySelector('.setup-send-hint'));copyButton.classList.toggle('primary',showCopy);copyButton.classList.toggle('secondary',!showCopy);copyButton.disabled=!usable(a)||!!linked||!!s?.disconnected;copyButton.textContent=activation?'Copy activation prompt':'Copy setup prompt';el('setup-send-help').textContent=activation?(app==='conductor'?'Start a new chat in the same Conductor workspace. Paste this activation prompt and send.':app==='claude'?'Open a new Code chat in Claude Desktop. The activation prompt carries your sign-in forward; send it there.':'Open a new Codex chat. Paste this activation prompt and send.'):'Paste into a chat in '+(app==='claude'?'Claude Desktop’s Code tab or a Claude Code terminal session':apps[app])+' and send.';el('setup-activate').hidden=!showCopy||!s||s.expired||s.disconnected||!!a?.error;el('setup-activate').textContent=activation?'Back to install prompt':'Plugin installed? Finish in a new chat';document.querySelector('.setup-send-hint>span:last-child').textContent=activation?'Your existing chat stays as it is. Send the activation prompt in the new chat and approve any required host action.':'Send the prompt and approve installation if asked. If your chat cannot see the new tools, finish in a new chat below.';if(linked)el('copy-status').textContent='';
++  const openHost=el(activation&&showCopy?'setup-send':'setup-switch'),openLink=el('open-app');if(openLink.parentElement!==openHost)openHost.insertBefore(openLink,openHost.querySelector('.setup-send-hint'));
+   const syncState=linked?contextSyncPresentation(s):null;
+-  el('connect-description').textContent=linked?syncState.description:started?'Send the prepared request in '+apps[app]+'. We’ll confirm the connection here.':'Choose an app to collect supported work chats or read the context already in your library.';
+-  el('setup-live-label').textContent=linked?syncState.label:started?'Waiting for '+apps[app]:'Ready when you are';
++  el('connect-description').textContent=linked?syncState.description:started?(activation?'Your sign-in and setup request are ready for the new chat. We’ll confirm the connection here.':'Send the prepared request in '+apps[app]+'. We’ll confirm the connection here.'):'Choose an app to collect supported work chats or read the context already in your library.';
++  el('setup-live-label').textContent=linked?syncState.label:started?(activation?'Waiting for your new chat':'Waiting for '+apps[app]):'Ready when you are';
+   el('setup-live-art').dataset.state=ready?'ready':started||linked?'working':'waiting';
+   const linkedDetail=s?.spaceLinked?'Meet Proxy '+s?.version+' · '+s?.chat?.label+'. Your Google sign-in carried over.':'Your space receives in a different chat. Start fresh setup to reconnect.';
+-  step('plugin',linked?(s.spaceLinked?'done':'attention'):started?'active':'waiting',linked?'Plugin & MCP connected':'Set up plugin & MCP',linked?linkedDetail:started?(Date.now()-a.startedAt>45000?'Still waiting for the plugin. Check your app for an approval, reload or an update requirement.':'Waiting for the plugin to register. Opening or copying alone doesn’t connect it.'):'Open your app to start.');
++  step('plugin',linked?(s.spaceLinked?'done':'attention'):started?'active':'waiting',linked?'Plugin & MCP connected':activation?'Connect your new chat':'Set up plugin & MCP',linked?linkedDetail:started?(activation?'Waiting for the new chat to register. Send its activation prompt and approve any required host action.':Date.now()-a.startedAt>45000?'Still waiting for the plugin. Approve any pending host request. If installation finished, use “Plugin installed? Finish in a new chat” above.':'Waiting for the plugin to register. Opening or copying alone doesn’t connect it.'):'Open your app to start.');
+   let detail='Supported chats collect automatically. Excluded sources stay excluded.',state='waiting',title='Sync your context';
+   if(linked){state='active';title='Syncing your context';
+    if(!s.syncEnabled||collector?.state==='paused'){state='attention';title='Collection is paused';detail='Collection was paused after setup. Start fresh setup to resume it.';}
+@@ -52,18 +54,18 @@ export function nativeSetup({call,getAccount,onProgress=()=>{}}){
+   el('setup-collection').textContent=[receipts?.lastReceivedAt?'Last received '+when(receipts.lastReceivedAt):'',collector?.seenAt?'This computer checked in '+when(collector.seenAt):''].filter(Boolean).join(' · ');
+   el('setup-finish').hidden=!linked;el('setup-finish').textContent=ready?'Back to '+(destination?'space':'my context'):'Continue while context syncs';
+   el('setup-restart').hidden=!a?.error&&!s?.expired&&!s?.disconnected&&(!linked||s.syncEnabled&&s.spaceLinked);
+-  el('open-app').hidden=!started||!!linked;
++  el('open-app').hidden=!started||!!linked||!!s?.disconnected||!!s?.expired;
+   if(s?.expired&&!linked){el('setup-live-label').textContent='Setup link expired';el('setup-check-status').textContent='Start a fresh request. Your Google sign-in is saved.';el('open-app').removeAttribute('href');el('copy-setup').disabled=true;}
+   else if(s?.disconnected)el('setup-check-status').textContent='This installation disconnected. Start fresh setup to reconnect.';
+   if(ready){const stamp=String(receipts.lastReceivedAt);if(stamp!==lastProgress){lastProgress=stamp;onProgress();}}
+  }
+  async function check(){const a=current();if(checking||!active||!a?.prepared)return;checking=true;const version=generation,chosen=app;el('setup-check').disabled=true;
+-  try{if(!navigator.onLine)throw Error('You’re offline. Setup resumes when you reconnect.');const s=await call('context-setup-status',{token:a.token});if(version!==generation||chosen!==app||attempts.get(chosen)!==a||!active)return;if(s.account.id!==getAccount()?.id)throw Error('Your account changed. Reopen setup.');el('setup-check-status').textContent='';a.error=s.expired&&!s.linked;a.expiresAt=s.expiresAt;links();latest=s;render(s);}
+-  catch(e){if(version===generation&&chosen===app&&attempts.get(chosen)===a&&!e.stale){a.error=true;render(latest);if([403,404].includes(e.status)){a.prepared=false;a.error=true;links();latest=null;render(null);onProgress();}el('setup-check-status').textContent=e.message||'Connection check interrupted. Retrying automatically.';el('setup-live-label').textContent='Reconnecting…';}}
++  try{if(!navigator.onLine)throw Error('You’re offline. Setup resumes when you reconnect.');const s=await call('context-setup-status',{token:a.token});if(version!==generation||chosen!==app||attempts.get(chosen)!==a||!active)return;if(s.account.id!==getAccount()?.id)throw Error('Your account changed. Reopen setup.');el('setup-check-status').textContent='';a.error=s.expired&&!s.linked;a.expiresAt=s.expiresAt;a.activatable=!s.linked&&!s.disconnected&&!s.expired;links();latest=s;render(s);}
++  catch(e){if(version===generation&&chosen===app&&attempts.get(chosen)===a&&!e.stale){a.error=true;a.activatable=false;links();render(latest);if([403,404].includes(e.status)){a.prepared=false;a.error=true;links();latest=null;render(null);onProgress();}el('setup-check-status').textContent=e.message||'Connection check interrupted. Retrying automatically.';el('setup-live-label').textContent='Reconnecting…';}}
+   finally{if(version===generation&&chosen===app&&attempts.get(chosen)===a){checking=false;el('setup-check').disabled=false;}}
+  }
+  async function prepare(name,fresh=false){const version=generation;let a;try{a=!fresh&&JSON.parse(sessionStorage.getItem(key(name))||'null');}catch{}
+-  if(!a||a.expiresAt<=Date.now())a={token:newToken(),expiresAt:0,started:false,startedAt:0};a={...a,prepared:false,error:false};attempts.set(name,a);links();
++  if(!a||a.expiresAt<=Date.now())a={token:newToken(),expiresAt:0,started:false,startedAt:0};a={...a,prepared:false,error:false,activatable:false};attempts.set(name,a);links();
+   try{const s=await call('context-setup-begin',{token:a.token,app:name,groupId:destination?.type==='group'?destination.id:null});if(version!==generation||attempts.get(name)!==a||!active)return;a.expiresAt=s.expiresAt;a.prepared=true;persist(name,a);links();if([...attempts.values()].every(v=>v.prepared))el('setup-start-status').textContent='';if(name===app){el('setup-check-status').textContent='';render(latest);await check();}}
+   catch(e){if(version===generation&&attempts.get(name)===a&&!e.stale){a.error=true;a.prepared=false;links();if(name===app){render(null);el('setup-check-status').textContent=e.message;}el('setup-start-status').textContent='Couldn’t prepare '+apps[name]+'. Retry when your connection returns.';el('setup-retry-apps').hidden=false;}}
+  }
+@@ -71,12 +73,13 @@ export function nativeSetup({call,getAccount,onProgress=()=>{}}){
+  function open(choice='claude',space=null){active=true;destination=space;trigger=document.activeElement;app=choice;try{let last=0;for(const name of Object.keys(apps)){const a=JSON.parse(sessionStorage.getItem(key(name))||'null');if(a?.started&&a.expiresAt>Date.now()&&a.startedAt>last){last=a.startedAt;app=name;}}}catch{}
+   el('connect-title').textContent=space?'Connect to '+space.label:'Bring your context along.';el('setup-email').textContent=getAccount()?.email||getAccount()?.name;el('setup-origin').textContent=location.origin;el('copy-status').textContent='';el('setup-check-status').textContent='';el('setup-details').open=false;if(!el('connect-dialog').open)el('connect-dialog').showModal();el('connect-dialog').scrollTop=0;clearInterval(timer);load();timer=setInterval(()=>{if(document.visibilityState==='visible')check();},2500);
+  }
+- function begin(name){const a=attempts.get(name);if(!a?.prepared||a.expiresAt<=Date.now())return false;const changed=app!==name;app=name;choosing=false;if(changed){checking=false;latest=null;lastProgress='';}a.started=true;a.startedAt=Date.now();persist(name,a);links();render(latest);el('copy-status').textContent='';void check();return true;}
+- function copy(fallback=false){const version=generation,name=app,text=prompt(app);return (navigator.clipboard?.writeText?navigator.clipboard.writeText(text):Promise.reject(Error('Clipboard unavailable'))).then(()=>{if(active&&generation===version&&app===name)el('copy-status').textContent='Prompt copied. Paste it into '+apps[app]+' and send.';},()=>{if(active&&generation===version&&app===name){el('copy-status').textContent='If the request is missing, copy it below and send it in your app.';if(fallback){el('setup-details').open=true;el('connect-prompt').focus();el('connect-prompt').select();}}});}
++ function begin(name){const a=attempts.get(name);if(!usable(a))return false;const changed=app!==name;app=name;choosing=false;if(changed){checking=false;latest=null;lastProgress='';}a.started=true;a.startedAt=Date.now();persist(name,a);links();render(latest);el('copy-status').textContent='';void check();return true;}
++ function copy(fallback=false){const version=generation,name=app,a=current(),text=prompt(app);if(!active||!usable(a)||latest?.linked||latest?.disconnected)return Promise.resolve();return (navigator.clipboard?.writeText?navigator.clipboard.writeText(text):Promise.reject(Error('Clipboard unavailable'))).then(()=>{if(active&&generation===version&&app===name)el('copy-status').textContent=a.activation?'Activation prompt copied. Paste it into a new '+apps[app]+' chat and send.':'Prompt copied. Paste it into '+apps[app]+' and send.';},()=>{if(active&&generation===version&&app===name){el('copy-status').textContent='If the request is missing, copy it below and send it in your app.';if(fallback){el('setup-details').open=true;el('connect-prompt').focus();el('connect-prompt').select();}}});}
+  for(const link of document.querySelectorAll('[data-native-app]'))link.onclick=e=>{if(!begin(link.dataset.nativeApp)){e.preventDefault();return;}void copy();};
+  el('open-app').onclick=e=>{if(!el('open-app').hasAttribute('href')||!begin(app)){e.preventDefault();return;}void copy();};
+  el('copy-setup').onclick=()=>{if(begin(el('setup-copy-app').value))void copy(true);};
+  el('setup-copy-app').onchange=()=>{app=el('setup-copy-app').value;checking=false;latest=null;links();render(null);void check();};
++ el('setup-activate').onclick=()=>{const a=current();if(!active||!a?.prepared||a.error||a.expiresAt<=Date.now()||!latest||latest.linked||latest.disconnected||latest.expired)return;a.activation=!a.activation;persist(app,a);links();render(latest);el('copy-status').textContent='';el('copy-setup').focus();};
+  el('setup-another').onclick=()=>{choosing=true;latest=null;render(null);};
+  el('setup-check').onclick=check;el('setup-restart').onclick=()=>{choosing=false;latest=null;checking=false;void prepare(app,true);};el('setup-retry-apps').onclick=load;el('setup-finish').onclick=()=>el('connect-dialog').close();
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check();});addEventListener('online',()=>{if(active&&current()?.error)load();else check();});
+diff --git a/apps/commonplace-account/server/context-assets/context-setup-request.mjs b/apps/commonplace-account/server/context-assets/context-setup-request.mjs
+index 7f2e198..a4ae549 100644
+--- a/apps/commonplace-account/server/context-assets/context-setup-request.mjs
++++ b/apps/commonplace-account/server/context-assets/context-setup-request.mjs
+@@ -1,13 +1,24 @@
+ export const setupApps={claude:'Claude Desktop',codex:'Codex',conductor:'Conductor'};
+-const claudeInstall='For Claude Code, inspect the installed plugins first. Reuse a working meet-proxy/commonplace alias. If installation is needed, use the supported plugin manager: claude plugin marketplace add diask5/commonplace-plugin, then claude plugin install meet-proxy@commonplace. Update the existing alias when present; keep only one enabled. The plugin includes its MCP server: do not add a second MCP entry. Reload using host controls if required.';
++const claudeInstall='For Claude Code, resolve the installer before invoking plugin commands. Prefer this chat’s executable from CLAUDE_CODE_EXECPATH when present and executable; quote its full path, including spaces. Otherwise resolve the host’s Claude executable. Check --version and top-level --help first: it must list the plugin command. An older PATH executable may treat plugin arguments as a model prompt. Never run plugin subcommands through that executable or change models to make installation work. Use the verified executable for every plugin command: plugin list, plugin marketplace list, then plugin marketplace update commonplace if already registered (otherwise plugin marketplace add diask5/commonplace-plugin). Reuse a working meet-proxy/commonplace alias; update it with plugin update. If absent, run plugin install meet-proxy@commonplace. Keep only one alias enabled. The plugin includes its MCP server: do not add a second MCP entry. Use the supported host installer when no compatible executable is available; do not launch a model to install a plugin.';
+ const codexInstall='For Codex, reuse a working Meet Proxy MCP installation. Otherwise get the latest published Meet Proxy ZIP from https://github.com/diask5/commonplace-plugin/releases, verify its published SHA-256, extract to a permanent folder and run its server/configure-codex.mjs with the bundled OS runtime from this actual chat shell. The helper configures MCP and preserves existing settings. Never invent native identity variables.';
+ export function contextSetupRequest({app,origin,account,space,token}){
+  if(!Object.hasOwn(setupApps,app)||!account||!/^commonplace-context:[A-Za-z0-9_-]{43}$/.test(token||''))return '';
+  const install=app==='claude'?claudeInstall:app==='codex'?codexInstall:'Use the installer for this Conductor chat’s actual provider. '+claudeInstall+' '+codexInstall;
+  return 'Set up Meet Proxy in THIS '+(app==='claude'?'Claude Code':setupApps[app])+' chat at '+origin+'. Do the setup now, rather than giving me a list of steps. I already signed in as '+(account.email||account.name)+'.\n\n'
+  +'I authorize routine plugin installation/configuration, automatic private collection of supported visible work chats'+(space?.type==='group'?', and using THIS chat for space '+space.id:'')+'. Existing exclusions stay in force.\n\n'
+- +'First use setup_status if loaded. If finish_context_setup is already available and the server/account match, skip installation. '+install+'\n\n'
+- +'Verify the exact server origin before continuing; preserve and report any existing server or account mismatch. Call finish_context_setup with token '+token+'. This private 30-minute handoff carries my verified sign-in; do not call connect_account or request a second Google login. It starts collection automatically. Check context_sync_status; the browser confirms progress.\n\n'
+- +'Respect host approvals. If blocked, stop that action and explain the exact approval/reload needed; never change permissions or substitute shell/HTTP for a denied tool. If the latest release lacks finish_context_setup, report the missing release capability. Keep this chat and its real identity. Do not enable cloud inference or share my private archive with other members.';
++ +'1. Check the account before installing or claiming this request. First use setup_status if loaded. Otherwise, if an existing Meet Proxy profile is present, inspect only session.origin and session.humanAccount.email from account-client.json in the configured COMMONPLACE_DATA_DIR or ~/.commonplace. Do not print the file, tokens, credentials or unrelated settings. An absent profile is a fresh setup, not a mismatch. Compare any existing linked account and configured origin with the exact server and signed-in email above. If an existing account or origin differs, stop setup before installation or finish_context_setup and clearly name the mismatch. Preserve the existing account. Browser sign-in does not switch an installed account. Offer signing in here with that existing account, or using a separate computer/OS user profile for the work account. This setup flow does not support replacing a linked account: do not invent an account-switch tool, delete credentials, or call internal disconnect/revoke routes. Do not read another account’s synced chats to demonstrate progress.\n\n'
++ +'2. If finish_context_setup is already available and the server/account match, skip installation. '+install+'\n\n'
++ +'3. If installation succeeds but finish_context_setup is not available in this session, return to the signed-in browser setup and select “Plugin installed? Finish in a new chat”. That action prepares an activation prompt carrying this same account, space and unclaimed handoff into the new chat the user chooses. Claude Desktop opens a new Code composer; Conductor needs a new chat in the same workspace. The user still sends the prompt. Do not prescribe /reload-plugins in Conductor or Claude Desktop, claim MCP status refresh mounts tools into an existing conversation, or keep probing missing tools. A terminal-only reload command is not a GUI setup step. Do not silently open or move conversations. Do not create memory files or save the token elsewhere.\n\n'
++ +'4. Call finish_context_setup with token '+token+'. This private 30-minute handoff carries my verified sign-in; do not call connect_account or request a second Google login. It starts collection automatically. Only after a successful matching-account claim, check context_sync_status and verify this installation’s collection receipts and a fresh successful source read. Cached conversation counts are not proof that this setup or collector works. The browser confirms progress. If the token expired, copy a fresh request from the still-signed-in setup page; no second Google login is needed.\n\n'
++ +'Respect host approvals. If blocked, stop that action and explain the exact required host action; never change permissions or substitute shell/HTTP for a denied tool. Opening a new chat does not clear a host denial. Report an unavailable companion or old background runtime accurately; do not promise that another reload will fix it, force-kill it, or inspect unrelated secrets. Keep this chat and its real identity. Do not enable cloud inference or share my private archive with other members. Finish with a short result and only the next action actually required.';
+ }
+ export function contextSetupLink(app,prompt){return ({claude:'claude://code/new?q=',codex:'codex://threads/new?prompt=',conductor:'conductor://prompt='})[app]+encodeURIComponent(prompt);}
++
++// This is a continuation of the same unclaimed browser request, not a new grant.
++export function contextActivationRequest({app,origin,account,space,token}){
++ if(!Object.hasOwn(setupApps,app)||!account||!/^commonplace-context:[A-Za-z0-9_-]{43}$/.test(token||''))return '';
++ return 'Finish Meet Proxy setup in THIS new '+(app==='claude'?'Claude Desktop Code':setupApps[app])+' chat at '+origin+'. I signed in as '+(account.email||account.name)+'. I selected this new chat to finish the installation I requested'+(space?.type==='group'?' for space '+space.id:'')+'.\n\n'
++ +'Use the installed Meet Proxy tools. Check setup_status first. If the configured account or server differs, stop and name the mismatch; preserve the existing connection. Do not disconnect, replace credentials, or read another account’s context. If the tools are still absent, report that this new session has not loaded the installation and the supported host setup action needed. Do not repeat installation, invent a reload command, or use shell/HTTP instead of missing or denied tools.\n\n'
++ +'With the correct account and server, call finish_context_setup with token '+token+'. This carries my verified sign-in and authorizes automatic private collection of supported visible work chats; existing exclusions stay in force. Do not call connect_account or ask for another Google login. After a successful claim, check context_sync_status and this installation’s collection receipts, then verify a fresh successful source read. Cached counts or an opened app do not prove completion.\n\n'
++ +'If expired or already claimed by another chat, stop and use the browser’s setup status; never move that chat silently. Respect host approvals; opening a new chat does not clear a denial. Do not store the token in files or memory. Do not enable cloud inference or share my private archive with others. Give a short result; the browser confirms actual progress.';
++}
+diff --git a/apps/commonplace-account/server/context-product-ui.mjs b/apps/commonplace-account/server/context-product-ui.mjs
+index 1d6b32a..99724be 100644
+--- a/apps/commonplace-account/server/context-product-ui.mjs
++++ b/apps/commonplace-account/server/context-product-ui.mjs
+@@ -159,17 +159,18 @@ export function contextProductHtml(nonce){return `<!doctype html>
+   <div class="dialog-heading"><h2 id="connect-title">Use your context in Claude</h2><button id="close-connect" class="icon-button" aria-label="Close setup">${icon('close')}</button></div>
+   <p id="connect-description">One request installs the plugin, connects MCP, and starts collecting your context.</p>
+   <div class="setup-identity"><span id="setup-email"></span><code id="setup-origin"></code></div>
++  <p id="setup-account-guidance">Use this same account in your desktop app. Signing in here does not switch an account already connected on your computer.</p>
+   <div id="setup-app-options"><div class="native-apps" aria-label="Choose your app"><a data-native-app="claude" aria-disabled="true">${icon('claude')}<span><strong>Claude Code</strong><small>Desktop Code or terminal · collect and read context</small></span>${icon('arrow')}</a><button type="button" data-personal-assistant="claude-chat">${icon('claude')}<span><strong>Claude chat</strong><small>Read your synced context in regular chat</small></span>${icon('arrow')}</button><button type="button" data-personal-assistant="chatgpt">${icon('context')}<span><strong>ChatGPT</strong><small>Read your synced context in regular chat</small></span>${icon('arrow')}</button><a data-native-app="codex" aria-disabled="true">${icon('code')}<span><strong>Codex</strong><small>Collect and read context</small></span>${icon('arrow')}</a><a data-native-app="conductor" aria-disabled="true">${icon('context')}<span><strong>Conductor</strong><small>Collect and read context</small></span>${icon('arrow')}</a></div><p id="setup-start-status" role="status"></p><button id="setup-retry-apps" class="secondary" hidden>Retry setup</button></div>
+   <p class="setup-auto-note">Supported work chats sync privately through Claude Code, Codex or Conductor. Regular chat apps can read the same library; connecting them does not upload their chat history.</p>
+-  <section id="setup-send" aria-label="Send setup prompt" hidden><span class="setup-action-label">YOUR NEXT STEP</span><p id="setup-send-help"></p><div class="setup-send-hint"><span aria-hidden="true">${icon('arrow')}</span><span>Send it in your app, then approve the install or reload if prompted.</span></div></section><p id="copy-status" role="status" aria-live="polite"></p>
++  <section id="setup-send" aria-label="Send setup prompt" hidden><span class="setup-action-label">YOUR NEXT STEP</span><p id="setup-send-help"></p><div class="setup-send-hint"><span aria-hidden="true">${icon('arrow')}</span><span>Send the prompt and approve installation if asked. If your chat cannot see the new tools, finish in a new chat below.</span></div><button id="setup-activate" class="text-button" hidden>Plugin installed? Finish in a new chat</button></section><p id="copy-status" role="status" aria-live="polite"></p>
+   <section id="setup-progress" class="native-setup-progress" aria-label="Live connection progress" hidden>
+     <div class="setup-live-heading"><svg id="setup-live-art" data-state="waiting" viewBox="0 0 132 44" aria-hidden="true"><path class="setup-flow-path" d="M26 22H106"/><rect x="4" y="6" width="32" height="32" rx="10"/><path d="m16 17-5 5 5 5m8-10 5 5-5 5"/><circle class="setup-flow-dot" cx="56" cy="22" r="3"/><circle class="setup-flow-dot second" cx="76" cy="22" r="3"/><rect x="96" y="6" width="32" height="32" rx="10"/><path d="M106 15h12v14h-12zM109 20h6m-6 4h6"/></svg><span id="setup-live-label" role="status">Ready when you are</span></div>
+     <ol class="setup-steps"><li id="setup-step-plugin" data-state="waiting"><span class="setup-step-icon" aria-hidden="true"></span><span><strong>Set up plugin &amp; MCP</strong><small></small></span></li><li id="setup-step-collection" data-state="waiting"><span class="setup-step-icon" aria-hidden="true"></span><span><strong>Bring your context in</strong><small></small></span></li><li id="setup-step-ready" data-state="waiting"><span class="setup-step-icon" aria-hidden="true"></span><span><strong>Ready</strong><small></small></span></li></ol>
+     <p id="setup-collection" class="setup-received"></p><p id="setup-check-status" role="status"></p><div class="native-setup-actions"><button id="setup-check" class="text-button">Check again</button><button id="setup-restart" class="secondary" hidden>Start fresh setup</button><button id="setup-finish" class="primary" hidden>Continue</button></div>
+   </section>
+-  <div class="setup-switch"><a id="open-app" class="text-button" hidden>Reopen app</a><button id="setup-another" class="text-button" hidden>Use another app</button></div>
++  <div id="setup-switch" class="setup-switch"><a id="open-app" class="text-button" hidden>Reopen app</a><button id="setup-another" class="text-button" hidden>Use another app</button></div>
+   <details class="native-setup-details"><summary>Use another MCP-compatible assistant</summary><p>Connect your personal assistant to retrieve authorized context using your existing account.</p><button class="secondary" data-personal-assistant>Set up a compatible assistant</button></details>
+-  <details id="setup-details" class="native-setup-details"><summary>Use an existing chat or troubleshoot</summary><p>Your app may ask you to approve installation or reload the plugin. Finish those steps there; this page keeps checking automatically.</p><label for="setup-copy-app">Copy a request for</label><select id="setup-copy-app"><option value="claude">Claude Code · Desktop or terminal</option><option value="codex">Codex</option><option value="conductor">Conductor</option></select><div id="setup-manual-copy"><button id="copy-setup" class="secondary" disabled>Copy setup prompt</button></div><label class="sr-only" for="connect-prompt">Private setup request</label><textarea id="connect-prompt" readonly rows="4" spellcheck="false"></textarea><p>Automatic collection includes supported visible Claude Code, Codex and Conductor histories. Existing exclusions remain. Assistants retrieve your context through MCP by default; a local folder is optional. Web-only chats, arbitrary files and attachments need a supported import or connector.</p><p>App not installed? <a href="https://claude.com/download" target="_blank" rel="noopener noreferrer">Get Claude Desktop</a> · <a href="https://developers.openai.com/codex/app/" target="_blank" rel="noopener noreferrer">Get Codex</a> · <a href="https://conductor.build" target="_blank" rel="noopener noreferrer">Get Conductor</a></p></details>
++  <details id="setup-details" class="native-setup-details"><summary>Use an existing chat or troubleshoot</summary><p>Newly installed tools may need a new chat. Choose “Plugin installed? Finish in a new chat” above to carry this request forward without signing in again. In Conductor, start the new chat in the same workspace; refreshing MCP status alone does not add tools to an existing chat. In Claude Desktop, use a new Code chat. A host permission denial still needs approval in that host. This page keeps checking automatically.</p><p>Different account on your computer? Keep it intact. Sign in here with that account, or use a separate computer or OS user profile for your work account. This setup flow does not switch existing linked accounts.</p><p>Expired request? Use “Start fresh setup” below the progress check, then copy the new prompt. Your browser sign-in is preserved.</p><label for="setup-copy-app">Copy a request for</label><select id="setup-copy-app"><option value="claude">Claude Code · Desktop or terminal</option><option value="codex">Codex</option><option value="conductor">Conductor</option></select><div id="setup-manual-copy"><button id="copy-setup" class="secondary" disabled>Copy setup prompt</button></div><label class="sr-only" for="connect-prompt">Private setup request</label><textarea id="connect-prompt" readonly rows="4" spellcheck="false"></textarea><p>Automatic collection includes supported visible Claude Code, Codex and Conductor histories. Existing exclusions remain. Assistants retrieve your context through MCP by default; a local folder is optional. Web-only chats, arbitrary files and attachments need a supported import or connector.</p><p>App not installed? <a href="https://claude.com/download" target="_blank" rel="noopener noreferrer">Get Claude Desktop</a> · <a href="https://developers.openai.com/codex/app/" target="_blank" rel="noopener noreferrer">Get Codex</a> · <a href="https://conductor.build" target="_blank" rel="noopener noreferrer">Get Conductor</a></p></details>
+ </div></div></dialog>
+ <dialog id="personal-assistant-dialog" class="mcp-setup-dialog" aria-labelledby="personal-assistant-title">
+   <div class="dialog-heading"><h2 id="personal-assistant-title">Connect your assistant</h2><button id="close-personal-assistant" class="icon-button" aria-label="Close assistant setup">${icon('close')}</button></div>
+diff --git a/tests/context-setup-browser.test.mjs b/tests/context-setup-browser.test.mjs
+index d78fa1b..27be647 100644
+--- a/tests/context-setup-browser.test.mjs
++++ b/tests/context-setup-browser.test.mjs
+@@ -88,3 +88,71 @@ test('preparing a setup has visible progress and a failed preparation can retry'
+  await page.goto(p.origin+'/?space='+p.spaces.launch.id+'#conversations');await page.locator('#space-connect').click();await page.getByText('Preparing your setup…',{exact:true}).waitFor();assert.equal(await page.locator('[data-native-app][href]').count(),0);release();await page.locator('#setup-retry-apps').waitFor();assert.equal(await page.locator('#setup-step-ready').getAttribute('data-state'),'waiting');
+  fail=false;await page.locator('#setup-retry-apps').click();await page.waitForFunction(()=>document.querySelectorAll('[data-native-app][href]').length===3);assert.equal(await page.locator('#setup-start-status').innerText(),'');assert.equal(await page.locator('#setup-progress').isVisible(),false);
+ });
++
++// A simulated native claim exercises the actual handoff service. Opening a URI
++// is suppressed: these checks do not claim GUI host installation acceptance.
++test('fresh-chat activation keeps the unclaimed handoff and never fabricates installation or collection',async t=>{
++ const p=await startContextPreview();t.after(()=>p.close());
++ const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',headless:true,args:['--no-sandbox']});t.after(()=>browser.close());
++ const c=await browser.newContext({viewport:{width:390,height:1000}}),page=await c.newPage();page.setDefaultTimeout(12000);
++ const setup=new ContextSetup(p.service),owner=p.people.ready.owner,groupId=p.spaces.launch.id;
++ const prompt=()=>page.locator('#connect-prompt').inputValue(),token=async()=> (await prompt()).match(/commonplace-context:[A-Za-z0-9_-]{43}/)[0];
++ const state=()=>({grants:setup.all('SELECT hash,device,session,claimed_at FROM cp_context_setups WHERE owner=? ORDER BY hash',owner),receiver:setup.get('SELECT session,generation FROM cp_group_receivers WHERE workspace=? AND owner=?',groupId,owner),sync:setup.get('SELECT * FROM cp_cloud_settings WHERE owner=?',owner)});
++ await page.goto(p.origin+'/?space='+groupId+'#conversations');await page.locator('#space-connect').click();
++ await page.waitForFunction(()=>document.querySelectorAll('[data-native-app][href]').length===3);
++ await page.evaluate(()=>document.addEventListener('click',e=>{if(e.target.closest('[data-native-app],#open-app'))e.preventDefault();}));
++ let selectedToken;
++ await t.test('each app offers a short activation request with the same account, space and token',async()=>{
++  for(const app of ['claude','codex','conductor']){
++   if(app!=='claude')await page.locator('#setup-another').click();
++   await page.locator('[data-native-app='+app+']').click();await page.locator('#setup-activate').waitFor();
++   const original=await prompt(),before=state();selectedToken=await token();await page.locator('#setup-activate').click();
++   const activation=await prompt();assert.match(activation,/Finish Meet Proxy setup in THIS new/);assert.ok(activation.length<original.length);
++   for(const value of [selectedToken,p.origin,groupId,await page.locator('#setup-email').innerText()])assert.ok(activation.includes(value));
++   const url=new URL(await page.locator('#open-app').getAttribute('href'));assert.equal(url.protocol,app+':');assert.ok(decodeURIComponent(url.href).endsWith(activation));
++   assert.equal(await page.locator('#copy-setup').innerText(),'Copy activation prompt');assert.ok((await page.locator('#open-app').boundingBox()).y<(await page.locator('#setup-progress').boundingBox()).y);assert.equal(await page.locator('#setup-step-ready').getAttribute('data-state'),'waiting');
++   if(app==='conductor'){assert.match(await page.locator('#setup-send-help').innerText(),/new chat in the same Conductor workspace/);assert.equal(await page.locator('#open-app').innerText(),'Open Conductor');}
++   if(app==='claude')assert.equal(await page.locator('#open-app').innerText(),'Open new Code chat');
++   assert.deepEqual(state(),before,'activation UI must not claim, enable sync or change a receiver');
++  }
++ });
++ await t.test('copy, app launch and reopening preserve the request without reporting success',async()=>{
++  await c.grantPermissions(['clipboard-read','clipboard-write'],{origin:p.origin});await page.locator('#copy-setup').click();
++  await page.getByText('Activation prompt copied. Paste it into a new Conductor chat and send.',{exact:true}).waitFor();assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),await prompt());
++  await page.locator('#open-app').click();assert.equal(await token(),selectedToken);assert.equal(setup.status(owner,{token:selectedToken}).linked,false);
++  await page.locator('#close-connect').click();await page.locator('#space-connect').click();await page.locator('#setup-activate').waitFor();
++  assert.equal(await token(),selectedToken);assert.match(await prompt(),/Finish Meet Proxy setup in THIS new Conductor/);
++  assert.equal(await page.locator('#setup-step-ready').getAttribute('data-state'),'waiting');
++  for(const width of [320,390,1440]){await page.setViewportSize({width,height:1000});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);assert.deepEqual((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze()).violations,[]);}
++ });
++ await t.test('clipboard refusal leaves the activation request selected for manual copying',async()=>{
++  await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:()=>Promise.reject(Error('clipboard blocked'))}}));
++  await page.locator('#copy-setup').click();await page.waitForFunction(()=>document.getElementById('setup-details').open);
++  assert.equal(await page.locator('#connect-prompt').evaluate(e=>e.selectionEnd-e.selectionStart), (await prompt()).length);
++  assert.equal(await token(),selectedToken);
++ });
++ const device={id:uid(),owner},sessionId=uid();
++ await p.service.q('INSERT INTO cp_devices(id,owner,client,name,scope,created_at) VALUES(?,?,?,?,?,?)',device.id,owner,'test','Activation fixture','commonplace:read commonplace:write commonplace:upload',Date.now()).run();
++ await t.test('only the selected real claim binds the chat; another chat cannot reuse the handoff',async()=>{
++  const input={sessionId,provider:'Claude',host:'conductor',delivery:'hook',machine:'Test computer',label:'New activation chat',verified:true,token:selectedToken,pluginVersion:'0.4.33'};
++  await setup.claim(device,input);await page.locator('#setup-check').click();await page.waitForFunction(()=>document.getElementById('setup-step-plugin').dataset.state==='done');
++  assert.equal(await page.locator('#setup-activate').isVisible(),false);assert.equal(await page.locator('#setup-send').isVisible(),false);assert.equal(await page.locator('#open-app').isVisible(),false);
++  assert.match(await page.locator('#setup-step-plugin').innerText(),/New activation chat/);assert.equal(await page.locator('#setup-step-ready').getAttribute('data-state'),'waiting');
++  await assert.rejects(setup.claim(device,{...input,sessionId:uid()}),/Another chat/);
++  assert.equal(setup.status(owner,{token:selectedToken}).searchableConversations,0);
++ });
++ await t.test('a disconnected claimed request cannot offer another activation chat',async()=>{
++  await p.service.q('UPDATE cp_devices SET revoked=1 WHERE id=?',device.id).run();await page.locator('#setup-check').click();await page.getByText('This installation disconnected. Start fresh setup to reconnect.',{exact:true}).waitFor();
++  assert.equal(await page.locator('#setup-activate').isVisible(),false);assert.equal(await page.locator('#open-app').isVisible(),false);
++ });
++ await t.test('expired requests stop activation; renewal retains browser sign-in with a fresh install request',async()=>{
++  await page.locator('#setup-restart').click();await page.locator('[data-native-app=conductor]').click();await page.locator('#setup-activate').waitFor();await page.locator('#setup-activate').click();
++  const expired=await token();await p.service.q('UPDATE cp_context_setups SET expires_at=1 WHERE owner=? AND device IS NULL',owner).run();await page.locator('#setup-check').click();await page.getByText('Setup link expired',{exact:true}).waitFor();
++  assert.equal(await page.locator('#setup-activate').isVisible(),false);assert.equal(await page.locator('#copy-setup').isDisabled(),true);assert.equal(await page.locator('#open-app').getAttribute('href'),null);
++  await page.locator('#setup-restart').click();await page.waitForFunction(()=>!document.getElementById('copy-setup').disabled);assert.notEqual(await token(),expired);assert.match(await prompt(),/Set up Meet Proxy/);assert.ok(await page.locator('#setup-email').innerText());
++ });
++ await t.test('account changes clear the activation prompt and prepared app links',async()=>{
++  await page.locator('[data-native-app=conductor]').click();await page.locator('#setup-activate').waitFor();await page.locator('#setup-activate').click();await c.addCookies([{name:'ui_demo',value:'empty',url:p.origin}]);
++  await page.waitForFunction(()=>!document.getElementById('connect-dialog').open);assert.equal(await prompt(),'');assert.equal(await page.locator('[data-native-app][href],#open-app[href]').count(),0);
++ });
++});
+diff --git a/tests/context-setup-request.test.mjs b/tests/context-setup-request.test.mjs
+index 4888dd4..a225421 100644
+--- a/tests/context-setup-request.test.mjs
++++ b/tests/context-setup-request.test.mjs
+@@ -1,13 +1,35 @@
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+ import {randomBytes} from 'node:crypto';
+-import {contextSetupRequest,contextSetupLink} from '../apps/commonplace-account/server/context-assets/context-setup-request.mjs';
++import {contextSetupRequest,contextActivationRequest,contextSetupLink} from '../apps/commonplace-account/server/context-assets/context-setup-request.mjs';
+ const input={origin:'https://context.example.test',account:{email:'owner@example.test'},token:'commonplace-context:'+randomBytes(32).toString('base64url'),space:{type:'group',id:'a'.repeat(24)}};
+ test('each app gets a complete install-and-connect request with one exact private handoff',()=>{
+  for(const app of ['claude','codex','conductor']){const request=contextSetupRequest({...input,app}),url=new URL(contextSetupLink(app,request));assert.equal(url.protocol,app+':');assert.ok(decodeURIComponent(url.href).includes(input.token));assert.ok(request.includes(input.origin));assert.ok(request.includes(input.space.id));assert.match(request,/skip installation/);assert.match(request,/do not call connect_account/);assert.match(request,/never change permissions or substitute shell\/HTTP for a denied tool/);assert.match(request,/Existing exclusions stay in force/);assert.match(request,/finish_context_setup/);assert.equal(request.split(input.token).length,2);}
+- const claude=contextSetupRequest({...input,app:'claude'});assert.match(claude,/claude plugin install meet-proxy@commonplace/);assert.match(claude,/plugin includes its MCP server/);assert.doesNotMatch(claude,/configure-codex/);
+- const codex=contextSetupRequest({...input,app:'codex'});assert.match(codex,/SHA-256/);assert.match(codex,/configure-codex.mjs/);assert.match(codex,/bundled OS runtime/);assert.doesNotMatch(codex,/claude plugin install/);
++ const claude=contextSetupRequest({...input,app:'claude'});assert.match(claude,/plugin install meet-proxy@commonplace/);assert.match(claude,/plugin includes its MCP server/);assert.doesNotMatch(claude,/configure-codex/);
++ const codex=contextSetupRequest({...input,app:'codex'});assert.match(codex,/SHA-256/);assert.match(codex,/configure-codex.mjs/);assert.match(codex,/bundled OS runtime/);assert.doesNotMatch(codex,/plugin install meet-proxy@commonplace/);
+ });
+ test('missing account, unknown app or invalid handoff never produces a setup authorization',()=>{
+  for(const change of [{account:null},{app:'unknown'},{token:'public-invitation'}])assert.equal(contextSetupRequest({...input,app:'claude',...change}),'');
+ });
++
++test('setup preflights identity and the host CLI before installation, then resumes the original handoff',()=>{
++ const request=contextSetupRequest({...input,app:'conductor'});
++ assert.ok(request.indexOf('Check the account before installing')<request.indexOf('resolve the installer'));
++ assert.match(request,/CLAUDE_CODE_EXECPATH/);assert.match(request,/Check --version and top-level --help first/);
++ assert.match(request,/Never run plugin subcommands through that executable or change models/);
++ assert.match(request,/same account, space and unclaimed handoff/);assert.match(request,/Do not prescribe \/reload-plugins in Conductor or Claude Desktop/);
++ assert.match(request,/Only after a successful matching-account claim, check context_sync_status/);
++ assert.match(request,/do not invent an account-switch tool, delete credentials, or call internal disconnect\/revoke routes/);
++ assert.match(request,/does not clear a host denial/);assert.match(request,/Do not create memory files/);
++ assert.doesNotMatch(request,/claude plugin (?:install|marketplace)/);
++});
++
++test('activation carries the exact handoff and scope without rerunning installation or bypassing host gates',()=>{
++ for(const app of ['claude','conductor','codex']){
++  const request=contextActivationRequest({...input,app});
++  for(const value of [input.token,input.origin,input.account.email,input.space.id])assert.ok(request.includes(value));
++  assert.equal(request.split(input.token).length,2);assert.ok(request.length<contextSetupRequest({...input,app}).length);
++  assert.match(request,/Check setup_status first/);assert.match(request,/Do not repeat installation/);assert.match(request,/does not clear a denial/);assert.match(request,/already claimed by another chat/);assert.match(request,/successful source read/);assert.doesNotMatch(request,/plugin install|\/reload-plugins/);
++ }
++ for(const change of [{account:null},{app:'unknown'},{token:'public-invitation'}])assert.equal(contextActivationRequest({...input,app:'claude',...change}),'');
++});
+diff --git a/tests/seamless-setup-browser.test.mjs b/tests/seamless-setup-browser.test.mjs
+index d06ea2e..59e4c0b 100644
+--- a/tests/seamless-setup-browser.test.mjs
++++ b/tests/seamless-setup-browser.test.mjs
+@@ -40,7 +40,7 @@ test('seamless setup: copy is primary, host steps are explicit, progress is inst
+   const copy=page.locator('#setup-send #copy-setup');await copy.waitFor();
+   assert.match(await copy.getAttribute('class'),/primary/);assert.equal(await copy.innerText(),'Copy setup prompt');
+   assert.match(await page.locator('#setup-send-help').innerText(),/Paste into a chat in Claude Desktop.*Code tab.*send/);
+-  const hint=await page.locator('.setup-send-hint').innerText();assert.match(hint,/^Send it in your app, then approve the install or reload if prompted\.$/);assert.doesNotMatch(await page.locator('#setup-send').innerText()+await page.locator('#setup-step-plugin').innerText(),/can’t do that/);
++  const hint=await page.locator('.setup-send-hint').innerText();assert.match(hint,/Send the prompt and approve installation if asked/);assert.doesNotMatch(await page.locator('#setup-send').innerText()+await page.locator('#setup-step-plugin').innerText(),/can’t do that/);
+   assert.ok((await copy.boundingBox()).y<(await page.locator('#setup-progress').boundingBox()).y);
+   assert.equal(await page.locator('#setup-step-plugin').getAttribute('data-state'),'active');
+   assert.match(await page.locator('#setup-step-plugin small').innerText(),/Opening or copying alone doesn’t connect it/);

@@ -1,0 +1,45 @@
+▶ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline
+  ✔ one-tap app chooser is accessible from phone to desktop (5415.034572ms)
+  ✔ open app is primary, auto collection is disclosed, and unrelated connected chats/uploads never complete setup (2536.832163ms)
+  ✔ slow host setup stays explicit and does not invent installation progress (139.41864ms)
+  ✔ all app surfaces carry server/account and recover the same handoff when reopened (8431.289752ms)
+  ✔ registration confirms plugin and MCP together; no manual receiver picker and no false content success (2517.239447ms)
+  ✔ empty and interrupted collection are honest; incoming context becomes ready without a refresh click (7496.594806ms)
+  ✔ a delayed confirmation from another app cannot complete the selected setup (481.906923ms)
+  ✔ live setup accessible at 320px (1090.765971ms)
+  ✔ live setup accessible at 390px (1059.498104ms)
+  ✔ live setup accessible at 768px (1027.743224ms)
+  ✔ live setup accessible at 1440px (999.441392ms)
+  ✔ live setup accessible at 1920px (949.687666ms)
+  ✔ polling failure visibly reconnects and recovers, offline collectors never claim all sources are current (4693.855033ms)
+  ✔ saved context never masks a paused or interrupted collector (273.164176ms)
+  ✔ expired handoff renews without a second Google ceremony (363.069583ms)
+  ✔ changed browser account clears the old setup token and progress (213.070652ms)
+✔ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline (39496.67899ms)
+✔ a newly signed-in account goes straight to desktop setup with collection already included (1075.495217ms)
+✔ account changes before app launch automatically invalidate every prepared app link (3469.837456ms)
+✔ preparing a setup has visible progress and a failed preparation can retry (1143.662477ms)
+▶ fresh-chat activation keeps the unclaimed handoff and never fabricates installation or collection
+  ✔ each app offers a short activation request with the same account, space and token (1247.481353ms)
+  ✔ copy, app launch and reopening preserve the request without reporting success (3111.596442ms)
+  ✔ clipboard refusal leaves the activation request selected for manual copying (66.073877ms)
+  ✔ only the selected real claim binds the chat; another chat cannot reuse the handoff (123.504134ms)
+  ✔ a disconnected claimed request cannot offer another activation chat (79.315325ms)
+  ✔ expired requests stop activation; renewal retains browser sign-in with a fresh install request (1290.02922ms)
+  ✔ account changes clear the activation prompt and prepared app links (3080.471428ms)
+✔ fresh-chat activation keeps the unclaimed handoff and never fabricates installation or collection (9977.346038ms)
+▶ seamless setup: copy is primary, host steps are explicit, progress is installation-specific and MCP is the default route
+  ✔ choosing an app launches directly; no extra settings or filesystem grant is requested (2691.156474ms)
+  ✔ after selection Copy setup prompt is primary above live progress with explicit host steps (2458.499622ms)
+  ✔ registration recedes the copy action; scanning shows actual file counts only from this installation (7440.835792ms)
+  ✔ partial collection reports received vs searchable and last updated; ready never claims more than indexed (6725.921852ms)
+  ✔ local folder is optional in copy and no setting or grant is added (18.21602ms)
+✔ seamless setup: copy is primary, host steps are explicit, progress is installation-specific and MCP is the default route (21280.824714ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 55976.760284
