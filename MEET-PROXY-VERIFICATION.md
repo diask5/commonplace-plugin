@@ -1,5 +1,10 @@
 # Current release: 0.4.13
 
+The 0.4.40/runtime73 update keeps discovering owner-scoped staged Conductor
+chats after background restarts. All 699 core tests, 48 extracted-runtime checks,
+both-alias packaging and exact 64-patch replay pass. Source and published bytes
+are verified separately from installation, activation and live source readback.
+
 The 0.4.39/runtime72 update prevents slow uploads from starving continuing
 captures, retries and heartbeats. 697 core tests and 34 extracted collector checks
 pass; both regressions fail before/pass after. All 63 source patches replay
