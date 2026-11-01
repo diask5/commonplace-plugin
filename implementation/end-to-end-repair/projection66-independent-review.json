@@ -1,0 +1,38 @@
+{
+  "reviewedAt": "2026-11-01T02:43:15.435597+00:00",
+  "comparison": "before66",
+  "readOnlySourceReview": true,
+  "blockingFindings": [],
+  "tests": {
+    "command": [
+      "node",
+      "--test",
+      "tests/cloud-archive-mirror-source.test.mjs",
+      "tests/context-mirror.test.mjs",
+      "tests/archive-short-transaction-authority.test.mjs"
+    ],
+    "passed": 57,
+    "failed": 0
+  },
+  "files": {
+    "apps/commonplace/server/context-mirror.mjs": "e524369714f5f64b48d1d069c44591c676bf33b98e82578ffdcf043798ca6c97",
+    "apps/commonplace-account/server/archive-mirror.mjs": "951f9c6c251bbf4bf91ef4c500a33465acc562c6a21d65ce04bb99a9949d3c0e",
+    "apps/commonplace-account/server/shared-context.mjs": "48c2fa5e5d491089574f02ea96dfadfd18b50b5f74d18db87d677e6d626696f2",
+    "apps/commonplace-account/server/archive-builder.mjs": "edeee0fb2a92098261e8d43de35b8a1fdcae162e514f203744cf23dd12975c04",
+    "apps/commonplace-account/server/archive-index.mjs": "fccb352bc2d82ea41b260d5c4fe38355529fa0b79851e37f52806eba83a120c1",
+    "apps/commonplace-account/server/cloud-archive.mjs": "487155b608b7bf0bce8bf8f573cdb9294a9035d8d3794501118b6e7feaee0d02"
+  },
+  "verified": [
+    "Exact owner projection proof is sent, checked on each manifest page, and checked again before native publication.",
+    "Recomputed identical projection survives server metadata eviction. Changed same-revision projection is not accepted as unchanged with the old proof.",
+    "Expired worker results are withheld; grant expiry invalidates metadata cache and old proof; current proof can establish equality after eviction.",
+    "Selected files retain revision, owner, exclusion, binding-generation, device/account and digest fences.",
+    "64 MB UTF-8 document bound now stops iteration before full assembly; asOf derives from included source observations when archive timestamp is zero.",
+    "Agent pair thread audit remains readable after expiry by its existing contract; expiry does not create a new disclosure grant."
+  ],
+  "registrationOwnedFilesStillFrozen": true,
+  "registrationMetadataIsToolAuthority": false,
+  "legacyClientLimitation": "Native 0.4.41 has no knownProjection handshake and can fail final publication after cache eviction; the matching new native/server release is required.",
+  "productionCalls": false,
+  "liveMessages": false
+}

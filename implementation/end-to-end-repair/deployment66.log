@@ -1,0 +1,21 @@
+
+> test:deployment
+> python3 -m unittest tests.test_deployment tests.test_public_assets_deployment tests.test_runtime_public_assets
+
+...Activating the release and checking both services.
+.{"release": "20261020-candidate", "health": "ready", "worker": "ready", "backup": null, "migrations": "unchanged"}
+Activating the release and checking both services.
+...{"release": "20261020-candidate", "health": "ready", "worker": "ready", "backup": null, "migrations": "unchanged"}
+Activating the release and checking both services.
+...Activating the release and checking both services.
+........Backing up and verifying the live database.
+Rehearsing migrations and checking database integrity.
+.....{"previous": "/tmp/tmpy8kin289/opt/commonplace/releases/20261019-before", "candidate": "/tmp/tmpy8kin289/opt/commonplace/releases/20261020-prepared", "activated": false, "migrations": "rehearsed", "bundleSha256": "d1606862a10b44edc89b05429b23d5bb747d0a64a279687801073b9a39381c40", "dependenciesSha256": "c8fe5e6eb4000a6f5a93cb5a7e42365260db8a4db29baba6efe70a44d0049d92", "backup": "/tmp/tmpy8kin289/var/lib/commonplace/rollouts/20261020-prepared/before.sqlite"}
+Backing up and verifying the live database.
+Rehearsing migrations and checking database integrity.
+Activating the release and checking both services.
+...........s.......................
+----------------------------------------------------------------------
+Ran 58 tests in 2.085s
+
+OK (skipped=1)

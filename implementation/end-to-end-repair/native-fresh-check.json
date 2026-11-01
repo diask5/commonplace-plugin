@@ -1,0 +1,37 @@
+{
+  "session": "d0254837-0b87-4a62-b0f1-0c780e5f79d0",
+  "loadedVersion": "0.4.41",
+  "runtime": 74,
+  "account": "kyledias@vurbox.com",
+  "originalSourceRead": {
+    "nativeSession": "887a4759-5b1f-4376-800f-60267ff11d71",
+    "revision": 260,
+    "offset": 672500,
+    "citation": "unified_b9b5b17e7494e26012133605",
+    "marker": "The Conductor receiver is now reporting ready."
+  },
+  "freshNativeSourceRead": true,
+  "personalProgress": {
+    "key": "work-sync-native-041",
+    "expectedRevision": 0,
+    "savedRevision": 1,
+    "text": "Native 0.4.41 collection verification completed in the fresh chat."
+  },
+  "finalMarker": "Cedar Orchard native collection check completed.",
+  "initialSetupStatusReceiver": "stopped",
+  "independentLaterReceiverStatus": {
+    "checkedAt": "2026-11-01T02:31:43Z",
+    "runtime": 74,
+    "state": "ready",
+    "phase": "waiting",
+    "ready": true,
+    "lastFailure": null,
+    "matchingProcessAndLock": true
+  },
+  "messageDeliveryTested": false,
+  "hostPermissionsChanged": false,
+  "notes": [
+    "setup_status is inert; subsequent activating tools started the receiver.",
+    "Source read and collection do not prove message delivery."
+  ]
+}

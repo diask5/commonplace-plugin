@@ -1,0 +1,171 @@
+{
+  "status": "source-only; owned source/tests frozen for parent full-core verification and packaging",
+  "frozenAt": "2026-11-01T02:43:28.286290+00:00",
+  "runtimeUnderTest": 75,
+  "nativeCandidateVersion": "0.4.42",
+  "diagnosis": "Mirror manifest/files waited for CloudArchive.prepare full filesystem/FTS materialization while continuous uploads advanced the authoritative revision.",
+  "originalOwnerReportedObservations": {
+    "nativeMirrorPhase": "manifest",
+    "nativeMirrorRequests": 0,
+    "signedIdentitySecondsApprox": 10,
+    "archiveManifestClientTimeoutSeconds": 30,
+    "serverMemoryGiB": 2,
+    "serverLoadApprox": 3.8,
+    "servicesRunning": true,
+    "macArchive": {
+      "revision": 7990,
+      "publishedRevision": 7985,
+      "documents": 684,
+      "sections": 13694,
+      "characters": 39438987,
+      "error": null
+    },
+    "rootArchive": {
+      "revision": 260,
+      "publishedRevision": 259,
+      "documents": 73,
+      "sections": 2168,
+      "characters": 1577352
+    }
+  },
+  "implementation": [
+    "Canonical source-backed mirror workers skip filesystem and FTS construction.",
+    "One-conversation manifest buffering; streaming ordered section hashing; cumulative 64000000-byte bound checked during manifest and selected-file source iteration.",
+    "File pages retain 1000000-character slices, 2000000-character response budget and 32-path request limit.",
+    "Metadata-only cache: eight owners and at most 10000 complete document entries, with compact authority stamps for larger catalogs.",
+    "Workers share existing per-database 2 active / 8 waiting live-read slots; concurrent owner/revision manifest requests coalesce.",
+    "Owner, source visibility, membership/grant, binding generation, account, revision and expiry checks remain on canonical source reads and final release.",
+    "Unified-only asOf reflects latest included source observation rather than epoch zero.",
+    "64-lowercase-hex projection digest covers exact owner/revision/expiry/metadata/content-digest/index projection. New native persists it after publication and sends knownProjection on head and final checks.",
+    "Cached projection equality and canonical recomputation survive metadata eviction without a schema or global revision change."
+  ],
+  "compatibility": {
+    "nativeUpdateRequiredForEvictionProgress": "0.4.42/runtime75",
+    "legacy041": "Ordinary safe cached path stays compatible; metadata eviction can still fail closed. Legacy unpinned heads return full metadata when an expired grant prevents raw revision equality from proving the old view.",
+    "legacyServer": "Native still accepts legacy projection-free fixtures/servers before a projection handshake is established; a missing proof after an established handshake fails closed.",
+    "noSchemaMigration": true,
+    "noGlobalRevisionMutation": true
+  },
+  "tests": {
+    "firstAttempt": {
+      "tests": 2,
+      "pass": 0,
+      "fail": 2,
+      "reason": "Both mirror requests still called full archive prepare; retained transcription in mirror66-before.log."
+    },
+    "finalRuntime75": {
+      "tests": 150,
+      "pass": 150,
+      "fail": 0,
+      "log": "mirror66-tests-runtime75.log",
+      "files": [
+        "tests/cloud-archive-mirror-source.test.mjs",
+        "tests/cloud-archive.test.mjs",
+        "tests/cloud-workspace.test.mjs",
+        "tests/cloud-worker-archive-authority.test.mjs",
+        "tests/context-mirror.test.mjs",
+        "tests/archive-short-transaction.test.mjs",
+        "tests/archive-short-transaction-authority.test.mjs",
+        "tests/archive-coordination.test.mjs",
+        "tests/archive-document-reuse.test.mjs",
+        "tests/archive-io-hotpath.test.mjs",
+        "tests/seamless-retrieval.test.mjs",
+        "tests/context-read-indexes.test.mjs"
+      ]
+    },
+    "newTestIncludedByNpmTest": "tests/cloud-*.test.mjs matches tests/cloud-archive-mirror-source.test.mjs",
+    "whitespaceCheck": "Owned tracked files pass git diff --check. Unrelated service.mjs whitespace was not edited."
+  },
+  "syntheticScale": {
+    "synthetic": true,
+    "documents": 684,
+    "sections": 13694,
+    "characters": 39438987,
+    "manifest": {
+      "elapsedMs": 1492.266235,
+      "rssBefore": 56258560,
+      "rssAfter": 75886592,
+      "peakRss": 76124160
+    },
+    "selectedFile": {
+      "elapsedMs": 250.44664600000002,
+      "rssBefore": 56111104,
+      "rssAfter": 70598656,
+      "peakRss": 71249920,
+      "characters": 57600
+    },
+    "fullFilesystemOrFtsBuilds": 0
+  },
+  "limits": [
+    "Synthetic measurements are local source-read timings/RSS, not a production result or an old full-build timing comparison.",
+    "Continuous uploads may still require revision restarts; runtime74 verified-file reuse remains in place.",
+    "Live readiness, installation and deployment remain for parent verification."
+  ],
+  "ownedFiles": [
+    {
+      "path": "apps/commonplace-account/server/archive-mirror.mjs",
+      "sha256": "951f9c6c251bbf4bf91ef4c500a33465acc562c6a21d65ce04bb99a9949d3c0e",
+      "before66Sha256": null
+    },
+    {
+      "path": "apps/commonplace-account/server/archive-builder.mjs",
+      "sha256": "edeee0fb2a92098261e8d43de35b8a1fdcae162e514f203744cf23dd12975c04",
+      "before66Sha256": "c03b6c907dcc5d00ecfd5d2afe48e563b9e69ce69268e85bb2dcbf29f2966307"
+    },
+    {
+      "path": "apps/commonplace-account/server/archive-index.mjs",
+      "sha256": "fccb352bc2d82ea41b260d5c4fe38355529fa0b79851e37f52806eba83a120c1",
+      "before66Sha256": "eb0717dd30da4d9b6f9586d95f1008cdcf1e04b3f87546277a4aa0007ae4c65b"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-archive.mjs",
+      "sha256": "487155b608b7bf0bce8bf8f573cdb9294a9035d8d3794501118b6e7feaee0d02",
+      "before66Sha256": "c26ba65449721d2af1315cc5f0e1f44d5deed51786b92c93e59ea7af3ea8b798"
+    },
+    {
+      "path": "apps/commonplace-account/server/shared-context.mjs",
+      "sha256": "48c2fa5e5d491089574f02ea96dfadfd18b50b5f74d18db87d677e6d626696f2",
+      "before66Sha256": "bb74d9b85a77f47f2d40bc58d334f7d377ebf7b9bb1926a886987cf100c2749e"
+    },
+    {
+      "path": "apps/commonplace/server/context-mirror.mjs",
+      "sha256": "e524369714f5f64b48d1d069c44591c676bf33b98e82578ffdcf043798ca6c97",
+      "before66Sha256": "bca50e21a09cff4dbc8bd8955068852f4d54d39c736532e3bc4a06fc9a359c56"
+    },
+    {
+      "path": "tests/cloud-archive-mirror-source.test.mjs",
+      "sha256": "1bc840647edffdf344d590af4a35d3d074c7158947ec92154810e582442e8d06",
+      "before66Sha256": null
+    },
+    {
+      "path": "tests/cloud-archive.test.mjs",
+      "sha256": "a0bdc6d5d9eb29a880df0107636187a00fea3f00d2f960a4267cc26b7abcbf5e",
+      "before66Sha256": "19e9af4f188bb8cb244cd3a0a47c5ba5ec5ef1d60ddab6ec6f4ba4c8b81e6670"
+    },
+    {
+      "path": "tests/archive-short-transaction-authority.test.mjs",
+      "sha256": "cbe56da6396edb10c1cf62736fa526242efdc328e5b2d4052ff5cb48786e6f31",
+      "before66Sha256": "9536507570edb558e13534e0353f4184747d731c5a1751faf17a885f28da9e12"
+    },
+    {
+      "path": "tests/seamless-retrieval.test.mjs",
+      "sha256": "d15dd9f30cbe19dc6bc983b1c2c97854f069930fdbd94eba4acfb185cd3feed7",
+      "before66Sha256": "194ecf5b8d05a228be186237641cdf97c71bb15cfdc3e5399275ad17aa447173"
+    },
+    {
+      "path": "tests/context-mirror.test.mjs",
+      "sha256": "71a3f2ace68be064290452e39224b7eab1dc70087ffa8201463303de0bf158b4",
+      "before66Sha256": "116f74a924900932b726c81c15d2f5a4c5b1a3a8a8283eb110d47c87fbba6380"
+    }
+  ],
+  "notPerformed": [
+    "commit",
+    "deployment",
+    "publication",
+    "version edits",
+    "portable manifest edits",
+    "settings/permission/classifier changes",
+    "live messages",
+    "private chat history reads"
+  ]
+}

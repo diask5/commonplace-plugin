@@ -1,0 +1,7 @@
+Retained transcription of the first regression run, before implementation.
+Command: node --test tests/cloud-archive-mirror-source.test.mjs
+Result: 2 tests, 0 pass, 2 fail, exit 1.
+Both failed in shared-context.mjs readContext -> CloudArchive.prepare.
+- mirror manifest bypasses a pending full filesystem/index build: Error: Full archive build remains busy
+- mirror file transfer reads selected canonical documents without building unrelated indexes: Error: Full archive build remains busy
+Original complete tool output remains in this review chat.

@@ -1,0 +1,27 @@
+✔ mirror manifest bypasses a pending full filesystem/index build (301.121937ms)
+✔ mirror file transfer reads selected canonical documents without building unrelated indexes (193.889752ms)
+✔ source mirror preserves projected document metadata, ordering, Unicode and generated index contract (158.402489ms)
+✔ selected files never read unrelated source bodies, even without a manifest cache (94.155961ms)
+✔ file slices, response budget, duplicate offsets, path checks and stale revisions retain protocol behavior (1276.792989ms)
+✔ cached manifest heads are cheap, owner-scoped, and invalidated by source exclusion or generation changes (306.01131ms)
+✔ postworker source changes and exclusions withhold both manifest metadata and file bytes (350.393091ms)
+✔ expired worker results withhold bytes, and expired cache stamps require a full authorized manifest (365.549978ms)
+✔ manifest requests coalesce, file workers share bounded live slots, excess waiters receive 503 (642.545617ms)
+✔ mirror metadata and files recheck stream-excluded (329.91209ms)
+✔ mirror metadata and files recheck history-excluded (346.375492ms)
+✔ mirror metadata and files recheck binding-generation (335.401112ms)
+✔ mirror metadata and files recheck device-revoked (309.91142ms)
+✔ mirror metadata and files recheck account-changed (341.599285ms)
+✔ mirror metadata and files recheck agent-revoked (340.800603ms)
+✔ mirror grant-revoked removes shared messages and never exposes a peer private resource (399.766536ms)
+✔ mirror grant-expired removes shared messages and never exposes a peer private resource (406.190967ms)
+✔ synthetic 684-document/13694-section/39438987-character mirror projects without a full FTS/filesystem build (4071.378104ms)
+ℹ {"synthetic":true,"documents":684,"sections":13694,"characters":39438987,"manifest":{"elapsedMs":608.215467,"rssBefore":55988224,"rssAfter":85200896,"peakRss":85200896},"selectedFile":{"elapsedMs":184.8567,"rssBefore":56258560,"rssAfter":70373376,"peakRss":71790592,"characters":57600},"fullFilesystemOrFtsBuilds":0}
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10932.936411
