@@ -74,7 +74,7 @@
   ],
   "patch": "context-status-performance.patch",
   "sha256": "2c35a8b27a3ad61eb8f637ca985b9402a715c2b6932864d20b4403736378d993",
-  "state": "Source candidate; native 0.4.44/runtime 77 unchanged. Server packaging and live acceptance pending.",
+  "state": "Published and live in server20261101-context-throughput. Native0.4.44/runtime77 unchanged. Final latency and native/Work reply acceptance pending.",
   "files": [
     {
       "path": "apps/commonplace-account/server/backup.mjs",

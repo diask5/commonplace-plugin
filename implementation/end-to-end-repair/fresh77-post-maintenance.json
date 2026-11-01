@@ -1,0 +1,41 @@
+{
+  "state": "passed",
+  "agentId": "f187de6b31126df71f6b1656",
+  "sessionId": "a8f47f0d-73ae-4b3c-9836-13c137b56e39",
+  "priorAttempt": "failed, retained separately",
+  "peerContextRead": {
+    "key": "work-sync-native-043",
+    "revision": 1
+  },
+  "ownContext": {
+    "key": "work-sync-native-044",
+    "expectedRevision": 0,
+    "revision": 1,
+    "rootIndependentReadback": true
+  },
+  "personalEvent": {
+    "seq": 118357,
+    "kind": "progress.updated",
+    "messageId": "30bcbf2c27edf0ef73a5820e"
+  },
+  "setup": {
+    "loadedVersion": "0.4.44",
+    "runtime": 77,
+    "expectedRuntime": 77,
+    "receiver": "ready",
+    "delivery": "native",
+    "automaticDelivery": true,
+    "transport": "conductor-cloud"
+  },
+  "archive": {
+    "documentId": "unified-9fc18e8c3cd60fd25cd5f3a8",
+    "revision": 459,
+    "offset": 0,
+    "actualAssistantFinalRead": true,
+    "broadSearchRevisionChanges": 2,
+    "scope": "Scoped follow-up search/read passed; broad changing pagination remains unsuccessful"
+  },
+  "finalMarker": "Juniper Ridge post-maintenance context check completed.",
+  "roundtrip": "Separate root receipt verifies both deliveries accepted",
+  "noSettingsPermissionsScopesOrReceiverChanges": true
+}

@@ -1,0 +1,44 @@
+{
+  "state": "passed",
+  "conversationId": "218524bb55f7543f8a5ce708",
+  "question": {
+    "id": "7d7da2b58f305e6b2b59c5ca",
+    "seq": 43,
+    "conversationId": "218524bb55f7543f8a5ce708",
+    "from": "c310f7eb3d3ab4100d0fa4a1",
+    "to": "f187de6b31126df71f6b1656",
+    "sender": {
+      "accountId": "7365434dafb30ab7430944d5",
+      "label": "Meet Proxy Chat Connection",
+      "provider": "Codex"
+    },
+    "text": "Juniper Ridge native roundtrip 77",
+    "replyTo": null,
+    "responseRequested": true,
+    "at": 1793508461024,
+    "delivery": "accepted",
+    "acceptedAt": 1793508472704
+  },
+  "answer": {
+    "id": "5ecb8a90ed7024c16e478ea4",
+    "seq": 44,
+    "conversationId": "218524bb55f7543f8a5ce708",
+    "from": "f187de6b31126df71f6b1656",
+    "to": "c310f7eb3d3ab4100d0fa4a1",
+    "sender": {
+      "accountId": "7365434dafb30ab7430944d5",
+      "label": "Meet Proxy 0.4.44 native check",
+      "provider": "Codex"
+    },
+    "text": "Juniper Ridge native roundtrip 77 received",
+    "replyTo": "7d7da2b58f305e6b2b59c5ca",
+    "responseRequested": false,
+    "at": 1793508493690,
+    "delivery": "accepted",
+    "acceptedAt": 1793508518976
+  },
+  "questionAcceptedSeconds": 11.68,
+  "answerCreatedSeconds": 32.666,
+  "answerAcceptedSeconds": 57.952,
+  "oneReplyNoAckLoop": true
+}

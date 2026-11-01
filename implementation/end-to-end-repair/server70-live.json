@@ -1,0 +1,21 @@
+{
+  "databasePath": "/var/lib/commonplace/database-storage/account.sqlite",
+  "backupTimer": "active/enabled",
+  "state": "passed",
+  "release": "20261101-context-throughput",
+  "filesVerified": 166,
+  "serviceReadableFiles": 166,
+  "appliedMigrations": 47,
+  "newMigration": null,
+  "services": [
+    "active",
+    "active",
+    "active",
+    "active"
+  ],
+  "schemaUnchanged": true,
+  "codeOnly": true,
+  "freshWorkerHeartbeat": true,
+  "previousRelease": "20261101-resumable-context",
+  "finishedAt": 1793507771.9508367
+}

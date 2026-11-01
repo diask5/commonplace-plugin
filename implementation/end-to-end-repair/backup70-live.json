@@ -1,0 +1,22 @@
+{
+  "machineType": "e2-small",
+  "recentRequests": {
+    "lines": 0,
+    "first": null,
+    "last": null,
+    "top": []
+  },
+  "backup": {
+    "MainPID": "0",
+    "Result": "success",
+    "ExecMainStartTimestamp": "Sun 2026-11-01 04:37:23 UTC",
+    "ExecMainExitTimestamp": "Sun 2026-11-01 04:39:40 UTC",
+    "ExecMainStatus": "0",
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "InvocationID": "f7959b2d3aa542009e14117c9ca412b6",
+    "snapshotVerified": true,
+    "uploadCompleted": true
+  },
+  "checkedAt": 1793508011.2220159
+}

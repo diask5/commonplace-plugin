@@ -1,7 +1,7 @@
 {
-  "state": "Production database storage cutover passed; performance and normal backup reliability remain unresolved, with two retained live backup timeouts. Final readiness remains open.",
-  "asOf": "2026-11-01; includes owner-confirmed second backup timeout at 04:27:55 UTC and source-only backup-directory correction",
-  "scope": "Storage migration record assembled from retained evidence; no new production or Mac operations.",
+  "state": "Production storage cutover and patch 70 deployment passed; one subsequent normal backup verified and uploaded successfully. Both prior live backup timeouts remain retained. Performance and final readiness remain unresolved.",
+  "asOf": "2026-11-01T04:40:11.222016Z; includes retained patch 70 live and successful normal backup records, plus owner status on planned capacity work and patch 71 review",
+  "scope": "Storage, patch 70 deployment and backup record assembled from retained metadata and owner status updates; no new production or Mac operations.",
   "finalReadiness": false,
   "migration": {
     "revision": "r5",
@@ -235,7 +235,27 @@
     "afterMainProcessCpuPercent": 133.42961234578766,
     "beforeDiskAwaitMs": 8.455540355677154,
     "afterDiskAwaitMs": 2.74932735426009,
-    "interpretation": "Iowait decreased, but main-process CPU remained high and health latency was not solved. Short traced samples do not establish sustained throughput or a causal speedup."
+    "interpretation": "Historical post-storage iowait decreased, but main-process CPU remained high. After patch 70, untraced health remained 4.26–5.74 seconds with high CPU. These short samples do not establish sustained throughput or a causal speedup.",
+    "postPatch70": {
+      "evidenceKind": "live-production-untraced-sample",
+      "evidence": "end-to-end-repair/capacity70-first.json",
+      "sampleSeconds": 29.72,
+      "healthSeconds": [
+        4.487695845309645,
+        4.5284917410463095,
+        4.475112037733197,
+        4.259353974368423,
+        5.7436661762185395
+      ],
+      "allSampledHealthReady": true,
+      "healthRoundedSeconds": [
+        4.26,
+        5.74
+      ],
+      "mainProcessCpuPercent": 163.5104867312529,
+      "traceCollected": false,
+      "sustainedPerformanceImprovementEstablished": false
+    }
   },
   "syntheticVerification": {
     "evidenceKind": "disposable-local-synthetic-fixtures",
@@ -252,23 +272,29 @@
     {
       "item": "Performance",
       "status": "open",
-      "detail": "Health remains approximately 4.0\u20139.5 seconds and CPU remains high."
+      "detail": "Latest post-patch 70 untraced health remains 4.26–5.74 seconds and main-process CPU remains high; no sustained performance claim."
     },
     {
-      "item": "Patch 70",
-      "status": "implementation-and-review-in-progress",
+      "item": "VM capacity",
+      "status": "planned-not-completed",
       "source": "Owner status update",
-      "detail": "Root and agents 92 and 66 are addressing reproduced sourceStatus alias scans; the backup-directory source correction is also intended for inclusion. No deployment or live latency/backup acceptance is established here."
+      "detail": "Root is planning a shared-CPU VM capacity upgrade. Retained successful-backup metadata still identifies e2-small."
     },
     {
-      "item": "Normal backup",
-      "status": "two-live-timeouts-retained",
-      "detail": "Review and release the source-only directory correction, then verify a fresh normal backup snapshot and upload. Preserve both failed invocations separately."
+      "item": "Patch 71 mirror fix",
+      "status": "under-review",
+      "source": "Owner status update",
+      "detail": "Agent 92 mirror fix is under review; no deployment is established here."
+    },
+    {
+      "item": "Ongoing backup reliability",
+      "status": "monitor",
+      "detail": "One normal backup verified and uploaded successfully after patch 70. Both earlier timeouts remain failed live attempts; repeated reliable completion is not established."
     },
     {
       "item": "Final readiness",
       "status": "open",
-      "detail": "A successful storage cutover is not complete performance, backup or end-to-end readiness."
+      "detail": "Verified storage, patch 70 deployment and one successful backup do not establish complete performance or end-to-end readiness."
     }
   ],
   "evidenceSha256": {
@@ -285,11 +311,17 @@
     "end-to-end-repair/storage69-r5-verification.json": "0b1de19c9f8a6d9c2c9c256ebe17a63f1668031e468b7fda4f8ef68b58348e22",
     "end-to-end-repair/review-storage69-r5-verification.json": "3b3d6208cfc6ee8e86416fe7e5909e4fc4109501f6a9e15eebc9b6339c61ed44",
     "end-to-end-repair/migrate-database-storage69-r5.py": "84bf47d080ed1aa0fac230035000d7451f705b756b8a98656964f7e361cd0aab",
-    "end-to-end-repair/review-storage69-r5-final-fingerprint.log": "be96e44bff981c9278e74a0c3eb71e1544b46b391b90bd9a3369b69e0c9ba9d8"
+    "end-to-end-repair/review-storage69-r5-final-fingerprint.log": "be96e44bff981c9278e74a0c3eb71e1544b46b391b90bd9a3369b69e0c9ba9d8",
+    "end-to-end-repair/server70-live.json": "cca3bba45fa739ce0a7fe531ed33f04e295c0c0c74e36f96c31cb746664db583",
+    "end-to-end-repair/backup70-live.json": "85b97376a75c9615f3361dc05c9c4c9e47b8cc000cdac12ebf6422d2d264418d",
+    "end-to-end-repair/capacity70-first.json": "6332f932fa0e4ac0842e258468f5d035143ea246a02ea7864fc87294aaba832d",
+    "end-to-end-repair/backup-location70-verification.json": "ed631d0ccb2e61c02e95a70b586c2504ef0fe16cf2bf8ae5e86f099e9ff14b28",
+    "end-to-end-repair/backup-location70-before.log": "dc3b9ab8699924c1cb26d3b3de4613de160d2e7698c9e6b3eb38d475f8dd3d1a",
+    "end-to-end-repair/backup-location70-after.log": "b54d368f3b2f741cfc768dee984f98c16d3241c8c14eb3cc50ba187916524d24",
+    "end-to-end-repair/core70.log": "d11e66ea8e296d5a05cc1832dddab2ebb89400b4201948d0831ee0b4d8dd7457"
   },
   "backupDirectoryCorrection": {
-    "status": "source-only-frozen-for-independent-review",
-    "intendedPatch": 70,
+    "status": "live-in-patch-70",
     "rootCause": "Backup directory derived from dirname of logical COMMONPLACE_DB; symlink relocation left snapshots and integrity verification on the old disk.",
     "change": "Use realpath(database) before selecting its parent backups directory.",
     "expectedProductionDirectory": "/var/lib/commonplace/database-storage/backups",
@@ -329,13 +361,87 @@
       "existing service and operation timeouts",
       "service sandbox"
     ],
-    "localEvidence": ".context/end-to-end-repair/backup-location70-verification.json",
+    "localEvidence": "end-to-end-repair/backup-location70-verification.json",
     "independentReview": {
-      "status": "requested",
+      "status": "historical-request-recorded",
       "deliveryState": "queued",
-      "messageId": "fba999da-5911-4089-9217-a8e2801c9cad"
+      "messageId": "fba999da-5911-4089-9217-a8e2801c9cad",
+      "note": "Retained local freeze record does not itself establish completed independent review; later live deployment is recorded separately."
     },
-    "packagedInstalledDeployed": false,
-    "successfulLiveBackupAfterCorrectionVerified": false
+    "successfulLiveBackupAfterCorrectionVerified": true,
+    "patch": 70,
+    "localEvidenceStatus": "Historical source-only freeze and synthetic regression record; superseded for deployment state by server70-live.json and backup70-live.json.",
+    "deploymentEvidence": "end-to-end-repair/server70-live.json",
+    "deployed": true,
+    "liveBackupEvidence": "end-to-end-repair/backup70-live.json"
+  },
+  "patch70Deployment": {
+    "status": "live-verified",
+    "evidenceKind": "live-production",
+    "evidence": "end-to-end-repair/server70-live.json",
+    "patch": 70,
+    "databasePath": "/var/lib/commonplace/database-storage/account.sqlite",
+    "backupTimer": "active/enabled",
+    "state": "passed",
+    "release": "20261101-context-throughput",
+    "filesVerified": 166,
+    "serviceReadableFiles": 166,
+    "appliedMigrations": 47,
+    "newMigration": null,
+    "services": [
+      "active",
+      "active",
+      "active",
+      "active"
+    ],
+    "schemaUnchanged": true,
+    "codeOnly": true,
+    "freshWorkerHeartbeat": true,
+    "previousRelease": "20261101-resumable-context",
+    "finishedAt": 1793507771.9508367,
+    "finishedAtUtc": "2026-11-01T04:36:11.950837Z",
+    "serviceNames": [
+      "nginx",
+      "commonplace-files",
+      "commonplace-runtime",
+      "commonplace"
+    ]
+  },
+  "successfulNormalBackup": {
+    "status": "success-verified",
+    "evidenceKind": "live-production",
+    "evidence": "end-to-end-repair/backup70-live.json",
+    "unit": "commonplace-backup.service",
+    "startedAt": "2026-11-01T04:37:23Z",
+    "finishedAt": "2026-11-01T04:39:40Z",
+    "durationSeconds": 137,
+    "serviceMetadata": {
+      "MainPID": "0",
+      "Result": "success",
+      "ExecMainStartTimestamp": "Sun 2026-11-01 04:37:23 UTC",
+      "ExecMainExitTimestamp": "Sun 2026-11-01 04:39:40 UTC",
+      "ExecMainStatus": "0",
+      "ActiveState": "inactive",
+      "SubState": "dead",
+      "InvocationID": "f7959b2d3aa542009e14117c9ca412b6",
+      "snapshotVerified": true,
+      "uploadCompleted": true
+    },
+    "machineType": "e2-small",
+    "checkedAt": 1793508011.2220159,
+    "snapshotVerificationObserved": true,
+    "uploadCompletionObserved": true,
+    "successfulCompletionVerified": true,
+    "priorFailedInvocationsPreserved": true,
+    "interpretation": "One successful normal backup after the live directory correction; does not establish sustained backup reliability or final readiness."
+  },
+  "coreVerification": {
+    "evidenceKind": "local-test-suite",
+    "evidence": "end-to-end-repair/core70.log",
+    "passed": 853,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "productionAcceptanceSubstitute": false
   }
 }

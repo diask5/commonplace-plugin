@@ -1,0 +1,370 @@
+{
+  "sampledMilliseconds": 22526.472,
+  "self": [
+    {
+      "function": "callbackTrampoline",
+      "url": "node:internal/async_hooks",
+      "line": 117,
+      "milliseconds": 2522.547
+    },
+    {
+      "function": "all",
+      "url": "",
+      "line": -1,
+      "milliseconds": 2336.793
+    },
+    {
+      "function": "run",
+      "url": "",
+      "line": -1,
+      "milliseconds": 2126.432
+    },
+    {
+      "function": "get",
+      "url": "",
+      "line": -1,
+      "milliseconds": 1098.637
+    },
+    {
+      "function": "writev",
+      "url": "",
+      "line": -1,
+      "milliseconds": 919.249
+    },
+    {
+      "function": "run",
+      "url": "",
+      "line": -1,
+      "milliseconds": 853.545
+    },
+    {
+      "function": "exec",
+      "url": "",
+      "line": -1,
+      "milliseconds": 669.084
+    },
+    {
+      "function": "run",
+      "url": "",
+      "line": -1,
+      "milliseconds": 668.439
+    },
+    {
+      "function": "(program)",
+      "url": "",
+      "line": -1,
+      "milliseconds": 531.737
+    },
+    {
+      "function": "savedSourceStatus",
+      "url": "account-runtime/cloud-work.mjs",
+      "line": 16,
+      "milliseconds": 480.94
+    },
+    {
+      "function": "write",
+      "url": "node:buffer",
+      "line": 687,
+      "milliseconds": 448.043
+    },
+    {
+      "function": "lookupPublicResource",
+      "url": "node:internal/async_hooks",
+      "line": 176,
+      "milliseconds": 446.53
+    },
+    {
+      "function": "(garbage collector)",
+      "url": "",
+      "line": -1,
+      "milliseconds": 425.529
+    },
+    {
+      "function": "exec",
+      "url": "",
+      "line": -1,
+      "milliseconds": 402.856
+    },
+    {
+      "function": "run",
+      "url": "account-runtime/sqlite.mjs",
+      "line": 37,
+      "milliseconds": 255.647
+    },
+    {
+      "function": "write",
+      "url": "",
+      "line": -1,
+      "milliseconds": 234.579
+    },
+    {
+      "function": "transformSingleOutput",
+      "url": "adapter/factory.mjs",
+      "line": 145,
+      "milliseconds": 233.878
+    },
+    {
+      "function": "consumeBody",
+      "url": "undici/undici",
+      "line": 5865,
+      "milliseconds": 220.278
+    },
+    {
+      "function": "",
+      "url": "api/index.mjs",
+      "line": 85,
+      "milliseconds": 214.015
+    },
+    {
+      "function": "runMicrotasks",
+      "url": "",
+      "line": -1,
+      "milliseconds": 210.491
+    },
+    {
+      "function": "run",
+      "url": "",
+      "line": -1,
+      "milliseconds": 209.878
+    },
+    {
+      "function": "prepare",
+      "url": "",
+      "line": -1,
+      "milliseconds": 207.425
+    },
+    {
+      "function": "socketListenerWrap",
+      "url": "node:_http_server",
+      "line": 1235,
+      "milliseconds": 207.218
+    },
+    {
+      "function": "prepare",
+      "url": "",
+      "line": -1,
+      "milliseconds": 197.874
+    },
+    {
+      "function": "",
+      "url": "dist/index.js",
+      "line": 1106,
+      "milliseconds": 197.151
+    }
+  ],
+  "inclusive": [
+    {
+      "function": "(root)",
+      "url": "",
+      "line": -1,
+      "milliseconds": 22526.212
+    },
+    {
+      "function": "processTicksAndRejections",
+      "url": "process/task_queues",
+      "line": 70,
+      "milliseconds": 5546.298
+    },
+    {
+      "function": "runMicrotasks",
+      "url": "",
+      "line": -1,
+      "milliseconds": 4139.262
+    },
+    {
+      "function": "callbackTrampoline",
+      "url": "node:internal/async_hooks",
+      "line": 117,
+      "milliseconds": 3447.886
+    },
+    {
+      "function": "provideConnection",
+      "url": "driver/default-connection-provider.js",
+      "line": 6,
+      "milliseconds": 2633.377
+    },
+    {
+      "function": "",
+      "url": "dist/index.js",
+      "line": 1106,
+      "milliseconds": 2453.729
+    },
+    {
+      "function": "",
+      "url": "query-executor/query-executor-base.js",
+      "line": 37,
+      "milliseconds": 2434.307
+    },
+    {
+      "function": "executeQuery",
+      "url": "dist/node-sqlite-dialect.mjs",
+      "line": 57,
+      "milliseconds": 2431.852
+    },
+    {
+      "function": "all",
+      "url": "",
+      "line": -1,
+      "milliseconds": 2336.793
+    },
+    {
+      "function": "add",
+      "url": "dist/index.js",
+      "line": 6948,
+      "milliseconds": 2132.587
+    },
+    {
+      "function": "add",
+      "url": "dist/index.js",
+      "line": 6966,
+      "milliseconds": 2132.587
+    },
+    {
+      "function": "set",
+      "url": "account-runtime/agent-auth.mjs",
+      "line": 109,
+      "milliseconds": 2132.351
+    },
+    {
+      "function": "handle",
+      "url": "account-runtime/service.mjs",
+      "line": 1427,
+      "milliseconds": 2126.653
+    },
+    {
+      "function": "run",
+      "url": "",
+      "line": -1,
+      "milliseconds": 2126.432
+    },
+    {
+      "function": "cloudHttp",
+      "url": "account-runtime/cloud-http.mjs",
+      "line": 37,
+      "milliseconds": 1160.227
+    },
+    {
+      "function": "limit",
+      "url": "account-runtime/service.mjs",
+      "line": 404,
+      "milliseconds": 1103.006
+    },
+    {
+      "function": "get",
+      "url": "",
+      "line": -1,
+      "milliseconds": 1098.637
+    },
+    {
+      "function": "first",
+      "url": "account-runtime/sqlite.mjs",
+      "line": 35,
+      "milliseconds": 1098.637
+    },
+    {
+      "function": "handle",
+      "url": "account-runtime/agent-auth.mjs",
+      "line": 234,
+      "milliseconds": 1086.236
+    },
+    {
+      "function": "clearBuffer",
+      "url": "streams/writable",
+      "line": 743,
+      "milliseconds": 929.884
+    },
+    {
+      "function": "Writable.uncork",
+      "url": "streams/writable",
+      "line": 519,
+      "milliseconds": 929.884
+    },
+    {
+      "function": "connectionCorkNT",
+      "url": "node:_http_outgoing",
+      "line": 1032,
+      "milliseconds": 929.884
+    },
+    {
+      "function": "doWrite",
+      "url": "streams/writable",
+      "line": 586,
+      "milliseconds": 928.812
+    },
+    {
+      "function": "Socket._writev",
+      "url": "node:net",
+      "line": 972,
+      "milliseconds": 927.526
+    },
+    {
+      "function": "Socket._writeGeneric",
+      "url": "node:net",
+      "line": 935,
+      "milliseconds": 926.366
+    },
+    {
+      "function": "writevGeneric",
+      "url": "node:internal/stream_base_commons",
+      "line": 120,
+      "milliseconds": 925.149
+    },
+    {
+      "function": "writev",
+      "url": "",
+      "line": -1,
+      "milliseconds": 919.249
+    },
+    {
+      "function": "verifySignature",
+      "url": "lib/jws_verify.js",
+      "line": 41,
+      "milliseconds": 870.51
+    },
+    {
+      "function": "signVerify",
+      "url": "crypto/webcrypto",
+      "line": 771,
+      "milliseconds": 866.934
+    },
+    {
+      "function": "verify",
+      "url": "crypto/webcrypto",
+      "line": 829,
+      "milliseconds": 866.934
+    },
+    {
+      "function": "",
+      "url": "crypto/util",
+      "line": 460,
+      "milliseconds": 865.308
+    },
+    {
+      "function": "jobPromise",
+      "url": "crypto/util",
+      "line": 459,
+      "milliseconds": 865.308
+    },
+    {
+      "function": "eddsaSignVerify",
+      "url": "crypto/cfrg",
+      "line": 344,
+      "milliseconds": 865.308
+    },
+    {
+      "function": "run",
+      "url": "",
+      "line": -1,
+      "milliseconds": 853.545
+    },
+    {
+      "function": "register",
+      "url": "account-runtime/mailboxes.mjs",
+      "line": 91,
+      "milliseconds": 687.477
+    }
+  ],
+  "scope": "Main-thread CPU profile, no source text or arguments; profiling overhead excluded from latency claims",
+  "temporaryLoopbackInspectorClosed": true,
+  "pid": 887396
+}

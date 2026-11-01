@@ -1,0 +1,133 @@
+{
+  "checkedAt": 1793507878.2008727,
+  "pid": "887396",
+  "databaseFileDescriptors": [
+    {
+      "path": "/var/lib/commonplace/database-storage/account.sqlite",
+      "device": 2080
+    },
+    {
+      "path": "/var/lib/commonplace/database-storage/account.sqlite-wal",
+      "device": 2080
+    },
+    {
+      "path": "/var/lib/commonplace/database-storage/account.sqlite-shm",
+      "device": 2080
+    },
+    {
+      "path": "/var/lib/commonplace/database-storage/account.sqlite-wal",
+      "device": 2080
+    },
+    {
+      "path": "/var/lib/commonplace/database-storage/account.sqlite-wal",
+      "device": 2080
+    },
+    {
+      "path": "/var/lib/commonplace/database-storage/account.sqlite",
+      "device": 2080
+    },
+    {
+      "path": "/var/lib/commonplace/database-storage/account.sqlite",
+      "device": 2080
+    },
+    {
+      "path": "/var/lib/commonplace/database-storage/account.sqlite",
+      "device": 2080
+    },
+    {
+      "path": "/var/lib/commonplace/database-storage/account.sqlite",
+      "device": 2080
+    },
+    {
+      "path": "/var/lib/commonplace/database-storage/account.sqlite-wal",
+      "device": 2080
+    }
+  ],
+  "tasks10Seconds": {
+    "887396": {
+      "name": "node",
+      "ticks": 7268,
+      "wchan": "0",
+      "ticksDelta": 243
+    },
+    "887399": {
+      "name": "DelayedTaskSche",
+      "ticks": 0,
+      "wchan": "do_epoll_wait",
+      "ticksDelta": 0
+    },
+    "887400": {
+      "name": "node",
+      "ticks": 793,
+      "wchan": "futex_wait_queue",
+      "ticksDelta": 7
+    },
+    "887401": {
+      "name": "node",
+      "ticks": 712,
+      "wchan": "futex_wait_queue",
+      "ticksDelta": 28
+    },
+    "887402": {
+      "name": "node",
+      "ticks": 798,
+      "wchan": "futex_wait_queue",
+      "ticksDelta": 25
+    },
+    "887403": {
+      "name": "node",
+      "ticks": 698,
+      "wchan": "futex_wait_queue",
+      "ticksDelta": 7
+    },
+    "887404": {
+      "name": "node",
+      "ticks": 0,
+      "wchan": "futex_wait_queue",
+      "ticksDelta": 0
+    },
+    "887417": {
+      "name": "libuv-worker",
+      "ticks": 461,
+      "wchan": "futex_wait_queue",
+      "ticksDelta": 47
+    },
+    "887418": {
+      "name": "libuv-worker",
+      "ticks": 606,
+      "wchan": "futex_wait_queue",
+      "ticksDelta": 28
+    },
+    "887419": {
+      "name": "libuv-worker",
+      "ticks": 547,
+      "wchan": "0",
+      "ticksDelta": 8
+    },
+    "887420": {
+      "name": "libuv-worker",
+      "ticks": 657,
+      "wchan": "futex_wait_queue",
+      "ticksDelta": 65
+    },
+    "887987": {
+      "name": "node",
+      "ticks": 2816,
+      "wchan": "0",
+      "ticksDelta": 582
+    }
+  },
+  "backup": {
+    "MainPID": "888027",
+    "Result": "success",
+    "ExecMainStartTimestamp": "Sun 2026-11-01 04:37:23 UTC",
+    "ExecMainExitTimestamp": "",
+    "ExecMainStatus": "0",
+    "ActiveState": "activating",
+    "SubState": "start",
+    "InvocationID": "f7959b2d3aa542009e14117c9ca412b6",
+    "snapshotVerified": false,
+    "uploadCompleted": false
+  },
+  "databaseRealPath": "/var/lib/commonplace/database-storage/account.sqlite"
+}

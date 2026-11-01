@@ -1,5 +1,5 @@
 {
-  "state": "packaged-reviewed-not-yet-published-or-deployed",
+  "state": "published-and-live",
   "native": "0.4.44/runtime77 unchanged",
   "targetServer": "20261101-context-throughput",
   "patch": 70,
@@ -42,10 +42,19 @@
     "coverageBodyCharactersBefore": 6343047,
     "coverageBodyCharactersAfter": 0
   },
-  "liveAcceptance": "pending",
+  "liveAcceptance": {
+    "release": "20261101-context-throughput",
+    "files": 166,
+    "migrations": 47,
+    "services": 4,
+    "publicSmoke": "passed",
+    "normalBackup": "verified snapshot and successful upload, 2026-11-01T04:39:40Z",
+    "latency": "still unresolved; untraced 4.26\u20135.74s health",
+    "installedSourceRead": "passed, 12000 characters/10 citations; list12383ms/read5753ms"
+  },
   "limitations": [
-    "Prior storage-only latency samples remain slow",
-    "Two normal backup timeouts retained",
+    "Prior storage-only and patch70 latency samples remain slow",
+    "Two earlier normal backup timeouts retained",
     "Native and Work reply acceptance pending"
   ]
 }

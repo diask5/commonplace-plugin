@@ -1,0 +1,11 @@
+{
+  "state": "blocked",
+  "tool": "mcp__conductor__RunLocalCommand",
+  "reason": "No authorized Mac is bound to this chat. Send a message from the Mac you want to use.",
+  "trigger": "Observed after incoming storage documentation agent update",
+  "lastAction": "Read-only capacity status",
+  "capacityMutationStarted": false,
+  "server70Live": true,
+  "server71Deploy": "not attempted",
+  "noRetryOrAlternateMacRoute": true
+}
