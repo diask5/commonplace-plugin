@@ -1,0 +1,15 @@
+# Context sync and communication closeout
+
+1 November 2026. Native **0.4.44/runtime 77** is published, installed and active on the Mac and cloud. Server **20261101-resumable-context** is live. Distribution PRs 70 and 71 are merged; source PR #68 tracks the fixes and final evidence. The public setup URL remains https://34.27.253.220/.
+
+The first large Mac mirror completed. A later pinned-generation verification checked **823 documents /41,196,479 characters**, with all 823 SHA-256 digests matching and the account identity unchanged. Installed-companion listing and source reading passed; the read returned 12,000 characters and 10 citations without copying private content, titles or source identifiers into evidence. This covers the current eligible archive, not unavailable web-only histories or malformed raw replicas.
+
+A fresh 0.4.43 native chat read another same-owner agent's published progress, published its own Personal progress, and read the previous assistant final from the archive. Root then independently read this chat's actual Willow Creek assistant final, distinguishing the quoted user prompt. A fresh 0.4.44 attempt overlapped production maintenance and failed seven calls with connection-unavailable responses. That attempt remains retained; post-maintenance acceptance and native/Work roundtrips are still pending.
+
+The Work space's selected other receiver belongs to the owner's kyle@bland.ai account and was offline at inspection. Its receiving side has not been moved. Shared history and member metadata do not prove message delivery; only the actual request/read/reply receipts can close this gate.
+
+Patch 68 keeps validated private download prefixes across retries and reduces24 legacy metadata scans to one per request. Patch 69 reports stale receiver checks honestly without changing the 20-second readiness threshold, message dispatch, route eligibility, sharing rules, classifier settings or host permissions.840 core tests, both native aliases, independent reviews and exact69-patch replay across 264 changed files pass. Extracted checks and original harness failures are retained separately.
+
+The remaining latency investigation measured 40.4%iowait,70%diskutilization and 1,430 flushes totaling 13.0 seconds in a 44.68-second sample on the30 GBstandard data disk. Health requests took2.66–6.78 seconds. A separate30 GBbalanced disk is prepared. The database-only migration retains the original disk/database and all SSH workspace mounts. Three guarded attempts are preserved: service-user mismatch before pause; an additional Files service DB holder; and service write-path restriction with automatic current-data rollback. All four services were restored. A revised mount inside the existing allowed data subtree is under review; no service sandbox or native host permission is relaxed.
+
+See `implementation/resumable-context-pages-verification.json`, `implementation/receiver-readiness-reporting-verification.json` and the metadata-only records under `implementation/end-to-end-repair/`. No all-host, clean-machine, independent-human or full-history readiness claim is made.

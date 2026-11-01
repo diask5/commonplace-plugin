@@ -1,0 +1,17 @@
+{
+  "startedAt": 1793504840.668994,
+  "state": "rolled-back",
+  "oldDiskRetained": true,
+  "databasePathPreserved": true,
+  "hostPoliciesChanged": false,
+  "sqliteAliasProbe": true,
+  "newDiskUuid": "4b9a5959-5eed-4a88-a902-b4f30c7993cd",
+  "copiedFileHashes": {
+    "account.sqlite": "901c2189f8c81de8399bc1b61fb4fd9825492ffe161a765b26245be227d7213a"
+  },
+  "migrations": 47,
+  "originalDatabaseBackup": "/var/lib/commonplace/storage-before-balanced-20261101",
+  "failure": "RuntimeError: Internal health did not become ready",
+  "finishedAt": 1793504972.218562
+}
+

@@ -1,5 +1,5 @@
 {
-  "state": "Native0.4.44/runtime77 packaged and reviewed; publication/install pending. Server20261101-resumable-context unchanged.",
+  "state": "Published0.4.44/runtime77; installed/active on Mac and cloud. Production storage repair and final communication checks pending.",
   "patch": 69,
   "tests": {
     "core": {
@@ -50,5 +50,11 @@
     "Initial extracted test fixture retained a source-relative native-hook CLI path; fixture rewritten to extracted package and final32checks passed.",
     "Original stale successful-checkpoint and obsolete-runtime reporting assertions failed before the correction."
   ],
-  "liveAcceptance": "pending"
+  "liveAcceptance": "pending",
+  "nativeRelease": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.44",
+  "sourceCommit": "d564d409567a6ce3def8a519f1a9f109d1ee84a7",
+  "distributionPR": 71,
+  "githubAssetsVerifiedBeforePublication": 6,
+  "cloudInstall": "end-to-end-repair/cloud77-install.json",
+  "cloudActivation": "end-to-end-repair/cloud77-activation.json"
 }

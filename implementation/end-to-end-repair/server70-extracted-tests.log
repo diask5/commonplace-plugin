@@ -1,0 +1,24 @@
+✔ source status evaluates each owner alias once rather than per legacy section (502.152853ms)
+✔ source status preserves exact delimiter, Unicode, device, owner and live-edit visibility (141.046529ms)
+✔ source status composes with an outer transaction and rolls back failed reads (152.170247ms)
+✔ coverage counts a 6,343,047-character source without returning message bodies to JavaScript (244.768771ms)
+ℹ {"characters":6343047,"messages":159,"coverageMs":3.67,"returnedCharacters":0}
+✔ coverage metadata matches body reader for replicas, conflicts, tombstones, exclusions and authority changes (214.963365ms)
+✔ source collection status keeps current freshness and authority fences without a cache (155.743384ms)
+✔ coverage retains owner/project pagination and agent metadata limits (509.407787ms)
+✔ warmed synthetic status benchmark: 684 documents, 13,694 sections, 224 aliases (10047.94277ms)
+ℹ {"documents":684,"sections":13694,"aliases":224,"beforeMs":[2468.7,1742.21,1525.53],"afterMs":[77.74,60.94,130.88]}
+✔ warmed actual-size synthetic status benchmark: 4,385 legacy rows and 700 disjoint aliases (10250.527319ms)
+ℹ {"documents":700,"sections":4385,"aliases":700,"aliasOverlap":0,"beforeMs":[2146.24,1941.82,2590.8],"afterMs":[28.78,14.04,13.71]}
+✔ symlink database uses its physical backup directory and removes the uploaded snapshot (605.468117ms)
+✔ symlink database uses its physical backup directory and retains the verified snapshot after upload failure (666.41727ms)
+✔ regular database uses its physical backup directory and removes the uploaded snapshot (512.841197ms)
+✔ regular database uses its physical backup directory and retains the verified snapshot after upload failure (484.641633ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22497.419814

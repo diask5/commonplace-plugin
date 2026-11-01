@@ -1,0 +1,21 @@
+test_exact_probe_cross_filesystem_alias_wal_and_cleanup (__main__.LocalChecks) ... ok
+test_holder_guard_matches_inode_aliases_and_fails_closed_on_permissions (__main__.LocalChecks) ... ok
+test_missing_namespace_mount_fails_before_any_probe_write (__main__.LocalChecks) ... ok
+test_namespace_command_targets_verified_main_pid_and_drops_user (__main__.LocalChecks) ... ok
+test_staged_copy_and_atomic_rollback_preserve_latest_committed_data (__main__.LocalChecks) ... ERROR
+test_syntax_and_no_format_or_sandbox_mutation (__main__.LocalChecks) ... ok
+
+======================================================================
+ERROR: test_staged_copy_and_atomic_rollback_preserve_latest_committed_data (__main__.LocalChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r4-local-checks.py", line 53, in test_staged_copy_and_atomic_rollback_preserve_latest_committed_data
+    migrations=f['schema_as_user'](old,'synthetic');f['checkpoint'](old,'synthetic');source=f['digest'](old)
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/migrate-database-storage69-r4.py", line 79, in checkpoint
+    run('runuser','-u',user,'--','/opt/node/bin/node','--input-type=module','-e',js,str(file),stdout=subprocess.DEVNULL)
+NameError: name 'subprocess' is not defined
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.271s
+
+FAILED (errors=1)

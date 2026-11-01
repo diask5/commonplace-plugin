@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-11-01T04:17:59.957Z",
+  "runtime": {
+    "revision": 77,
+    "pid": 51705
+  },
+  "cloud_agent_status": {
+    "syncEnabled": true,
+    "elapsedMs": 10055
+  },
+  "context_folder_status": {
+    "enabled": true,
+    "ready": true,
+    "running": true,
+    "error": "Context changed during mirroring; retrying.",
+    "diagnostics": {
+      "phase": "files",
+      "revision": 8781,
+      "requests": 1,
+      "completed": 0,
+      "reused": 867,
+      "resumed": 0,
+      "code": null
+    },
+    "documents": 869,
+    "revision": 8767,
+    "lastSyncedAt": 1793506612515,
+    "characters": 41771398,
+    "elapsedMs": 4
+  },
+  "workspace_receiver_status": {
+    "enabled": true,
+    "provider": "claude",
+    "state": "ready",
+    "elapsedMs": 4
+  }
+}
+

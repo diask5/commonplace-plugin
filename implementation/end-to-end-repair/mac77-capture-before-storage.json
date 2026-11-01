@@ -1,0 +1,54 @@
+{
+  "checkedAt": 1793506244.845856,
+  "accountMatches": true,
+  "format": 3,
+  "enabled": true,
+  "lastSyncedAt": 1793506237788,
+  "retryAt": null,
+  "errorPresent": true,
+  "discoveryPartial": false,
+  "conductor": {
+    "available": true,
+    "conversations": 56,
+    "partial": false
+  },
+  "canonical": {
+    "files": 204,
+    "partial": true,
+    "hasBacklog": true,
+    "sent": {
+      "fresh": 1,
+      "continuing": 0,
+      "retry": 0,
+      "heartbeat": 0
+    },
+    "deferred": {
+      "fresh": 1,
+      "continuing": 0,
+      "retry": 0,
+      "heartbeat": 201
+    },
+    "backedOff": 0,
+    "scanned": 204,
+    "discovered": 204,
+    "scanMode": "full",
+    "scanMs": 26.645332999993116,
+    "uploadMs": 4248.476000000024
+  },
+  "durable": {
+    "records": 204,
+    "eligible": 204,
+    "complete": 203,
+    "incomplete": 1,
+    "errors": 0,
+    "withoutCaptureId": 0,
+    "excluded": 0,
+    "accountWithheld": 0,
+    "queuedMessages": 0,
+    "pendingPresent": false,
+    "pendingMessageCount": 0
+  },
+  "privateIdentifiersOrContentIncluded": false,
+  "localSnapshotsMayAdvanceDuringRead": true
+}
+

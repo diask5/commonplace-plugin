@@ -1,0 +1,11 @@
+test_exact_probe_cross_filesystem_alias_wal_and_cleanup (__main__.LocalChecks) ... ok
+test_holder_guard_matches_inode_aliases_and_fails_closed_on_permissions (__main__.LocalChecks) ... ok
+test_missing_namespace_mount_fails_before_any_probe_write (__main__.LocalChecks) ... ok
+test_namespace_command_targets_verified_main_pid_and_drops_user (__main__.LocalChecks) ... ok
+test_staged_copy_and_atomic_rollback_preserve_latest_committed_data (__main__.LocalChecks) ... ok
+test_syntax_and_no_format_or_sandbox_mutation (__main__.LocalChecks) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.444s
+
+OK

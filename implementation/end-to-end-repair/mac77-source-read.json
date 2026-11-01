@@ -1,0 +1,22 @@
+{
+  "state": "passed",
+  "runtimeRevision": 77,
+  "accountPreserved": true,
+  "documentReferenceSha256": "3299c1a89e2ec591e94bef435ed287185d7b3574322dc28656ece66101e180c5",
+  "revision": 8560,
+  "offset": 0,
+  "successfulReadCharacters": 12000,
+  "citationCount": 10,
+  "sourceContentNotPublished": true,
+  "calls": [
+    {
+      "name": "list_shared_context",
+      "elapsedMs": 3344
+    },
+    {
+      "name": "read_shared_context",
+      "elapsedMs": 921
+    }
+  ],
+  "scope": "Installed companion API; no source title, identifier or text included in evidence"
+}

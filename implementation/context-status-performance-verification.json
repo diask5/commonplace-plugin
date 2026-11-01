@@ -1,0 +1,51 @@
+{
+  "state": "packaged-reviewed-not-yet-published-or-deployed",
+  "native": "0.4.44/runtime77 unchanged",
+  "targetServer": "20261101-context-throughput",
+  "patch": 70,
+  "files": 166,
+  "changedRuntimeFiles": [
+    "dist/standalone/account-runtime/backup.mjs",
+    "dist/standalone/account-runtime/cloud-work.mjs",
+    "dist/standalone/account-runtime/unified-context.mjs"
+  ],
+  "unchangedMigrations": 47,
+  "artifactSha256": {
+    "runtime-update.json": "7afc42c5b0f7634246ca81b96075a6684e5c058f5af7f69cbb7fd22a89505589",
+    "runtime-update-manifest.json": "2932d0200e258cddd2375574c70f3efa7a1ed83ac5a9114cdd9b4fd8c79f5b51",
+    "runtime-update.sha256": "1cca87c1cae655c79a947ddcd30f36e544204f38caa741c156517acf7a8773b0",
+    "deploy-cloud-update.py": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32"
+  },
+  "tests": {
+    "core": {
+      "passed": 853,
+      "failed": 0
+    },
+    "extractedFocused": 13,
+    "replay": {
+      "patches": 70,
+      "changedFiles": 267,
+      "mismatches": 0
+    },
+    "extractedHttpSmoke": {
+      "passed": true,
+      "dependencies": "symlink to unchanged source node_modules; not independent dependency packaging",
+      "googleOrNativeHostExercised": false
+    }
+  },
+  "review": "Independent agent66 reviewed exact frozen status and backup hashes without blockers",
+  "performanceSynthetic": {
+    "productionShape4385Rows700Aliases": {
+      "beforeMedianMs": 1459,
+      "afterMedianMs": 15
+    },
+    "coverageBodyCharactersBefore": 6343047,
+    "coverageBodyCharactersAfter": 0
+  },
+  "liveAcceptance": "pending",
+  "limitations": [
+    "Prior storage-only latency samples remain slow",
+    "Two normal backup timeouts retained",
+    "Native and Work reply acceptance pending"
+  ]
+}

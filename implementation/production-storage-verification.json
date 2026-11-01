@@ -1,0 +1,341 @@
+{
+  "state": "Production database storage cutover passed; performance and normal backup reliability remain unresolved, with two retained live backup timeouts. Final readiness remains open.",
+  "asOf": "2026-11-01; includes owner-confirmed second backup timeout at 04:27:55 UTC and source-only backup-directory correction",
+  "scope": "Storage migration record assembled from retained evidence; no new production or Mac operations.",
+  "finalReadiness": false,
+  "migration": {
+    "revision": "r5",
+    "status": "passed",
+    "evidenceKind": "live-production",
+    "evidence": "end-to-end-repair/storage69-attempt5.json",
+    "helper": "end-to-end-repair/migrate-database-storage69-r5.py",
+    "helperSha256": "84bf47d080ed1aa0fac230035000d7451f705b756b8a98656964f7e361cd0aab",
+    "startedAt": "2026-11-01T04:16:04.011618Z",
+    "finishedAt": "2026-11-01T04:16:48.667161Z",
+    "durationSeconds": 44.65554404258728,
+    "stableDatabasePath": "/var/lib/commonplace/account.sqlite",
+    "selectedDatabasePath": "/var/lib/commonplace/database-storage/account.sqlite",
+    "balancedMount": "/var/lib/commonplace/database-storage",
+    "diskById": "/dev/disk/by-id/google-commonplace-data-balanced-20261101",
+    "device": "/dev/sdc",
+    "uuid": "4b9a5959-5eed-4a88-a902-b4f30c7993cd",
+    "migrationDigestsVerified": 47,
+    "closedSourceSha256": "a832353725e0482390d5cab5c13be130b14ffdcf2fb3707b64de93af81ac17fe",
+    "services": {
+      "nginx": "active",
+      "commonplace-files": "active",
+      "commonplace-runtime": "active",
+      "commonplace": "active"
+    },
+    "mainNamespaceProof": {
+      "device": 2080,
+      "namespaceWrite": true,
+      "sqliteAlias": true,
+      "walShared": true
+    },
+    "filesAuthDatabaseProof": {
+      "readOnly": true,
+      "walAware": true,
+      "selectedDatabase": true,
+      "schemaMatches": true,
+      "migrations": 47,
+      "schemaSha256": "ef3e099aa6887746c1111bb92207a8fa49edea85d2aded503a550e2e4945a557"
+    },
+    "workerReadiness": "Fresh heartbeat required by reviewed helper before Files/nginx startup; live helper result passed.",
+    "hostPoliciesChanged": false,
+    "accountPermissionsOrSandboxChanged": false
+  },
+  "retainedData": {
+    "oldDisk": "/dev/sdb",
+    "originalMount": "/var/lib/commonplace",
+    "oldDiskRetained": true,
+    "oldMountUnchanged": true,
+    "preCutoverDatabaseBackupDirectory": "/var/lib/commonplace/storage-before-balanced-20261101-r5",
+    "preCutoverDatabaseBackupFile": "/var/lib/commonplace/storage-before-balanced-20261101-r5/account.sqlite",
+    "priorPreparedTarget": "/var/lib/commonplace/database-storage/account.before-r4.sqlite",
+    "priorPreparedFiles": {
+      "account.before-r4.sqlite": {
+        "sha256": "901c2189f8c81de8399bc1b61fb4fd9825492ffe161a765b26245be227d7213a",
+        "bytes": 360534016
+      }
+    },
+    "sshMountsRetained": 3,
+    "sshMountDevices": [
+      "/dev/loop0",
+      "/dev/loop1",
+      "/dev/loop2"
+    ],
+    "sshWorkspaceMountsUntouched": true,
+    "previousAttemptEvidencePreserved": true
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "evidence": "end-to-end-repair/storage69-attempt1.json",
+      "kind": "live-production",
+      "state": "rolled-back",
+      "startedAt": "2026-11-01T03:41:18.826841Z",
+      "finishedAt": "2026-11-01T03:41:19.791176Z",
+      "failure": "AssertionError: ",
+      "oldDiskRetained": true,
+      "databasePathPreserved": true,
+      "hostPoliciesChanged": false
+    },
+    {
+      "attempt": 2,
+      "evidence": "end-to-end-repair/storage69-attempt2.json",
+      "kind": "live-production",
+      "state": "rolled-back",
+      "startedAt": "2026-11-01T03:44:14.826123Z",
+      "finishedAt": "2026-11-01T03:44:32.591878Z",
+      "failure": "AssertionError: Unexpected remaining database holder 253145",
+      "oldDiskRetained": true,
+      "databasePathPreserved": true,
+      "hostPoliciesChanged": false
+    },
+    {
+      "attempt": 3,
+      "evidence": "end-to-end-repair/storage69-attempt3.json",
+      "kind": "live-production",
+      "state": "rolled-back",
+      "startedAt": "2026-11-01T03:47:20.668994Z",
+      "finishedAt": "2026-11-01T03:49:32.218562Z",
+      "failure": "RuntimeError: Internal health did not become ready",
+      "oldDiskRetained": true,
+      "databasePathPreserved": true,
+      "hostPoliciesChanged": false
+    },
+    {
+      "attempt": 4,
+      "evidence": "end-to-end-repair/storage69-attempt4.json",
+      "kind": "live-production",
+      "state": "rolled-back",
+      "startedAt": "2026-11-01T04:05:52.760262Z",
+      "finishedAt": "2026-11-01T04:06:22.799687Z",
+      "failure": "AssertionError: Unexpected database holder PID 883648",
+      "oldDiskRetained": true,
+      "databasePathPreserved": true,
+      "hostPoliciesChanged": false
+    },
+    {
+      "attempt": 5,
+      "evidence": "end-to-end-repair/storage69-attempt5.json",
+      "kind": "live-production",
+      "state": "passed",
+      "startedAt": "2026-11-01T04:16:04.011618Z",
+      "finishedAt": "2026-11-01T04:16:48.667161Z",
+      "failure": null,
+      "oldDiskRetained": true,
+      "databasePathPreserved": true,
+      "hostPoliciesChanged": false
+    }
+  ],
+  "backupTimer": {
+    "unit": "commonplace-backup.timer",
+    "priorActiveState": "active",
+    "priorSubState": "waiting",
+    "priorUnitFileState": "enabled",
+    "restored": true,
+    "restorationMeaning": "Exact prior active/inactive state restored after application checks; enabled state unchanged.",
+    "disabledByMigration": false,
+    "backupServiceStoppedOrSignaledByMigration": false,
+    "finallyRestorationRequiredBeforePassed": true
+  },
+  "historicalScheduledBackup": {
+    "status": "failed-timeout-retained",
+    "evidence": "end-to-end-repair/storage69-backup-timeout.json",
+    "fingerprintEvidence": "end-to-end-repair/storage69-attempt5.json:preexistingBackupFailure",
+    "startedAt": "2026-11-01T04:03:23Z",
+    "finishedAt": "2026-11-01T04:08:23Z",
+    "existingSystemdTimeout": "5min",
+    "fingerprint": {
+      "MainPID": "0",
+      "Result": "timeout",
+      "ExecMainStartTimestamp": "Sun 2026-11-01 04:03:23 UTC",
+      "ExecMainStartTimestampMonotonic": "3827523228312",
+      "ExecMainExitTimestamp": "Sun 2026-11-01 04:08:23 UTC",
+      "ExecMainExitTimestampMonotonic": "3827823218295",
+      "ExecMainPID": "883648",
+      "ExecMainCode": "2",
+      "ExecMainStatus": "15",
+      "ActiveState": "failed",
+      "SubState": "failed",
+      "InvocationID": "b87cb0f36fe4490db77a36c6aff71f13"
+    },
+    "snapshotSuccessObserved": false,
+    "signaledByThisRepair": false,
+    "resetFailed": false,
+    "exception": "Only exact equality across the 12 owner-supplied fields was permitted, with MainPID 0 and no unexpected holders; any changed/new failure aborts.",
+    "distinctFromMigrationBackup": true
+  },
+  "normalBackupFollowup": {
+    "status": "failed-timeout-retained",
+    "source": "Owner live read-only inspection/status updates; no new production call by documentation author.",
+    "unit": "commonplace-backup.service",
+    "startedAt": "2026-11-01T04:22:55Z",
+    "pidAtStart": 886126,
+    "invocationId": "5dfe709008d341b8a9bacc3b43bd8d9c",
+    "snapshotSucceeded": null,
+    "uploadSucceeded": null,
+    "finishedAt": "2026-11-01T04:27:55Z",
+    "mainPID": 0,
+    "activeState": "failed",
+    "result": "timeout",
+    "exitStatus": 15,
+    "existingSystemdTimeout": "5 minutes",
+    "terminationVerified": true,
+    "successfulCompletionVerified": false,
+    "snapshotVerificationObserved": false,
+    "signaledByThisRepair": false,
+    "resetFailed": false,
+    "partialObservation": {
+      "observedAt": "2026-11-01T04:27:15Z",
+      "source": "Owner live inspection",
+      "partialSnapshotApproximateMB": 365,
+      "partialDevice": 2064,
+      "databaseDevice": 2080,
+      "wchan": "folio_wait_bit_common",
+      "diskReadsApproximateMB": 335,
+      "snapshotVerifiedMessageObserved": false
+    }
+  },
+  "performance": {
+    "status": "unresolved",
+    "evidenceKind": "live-production-instrumented-samples",
+    "beforeEvidence": "end-to-end-repair/capacity69-before.json",
+    "afterEvidence": "end-to-end-repair/capacity69-after.json",
+    "additionalAfterEvidence": "end-to-end-repair/pressure69-after-storage.json",
+    "beforeSampleSeconds": 44.68,
+    "afterSampleSeconds": 44.5,
+    "beforeHealthSeconds": [
+      4.509882555343211,
+      5.2151106162928045,
+      2.660411432851106,
+      3.503185215871781,
+      6.777215397916734,
+      6.247498866170645,
+      5.247092500794679
+    ],
+    "afterHealthSeconds": [
+      4.776637449860573,
+      4.519398719072342,
+      3.957356418017298,
+      4.99769523087889,
+      9.003376417793334,
+      9.511823451146483
+    ],
+    "allSampledHealthReady": true,
+    "postStorageHealthRoundedSeconds": [
+      4.0,
+      9.5
+    ],
+    "beforeIowaitPercent": 40.43006586594343,
+    "afterIowaitPercent": 12.394775036284472,
+    "beforeMainProcessCpuPercent": 90.03183350981774,
+    "afterMainProcessCpuPercent": 133.42961234578766,
+    "beforeDiskAwaitMs": 8.455540355677154,
+    "afterDiskAwaitMs": 2.74932735426009,
+    "interpretation": "Iowait decreased, but main-process CPU remained high and health latency was not solved. Short traced samples do not establish sustained throughput or a causal speedup."
+  },
+  "syntheticVerification": {
+    "evidenceKind": "disposable-local-synthetic-fixtures",
+    "authorFocusedTests": 43,
+    "independentRerunOfSameTests": 43,
+    "countsOverlap": true,
+    "independentChangedFingerprintChecks": 36,
+    "allChangedFingerprintChecksRejected": true,
+    "reviewEvidence": "end-to-end-repair/review-storage69-r5-verification.json",
+    "authorEvidence": "end-to-end-repair/storage69-r5-verification.json",
+    "productionAcceptanceSubstitute": false
+  },
+  "remainingWork": [
+    {
+      "item": "Performance",
+      "status": "open",
+      "detail": "Health remains approximately 4.0\u20139.5 seconds and CPU remains high."
+    },
+    {
+      "item": "Patch 70",
+      "status": "implementation-and-review-in-progress",
+      "source": "Owner status update",
+      "detail": "Root and agents 92 and 66 are addressing reproduced sourceStatus alias scans; the backup-directory source correction is also intended for inclusion. No deployment or live latency/backup acceptance is established here."
+    },
+    {
+      "item": "Normal backup",
+      "status": "two-live-timeouts-retained",
+      "detail": "Review and release the source-only directory correction, then verify a fresh normal backup snapshot and upload. Preserve both failed invocations separately."
+    },
+    {
+      "item": "Final readiness",
+      "status": "open",
+      "detail": "A successful storage cutover is not complete performance, backup or end-to-end readiness."
+    }
+  ],
+  "evidenceSha256": {
+    "end-to-end-repair/storage69-attempt1.json": "0e6561bbe35acc057b80734b1407dfa9f5a4781edf036ec4be756cf0818f5578",
+    "end-to-end-repair/storage69-attempt2.json": "449099679649fbbc42e650c95d04f9524a43486bf93b79f07e4764ae2af9235a",
+    "end-to-end-repair/storage69-attempt3.json": "79ae287d1079ffb81b23ff694fdd99acd420125fa172899076a207ee09a97af3",
+    "end-to-end-repair/storage69-attempt4.json": "50936e4001add214e2d07b4a37ea0661e6693b9fcf0c324d576ff43d8a419f9a",
+    "end-to-end-repair/storage69-attempt5.json": "3d106289eeb0f08866c8dc8e6b8c4553ed46b9b39eb6b14ba5beefba73ff0f7b",
+    "end-to-end-repair/storage69-backup-holder.json": "29c47a68cd7cebb77d66af869229940e2a7bb7db3806fed85f7353019998944c",
+    "end-to-end-repair/storage69-backup-timeout.json": "dbdad98ff2b3344f95ba470373f1a5f3f2bd8d40b8c3e89aeba675051254055e",
+    "end-to-end-repair/capacity69-before.json": "173ea43cf44c6d8f8a35651db044151a1bbfca14f28174018c7929a2f718ca31",
+    "end-to-end-repair/capacity69-after.json": "fa068771be5c633f920be772e1c7c8ca61fc7b83fcc8d5dbe6935487163290df",
+    "end-to-end-repair/pressure69-after-storage.json": "4c5b68683d54754170601eb497c3e85e5eea69c731f778dbc3673e1b4737a1b9",
+    "end-to-end-repair/storage69-r5-verification.json": "0b1de19c9f8a6d9c2c9c256ebe17a63f1668031e468b7fda4f8ef68b58348e22",
+    "end-to-end-repair/review-storage69-r5-verification.json": "3b3d6208cfc6ee8e86416fe7e5909e4fc4109501f6a9e15eebc9b6339c61ed44",
+    "end-to-end-repair/migrate-database-storage69-r5.py": "84bf47d080ed1aa0fac230035000d7451f705b756b8a98656964f7e361cd0aab",
+    "end-to-end-repair/review-storage69-r5-final-fingerprint.log": "be96e44bff981c9278e74a0c3eb71e1544b46b391b90bd9a3369b69e0c9ba9d8"
+  },
+  "backupDirectoryCorrection": {
+    "status": "source-only-frozen-for-independent-review",
+    "intendedPatch": 70,
+    "rootCause": "Backup directory derived from dirname of logical COMMONPLACE_DB; symlink relocation left snapshots and integrity verification on the old disk.",
+    "change": "Use realpath(database) before selecting its parent backups directory.",
+    "expectedProductionDirectory": "/var/lib/commonplace/database-storage/backups",
+    "fileSha256": {
+      "apps/commonplace-account/server/backup.mjs": "2ab3a6e85ffb2d5bab6c38ec09a0ff0d889a867a5ae50f689ea0aba1e1dae79e",
+      "tests/production-backup-location.test.mjs": "ac3d85640f81f1cc76c9f826eac1ce5a0f3e688b6996acfeae8b509b31dac01f"
+    },
+    "tests": {
+      "kind": "synthetic SQLite and fully mocked fetch; no network",
+      "before": {
+        "passed": 2,
+        "failed": 2,
+        "failedCases": "Symlink path, both successful upload and failed upload retention.",
+        "passedCases": "Regular database path, both upload outcomes."
+      },
+      "after": {
+        "passed": 6,
+        "failed": 0,
+        "newEntryPointCases": 4,
+        "existingSnapshotAndTimeoutCases": 2
+      },
+      "coverage": [
+        "symlink and regular paths",
+        "directory 0700 and backup 0600",
+        "real integrity and committed WAL snapshot contents",
+        "upload protocol/body and success cleanup",
+        "verified backup retained on upload failure",
+        "existing concurrent-write pinned snapshot and timeout behavior"
+      ]
+    },
+    "unchanged": [
+      "pinned read transaction",
+      "snapshot integrity verification",
+      "upload protocol",
+      "failure retention",
+      "directory/file permissions",
+      "existing service and operation timeouts",
+      "service sandbox"
+    ],
+    "localEvidence": ".context/end-to-end-repair/backup-location70-verification.json",
+    "independentReview": {
+      "status": "requested",
+      "deliveryState": "queued",
+      "messageId": "fba999da-5911-4089-9217-a8e2801c9cad"
+    },
+    "packagedInstalledDeployed": false,
+    "successfulLiveBackupAfterCorrectionVerified": false
+  }
+}

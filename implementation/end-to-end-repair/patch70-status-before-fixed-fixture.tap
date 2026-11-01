@@ -1,0 +1,56 @@
+✖ source status evaluates each owner alias once rather than per legacy section (231.425432ms)
+✔ source status preserves exact delimiter, Unicode, device, owner and live-edit visibility (58.251642ms)
+✖ coverage counts a 6,343,047-character source without returning message bodies to JavaScript (115.682427ms)
+ℹ {"characters":6343047,"messages":159,"coverageMs":19.95,"returnedCharacters":6343047}
+✔ coverage metadata matches body reader for replicas, conflicts, tombstones, exclusions and authority changes (100.015805ms)
+✔ source collection status keeps current freshness and authority fences without a cache (70.316832ms)
+✔ coverage retains owner/project pagination and agent metadata limits (179.532488ms)
+✔ warmed synthetic status benchmark: 684 documents, 13,694 sections, 224 aliases (10806.807496ms)
+ℹ {"documents":684,"sections":13694,"aliases":224,"beforeMs":[1319.53,1152.21,1344.44],"afterMs":[1175.99,1165.88,1192.13]}
+ℹ tests 7
+ℹ suites 0
+ℹ pass 5
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11759.571107
+
+✖ failing tests:
+
+test at tests/context-status-performance.test.mjs:53:1
+✖ source status evaluates each owner alias once rather than per legacy section (231.425432ms)
+  AssertionError [ERR_ASSERTION]: alias evaluations must be bounded by aliases, got 60600
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-status-performance.test.mjs:61:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/context-status-performance.test.mjs:81:1
+✖ coverage counts a 6,343,047-character source without returning message bodies to JavaScript (115.682427ms)
+  AssertionError [ERR_ASSERTION]: metadata coverage must not load full body strings
+  
+  6343047 !== 0
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-status-performance.test.mjs:92:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 6343047,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

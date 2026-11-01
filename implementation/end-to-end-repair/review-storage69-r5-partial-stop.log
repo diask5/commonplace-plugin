@@ -1,0 +1,7 @@
+{
+  "checks": 1,
+  "passed": 1,
+  "failed": 0,
+  "scenario": "Partial timer stop changes active state then raises; actual extracted finally restores prior active timer and records non-pass result",
+  "serviceSignals": 0
+}

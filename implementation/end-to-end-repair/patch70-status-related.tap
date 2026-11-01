@@ -1,0 +1,50 @@
+2026-11-01T04:26:39.834Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ bounded collection visits mixed-case paths instead of starving a new chat (1196.294971ms)
+✔ replicas converge, edits beat stale copies, conflicts remain attributed and exclusions erase every replica (659.867707ms)
+✔ explicit tombstones survive late replicas and foreign account data never appears (533.616918ms)
+✔ canonical document reads observe current replicas and exclusions without building an index (786.118723ms)
+✔ library removes fully deleted streams, ignores stale replicas and shows newer restored content (522.078079ms)
+✔ canonical collector accepts an aliased root ancestor without following escaped files (642.317306ms)
+✔ collector retries exact persisted batches after a lost acknowledgement, catches append and scans child agents (575.359782ms)
+✔ native MCP and the cloud archive expose the same canonical text; old copies cannot bypass exclusion (1424.041502ms)
+✔ known Conductor/native aliases merge streams without crossing account or exclusion boundaries (676.322642ms)
+✔ collector handles long Unicode messages and durable mid-file progress, edits and deletion (599.114176ms)
+✔ native history exclusion removes canonical text and revoked devices lose their projected evidence (726.002085ms)
+✔ library presents canonical conversations once and deletion removes them from every query (554.736024ms)
+✔ lost checkpoints recover through device-scoped metadata and resume collection (644.081939ms)
+✔ native history restore requires fresh epochs and exclusions prevent first-upload retention (607.591687ms)
+✔ fallback positions remain source-local and rescanned children never enter the parent stream (440.490668ms)
+✔ malformed sources do not stop other chats and an account change cannot receive an old collection batch (516.020585ms)
+✔ incomplete captures preserve the previous complete source until atomic publication (467.754428ms)
+✔ replacement captures discard unfinished edits and stage deletions until completion (529.107637ms)
+✔ exclusion erases staged text and a stale epoch cannot publish it after restoration (479.946611ms)
+✔ native long-message edits remain complete during bounded collection and resume after restart (677.379736ms)
+✔ revoking a device clears its staged capture and rejects its cached authenticated identity (609.475595ms)
+✔ a failed replacement scan preserves a legacy source until the new capture commits (592.174819ms)
+✔ a collector recovers a completed partial line without publishing its earlier incomplete prefix (632.691166ms)
+✔ automatic JSON backfill survives restarts and publishes every message together (1026.978146ms)
+✔ metadata before visible text keeps the real identity and groups projects across providers (494.799745ms)
+✔ upgrading the collector repairs incomplete old JSON captures without losing revision checkpoints (560.776333ms)
+✔ automatic collection status includes canonical-only history and hides excluded or revoked sources (500.336267ms)
+✔ account exhaustion switches only among the same owner; no capacity durably waits (246.92285ms)
+✔ network failures keep account affinity; stale executions and cancellation cannot commit (288.940506ms)
+✔ idempotent task acceptance cannot change scope and account lists never reveal ciphertext (197.325951ms)
+✔ credential encryption binds human and account; API keys cannot masquerade as subscriptions (3.147483ms)
+✔ worker persists refreshed credentials and finishes without needing any Mac session (207.096485ms)
+2026-11-01T04:26:40.527Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ signed HTTP rejects another owner and browser CSRF; source uploads are resumable and isolated (748.295292ms)
+✔ cloud mailbox receives native work, waits offline, and resumes only on a matching reply after restart (691.016197ms)
+✔ browser login is assigned to one verified device; state, expiry and restart fence callbacks (380.984174ms)
+✔ clarifications preserve task scope, survive restart, deduplicate, and cannot revive cancellation (172.902011ms)
+✔ 0045 is additive and creates the read indexes (225.084258ms)
+✔ migration is idempotent across reopen and rerun (211.277677ms)
+✔ sourceStatus and stats queries use covering indexes, not table scans (208.005938ms)
+✔ sourceStatus results match unindexed evaluation for owner, exclusion and canonical streams (225.309182ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19355.132128

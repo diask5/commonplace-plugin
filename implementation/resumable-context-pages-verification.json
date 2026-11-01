@@ -1,5 +1,5 @@
 {
-  "state": "Packaged and reviewed; publication, install and production acceptance pending",
+  "state": "Published; server live and cloud runtime76 active. Mac installed; guarded activation and first full mirror pending.",
   "patch": 68,
   "native": "0.4.43/runtime76",
   "serverRelease": "20261101-resumable-context",
@@ -69,5 +69,13 @@
     "Synthetic benchmark timing is not production latency.",
     "Full first Mac mirror, installed source read and Work/native replies remain pending.",
     "Malformed source replicas and web-only histories are not claimed complete."
-  ]
+  ],
+  "sourceCommit": "2bd037ecdca7789913125404aface4a437a0ae59",
+  "nativeRelease": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.43",
+  "serverReleaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261101-resumable-context",
+  "distributionPR": 70,
+  "production": "end-to-end-repair/server68-live.json",
+  "publicSmoke": "end-to-end-repair/public-smoke68.json",
+  "cloudInstall": "end-to-end-repair/cloud76-install.json",
+  "cloudActivation": "end-to-end-repair/cloud76-activation.json"
 }

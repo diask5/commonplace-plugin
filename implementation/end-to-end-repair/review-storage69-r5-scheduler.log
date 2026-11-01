@@ -1,0 +1,21 @@
+test_active_timer_paused_running_backup_finishes_and_prior_active_restored (__main__.SchedulerChecks) ... ok
+test_backup_failure_or_remaining_pid_aborts_without_app_pause (__main__.SchedulerChecks) ... ok
+test_backup_timeout_is_bounded_without_signals_or_service_stop (__main__.SchedulerChecks) ... ok
+test_changed_contract_or_timer_or_backup_restart_blocks_app_pause (__main__.SchedulerChecks) ... ok
+test_exact_r4_predecessor_and_pre_pause_order (__main__.SchedulerChecks) ... ok
+test_finally_restores_on_pass_rollback_preflight_and_failed_recovery (__main__.SchedulerChecks) ... ok
+test_finally_restores_timer_after_all_post_cutover_checks (__main__.SchedulerChecks) ... ok
+test_holder_permission_error_and_unexpected_controlgroup_fail_closed (__main__.SchedulerChecks) ... ok
+test_original_inactive_timer_stays_inactive_without_enable_or_disable (__main__.SchedulerChecks) ... ok
+test_pre_pause_holder_allowed_exact_units_and_subgroups (__main__.SchedulerChecks) ... ok
+test_pre_pause_holder_gate_exists (__main__.SchedulerChecks) ... ok
+test_prepared_nested_disk_is_reused_without_mount_or_format_or_renames (__main__.SchedulerChecks) ... ok
+test_stopping_timer_dependency_coupling_is_rejected_before_mutation (__main__.SchedulerChecks) ... ok
+test_timer_helpers_exist (__main__.SchedulerChecks) ... ok
+test_timer_restore_failure_is_not_a_false_pass (__main__.SchedulerChecks) ... ok
+test_unit_property_parser_rejects_incomplete_metadata (__main__.SchedulerChecks) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.036s
+
+OK

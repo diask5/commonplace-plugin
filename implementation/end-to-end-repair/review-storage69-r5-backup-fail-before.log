@@ -1,0 +1,149 @@
+test_active_backup_finishes_without_stop_or_kill_and_timer_restores (__main__.BackupChecks) ... FAIL
+test_backup_cannot_reappear_immediately_before_pause (__main__.BackupChecks) ... FAIL
+test_configuration_drift_fails_closed_without_enable_disable_or_override (__main__.BackupChecks) ... FAIL
+test_failed_backup_fails_before_app_pause_and_timer_restores (__main__.BackupChecks) ... FAIL
+test_no_mount_reformat_backup_stop_or_policy_commands (__main__.BackupChecks) ... FAIL
+test_original_inactive_timer_stays_inactive_and_enabled_state_unchanged (__main__.BackupChecks) ... FAIL
+test_partial_timer_stop_failure_still_records_restoration_obligation (__main__.BackupChecks) ... FAIL
+test_preflight_holders_accept_expected_cgroups_and_reject_backup_or_unknown (__main__.BackupChecks) ... FAIL
+test_queued_backup_job_is_not_mistaken_for_idle (__main__.BackupChecks) ... FAIL
+test_relation_guard_rejects_timer_or_backup_stop_dependencies (__main__.BackupChecks) ... FAIL
+test_timeout_does_not_signal_active_backup_and_restores_timer (__main__.BackupChecks) ... FAIL
+test_timer_restoration_is_finally_after_checks_and_holders_before_pause (__main__.BackupChecks) ... FAIL
+
+======================================================================
+FAIL: test_active_backup_finishes_without_stop_or_kill_and_timer_restores (__main__.BackupChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 36, in test_active_backup_finishes_without_stop_or_kill_and_timer_restores
+    f=BackupFixture(states=[row(),row('active'),row('inactive','0')]);s=f.scope();s['pause_backup_timer']()
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 31, in scope
+    return extracted('pause_backup_timer','wait_for_backup_completion','assert_backup_quiescent','restore_backup_timer',backup_configuration=lambda:self.config,unit_values=self.values,run=self.run,save=lambda *a,**kw:self.events.append(('save',a[0])),time=types.SimpleNamespace(monotonic=lambda:self.now,sleep=self.sleep))
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 10, in extracted
+    if missing:raise AssertionError('Required safety behavior missing: '+','.join(sorted(missing)))
+AssertionError: Required safety behavior missing: assert_backup_quiescent,pause_backup_timer,restore_backup_timer,wait_for_backup_completion
+
+======================================================================
+FAIL: test_backup_cannot_reappear_immediately_before_pause (__main__.BackupChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 68, in test_backup_cannot_reappear_immediately_before_pause
+    f=BackupFixture();s=f.scope();s['pause_backup_timer']();f.states=collections.deque([row()])
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 31, in scope
+    return extracted('pause_backup_timer','wait_for_backup_completion','assert_backup_quiescent','restore_backup_timer',backup_configuration=lambda:self.config,unit_values=self.values,run=self.run,save=lambda *a,**kw:self.events.append(('save',a[0])),time=types.SimpleNamespace(monotonic=lambda:self.now,sleep=self.sleep))
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 10, in extracted
+    if missing:raise AssertionError('Required safety behavior missing: '+','.join(sorted(missing)))
+AssertionError: Required safety behavior missing: assert_backup_quiescent,pause_backup_timer,restore_backup_timer,wait_for_backup_completion
+
+======================================================================
+FAIL: test_configuration_drift_fails_closed_without_enable_disable_or_override (__main__.BackupChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 64, in test_configuration_drift_fails_closed_without_enable_disable_or_override
+    f=BackupFixture();s=f.scope();s['pause_backup_timer']();f.config={'timer':dict(f.config['timer'],UnitFileState='disabled'),'service':f.config['service']}
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 31, in scope
+    return extracted('pause_backup_timer','wait_for_backup_completion','assert_backup_quiescent','restore_backup_timer',backup_configuration=lambda:self.config,unit_values=self.values,run=self.run,save=lambda *a,**kw:self.events.append(('save',a[0])),time=types.SimpleNamespace(monotonic=lambda:self.now,sleep=self.sleep))
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 10, in extracted
+    if missing:raise AssertionError('Required safety behavior missing: '+','.join(sorted(missing)))
+AssertionError: Required safety behavior missing: assert_backup_quiescent,pause_backup_timer,restore_backup_timer,wait_for_backup_completion
+
+======================================================================
+FAIL: test_failed_backup_fails_before_app_pause_and_timer_restores (__main__.BackupChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 49, in test_failed_backup_fails_before_app_pause_and_timer_restores
+    f=BackupFixture(states=[row('failed','0',result='exit-code')]);s=f.scope()
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 31, in scope
+    return extracted('pause_backup_timer','wait_for_backup_completion','assert_backup_quiescent','restore_backup_timer',backup_configuration=lambda:self.config,unit_values=self.values,run=self.run,save=lambda *a,**kw:self.events.append(('save',a[0])),time=types.SimpleNamespace(monotonic=lambda:self.now,sleep=self.sleep))
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 10, in extracted
+    if missing:raise AssertionError('Required safety behavior missing: '+','.join(sorted(missing)))
+AssertionError: Required safety behavior missing: assert_backup_quiescent,pause_backup_timer,restore_backup_timer,wait_for_backup_completion
+
+======================================================================
+FAIL: test_no_mount_reformat_backup_stop_or_policy_commands (__main__.BackupChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 90, in test_no_mount_reformat_backup_stop_or_policy_commands
+    self.assertNotIn('mount',commands);self.assertNotIn('umount',commands);self.assertNotIn('mkfs.ext4',commands)
+AssertionError: 'mount' unexpectedly found in ['runuser', 'systemctl', 'systemctl', 'systemctl', 'systemctl', 'umount', 'mount', 'systemctl', 'systemctl', 'findmnt', 'systemctl', 'runuser', 'systemctl', 'systemctl', 'nsenter', 'nsenter', 'findmnt', 'blkid', 'systemctl', 'systemctl', 'systemctl', 'systemctl', 'blkid', 'systemctl', 'runuser', 'systemctl', 'systemctl', 'lsblk', 'findmnt', 'systemctl', 'systemctl', 'systemctl', 'systemctl', 'systemctl', 'systemctl', 'systemctl', 'systemctl', 'systemctl', 'systemctl', 'systemctl']
+
+======================================================================
+FAIL: test_original_inactive_timer_stays_inactive_and_enabled_state_unchanged (__main__.BackupChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 41, in test_original_inactive_timer_stays_inactive_and_enabled_state_unchanged
+    f=BackupFixture(active='inactive');s=f.scope();s['pause_backup_timer']();s['restore_backup_timer']()
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 31, in scope
+    return extracted('pause_backup_timer','wait_for_backup_completion','assert_backup_quiescent','restore_backup_timer',backup_configuration=lambda:self.config,unit_values=self.values,run=self.run,save=lambda *a,**kw:self.events.append(('save',a[0])),time=types.SimpleNamespace(monotonic=lambda:self.now,sleep=self.sleep))
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 10, in extracted
+    if missing:raise AssertionError('Required safety behavior missing: '+','.join(sorted(missing)))
+AssertionError: Required safety behavior missing: assert_backup_quiescent,pause_backup_timer,restore_backup_timer,wait_for_backup_completion
+
+======================================================================
+FAIL: test_partial_timer_stop_failure_still_records_restoration_obligation (__main__.BackupChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 56, in test_partial_timer_stop_failure_still_records_restoration_obligation
+    f=BackupFixture();s=f.scope();original=f.run
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 31, in scope
+    return extracted('pause_backup_timer','wait_for_backup_completion','assert_backup_quiescent','restore_backup_timer',backup_configuration=lambda:self.config,unit_values=self.values,run=self.run,save=lambda *a,**kw:self.events.append(('save',a[0])),time=types.SimpleNamespace(monotonic=lambda:self.now,sleep=self.sleep))
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 10, in extracted
+    if missing:raise AssertionError('Required safety behavior missing: '+','.join(sorted(missing)))
+AssertionError: Required safety behavior missing: assert_backup_quiescent,pause_backup_timer,restore_backup_timer,wait_for_backup_completion
+
+======================================================================
+FAIL: test_preflight_holders_accept_expected_cgroups_and_reject_backup_or_unknown (__main__.BackupChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 81, in test_preflight_holders_accept_expected_cgroups_and_reject_backup_or_unknown
+    s=extracted('assert_expected_holders',Path=path,output=lambda *a:'/system.slice/'+a[2])
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 10, in extracted
+    if missing:raise AssertionError('Required safety behavior missing: '+','.join(sorted(missing)))
+AssertionError: Required safety behavior missing: assert_expected_holders
+
+======================================================================
+FAIL: test_queued_backup_job_is_not_mistaken_for_idle (__main__.BackupChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 53, in test_queued_backup_job_is_not_mistaken_for_idle
+    f=BackupFixture(states=[row('inactive','0',job='42'),row(),row('inactive','0')]);s=f.scope();s['pause_backup_timer']()
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 31, in scope
+    return extracted('pause_backup_timer','wait_for_backup_completion','assert_backup_quiescent','restore_backup_timer',backup_configuration=lambda:self.config,unit_values=self.values,run=self.run,save=lambda *a,**kw:self.events.append(('save',a[0])),time=types.SimpleNamespace(monotonic=lambda:self.now,sleep=self.sleep))
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 10, in extracted
+    if missing:raise AssertionError('Required safety behavior missing: '+','.join(sorted(missing)))
+AssertionError: Required safety behavior missing: assert_backup_quiescent,pause_backup_timer,restore_backup_timer,wait_for_backup_completion
+
+======================================================================
+FAIL: test_relation_guard_rejects_timer_or_backup_stop_dependencies (__main__.BackupChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 74, in test_relation_guard_rejects_timer_or_backup_stop_dependencies
+    s=extracted('backup_configuration',unit_values=f.values)
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 10, in extracted
+    if missing:raise AssertionError('Required safety behavior missing: '+','.join(sorted(missing)))
+AssertionError: Required safety behavior missing: backup_configuration
+
+======================================================================
+FAIL: test_timeout_does_not_signal_active_backup_and_restores_timer (__main__.BackupChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 44, in test_timeout_does_not_signal_active_backup_and_restores_timer
+    f=BackupFixture(states=[row()]);s=f.scope()
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 31, in scope
+    return extracted('pause_backup_timer','wait_for_backup_completion','assert_backup_quiescent','restore_backup_timer',backup_configuration=lambda:self.config,unit_values=self.values,run=self.run,save=lambda *a,**kw:self.events.append(('save',a[0])),time=types.SimpleNamespace(monotonic=lambda:self.now,sleep=self.sleep))
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 10, in extracted
+    if missing:raise AssertionError('Required safety behavior missing: '+','.join(sorted(missing)))
+AssertionError: Required safety behavior missing: assert_backup_quiescent,pause_backup_timer,restore_backup_timer,wait_for_backup_completion
+
+======================================================================
+FAIL: test_timer_restoration_is_finally_after_checks_and_holders_before_pause (__main__.BackupChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-backup-checks.py", line 97, in test_timer_restoration_is_finally_after_checks_and_holders_before_pause
+    self.assertTrue(any('pause_backup_timer()' in x for x in rendered[:pause]));self.assertTrue(any('assert_expected_holders(' in x for x in rendered[:pause]));self.assertTrue(any('assert_backup_quiescent()' in x for x in rendered[:pause]))
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.014s
+
+FAILED (failures=12)

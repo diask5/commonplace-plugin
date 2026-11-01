@@ -1,0 +1,19 @@
+{
+  "state": "failed",
+  "unit": "commonplace-backup.service",
+  "startedAt": "2026-11-01T04:22:55Z",
+  "finishedAt": "2026-11-01T04:27:55Z",
+  "result": "timeout",
+  "invocationId": "5dfe709008d341b8a9bacc3b43bd8d9c",
+  "formerPID": 886126,
+  "mainPID": 0,
+  "exitStatus": 15,
+  "databaseDevice": 2080,
+  "backupDestinationDevice": 2064,
+  "partialSnapshotBytes": 365322240,
+  "processWaitObserved": "folio_wait_bit_common",
+  "signaledByThisRepair": false,
+  "resetFailed": false,
+  "snapshotVerificationOrUploadSuccessObserved": false,
+  "diagnosis": "The backup script used the logical database path, leaving its temporary snapshot and integrity reads on the old standard disk."
+}

@@ -1,0 +1,10 @@
+{
+  "startedAt": 1793504478.8268409,
+  "state": "rolled-back",
+  "oldDiskRetained": true,
+  "databasePathPreserved": true,
+  "hostPoliciesChanged": false,
+  "failure": "AssertionError: ",
+  "finishedAt": 1793504479.7911756
+}
+

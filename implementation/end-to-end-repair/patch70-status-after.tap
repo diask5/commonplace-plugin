@@ -1,0 +1,20 @@
+✔ source status evaluates each owner alias once rather than per legacy section (216.381483ms)
+✔ source status preserves exact delimiter, Unicode, device, owner and live-edit visibility (69.262426ms)
+✔ source status composes with an outer transaction and rolls back failed reads (97.450617ms)
+✔ coverage counts a 6,343,047-character source without returning message bodies to JavaScript (161.132461ms)
+ℹ {"characters":6343047,"messages":159,"coverageMs":3.91,"returnedCharacters":0}
+✔ coverage metadata matches body reader for replicas, conflicts, tombstones, exclusions and authority changes (169.938191ms)
+✔ source collection status keeps current freshness and authority fences without a cache (110.68881ms)
+✔ coverage retains owner/project pagination and agent metadata limits (337.572798ms)
+✔ warmed synthetic status benchmark: 684 documents, 13,694 sections, 224 aliases (6873.10927ms)
+ℹ {"documents":684,"sections":13694,"aliases":224,"beforeMs":[1444.62,1153.27,1050.94],"afterMs":[55.28,47.25,38.38]}
+✔ warmed actual-size synthetic status benchmark: 4,385 legacy rows and 700 disjoint aliases (6367.349287ms)
+ℹ {"documents":700,"sections":4385,"aliases":700,"aliasOverlap":0,"beforeMs":[1557.14,1458.76,1141.96],"afterMs":[61.11,14.64,12.94]}
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14563.379591

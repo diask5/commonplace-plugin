@@ -1,0 +1,13 @@
+test_changed_invocation_start_or_exit_is_never_the_historical_exception (__main__.HistoricalTimeoutChecks) ... ok
+test_historical_exception_does_not_bypass_unknown_inode_holder (__main__.HistoricalTimeoutChecks) ... ok
+test_historical_failure_evidence_and_fresh_migration_backup_remain_required (__main__.HistoricalTimeoutChecks) ... ok
+test_initially_running_then_identical_timeout_fails_closed (__main__.HistoricalTimeoutChecks) ... ok
+test_nonzero_pid_other_result_status_substate_or_date_not_allowed (__main__.HistoricalTimeoutChecks) ... ok
+test_running_again_after_historical_failure_blocks_final_gate (__main__.HistoricalTimeoutChecks) ... ok
+test_timeout_evidence_durably_saved_before_timer_pause (__main__.HistoricalTimeoutChecks) ... ok
+test_unchanged_historical_timeout_captured_and_allowed_without_relabel (__main__.HistoricalTimeoutChecks) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.029s
+
+OK

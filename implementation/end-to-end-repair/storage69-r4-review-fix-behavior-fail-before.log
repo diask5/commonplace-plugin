@@ -1,0 +1,40 @@
+test_exclusive_marker_two_synchronized_contenders_exactly_one_claim (__main__.ReviewFixChecks) ... FAIL
+test_files_readiness_requires_actual_namespace_read (__main__.ReviewFixChecks) ... FAIL
+test_marker_existing_evidence_denies_rerun_launcher_only_allowed (__main__.ReviewFixChecks) ... ok
+test_marker_rejects_nonprivate_root_and_symlink_without_permissions_change (__main__.ReviewFixChecks) ... FAIL
+
+======================================================================
+FAIL: test_exclusive_marker_two_synchronized_contenders_exactly_one_claim (__main__.ReviewFixChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r4-review-fix-checks.py", line 36, in test_exclusive_marker_two_synchronized_contenders_exactly_one_claim
+    self.assertEqual(sorted(results),[False,True]);self.assertIn(json.loads((Path(root)/'started.json').read_text())['contender'],[1,2])
+AssertionError: Lists differ: [True, True] != [False, True]
+
+First differing element 0:
+True
+False
+
+- [True, True]
++ [False, True]
+
+======================================================================
+FAIL: test_files_readiness_requires_actual_namespace_read (__main__.ReviewFixChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r4-review-fix-checks.py", line 64, in test_files_readiness_requires_actual_namespace_read
+    self.assertEqual(len(calls),1,'config200 must not bypass namespace auth DB proof')
+AssertionError: 0 != 1 : config200 must not bypass namespace auth DB proof
+
+======================================================================
+FAIL: test_marker_rejects_nonprivate_root_and_symlink_without_permissions_change (__main__.ReviewFixChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r4-review-fix-checks.py", line 51, in test_marker_rejects_nonprivate_root_and_symlink_without_permissions_change
+    with self.assertRaises(AssertionError):f['claim_start'](root,{})
+AssertionError: AssertionError not raised
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.012s
+
+FAILED (failures=3)
