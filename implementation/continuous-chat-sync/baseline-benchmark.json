@@ -1,0 +1,84 @@
+{
+  "collectorSha256": "49203033f983fe297c5c7b1e22d68413781cb85537226b2c271de08fcddf8fbe",
+  "files": 6722,
+  "seededCompleteFiles": 6721,
+  "backlogMessages": 6000,
+  "receivedMessages": 6000,
+  "uploads": 60,
+  "passes": [
+    {
+      "uploads": 6,
+      "scanned": 6722,
+      "scanMode": "full",
+      "elapsedMs": 630,
+      "scanMs": null
+    },
+    {
+      "uploads": 6,
+      "scanned": 6722,
+      "scanMode": "full",
+      "elapsedMs": 596,
+      "scanMs": null
+    },
+    {
+      "uploads": 6,
+      "scanned": 6722,
+      "scanMode": "full",
+      "elapsedMs": 588,
+      "scanMs": null
+    },
+    {
+      "uploads": 6,
+      "scanned": 6722,
+      "scanMode": "full",
+      "elapsedMs": 618,
+      "scanMs": null
+    },
+    {
+      "uploads": 6,
+      "scanned": 6722,
+      "scanMode": "full",
+      "elapsedMs": 601,
+      "scanMs": null
+    },
+    {
+      "uploads": 6,
+      "scanned": 6722,
+      "scanMode": "full",
+      "elapsedMs": 748,
+      "scanMs": null
+    },
+    {
+      "uploads": 6,
+      "scanned": 6722,
+      "scanMode": "full",
+      "elapsedMs": 726,
+      "scanMs": null
+    },
+    {
+      "uploads": 6,
+      "scanned": 6722,
+      "scanMode": "full",
+      "elapsedMs": 718,
+      "scanMs": null
+    },
+    {
+      "uploads": 6,
+      "scanned": 6722,
+      "scanMode": "full",
+      "elapsedMs": 630,
+      "scanMs": null
+    },
+    {
+      "uploads": 6,
+      "scanned": 6722,
+      "scanMode": "full",
+      "elapsedMs": 707,
+      "scanMs": null
+    }
+  ],
+  "elapsedMs": 6561,
+  "totalFileChecks": 67220,
+  "network": "Immediate mocked responses; no transport latency, server rate limit or remote acceptance simulated.",
+  "limits": "Synthetic filesystem and seeded complete-file metadata. Not a live Mac throughput measurement."
+}

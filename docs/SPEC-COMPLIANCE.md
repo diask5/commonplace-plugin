@@ -1,5 +1,27 @@
 # Meet Proxy Draft v3 compliance
 
+1 November continuous upload candidate: patch 61 removes the six-upload clamp
+and five-second backlog pause, using cooperative catch-up slices and an
+incremental file index with periodic reconciliation. Server backpressure persists
+across restart; account, exclusion, payload and complete-capture fences remain.
+A synthetic 6,722-file index with 6,000 queued messages takes one pass instead of
+ten, with 90% fewer discovery file checks; mocked-upload processing is 6.56s to
+2.29s, not a production throughput measurement. 685 core tests, 17 extracted
+checks, both-alias integrity and exact 61-patch replay across 242 files pass.
+Native 0.4.37/runtime70 is packaged locally, not published or installed. It includes
+the locally packaged Spaces event work; server migration/live activation and the
+existing Mac execution block remain. See [continuous sync](CONTINUOUS-CHAT-SYNC.md).
+
+1 November Spaces events candidate: patch 60 makes events common to every Space;
+Personal is the private default using the same group/message/change-log system.
+MCP subscriptions notify by URI, clients resume durable cursors, and every source
+read rechecks current access. Shared events contain approved references only.
+Native 0.4.36/runtime69 and a 165-file server bundle are packaged locally, not
+published, installed or deployed. 679 core, 41 browser/probe and 16 extracted
+checks pass; exact 60-patch replay matches 239 files. Migration 0046 is required.
+Host wake is not guaranteed, and the existing Mac execution block is unchanged.
+See [Spaces events](PERSONAL-SPACE-EVENTS.md).
+
 31 October upload optimization: patch 59 publishes native 0.4.35/runtime68 and
 server `20261031-compressed-context`. Gzip is negotiated
 per relay, retaining the 64,000-byte decoded limit, durable retry identity,

@@ -1,0 +1,27 @@
+✔ catch-up sends more than six chunks, keeps payload bounds and skips unchanged file scans (187.477605ms)
+✔ file index uses native change events and periodic fallback; incomplete discovery never asserts deletion (9.346191ms)
+✔ cached discovery cannot follow a file replaced with a foreign symlink (11.451821ms)
+✔ server throttling suspends the pump across restart and retries the exact durable chunk (27.696746ms)
+✔ cooperative deadlines leave a resumable backlog and the pump continues without a five-second pause (56.773973ms)
+✔ a disconnected or already-running collector yields instead of spinning the catch-up loop (2.147155ms)
+✔ history roots under a symlinked ancestor collect only their own visible files (39.043482ms)
+✔ work sync recovers lost acknowledgement before changed content after restart (15.418202ms)
+✔ work sync only uploads visible messages, respects opt-in, and deletes removed sources (20.196571ms)
+✔ bounded sync resumes chunk progress and skips oversized JSON without starving later chats (20.29648ms)
+✔ an inaccessible history root does not delete previously uploaded chats (4.968834ms)
+✔ Codex discovery restricts uploads to transcript folders, never account credentials (5.661982ms)
+✔ Codex visible transcript sync excludes reasoning channels, tool destinations and hidden records (17.944453ms)
+✔ privacy format upgrades reparse unchanged files and supersede an old pending revision (13.059169ms)
+✔ automatic discovery includes enabled owner-selected transcript roots without collecting arbitrary folders (4.130437ms)
+2026-11-01T00:23:35.862Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ native collection updates one library read by three native and two independent OAuth clients (4606.744947ms)
+ℹ Five protocol clients read initial content, edits and recovered uploads; exclusions propagated to all five and another account read nothing. Native and Google identities are synthetic.
+✔ sync presentation distinguishes saved context from current collection (0.531746ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5866.207998

@@ -1,0 +1,76 @@
+✖ stable cloud plugin preserves baseline assets, dependencies and executable modes (10902.542581ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10984.596632
+
+✖ failing tests:
+
+test at tests/packaging.test.mjs:12:1
+✖ stable cloud plugin preserves baseline assets, dependencies and executable modes (10902.542581ms)
+  Error: Command failed: python3 -c 
+  import zipfile,json,hashlib,pathlib,shutil,re,posixpath,sys
+  baseline,output,root,extracted=sys.argv[1:]
+  expected={'server/'+n for n in ('history-scan.mjs','personal-space.mjs','space-resources.mjs','workspace-chat.mjs','owner.mjs','account-profiles.mjs','account-profile-tools.mjs','account-inbox.mjs','mailbox-client.mjs','agent-history.mjs','person-inbox.mjs','inbox-envelope.mjs','plugin.mjs','plugin-surface.mjs','local-client.mjs','start.mjs','canonical-sync.mjs','cloud-sync.mjs','cloud-background.mjs','cloud-browser-login.mjs','history-roots.mjs','conductor-history.mjs','ingest.mjs','native-hook.mjs','setup-status.mjs','account-client.mjs','account-errors.mjs','agent-auth-client.mjs','connect-account.mjs','conductor-session-inbox.mjs','chat-pairing.mjs','chat-capture.mjs','native-session.mjs','codex-host-context.mjs','codex-config.mjs','configure-codex.mjs','conductor-receiver.mjs','contact-delivery.mjs','mcp-resource-ingestion.mjs','mcp-resource-tools.mjs','mcp-resource-transport.mjs','mcp-resource-transport.LICENSE.txt','context-mirror.mjs','context-index.mjs','context-search.mjs','mcp-adapter.mjs','mcp-adapter.LICENSE.txt','mcp.mjs','desktop-receiver.mjs','workspace-session.mjs')}
+  expected|={'skills/'+n+'/SKILL.md' for n in ('setup','add','join','delegate','meet-proxy','context')}
+  expected|={'docs/PRODUCTION-VERIFICATION.md','docs/UNIFIED-CONTEXT.md','docs/SETUP.md','docs/PERSONAL-AGENTS.md'}
+  expected|={'.claude-plugin/plugin.json','.codex-plugin/plugin.json','README.md','.mcp.json','runtime/posix.exe','runtime/Windows_NT.exe'}
+  def digest(stream):
+   h=hashlib.sha256()
+   for chunk in iter(lambda:stream.read(1024*1024),b''):h.update(chunk)
+   return h.hexdigest()
+  with open(baseline,'rb') as f:assert digest(f)=='146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968'
+  with zipfile.ZipFile(baseline) as old:
+   for alias in ('meet-proxy','commonplace'):
+    candidate=pathlib.Path(output)/(alias+'-0.4.37.zip')
+    report=json.loads(candidate.with_name(candidate.stem+'-build.json').read_text())
+    with candidate.open('rb') as f:assert digest(f)==report['sha256']
+    with zipfile.ZipFile(candidate) as new:
+     assert len(new.namelist())==len(set(new.namelist()))
+     added_launchers={'runtime/posix.exe','runtime/Windows_NT.exe'}
+     assert new.read('runtime/posix.exe')==old.read('runtime/node')
+     assert new.read('runtime/Windows_NT.exe')==old.read('runtime/node.exe')
+     for name in added_launchers:assert new.getinfo(name).external_attr>>16&0o111,name
+     assert list(json.loads(new.read('.mcp.json'))['mcpServers'])==[alias]
+     assert set(new.namelist())==set(old.namelist())|added_launchers|{'server/history-scan.mjs','server/personal-space.mjs','server/space-resources.mjs','server/account-profiles.mjs','server/account-profile-tools.mjs','server/contact-delivery.mjs','server/mcp-resource-ingestion.mjs','server/mcp-resource-tools.mjs','server/mcp-resource-transport.mjs','server/mcp-resource-transport.LICENSE.txt','server/account-errors.mjs','docs/PRODUCTION-VERIFICATION.md','docs/UNIFIED-CONTEXT.md','server/canonical-sync.mjs','docs/PERSONAL-AGENTS.md','server/agent-history.mjs','server/conductor-history.mjs','server/cloud-sync.mjs','server/cloud-background.mjs','server/cloud-browser-login.mjs','server/setup-status.mjs','server/conductor-session-inbox.mjs','server/codex-host-context.mjs','server/codex-config.mjs','server/configure-codex.mjs','server/conductor-receiver.mjs','server/context-mirror.mjs','server/context-index.mjs','server/context-search.mjs','server/mcp-adapter.mjs','server/mcp-adapter.LICENSE.txt','skills/setup/SKILL.md','skills/context/SKILL.md','docs/SETUP.md'}
+     assert set(report['overlay'])==expected
+     for item in new.infolist():
+      name=item.filename
+      if name in old.namelist():assert item.external_attr==old.getinfo(name).external_attr,name
+      if name not in expected:assert digest(new.open(name))==digest(old.open(name)),name
+      elif name.startswith('docs/'):assert new.read(name)==(pathlib.Path(root)/name).read_bytes(),name
+      elif name.startswith('skills/'):assert new.read(name)==(pathlib.Path(root)/'apps/commonplace/plugin/commonplace'/name).read_bytes(),name
+      elif name.startswith('server/'):assert new.read(name)==(pathlib.Path(root)/'apps/commonplace'/name).read_bytes(),name
+      if name.endswith('.mjs'):
+       for rel in re.findall(r"(?:from\s*|import\s*\()(['\"])(\.[^'\"]+)\1",new.read(name).decode()):
+        dep=posixpath.normpath(posixpath.join(posixpath.dirname(name),rel[1]))
+        assert dep in new.namelist(),name+' missing '+dep
+     for name in ('.claude-plugin/plugin.json','.codex-plugin/plugin.json'):
+      metadata=json.loads(new.read(name));assert metadata['name']==alias and metadata['version']=='0.4.37'
+     if alias=='meet-proxy':
+      for item in new.infolist():
+       target=pathlib.Path(extracted)/item.filename;target.parent.mkdir(parents=True,exist_ok=True)
+       with new.open(item) as src,target.open('wb') as dst:shutil.copyfileobj(src,dst)
+       target.chmod((item.external_attr>>16)&0o777)
+   /home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/artifacts/.cache/meet-proxy-0.3.0.zip /home/vercel-sandbox/commonplace-plugin/.context/continuous-chat-sync/release /home/vercel-sandbox/commonplace-plugin/.context/commonplace-source /tmp/cloud-package-2kvlkT/plugin
+  Traceback (most recent call last):
+    File "<string>", line 33, in <module>
+  AssertionError: server/canonical-sync.mjs
+  
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5) {
+    code: 1,
+    killed: false,
+    signal: null,
+    cmd: `python3 -c \nimport zipfile,json,hashlib,pathlib,shutil,re,posixpath,sys\nbaseline,output,root,extracted=sys.argv[1:]\nexpected={'server/'+n for n in ('history-scan.mjs','personal-space.mjs','space-resources.mjs','workspace-chat.mjs','owner.mjs','account-profiles.mjs','account-profile-tools.mjs','account-inbox.mjs','mailbox-client.mjs','agent-history.mjs','person-inbox.mjs','inbox-envelope.mjs','plugin.mjs','plugin-surface.mjs','local-client.mjs','start.mjs','canonical-sync.mjs','cloud-sync.mjs','cloud-background.mjs','cloud-browser-login.mjs','history-roots.mjs','conductor-history.mjs','ingest.mjs','native-hook.mjs','setup-status.mjs','account-client.mjs','account-errors.mjs','agent-auth-client.mjs','connect-account.mjs','conductor-session-inbox.mjs','chat-pairing.mjs','chat-capture.mjs','native-session.mjs','codex-host-context.mjs','codex-config.mjs','configure-codex.mjs','conductor-receiver.mjs','contact-delivery.mjs','mcp-resource-ingestion.mjs','mcp-resource-tools.mjs','mcp-resource-transport.mjs','mcp-resource-transport.LICENSE.txt','context-mirror.mjs','context-index.mjs','context-search.mjs','mcp-adapter.mjs','mcp-adapter.LICENSE.txt','mcp.mjs','desktop-receiver.mjs','workspace-session.mjs')}\nexpected|={'skills/'+n+'/SKILL.md' for n in ('setup','add','join','delegate','meet-proxy','context')}\nexpected|={'docs/PRODUCTION-VERIFICATION.md','docs/UNIFIED-CONTEXT.md','docs/SETUP.md','docs/PERSONAL-AGENTS.md'}\nexpected|={'.claude-plugin/plugin.json','.codex-plugin/plugin.json','README.md','.mcp.json','runtime/posix.exe','runtime/Windows_NT.exe'}\ndef digest(stream):\n h=hashlib.sha256()\n for chunk in iter(lambda:stream.read(1024*1024),b''):h.update(chunk)\n return h.hexdigest()\nwith open(baseline,'rb') as f:assert digest(f)=='146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968'\nwith zipfile.ZipFile(baseline) as old:\n for alias in ('meet-proxy','commonplace'):\n  candidate=pathlib.Path(output)/(alias+'-0.4.37.zip')\n  report=json.loads(candidate.with_name(candidate.stem+'-build.json').read_text())\n  with candidate.open('rb') as f:assert digest(f)==report['sha256']\n  with zipfile.ZipFile(candidate) as new:\n   assert len(new.namelist())==len(set(new.namelist()))\n   added_launchers={'runtime/posix.exe','runtime/Windows_NT.exe'}\n   assert new.read('runtime/posix.exe')==old.read('runtime/node')\n   assert new.read('runtime/Windows_NT.exe')==old.read('runtime/node.exe')\n   for name in added_launchers:assert new.getinfo(name).external_attr>>16&0o111,name\n   assert list(json.loads(new.read('.mcp.json'))['mcpServers'])==[alias]\n   assert set(new.namelist())==set(old.namelist())|added_launchers|{'server/history-scan.mjs','server/personal-space.mjs','server/space-resources.mjs','server/account-profiles.mjs','server/account-profile-tools.mjs','server/contact-delivery.mjs','server/mcp-resource-ingestion.mjs','server/mcp-resource-tools.mjs','server/mcp-resource-transport.mjs','server/mcp-resource-transport.LICENSE.txt','server/account-errors.mjs','docs/PRODUCTION-VERIFICATION.md','docs/UNIFIED-CONTEXT.md','server/canonical-sync.mjs','docs/PERSONAL-AGENTS.md','server/agent-history.mjs','server/conductor-history.mjs','server/cloud-sync.mjs','server/cloud-background.mjs','server/cloud-browser-login.mjs','server/setup-status.mjs','server/conductor-session-inbox.mjs','server/codex-host-context.mjs','server/codex-config.mjs','server/configure-codex.mjs','server/conductor-receiver.mjs','server/context-mirror.mjs','server/context-index.mjs','server/context-search.mjs','server/mcp-adapter.mjs','server/mcp-adapter.LICENSE.txt','skills/setup/SKILL.md','skills/context/SKILL.md','docs/SETUP.md'}\n   assert set(report['overlay'])==expected\n   for item in new.infolist():\n    name=item.filename\n    if name in old.namelist():assert item.external_attr==old.getinfo(name).external_attr,name\n    if name not in expected:assert digest(new.open(name))==digest(old.open(name)),name\n    elif name.startswith('docs/'):assert new.read(name)==(pathlib.Path(root)/name).read_bytes(),name\n    elif name.startswith('skills/'):assert new.read(name)==(pathlib.Path(root)/'apps/commonplace/plugin/commonplace'/name).read_bytes(),name\n    elif name.startswith('server/'):assert new.read(name)==(pathlib.Path(root)/'apps/commonplace'/name).read_bytes(),name\n    if name.endswith('.mjs'):\n     for rel in re.findall(r"(?:from\\s*|import\\s*\\()(['\\"])(\\.[^'\\"]+)\\1",new.read(name).decode()):\n      dep=posixpath.normpath(posixpath.join(posixpath.dirname(name),rel[1]))\n      assert dep in new.namelist(),name+' missing '+dep\n   for name in ('.claude-plugin/plugin.json','.codex-plugin/plugin.json'):\n    metadata=json.loads(new.read(name));assert metadata['name']==alias and metadata['version']=='0.4.37'\n   if alias=='meet-proxy':\n    for item in new.infolist():\n     target=pathlib.Path(extracted)/item.filename;target.parent.mkdir(parents=True,exist_ok=True)\n     with new.open(item) as src,target.open('wb') as dst:shutil.copyfileobj(src,dst)\n     target.chmod((item.external_attr>>16)&0o777)\n /home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/artifacts/.cache/meet-proxy-0.3.0.zip /home/vercel-sandbox/commonplace-plugin/.context/continuous-chat-sync/release /home/vercel-sandbox/commonplace-plugin/.context/commonplace-source /tmp/cloud-package-2kvlkT/plugin`,
+    stdout: '',
+    stderr: 'Traceback (most recent call last):\n  File "<string>", line 33, in <module>\nAssertionError: server/canonical-sync.mjs\n'
+  }

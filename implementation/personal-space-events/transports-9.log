@@ -1,0 +1,33 @@
+✔ modern HTTP discovery is inert; tools validate before activation and use structured output (93.459995ms)
+✔ stdio 2026-07-28 discovers without activation and calls a tool (9.277068ms)
+✔ stdio 2025-11-25 discovers without activation and calls a tool (15.134153ms)
+✔ stdio 2025-06-18 discovers without activation and calls a tool (3.699408ms)
+✔ stdio 2025-03-26 discovers without activation and calls a tool (3.030897ms)
+✔ stdio 2024-11-05 discovers without activation and calls a tool (2.926946ms)
+✔ Resources reuse authorized reads, pin revisions, and reject substituted scopes and traversal (11.746289ms)
+✔ native resource discovery stays local while explicit reads still authorize and pin context (9.258033ms)
+✔ Tasks use each request capability, preserve fallback, map application failure, and deduplicate input (51.099676ms)
+✔ rollout flags keep ordinary tools available and disable extension advertisement (4.202733ms)
+✔ user-selected prompts validate arguments and never activate tools (8.740441ms)
+✔ modern rollback rejects modern requests and preserves legacy HTTP and stdio (10.842434ms)
+✔ official SDK HTTP client negotiates modern and validates structured results (50.460499ms)
+✔ official SDK HTTP client negotiates legacy rollback and validates structured results (49.416914ms)
+✔ HTTP caller metadata never invokes the native stdio identity hook (3.808008ms)
+✔ authenticated remote MCP supports modern and legacy; each task operation enforces owner and scope (355.224517ms)
+✔ OAuth rejects redirect, resource, PKCE and replay substitutions before granting access (171.386106ms)
+✔ authenticated modern MCP space subscriptions push references and recover by cursor, then stop on removal (299.016311ms)
+✔ Personal reuses Spaces with attributed live progress, account-only membership and transcript navigation (1796.532768ms)
+2026-11-01T00:13:01.242Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ the same durable event API serves Personal and shared spaces, resumes exactly, and fences removal (856.645469ms)
+✔ only completed private captures produce readable transcript references, and exclusion invalidates them (621.104271ms)
+✔ shared context events only announce approved results and never private checks or source IDs (345.270825ms)
+✔ MCP resource subscription delivers URI notifications, supports catch-up, and stops after unsubscribe and scope change (167.208666ms)
+✔ modern stdio listens deduplicate shared watches, resume reads, and clean up cancellation and close (176.454726ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3351.762851

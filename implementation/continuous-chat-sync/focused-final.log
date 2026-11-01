@@ -1,0 +1,23 @@
+✔ catch-up sends more than six chunks, keeps payload bounds and skips unchanged file scans (130.036026ms)
+✔ file index uses native change events and periodic fallback; incomplete discovery never asserts deletion (7.697823ms)
+✔ cached discovery cannot follow a file replaced with a foreign symlink (7.83328ms)
+✔ server throttling suspends the pump across restart and retries the exact durable chunk (25.12371ms)
+✔ cooperative deadlines leave a resumable backlog and the pump continues without a five-second pause (55.873064ms)
+✔ a disconnected or already-running collector yields instead of spinning the catch-up loop (1.984441ms)
+✔ history roots under a symlinked ancestor collect only their own visible files (38.26558ms)
+✔ work sync recovers lost acknowledgement before changed content after restart (11.373148ms)
+✔ work sync only uploads visible messages, respects opt-in, and deletes removed sources (8.570775ms)
+✔ bounded sync resumes chunk progress and skips oversized JSON without starving later chats (15.716461ms)
+✔ an inaccessible history root does not delete previously uploaded chats (5.363111ms)
+✔ Codex discovery restricts uploads to transcript folders, never account credentials (3.319749ms)
+✔ Codex visible transcript sync excludes reasoning channels, tool destinations and hidden records (6.629026ms)
+✔ privacy format upgrades reparse unchanged files and supersede an old pending revision (7.183547ms)
+✔ automatic discovery includes enabled owner-selected transcript roots without collecting arbitrary folders (2.917003ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 329.878451
