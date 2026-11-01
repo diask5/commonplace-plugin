@@ -1,0 +1,83 @@
+{
+  "state": "refrozen for independent read-only hash review; helper not executed",
+  "writer": "agent66 only",
+  "frozenAt": "2026-11-01T04:14:40.337619+00:00",
+  "path": ".context/end-to-end-repair/migrate-database-storage69-r5.py",
+  "sha256": "84bf47d080ed1aa0fac230035000d7451f705b756b8a98656964f7e361cd0aab",
+  "basedOn": {
+    "path": ".context/end-to-end-repair/migrate-database-storage69-r4.py",
+    "sha256": "3aab196a49f859a0716b7c99a28fe72b0d0f4a7a3f9a81ed07e6b249a00f0eb3",
+    "productionObservation": "Root reports r4 rolled back after strict no-holder guard found scheduled backup; all4 services active, original regular DB restored, main nested namespace and Files original-DB namespace probes passed. No live DB/fstab cutover."
+  },
+  "checks": {
+    "pythonSyntax": "pass",
+    "bothEmbeddedNodeSyntax": "pass",
+    "passed": 43,
+    "total": 43,
+    "suites": [
+      {
+        "count": 16,
+        "log": ".context/end-to-end-repair/storage69-r5-scheduler-checks.log"
+      },
+      {
+        "count": 13,
+        "log": ".context/end-to-end-repair/storage69-r5-readiness-checks.log"
+      },
+      {
+        "count": 6,
+        "log": ".context/end-to-end-repair/storage69-r5-local-checks.log"
+      },
+      {
+        "count": 8,
+        "log": ".context/end-to-end-repair/storage69-r5-timeout-checks.log"
+      }
+    ],
+    "initialSchedulerFailureRetained": ".context/end-to-end-repair/storage69-r5-scheduler-fail-before.log",
+    "historicalTimeoutFailBeforeRetained": ".context/end-to-end-repair/storage69-r5-timeout-fail-before.log",
+    "exactLiteralMatchesRootEvidence": "pass"
+  },
+  "sourceContract": "Root supplied backup timer/service properties: commonplace-backup.timer triggers commonplace-backup.service; timer active/enabled, service oneshot Restart=no TimeoutStartUSec=5min. PartOf/BindsTo empty and StopWhenUnneeded=no for both. No live inspection by agent66.",
+  "changes": [
+    "New r5 ROOT/backup/staging with exact r4 helper hash and complete rollback/stopping-point/probe evidence guards.",
+    "Reuse same UUID/dev/sdc at existing nested mount; no mount/umount/format or role/permission changes; verify preserved account.before-r4.sqlite bytes against r4 result.",
+    "Snapshot timer/service contract and prior timer active state; stop only timer, never signal/stop active backup; await natural successful finish bounded315seconds.",
+    "Reject stop coupling and configuration changes; check paused timer and idle backup again immediately before app stop.",
+    "Pre-pause inode-based holder scan accepts only exact current application systemd cgroups (and subgroups); unknown holders/permission errors fail closed before stopping apps.",
+    "Existing strict post-stop no-holder guard, closed checkpoint/copy/fsync/atomic path publication/reverse-current-data rollback and main/worker/Files/nginx readiness preserved.",
+    "Finally restores exact prior active/inactive timer state after all post-cutover/recovery checks without enable/disable; restoration failure produces requires-recovery; passed is published only after restoration.",
+    "Root-authorized exception is exact literal equality across all12 supplied historical failure fields, including InvocationID/start/exit monotonic/timestamps/historicalPID/exitcode, with MainPID0; all other initial failures reject.",
+    "Full historical failure is durably recorded as preexistingBackupFailure and backupScheduleBefore before timer pause; same fingerprint rechecked during wait and final pre-pause gate alongside strict allowed-holder checks.",
+    "Initially running backup still must finish successfully; a later matching-looking timeout is never grandfathered. No reset-failed, backup stop/start or signals; fresh closed-copy verified unique r5 backup remains mandatory."
+  ],
+  "limits": [
+    "No helper execution, production/Mac calls, settings or unit sandbox changes.",
+    "Local tests extract helpers/bootstrap and use synthetic SQLite/filesystem and simulated process/systemd/timer metadata; production success remains unverified.",
+    "Independent exact-hash review required before root builds launcher or executes.",
+    "Scheduled backup remains a recorded historical failure; this helper never claims that scheduled backup passed. Root will separately verify normal backup service after successful migration."
+  ],
+  "fileSha256": {
+    ".context/end-to-end-repair/migrate-database-storage69-r5.py": "84bf47d080ed1aa0fac230035000d7451f705b756b8a98656964f7e361cd0aab",
+    ".context/end-to-end-repair/storage69-r5-scheduler-checks.py": "cab1f826c57aa8b82a4537d734a7204bb9326d7246742370426a15d09c00cdf9",
+    ".context/end-to-end-repair/storage69-r5-readiness-checks.py": "55741bb1c06796fc76d554a9ea3aa4bdc1184e3d5ecf112063a00e51b457ae18",
+    ".context/end-to-end-repair/storage69-r5-local-checks.py": "4aab347eea5bad687320d5bb732efa9d9452d3847802b8317fd1fa65218a4092",
+    ".context/end-to-end-repair/storage69-r5-timeout-checks.py": "2c6c692d7eabfd018f5f50adf138d8339a6ec6e9e41e11f40a24300efc4bc6cf"
+  },
+  "supersedes": {
+    "sha256": "c4914e756668ea72f11e1c676e95fede52dca7e2a1de2b0dc2ef02424cc2fec8",
+    "preserved": ".context/end-to-end-repair/migrate-database-storage69-r5.py.before-timeout-exception"
+  },
+  "preexistingBackupFailure": {
+    "ActiveState": "failed",
+    "SubState": "failed",
+    "MainPID": "0",
+    "Result": "timeout",
+    "ExecMainStatus": "15",
+    "InvocationID": "b87cb0f36fe4490db77a36c6aff71f13",
+    "ExecMainStartTimestampMonotonic": "3827523228312",
+    "ExecMainExitTimestampMonotonic": "3827823218295",
+    "ExecMainStartTimestamp": "Sun 2026-11-01 04:03:23 UTC",
+    "ExecMainExitTimestamp": "Sun 2026-11-01 04:08:23 UTC",
+    "ExecMainPID": "883648",
+    "ExecMainCode": "2"
+  }
+}

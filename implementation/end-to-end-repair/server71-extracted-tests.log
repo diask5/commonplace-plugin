@@ -1,0 +1,46 @@
+✔ production-shape selected mirror request evaluates 700 aliases once across 4,385 rows and 40M characters (15774.274252ms)
+ℹ {"sections":4385,"aliases":700,"characters":40000000,"aliasOverlap":0,"requested":24,"elapsedMs":142.85,"aliasEvaluations":700,"beforeMs":[3223.66,2846.97,3046.86],"afterMs":[113.72,118.82,101.36]}
+✔ full mirror manifests share the same bounded alias lookup (630.920845ms)
+✔ legacy projection exactly matches SQLite for Unicode, NUL, delimiters, devices and owners (592.620729ms)
+✔ hidden legacy bodies are never fetched, and edits/aliases are fresh on the next request (196.625965ms)
+✔ aliases, selected bytes and revisions share the pinned snapshot during a concurrent retirement (817.604342ms)
+✔ warmed 13,694-section/224-alias benchmark retains the correlated SQL reference projection (19580.768369ms)
+ℹ {"sections":13694,"aliases":224,"aliasOverlap":0,"beforeMs":[3024.03,3369.31,4062.29],"afterMs":[437.19,536.39,414.03]}
+✔ mirror manifest bypasses a pending full filesystem/index build (1140.884298ms)
+✔ mirror file transfer reads selected canonical documents without building unrelated indexes (607.793326ms)
+✔ source mirror preserves projected document metadata, ordering, Unicode and generated index contract (752.856591ms)
+✔ selected files never read unrelated source bodies, even without a manifest cache (548.259987ms)
+✔ oversized conversations stop during source iteration before full assembly in both mirror paths (279.005461ms)
+✔ unified-only mirrors report the latest included source observation instead of epoch zero (917.146483ms)
+✔ file slices, response budget, duplicate offsets, path checks and stale revisions retain protocol behavior (3921.239827ms)
+✔ cached manifest heads are cheap, owner-scoped, and invalidated by source exclusion or generation changes (1018.713644ms)
+✔ postworker source changes and exclusions withhold both manifest metadata and file bytes (1032.495856ms)
+✔ expired worker results withhold bytes, and expired cache stamps require a full authorized manifest (604.557572ms)
+✔ projection equality survives metadata eviction; legacy final checks keep failing closed on a cache miss (3118.341463ms)
+✔ manifest requests coalesce, file workers share bounded live slots, excess waiters receive 503 (1581.163423ms)
+✔ mirror metadata and files recheck stream-excluded (1002.27976ms)
+✔ mirror metadata and files recheck history-excluded (1039.204651ms)
+✔ mirror metadata and files recheck binding-generation (1026.580682ms)
+✔ mirror metadata and files recheck device-revoked (1002.559224ms)
+✔ mirror metadata and files recheck account-changed (938.888032ms)
+✔ mirror metadata and files recheck agent-revoked (1509.883157ms)
+✔ mirror grant-revoked removes shared messages and never exposes a peer private resource (1240.587282ms)
+✔ mirror grant-expired removes shared messages and never exposes a peer private resource (891.638932ms)
+✔ synthetic 684-document/13694-section/39438987-character mirror projects without a full FTS/filesystem build (8806.525122ms)
+ℹ {"synthetic":true,"documents":684,"sections":13694,"characters":39438987,"manifest":{"elapsedMs":1406.251702,"rssBefore":56057856,"rssAfter":77561856,"peakRss":77856768},"selectedFile":{"elapsedMs":494.230924,"rssBefore":56385536,"rssAfter":71102464,"peakRss":71102464,"characters":57600},"fullFilesystemOrFtsBuilds":0}
+✔ 24 selected files share one metadata scan at 684 documents/13694 sections/39438987 characters (7077.946723ms)
+ℹ {"synthetic":true,"documents":684,"sections":13694,"characters":39438987,"requested":24,"elapsedMs":400.36581299999943,"rssBefore":129617920,"rssAfter":133283840,"scans":1,"rows":13694,"bodies":494,"closed":1}
+✔ selected bytes match the original archive projection for interleaved keys, numeric positions and repeated paths (412.870739ms)
+✔ response budget defers known paths, checks unknown paths and reads no deferred remainder bodies (945.01817ms)
+✔ opaque selections reject foreign owners/databases, unselected IDs, forged and expired handles (399.480626ms)
+✔ selection metadata is fresh per request and exclusion never resurrects the legacy replica (302.821646ms)
+✔ metadata and lazily selected bodies stay in one WAL read snapshot while another connection writes (392.622496ms)
+✔ partial selections and body-read errors close their one metadata cursor without retaining a reusable handle (540.802635ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 37973.209672

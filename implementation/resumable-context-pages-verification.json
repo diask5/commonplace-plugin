@@ -1,0 +1,81 @@
+{
+  "state": "Published; server live and cloud runtime76 active. Mac installed; guarded activation and first full mirror pending.",
+  "patch": 68,
+  "native": "0.4.43/runtime76",
+  "serverRelease": "20261101-resumable-context",
+  "serverFiles": 166,
+  "newMigrations": 0,
+  "tests": {
+    "coreFinal": {
+      "tests": 830,
+      "pass": 830,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "packagingBothAliases": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "extractedNative": {
+      "tests": 105,
+      "pass": 105,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "nativeIndependent": 55,
+    "serverIndependent": 34,
+    "serverRelated": 93,
+    "overlappingCounts": true
+  },
+  "replay": {
+    "patches": 68,
+    "changedFiles": 264,
+    "mismatches": [],
+    "matched": true
+  },
+  "nativeArtifacts": {
+    "meet-proxy-0.4.43.zip": "191c35a1690d2b5b87f69fd416d547f4b5ec88772258031c1ca88966071adae6",
+    "meet-proxy-0.4.43.sha256": "89cc9e596b0e97efc0ab02699c0df5a55f2bc787b43460e904b379f8ab71f159",
+    "meet-proxy-0.4.43-build.json": "5897319c06bc85e135b8c5c66da792e81df9f5f832f71d91026a41ef2fccd21c",
+    "commonplace-0.4.43.zip": "f3824453604498a4a3c886482ecd414e10b9278edade2aa66099afb5710fa55c",
+    "commonplace-0.4.43.sha256": "149262ea30403b51449d7a868d179fd4ee37463e6bcd9c5170d80250a683a208",
+    "commonplace-0.4.43-build.json": "5ee5371eddace0f8ceefbbb01369cf44a4e626e4934bbdea49ad9c7c9eb82d55"
+  },
+  "serverArtifacts": {
+    "runtime-update.json": "4bb23d9e0d614510cf78968602662146ce3195352234dc1ee6f813bfb878f188",
+    "runtime-update-manifest.json": "b513f90e71f0940f97235338dc50450a6a33da8d02ced27c241e4cd60af275ef",
+    "runtime-update.sha256": "1d04090e51657bdb9e66e8c1055695910b13535a5de587579767662f107f0150",
+    "deploy-cloud-update.py": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32"
+  },
+  "retainedFailures": [
+    "Initial extracted fixture omitted signed-fixture.mjs and ran from the wrong directory; corrected fixture points server dependencies to source and native imports to extracted package. Original logs retained.",
+    "Second harness preparation used an incorrect working directory; preserved, corrected before package acceptance.",
+    "Server budget fixture exceeded upload limits; corrected synthetic chunks and preserved original logs."
+  ],
+  "privacy": {
+    "ownerAndSourceFencesPreserved": true,
+    "classifierChanged": false,
+    "permissionsChanged": false,
+    "quotasChanged": false,
+    "schemaChanged": false,
+    "durability": "FULL unchanged"
+  },
+  "limits": [
+    "Synthetic benchmark timing is not production latency.",
+    "Full first Mac mirror, installed source read and Work/native replies remain pending.",
+    "Malformed source replicas and web-only histories are not claimed complete."
+  ],
+  "sourceCommit": "2bd037ecdca7789913125404aface4a437a0ae59",
+  "nativeRelease": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.43",
+  "serverReleaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261101-resumable-context",
+  "distributionPR": 70,
+  "production": "end-to-end-repair/server68-live.json",
+  "publicSmoke": "end-to-end-repair/public-smoke68.json",
+  "cloudInstall": "end-to-end-repair/cloud76-install.json",
+  "cloudActivation": "end-to-end-repair/cloud76-activation.json"
+}

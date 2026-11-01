@@ -1,0 +1,60 @@
+{
+  "state": "Published0.4.44/runtime77; installed/active on Mac and cloud. Production storage repair and final communication checks pending.",
+  "patch": 69,
+  "tests": {
+    "core": {
+      "tests": 840,
+      "pass": 840,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "packagingBothAliases": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "extracted": {
+      "tests": 32,
+      "pass": 32,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "focused": 25,
+    "independentIsolation": 5,
+    "countsOverlap": true
+  },
+  "replay": {
+    "patches": 69,
+    "changedFiles": 264,
+    "mismatches": [],
+    "matched": true
+  },
+  "artifacts": {
+    "meet-proxy-0.4.44.zip": "0322d29a92422495f4b3791d2c7fa17d02806231150ff0805a0c50245356120a",
+    "meet-proxy-0.4.44.sha256": "23fbe89054c7016662ff009b362ba17bba33d36a0f162cce756de250c6a7efb1",
+    "meet-proxy-0.4.44-build.json": "0fa173a27d0fa9de10b2c12d92e499f52e377f211cf80b2a3dec5b3d62c9d419",
+    "commonplace-0.4.44.zip": "3de5befca15cd3bf8b4e72e5f98689f6c614f72e772dbe85fca2db24613da8fd",
+    "commonplace-0.4.44.sha256": "c2e2d33dc4b9bfef9f37e585a1e86b283bfc0220f13186c47a25274453b60a4f",
+    "commonplace-0.4.44-build.json": "9ba7c80aba4025df953bbf68c35d12603d314f7c2f704e3c85dce1638a8c0607"
+  },
+  "freshnessThresholdMs": 20000,
+  "dispatchChanged": false,
+  "routeEligibilityChanged": false,
+  "permissionsChanged": false,
+  "serverChanged": false,
+  "retainedFailures": [
+    "Initial extracted test fixture retained a source-relative native-hook CLI path; fixture rewritten to extracted package and final32checks passed.",
+    "Original stale successful-checkpoint and obsolete-runtime reporting assertions failed before the correction."
+  ],
+  "liveAcceptance": "pending",
+  "nativeRelease": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.44",
+  "sourceCommit": "d564d409567a6ce3def8a519f1a9f109d1ee84a7",
+  "distributionPR": 71,
+  "githubAssetsVerifiedBeforePublication": 6,
+  "cloudInstall": "end-to-end-repair/cloud77-install.json",
+  "cloudActivation": "end-to-end-repair/cloud77-activation.json"
+}

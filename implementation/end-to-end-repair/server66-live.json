@@ -1,0 +1,18 @@
+{
+  "state": "passed",
+  "release": "20261101-context-recovery",
+  "filesVerified": 166,
+  "serviceReadableFiles": 166,
+  "appliedMigrations": 47,
+  "newMigration": null,
+  "services": [
+    "active",
+    "active",
+    "active"
+  ],
+  "schemaUnchanged": true,
+  "codeOnly": true,
+  "freshWorkerHeartbeat": true,
+  "previousRelease": "20261101-work-sync-recovery",
+  "finishedAt": 1793501388.6795557
+}

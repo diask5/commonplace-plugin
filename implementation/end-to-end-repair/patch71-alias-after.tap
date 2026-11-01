@@ -1,0 +1,16 @@
+✔ production-shape selected mirror request evaluates 700 aliases once across 4,385 rows and 40M characters (9179.047158ms)
+ℹ {"sections":4385,"aliases":700,"characters":40000000,"aliasOverlap":0,"requested":24,"elapsedMs":71.68,"aliasEvaluations":700,"beforeMs":[1863.54,1877.05,1863.18],"afterMs":[65.41,63.11,87.69]}
+✔ full mirror manifests share the same bounded alias lookup (313.855471ms)
+✔ legacy projection exactly matches SQLite for Unicode, NUL, delimiters, devices and owners (356.64734ms)
+✔ hidden legacy bodies are never fetched, and edits/aliases are fresh on the next request (83.499252ms)
+✔ aliases, selected bytes and revisions share the pinned snapshot during a concurrent retirement (332.985496ms)
+✔ warmed 13,694-section/224-alias benchmark retains the correlated SQL reference projection (10267.474856ms)
+ℹ {"sections":13694,"aliases":224,"aliasOverlap":0,"beforeMs":[2015.3,1894.33,1654.39],"afterMs":[293.83,259.79,298.31]}
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20765.629336

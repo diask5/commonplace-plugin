@@ -1,0 +1,49 @@
+test_exclusive_marker_two_synchronized_contenders_exactly_one_claim (__main__.ReviewFixChecks) ... FAIL
+test_files_readiness_requires_actual_namespace_read (__main__.ReviewFixChecks) ... FAIL
+test_marker_existing_evidence_denies_rerun_launcher_only_allowed (__main__.ReviewFixChecks) ... FAIL
+test_marker_rejects_nonprivate_root_and_symlink_without_permissions_change (__main__.ReviewFixChecks) ... FAIL
+
+======================================================================
+FAIL: test_exclusive_marker_two_synchronized_contenders_exactly_one_claim (__main__.ReviewFixChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r4-review-fix-checks.py", line 22, in test_exclusive_marker_two_synchronized_contenders_exactly_one_claim
+    f=extracted('absent','flush','claim_start');root=SyncPath(root)
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r4-review-fix-checks.py", line 9, in extracted
+    if missing:raise AssertionError('Missing required safety helper: '+','.join(sorted(missing)))
+AssertionError: Missing required safety helper: claim_start
+
+======================================================================
+FAIL: test_files_readiness_requires_actual_namespace_read (__main__.ReviewFixChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r4-review-fix-checks.py", line 48, in test_files_readiness_requires_actual_namespace_read
+    extracted('files_namespace_read')
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r4-review-fix-checks.py", line 9, in extracted
+    if missing:raise AssertionError('Missing required safety helper: '+','.join(sorted(missing)))
+AssertionError: Missing required safety helper: files_namespace_read
+
+======================================================================
+FAIL: test_marker_existing_evidence_denies_rerun_launcher_only_allowed (__main__.ReviewFixChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r4-review-fix-checks.py", line 30, in test_marker_existing_evidence_denies_rerun_launcher_only_allowed
+    f=extracted('absent','flush','claim_start')
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r4-review-fix-checks.py", line 9, in extracted
+    if missing:raise AssertionError('Missing required safety helper: '+','.join(sorted(missing)))
+AssertionError: Missing required safety helper: claim_start
+
+======================================================================
+FAIL: test_marker_rejects_nonprivate_root_and_symlink_without_permissions_change (__main__.ReviewFixChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r4-review-fix-checks.py", line 40, in test_marker_rejects_nonprivate_root_and_symlink_without_permissions_change
+    f=extracted('absent','flush','claim_start')
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r4-review-fix-checks.py", line 9, in extracted
+    if missing:raise AssertionError('Missing required safety helper: '+','.join(sorted(missing)))
+AssertionError: Missing required safety helper: claim_start
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.002s
+
+FAILED (failures=4)

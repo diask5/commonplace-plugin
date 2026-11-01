@@ -1,0 +1,112 @@
+{
+  "checks": {
+    "status77.mjs": {
+      "exitCode": 0,
+      "output": {
+        "checkedAt": "2026-11-01T04:38:13.781Z",
+        "runtime": {
+          "revision": 77,
+          "pid": 51705
+        },
+        "cloud_agent_status": {
+          "syncEnabled": true,
+          "elapsedMs": 7743
+        },
+        "context_folder_status": {
+          "enabled": true,
+          "ready": true,
+          "running": true,
+          "error": "Context changed during mirroring; retrying.",
+          "diagnostics": {
+            "phase": "files",
+            "revision": 8934,
+            "requests": 1,
+            "completed": 0,
+            "reused": 899,
+            "resumed": 0,
+            "code": null
+          },
+          "documents": 899,
+          "revision": 8917,
+          "lastSyncedAt": 1793507714342,
+          "characters": 42219841,
+          "elapsedMs": 6
+        },
+        "workspace_receiver_status": {
+          "enabled": true,
+          "provider": "claude",
+          "state": "answering",
+          "elapsedMs": 4
+        }
+      },
+      "stderrPresent": false
+    },
+    "mac-source77.mjs": {
+      "exitCode": 0,
+      "output": {
+        "state": "failed",
+        "error": "No listed source; keys changed,revision,restart",
+        "calls": [
+          {
+            "name": "list_shared_context",
+            "elapsedMs": 18954
+          }
+        ]
+      },
+      "stderrPresent": false
+    }
+  },
+  "coverage": {
+    "checkedAt": 1793507912.789005,
+    "accountMatches": true,
+    "format": 3,
+    "enabled": true,
+    "lastSyncedAt": 1793507907397,
+    "retryAt": null,
+    "errorPresent": true,
+    "discoveryPartial": false,
+    "conductor": {
+      "available": true,
+      "conversations": 56,
+      "partial": false
+    },
+    "canonical": {
+      "files": 204,
+      "partial": true,
+      "hasBacklog": true,
+      "sent": {
+        "fresh": 1,
+        "continuing": 0,
+        "retry": 0,
+        "heartbeat": 0
+      },
+      "deferred": {
+        "fresh": 1,
+        "continuing": 0,
+        "retry": 0,
+        "heartbeat": 202
+      },
+      "backedOff": 0,
+      "scanned": 204,
+      "discovered": 204,
+      "scanMode": "full",
+      "scanMs": 23.9890839997679,
+      "uploadMs": 6506.885709000286
+    },
+    "durable": {
+      "records": 204,
+      "eligible": 204,
+      "complete": 203,
+      "incomplete": 1,
+      "errors": 0,
+      "withoutCaptureId": 0,
+      "excluded": 0,
+      "accountWithheld": 0,
+      "queuedMessages": 0,
+      "pendingPresent": false,
+      "pendingMessageCount": 0
+    },
+    "privateIdentifiersOrContentIncluded": false,
+    "localSnapshotsMayAdvanceDuringRead": true
+  }
+}

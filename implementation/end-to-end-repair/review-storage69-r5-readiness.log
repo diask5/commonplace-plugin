@@ -1,0 +1,18 @@
+test_config200_active_but_denied_or_stale_proof_fails_startup (__main__.ReviewFixChecks) ... ok
+test_current_symlink_and_rollback_regular_old_read_without_file_changes (__main__.ReviewFixChecks) ... ok
+test_exclusive_marker_two_synchronized_contenders_exactly_one_claim (__main__.ReviewFixChecks) ... ok
+test_files_exact_readonly_contract_syntax_and_no_fs_mutation_apis (__main__.ReviewFixChecks) ... ok
+test_files_process_exact_pid_executable_uid_cgroup_and_env_whitelist (__main__.ReviewFixChecks) ... ok
+test_files_readiness_requires_actual_namespace_read (__main__.ReviewFixChecks) ... ok
+test_live_wal_schema_is_seen_without_immutable_or_checkpoint (__main__.ReviewFixChecks) ... ok
+test_marker_existing_evidence_denies_rerun_launcher_only_allowed (__main__.ReviewFixChecks) ... ok
+test_marker_rejects_nonprivate_root_and_symlink_without_permissions_change (__main__.ReviewFixChecks) ... ok
+test_namespace_dispatch_drops_user_and_rejects_pid_restart (__main__.ReviewFixChecks) ... ok
+test_readonly_driver_and_query_only_reject_sql_write (__main__.ReviewFixChecks) ... ok
+test_unprivileged_denied_db_fails_without_any_writes (__main__.ReviewFixChecks) ... ok
+test_wrong_device_inode_path_stale_metadata_and_missing_auth_schema_fail (__main__.ReviewFixChecks) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.930s
+
+OK

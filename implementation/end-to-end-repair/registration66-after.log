@@ -1,0 +1,15 @@
+✔ supported startup replaces an obsolete lock winner instead of returning it as the new receiver (695.737299ms)
+✔ concurrent supported startups serialize and retain the current receiver without spawning contenders (221.04519ms)
+✔ a current receiver owns its native lock before slow host verification, without claiming readiness (166.021185ms)
+2026-11-01T02:40:14.107Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ current receiver metadata survives legacy registrations without extending its expiry or changing native authority (1101.283376ms)
+{"event":"meet_proxy_agent_auth_failure","category":"reported-status","reportedStatus":500}
+✔ receiver metadata is fenced by generation, provider and account; missing verified names cannot renew a previous title (654.226649ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2790.711198

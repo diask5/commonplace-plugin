@@ -1,0 +1,67 @@
+{
+  "state": "failed-during-production-maintenance",
+  "sessionId": "a8f47f0d-73ae-4b3c-9836-13c137b56e39",
+  "calls": [
+    {
+      "tool": "list_linked_accounts",
+      "status": "completed",
+      "durationMs": 12611,
+      "error": false
+    },
+    {
+      "tool": "discover_agents",
+      "status": "failed",
+      "durationMs": 42844,
+      "error": false
+    },
+    {
+      "tool": "setup_status",
+      "status": "completed",
+      "durationMs": 41,
+      "error": false,
+      "setup": {
+        "loadedVersion": "0.4.44",
+        "runtime": {
+          "available": true,
+          "revision": 77,
+          "expectedRevision": 77
+        },
+        "nativeChat": {
+          "verified": true,
+          "delivery": "prompt",
+          "automaticDelivery": false,
+          "transport": "conductor-cloud",
+          "receiver": "reconnecting",
+          "macAccessLimitation": "Conductor agent messages may invalidate this chat\u2019s Mac execution binding; automatic chat delivery and Mac access are separate capabilities."
+        }
+      }
+    },
+    {
+      "tool": "read_agent_context",
+      "status": "failed",
+      "durationMs": 135,
+      "error": false
+    },
+    {
+      "tool": "search_shared_context",
+      "status": "failed",
+      "durationMs": 136,
+      "error": false
+    },
+    {
+      "tool": "discover_agents",
+      "status": "failed",
+      "durationMs": 53,
+      "error": false
+    },
+    {
+      "tool": "agent_inbox_status",
+      "status": "failed",
+      "durationMs": 52,
+      "error": false
+    }
+  ],
+  "preserved": true,
+  "noPermissionsChanged": true,
+  "noMessagesSent": true
+}

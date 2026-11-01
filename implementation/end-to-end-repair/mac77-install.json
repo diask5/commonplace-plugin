@@ -1,0 +1,10 @@
+{
+  "state": "passed",
+  "installedVersion": "0.4.44",
+  "zipSha256": "0322d29a92422495f4b3791d2c7fa17d02806231150ff0805a0c50245356120a",
+  "accountPreserved": true,
+  "savedPermissionsPreserved": true,
+  "codexOnlyPluginPathsChanged": true,
+  "claudePluginManagerUpdated": true
+}
+

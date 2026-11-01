@@ -1,0 +1,117 @@
+{
+  "startedAt": "2026-11-01T03:05:02.104760+00:00",
+  "completedAt": "2026-11-01T03:05:38.634185+00:00",
+  "baseline": "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/replay66-verified",
+  "command": [
+    "node",
+    "--test",
+    "--test-concurrency=2",
+    "apps/commonplace-account/tests/person-inbox-batching.test.mjs",
+    "apps/commonplace-account/tests/person-inbox.test.mjs",
+    "apps/commonplace-account/tests/groups.test.mjs",
+    "apps/commonplace-account/tests/shared-chats.test.mjs",
+    "apps/commonplace-account/tests/delegations.test.mjs",
+    "apps/commonplace-account/tests/session-invitations.test.mjs",
+    "tests/cloud-archive-warm-scheduler.test.mjs",
+    "tests/archive-coordination.test.mjs",
+    "tests/archive-short-transaction-authority.test.mjs",
+    "tests/cloud-archive-mirror-source.test.mjs",
+    "tests/cloud-worker-archive-authority.test.mjs",
+    "tests/archive-short-transaction.test.mjs"
+  ],
+  "exitCode": 0,
+  "totals": {
+    "tests": 130,
+    "pass": 130,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "productionModules": [
+    "apps/commonplace-account/server/person-inbox.mjs",
+    "apps/commonplace-account/server/shared-context.mjs",
+    "apps/commonplace-account/server/cloud-http.mjs"
+  ],
+  "testFiles": [
+    "apps/commonplace-account/tests/person-inbox-batching.test.mjs",
+    "apps/commonplace-account/tests/person-inbox.test.mjs",
+    "apps/commonplace-account/tests/groups.test.mjs",
+    "apps/commonplace-account/tests/shared-chats.test.mjs",
+    "apps/commonplace-account/tests/delegations.test.mjs",
+    "apps/commonplace-account/tests/session-invitations.test.mjs",
+    "tests/cloud-archive-warm-scheduler.test.mjs",
+    "tests/archive-coordination.test.mjs",
+    "tests/archive-short-transaction-authority.test.mjs",
+    "tests/cloud-archive-mirror-source.test.mjs",
+    "tests/cloud-worker-archive-authority.test.mjs",
+    "tests/archive-short-transaction.test.mjs"
+  ],
+  "beforeSha256": {
+    "apps/commonplace-account/server/person-inbox.mjs": "4cf38fbd7745fc7848dbda7a7a08f9e64bef47b70fc667f7dc46f16b31fc9744",
+    "apps/commonplace-account/server/shared-context.mjs": "941650ef11931b6ef941718673aace7ad21bb1912175d5747941d72c80b01cda",
+    "apps/commonplace-account/server/cloud-http.mjs": "b613d364790404dd266bc812ca561df61f95dc902e29471e06bded9f03db2049",
+    "apps/commonplace-account/tests/person-inbox-batching.test.mjs": "205dd4fc71e15146dca306332e3f4fd5e0b96b5d115b8ac59834194d88759f18",
+    "apps/commonplace-account/tests/person-inbox.test.mjs": "0fbec5916b7402ea59014d892662808de64a0da809fd283e7fb1ab89ed76611a",
+    "apps/commonplace-account/tests/groups.test.mjs": "1d1d208d05e941a71a5145268a2bce037327423604cd8f28ba6189e55689b78f",
+    "apps/commonplace-account/tests/shared-chats.test.mjs": "f11e845db71c1ba718113bb9adc5ab519b7a7e8dd915f53c9527e5ca6936c0a3",
+    "apps/commonplace-account/tests/delegations.test.mjs": "e122c6b4b6146bdffcda6f2fe062a066c6202be0f9e17f9257185acad33adbcc",
+    "apps/commonplace-account/tests/session-invitations.test.mjs": "2e983b66c347e36a82d003e9b918ef2fa068445852a9bb2445875da294b9822f",
+    "tests/cloud-archive-warm-scheduler.test.mjs": "0707cfcb5ebea94a0919ecf120be4eb7e66c127a3d24cbd629baff17e40c00bb",
+    "tests/archive-coordination.test.mjs": "fba2ba97736a5e93acb9bb2fb1f97fc44e54ff1517b342138c5193133f62108e",
+    "tests/archive-short-transaction-authority.test.mjs": "cbe56da6396edb10c1cf62736fa526242efdc328e5b2d4052ff5cb48786e6f31",
+    "tests/cloud-archive-mirror-source.test.mjs": "1bc840647edffdf344d590af4a35d3d074c7158947ec92154810e582442e8d06",
+    "tests/cloud-worker-archive-authority.test.mjs": "c74c3dabda147dce6c6d5ae6622cf4ecbfc0e8e65a6d81721fb34fc603f24db0",
+    "tests/archive-short-transaction.test.mjs": "67558923a3286a87ba7359d010499363fdbe6a194f44d743631ae9c24d63906f"
+  },
+  "afterSha256": {
+    "apps/commonplace-account/server/person-inbox.mjs": "4cf38fbd7745fc7848dbda7a7a08f9e64bef47b70fc667f7dc46f16b31fc9744",
+    "apps/commonplace-account/server/shared-context.mjs": "941650ef11931b6ef941718673aace7ad21bb1912175d5747941d72c80b01cda",
+    "apps/commonplace-account/server/cloud-http.mjs": "b613d364790404dd266bc812ca561df61f95dc902e29471e06bded9f03db2049",
+    "apps/commonplace-account/tests/person-inbox-batching.test.mjs": "205dd4fc71e15146dca306332e3f4fd5e0b96b5d115b8ac59834194d88759f18",
+    "apps/commonplace-account/tests/person-inbox.test.mjs": "0fbec5916b7402ea59014d892662808de64a0da809fd283e7fb1ab89ed76611a",
+    "apps/commonplace-account/tests/groups.test.mjs": "1d1d208d05e941a71a5145268a2bce037327423604cd8f28ba6189e55689b78f",
+    "apps/commonplace-account/tests/shared-chats.test.mjs": "f11e845db71c1ba718113bb9adc5ab519b7a7e8dd915f53c9527e5ca6936c0a3",
+    "apps/commonplace-account/tests/delegations.test.mjs": "e122c6b4b6146bdffcda6f2fe062a066c6202be0f9e17f9257185acad33adbcc",
+    "apps/commonplace-account/tests/session-invitations.test.mjs": "2e983b66c347e36a82d003e9b918ef2fa068445852a9bb2445875da294b9822f",
+    "tests/cloud-archive-warm-scheduler.test.mjs": "0707cfcb5ebea94a0919ecf120be4eb7e66c127a3d24cbd629baff17e40c00bb",
+    "tests/archive-coordination.test.mjs": "fba2ba97736a5e93acb9bb2fb1f97fc44e54ff1517b342138c5193133f62108e",
+    "tests/archive-short-transaction-authority.test.mjs": "cbe56da6396edb10c1cf62736fa526242efdc328e5b2d4052ff5cb48786e6f31",
+    "tests/cloud-archive-mirror-source.test.mjs": "1bc840647edffdf344d590af4a35d3d074c7158947ec92154810e582442e8d06",
+    "tests/cloud-worker-archive-authority.test.mjs": "c74c3dabda147dce6c6d5ae6622cf4ecbfc0e8e65a6d81721fb34fc603f24db0",
+    "tests/archive-short-transaction.test.mjs": "67558923a3286a87ba7359d010499363fdbe6a194f44d743631ae9c24d63906f"
+  },
+  "changedDuringRun": [],
+  "log": "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/review67-independent-focused.log",
+  "scope": {
+    "sourceEdits": false,
+    "productionCalls": false,
+    "meetProxyMessages": false
+  },
+  "baselineProductionSha256": {
+    "apps/commonplace-account/server/person-inbox.mjs": "5b610d9f0a4e8868508bf2761d70eecf09767da2df848a379ad505b5ad3c438d",
+    "apps/commonplace-account/server/shared-context.mjs": "48c2fa5e5d491089574f02ea96dfadfd18b50b5f74d18db87d677e6d626696f2",
+    "apps/commonplace-account/server/cloud-http.mjs": "cd45945019e665641aa1170bb80b7e05daac7de243717e9a9321d9ab5f443b8e"
+  },
+  "finalCheckAt": "2026-11-01T03:05:55.954156+00:00",
+  "changedAfterTestCompletion": [],
+  "review": {
+    "blockingDefects": [],
+    "conclusion": "No blocking defect found in the reviewed patch67 scope.",
+    "areas": [
+      "Synchronous savepoint composition, inner rollback and outer transaction preservation.",
+      "Atomic bounded receipt writes, first receipt timestamp idempotence, unchanged account/session/generation checks.",
+      "30-second revision quiet period, same-revision poll coalescing, eight-entry limit, one scheduled build per database and fair follow-ups.",
+      "Timer, finish and initial enqueue failures settle callers and release scheduler capacity.",
+      "Shutdown cancels pending timers, settles waiting promises and drains active work.",
+      "Immediate explicit demand preparation and warm semantics retained.",
+      "Source revision, exclusion, grant expiry, device/account/rebinding authority and final disclosure fences unchanged."
+    ],
+    "resolvedDuringReview": [
+      "Unguarded timer and finish revision-read failures were guarded before the stable 130-test run; failure-injection tests pass."
+    ],
+    "limits": [
+      "Source and disposable synthetic fixtures only; no production calls or live performance verification.",
+      "Inbox authenticated idle-cycle evidence reported by parent: 16 to 15 commits, not a broad idle-load reduction claim."
+    ]
+  }
+}

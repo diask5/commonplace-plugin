@@ -1,0 +1,26 @@
+{
+  "state": "saved-awaiting-offline-receiver",
+  "linkId": "14e35b4fd9fea659e5e931ed",
+  "message": {
+    "id": "78f5ee4e45b689af3bfba739",
+    "seq": 30,
+    "text": "In Work\u2019s shared history, what is the synthetic delivery marker in the existing \u201cWork connection check\u201d message? Please answer only from this space\u2019s shared messages.",
+    "kind": "question",
+    "targetId": "988888cfa1a4f6b756546f3d",
+    "responseRequested": false,
+    "incoming": false,
+    "authorKind": "agent",
+    "replyTo": null
+  },
+  "selectedTarget": "988888cfa1a4f6b756546f3d",
+  "receiver": {
+    "label": "meet-proxy-setup",
+    "provider": "Claude",
+    "online": false
+  },
+  "replyObserved": false,
+  "deliveryReceiptAvailable": false,
+  "lastCursor": 30,
+  "receiverMoved": false,
+  "genericWorkspaceReadDiagnostic": "A later read_workspace call on the group ID returned404; group-board history is read through read_chat_link. This is not a successful workspace or delivery check."
+}

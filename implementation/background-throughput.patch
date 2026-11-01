@@ -1,0 +1,567 @@
+diff --git a/apps/commonplace-account/server/cloud-http.mjs b/apps/commonplace-account/server/cloud-http.mjs
+index 3699a85..e0cf87a 100644
+--- a/apps/commonplace-account/server/cloud-http.mjs
++++ b/apps/commonplace-account/server/cloud-http.mjs
+@@ -66,7 +66,7 @@ export async function cloudHttp(request,service,{identity=readBrowserIdentity,co
+       if(['browser-ready','browser-callback','browser-error','browser-status'].includes(method))return json(work.browserUpdate(owner,device,method,body));
+       return json({error:'Unknown sign-in action.'},404);
+     }
+-    if(['context-setup-begin','context-setup-status'].includes(method)){if(method==='context-setup-status')void warmSharedContext(service,owner).catch(()=>{});if(!browser)return json({error:'Use the signed-in browser.'},403);const setup=new ContextSetup(service);return json(method==='context-setup-begin'?setup.begin(owner,body):setup.status(owner,body));}
++    if(['context-setup-begin','context-setup-status'].includes(method)){if(method==='context-setup-status')void warmSharedContext(service,owner,{scheduled:true}).catch(()=>{});if(!browser)return json({error:'Use the signed-in browser.'},403);const setup=new ContextSetup(service);return json(method==='context-setup-begin'?setup.begin(owner,body):setup.status(owner,body));}
+     if(method==='context-setup-claim'){if(!device||device.workspaceId)return json({error:'Use your personal native chat.'},403);return json(await new ContextSetup(service).claim(device,body));}
+     if(method==='collector-progress'){if(!device||device.workspaceId)return json({error:'Use your connected installation.'},403);await service.authenticate(request,'commonplace:upload');return json(new ContextSetup(service).report(owner,device,body));}
+     if(method==='setup-cancel')return json(cancelSetupLogin(work,owner,body));
+@@ -74,7 +74,7 @@ export async function cloudHttp(request,service,{identity=readBrowserIdentity,co
+     if(method==='setup-verify')return json(verifyCloudSetup(work,owner,body));
+     if(spaceManagementTools.some(t=>t.action===method)){if(device?.workspaceId)return json({error:'Use your personal chat for context spaces.'},403);return json(await manageSpace(service,owner,method,body));}
+     if(['space-list','space-activity','space-events','space-request'].includes(method)){if(device?.workspaceId)return json({error:'Use your personal chat for context spaces.'},403);const spaces=new SpaceContext(service);if(method==='space-events')return json(new SpaceEvents(service).read(owner,body));if(method==='space-list')return json(spaces.list(owner));if(method==='space-activity')return json(spaces.board(owner,body));await service.limit('space-request:'+owner,12,60000);return json(await spaces.request(owner,body));}
+-    if(method==='status')void warmSharedContext(service,owner).catch(()=>{});
++    if(method==='status')void warmSharedContext(service,owner,{scheduled:true}).catch(()=>{});
+     if(method==='status')return json({contextProtocol:1,contextAtomicCaptures:true,contextCollectorProgress:true,contextUploadEncoding:'gzip-base64-v1',setup:agentSetupStatus(work,owner),syncEnabled:!!work.get('SELECT sync_enabled FROM cp_cloud_settings WHERE owner=?',owner)?.sync_enabled,companions:work.companions(owner),accounts:work.accounts(owner),tasks:work.list(owner),agentId:work.get('SELECT agent FROM cp_cloud_agents WHERE owner=?',owner)?.agent || null,sources:work.sourceStatus(owner),archive:work.archiveStatus(owner),agents:work.all('SELECT a.id,b.label,b.machine,b.provider,b.host,b.delivery,b.seen_at AS lastSeenAt FROM cp_agent_addresses a JOIN cp_agent_bindings b ON b.agent=a.id JOIN cp_devices d ON d.id=b.device WHERE a.owner=? AND a.revoked_at IS NULL AND d.revoked=0 ORDER BY b.label',owner).map(agent=>({...agent,shortId:agent.id.slice(-6),displayName:agent.label+' ('+agent.provider+', '+agent.id.slice(-6)+')',availability:!agent.lastSeenAt?'unknown':agent.lastSeenAt>Date.now()-90000?'recently_seen':'offline'}))});
+     if(['archive-list','archive-search','archive-read','context-coverage','context-configure','project-context'].includes(method))return json(await sharedContext(service,owner,method,body));
+     if(['archive-manifest','archive-files'].includes(method)){if(!device)return json({error:'Mirror context from your connected installation.'},403);return json(await sharedContext(service,owner,method,body));}
+diff --git a/apps/commonplace-account/server/person-inbox.mjs b/apps/commonplace-account/server/person-inbox.mjs
+index 46a693a..b02488e 100644
+--- a/apps/commonplace-account/server/person-inbox.mjs
++++ b/apps/commonplace-account/server/person-inbox.mjs
+@@ -69,9 +69,26 @@ export class PersonInbox {
+       fail(400, 'Invalid inbox provider.');
+     return hash(`${device.owner}:${device.id}:${session}`).slice(0, 24);
+   }
++  // Only synchronous prepared writes belong here. Savepoints compose with an
++  // existing transaction without committing it or leaving a lock across await.
++  writes(fn) {
++    const db=this.s.db.sqlite;
++    db.exec('SAVEPOINT person_inbox_writes');
++    try {
++      const result=fn();
++      db.exec('RELEASE person_inbox_writes');
++      return result;
++    } catch(error) {
++      db.exec('ROLLBACK TO person_inbox_writes');
++      db.exec('RELEASE person_inbox_writes');
++      throw error;
++    }
++  }
+   async register(device, input) {
+-    const key = this.identity(device, input),
+-      now = Date.now();
++    return this.writes(()=>this.registerNow(device,input));
++  }
++  registerNow(device, input, now=Date.now()) {
++    const key = this.identity(device, input);
+     const hosts = [
+       'claude-desktop',
+       'claude-desktop-launcher',
+@@ -89,7 +106,7 @@ export class PersonInbox {
+       : input.provider === 'Claude'
+         ? 'hook'
+         : 'prompt';
+-    await this.q(
++    this.q(
+       `INSERT INTO cp_inbox_sessions(id,owner,device,session,provider,host,machine,label,delivery,seen,active_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)
+       ON CONFLICT(id) DO UPDATE SET seen=excluded.seen,host=CASE WHEN excluded.host='unknown' THEN host ELSE excluded.host END,
+       machine=CASE WHEN excluded.machine='' THEN machine ELSE excluded.machine END,label=CASE WHEN excluded.label='' THEN label ELSE excluded.label END,
+@@ -110,7 +127,7 @@ export class PersonInbox {
+     ).run();
+     // The MCP process remains alive while the model works, including hosts
+     // whose Stop-hook listener only runs between turns. Preserve that lease.
+-    await this.q('UPDATE cp_inbox_routes SET expires=? WHERE owner=? AND session=?',now+lease,device.owner,key).run();
++    this.q('UPDATE cp_inbox_routes SET expires=? WHERE owner=? AND session=?',now+lease,device.owner,key).run();
+     return { sessionId: key, registered: true, newConversations: true, sessionInvitations: true };
+   }
+   async sessions(device, input) {
+@@ -553,31 +570,34 @@ export class PersonInbox {
+     };
+   }
+   async poll(device, input) {
+-    await this.register(device, input);
+     for(const field of ['received','delivered']) {
+       if(input[field]!==undefined&&(!Array.isArray(input[field])||input[field].length>10000))fail(400,'Invalid inbox receipts.');
+       for(const receipt of input[field]||[])id(receipt);
+     }
+     const me = this.identity(device, input),
+       now = Date.now();
+-    for(const receipt of (input.received||[]).slice(-100))await this.q(
+-      `UPDATE cp_inbox_deliveries SET received_at=COALESCE(received_at,?) WHERE id=? AND owner=? AND EXISTS(SELECT 1 FROM cp_inbox_routes r WHERE r.link=cp_inbox_deliveries.link AND r.owner=? AND r.session=? AND r.generation=cp_inbox_deliveries.generation)`,
+-      now,receipt,device.owner,device.owner,me).run();
+-    for (const receipt of (input.delivered || []).slice(-100)) {
+-      id(receipt);
+-      await this.q(
+-        `UPDATE cp_inbox_deliveries SET submitted_at=COALESCE(submitted_at,?) WHERE id=? AND owner=? AND EXISTS(SELECT 1 FROM cp_inbox_routes r WHERE r.link=cp_inbox_deliveries.link AND r.owner=? AND r.session=? AND r.generation=cp_inbox_deliveries.generation)`,
+-        now,
+-        receipt,
+-        device.owner,
+-        device.owner,
+-        me,
+-      ).run();
+-    }
++    // Presence, lease and at most 100 receipts of each kind commit together.
++    // Async routing and Groups.poll retain their own checks/transactions below.
++    this.writes(()=>{
++      this.registerNow(device,input,now);
++      for(const receipt of (input.received||[]).slice(-100))this.q(
++        `UPDATE cp_inbox_deliveries SET received_at=? WHERE id=? AND owner=? AND received_at IS NULL AND EXISTS(SELECT 1 FROM cp_inbox_routes r WHERE r.link=cp_inbox_deliveries.link AND r.owner=? AND r.session=? AND r.generation=cp_inbox_deliveries.generation)`,
++        now,receipt,device.owner,device.owner,me).run();
++      for (const receipt of (input.delivered || []).slice(-100)) {
++        this.q(
++          `UPDATE cp_inbox_deliveries SET submitted_at=? WHERE id=? AND owner=? AND submitted_at IS NULL AND EXISTS(SELECT 1 FROM cp_inbox_routes r WHERE r.link=cp_inbox_deliveries.link AND r.owner=? AND r.session=? AND r.generation=cp_inbox_deliveries.generation)`,
++          now,
++          receipt,
++          device.owner,
++          device.owner,
++          me,
++        ).run();
++      }
++      if(input.receiptsOnly!==true)this.q('UPDATE cp_inbox_sessions SET polled_at=? WHERE id=?',now,me).run();
++    });
+     const groupEvents=new Groups(this.s).poll(device,input);
+     // Receipt flushes do not pretend to be an active receiver or claim work.
+     if(input.receiptsOnly===true)return {active:true,inbox:true,events:[]};
+-    await this.q('UPDATE cp_inbox_sessions SET polled_at=? WHERE id=?',now,me).run();
+     const events = input.linkId?[]:await this.s.delegations.pendingEvents(device,input);
+     for (const l of await this.links(device.owner)) {
+       if (input.linkId && input.linkId !== l.linkId) continue;
+diff --git a/apps/commonplace-account/server/shared-context.mjs b/apps/commonplace-account/server/shared-context.mjs
+index 48e46b9..1596a58 100644
+--- a/apps/commonplace-account/server/shared-context.mjs
++++ b/apps/commonplace-account/server/shared-context.mjs
+@@ -23,6 +23,11 @@ function trackContext(service,run,{warm=false}={}){
+ }
+ export async function closeSharedContext(service){
+  const state=lifecycle(service);state.closing=true;
++ if(state.warming){
++  const q=state.warming;q.clock.clearTimeout(q.timer);q.timer=null;
++  for(const entry of q.pending.values())entry.resolve();
++  q.pending.clear();
++ }
+  await Promise.allSettled([...state.tasks]);
+ }
+ 
+@@ -36,17 +41,79 @@ function archiveFor(service){
+  return archive;
+ }
+ 
+-export function warmSharedContext(service,owner){
++export function warmSharedContext(service,owner,{scheduled=false,clock}={}){
++ if(scheduled){try{return scheduleWarm(service,owner,clock);}catch(error){return Promise.reject(error);}}
+  return trackContext(service,()=>warmContext(service,owner),{warm:true});
+ }
+-async function warmContext(service,owner){
++async function warmContext(service,owner,now=Date.now){
+  const archive=archiveFor(service);
+- if(archive.locks.has(owner))return;
++ if(archive.locks.has(owner))return archive.locks.get(owner);
+  const needed=service.db.sqlite.prepare('SELECT revision FROM cp_cloud_archive_state WHERE owner=?').get(owner)?.revision;
+  if(needed===undefined)return;
+  const current=await archive.current(owner).catch(()=>null);
+- if(current&&current.manifest.revision>=needed&&(!current.manifest.expiresAt||current.manifest.expiresAt>Date.now()))return;
+- await archive.refresh(owner);
++ if(current&&current.manifest.revision>=needed&&(!current.manifest.expiresAt||current.manifest.expiresAt>now()))return;
++ return archive.refresh(owner);
++}
++// Polling and live reads request acceleration, not an immediate filesystem/FTS
++// rebuild. Share one bounded scheduler across request wrappers and directories
++// on this database; explicit awaited warms/prepare retain their demand path.
++const WARM_QUIET=30000,WARM_LIMIT=8;
++function warmRevision(entry){return entry.service.db.sqlite.prepare('SELECT revision FROM cp_cloud_archive_state WHERE owner=?').get(entry.owner)?.revision;}
++function observeWarm(q,entry){
++ const revision=warmRevision(entry);
++ if(revision!==entry.revision){entry.revision=revision;entry.due=q.clock.now()+WARM_QUIET;}
++}
++function armWarm(q){
++ q.clock.clearTimeout(q.timer);q.timer=null;
++ if(q.state.closing||q.active||!q.pending.size)return;
++ const due=Math.min(...[...q.pending.values()].map(entry=>entry.due));
++ q.timer=q.clock.setTimeout(()=>{q.timer=null;pumpWarm(q);},Math.max(0,due-q.clock.now()));q.timer?.unref?.();
++}
++function pumpWarm(q){
++ try{drainWarm(q);}catch(error){
++  q.clock.clearTimeout(q.timer);q.timer=null;
++  for(const entry of q.pending.values())entry.reject(error);
++  q.pending.clear();
++ }
++}
++function drainWarm(q){
++ if(q.state.closing||q.active)return;
++ // Recheck even without another poll: a source may change after the last
++ // observation. Same-revision polls never move an owner's quiet deadline.
++ for(const entry of q.pending.values())observeWarm(q,entry);
++ const entry=[...q.pending.values()].find(entry=>entry.due<=q.clock.now());
++ if(!entry){armWarm(q);return;}
++ q.clock.clearTimeout(q.timer);q.timer=null;
++ q.pending.delete(entry.key);q.active=entry;
++ const task=trackContext(entry.service,()=>warmContext(entry.service,entry.owner,q.clock.now),{warm:true});
++ const finish=(error,snapshot)=>{
++  q.active=null;
++  try{if(!q.state.closing&&(warmRevision(entry)!==entry.revision||snapshot?.manifest.expiresAt&&snapshot.manifest.expiresAt<=q.clock.now())){
++   // At most one follow-up per owner/directory, at the back of the fair queue.
++   // The active entry just released capacity, so this remains bounded.
++   scheduleWarm(entry.service,entry.owner,q.clock).catch(()=>{});
++  }}catch(failure){error??=failure;}
++  if(error)entry.reject(error);else entry.resolve();
++  pumpWarm(q);
++ };
++ task.then(snapshot=>finish(undefined,snapshot),error=>finish(error));
++}
++function scheduleWarm(service,owner,clock){
++ const state=lifecycle(service);
++ if(state.closing)return Promise.resolve();
++ const q=state.warming??={state,clock:clock||{now:()=>Date.now(),setTimeout,clearTimeout},pending:new Map(),active:null,timer:null};
++ const archive=archiveFor(service),key=archive.directory+'\0'+owner;
++ let entry=q.pending.get(key);
++ if(entry){observeWarm(q,entry);armWarm(q);return entry.promise;}
++ const revision=warmRevision({service,owner});
++ if(revision===undefined)return Promise.resolve();
++ if(q.active?.key===key&&q.active.revision===revision)return q.active.promise;
++ if(q.pending.size+(q.active?1:0)>=WARM_LIMIT)return Promise.reject(new WorkProblem(503,'Context archive warming is busy; retry shortly.'));
++ entry={key,service,owner,revision,due:q.clock.now()+WARM_QUIET,...Promise.withResolvers()};
++ // Follow-ups can outlive the original HTTP caller; still propagate failures
++ // to explicit observers without creating an unhandled background rejection.
++ entry.promise.catch(()=>{});q.pending.set(key,entry);armWarm(q);
++ return entry.promise;
+ }
+ // Native and cloud agents use the same account projection. A request refreshes
+ // and pins a snapshot; no model is started and no credentials enter its files.
+@@ -147,7 +214,7 @@ async function liveReadOnce(service,archive,owner,method,input){
+  const current=service.db.sqlite.prepare('SELECT revision FROM cp_cloud_archive_state WHERE owner=?').get(owner)?.revision??0;
+  // Collection, exclusion or grant changes during the read withhold all bytes.
+  if(current!==result.revision||result.expiresAt&&result.expiresAt<=Date.now())return {changed:true,revision:current,restart:true};
+- warmSharedContext(service,owner).catch(()=>{});
++ warmSharedContext(service,owner,{scheduled:true}).catch(()=>{});
+  return result.value;
+ }
+ // Mirror traffic never waits for the unrelated filesystem/FTS publication.
+diff --git a/apps/commonplace-account/tests/person-inbox-batching.test.mjs b/apps/commonplace-account/tests/person-inbox-batching.test.mjs
+new file mode 100644
+index 0000000..dc01d1d
+--- /dev/null
++++ b/apps/commonplace-account/tests/person-inbox-batching.test.mjs
+@@ -0,0 +1,147 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {randomBytes} from 'node:crypto';
++import {mkdtemp,rm} from 'node:fs/promises';
++import {readFileSync} from 'node:fs';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {fileURLToPath} from 'node:url';
++import {AccountService} from '../server/service.mjs';
++import {openDatabase} from '../server/sqlite.mjs';
++import {database,identity,origin,registerDevice} from './helpers.mjs';
++
++const id=()=>randomBytes(12).toString('hex');
++async function fixture(t,{persistent=false}={}){
++ let db;
++ if(persistent){
++  const dir=await mkdtemp(path.join(tmpdir(),'inbox-batch-'));
++  db=openDatabase(path.join(dir,'account.sqlite'),{migrations:fileURLToPath(new URL('../drizzle/',import.meta.url))});
++  // Only this disposable fixture: retain WAL frames for exact commit counting.
++  db.sqlite.exec('PRAGMA wal_autocheckpoint=0');
++  t.after(async()=>{db.close();await rm(dir,{recursive:true,force:true});});
++ }else db=await database(t);
++ const s=new AccountService(db,origin),sql=db.sqlite;
++ const a={id:id(),owner:(await s.profile(identity('batch-sender'))).id};
++ const b={id:id(),owner:(await s.profile(identity('batch-receiver'))).id};
++ const stranger={id:id(),owner:(await s.profile(identity('batch-stranger'))).id};
++ for(const d of [a,b,stranger])await registerDevice(s,d);
++ const invite=await s.invite(a.owner,'Receiver');await s.connect(b.owner,invite.code);
++ const aa={sessionId:id(),provider:'Codex',host:'conductor',delivery:'native',label:'Sender'};
++ const bb={...aa,sessionId:id(),label:'Receiver'};
++ await s.personInbox.register(b,bb);
++ const room=await s.personInbox.open(a,{...aa,personId:b.owner});
++ await s.personInbox.takeover(b,{...bb,linkId:room.linkId});
++ const question=await s.personInbox.send(a,{...aa,linkId:room.linkId,kind:'question',text:'Synthetic question',nonce:id()});
++ const event=(await s.personInbox.poll(b,bb)).events.find(e=>e.id===question.id);
++ assert.ok(event);
++ let now=Date.now()+1000;t.mock.method(Date,'now',()=>now);
++ const tick=()=>now+=1000;
++ const me=s.personInbox.identity(b,bb);
++ const state=()=>({session:sql.prepare('SELECT * FROM cp_inbox_sessions WHERE id=?').get(me),route:sql.prepare('SELECT * FROM cp_inbox_routes WHERE link=? AND owner=?').get(room.linkId,b.owner),receipts:sql.prepare('SELECT * FROM cp_inbox_deliveries WHERE link=? ORDER BY id').all(room.linkId)});
++ return {s,sql,a,b,stranger,aa,bb,room,event,question,me,state,tick};
++}
++
++test('registration rolls back presence when the route lease write fails',async t=>{
++ const f=await fixture(t),before=f.state();
++ f.sql.exec("CREATE TRIGGER fail_lease BEFORE UPDATE OF expires ON cp_inbox_routes BEGIN SELECT RAISE(ABORT,'synthetic lease failure'); END");
++ await assert.rejects(f.s.personInbox.register(f.b,{...f.bb,label:'Failed presence'}),/synthetic lease failure/);
++ assert.deepEqual(f.state(),before);
++ f.sql.exec('DROP TRIGGER fail_lease');
++ await f.s.personInbox.register(f.b,{...f.bb,label:'Committed presence'});
++ assert.equal(f.state().session.label,'Committed presence');
++ assert.equal(f.state().route.expires,Date.now()+60000);
++});
++
++test('a later receipt failure rolls back all receipts, presence and route lease for a retry',async t=>{
++ const f=await fixture(t);
++ const second=await f.s.personInbox.send(f.a,{...f.aa,linkId:f.room.linkId,kind:'context',text:'Second synthetic update',nonce:id()});
++ const next=(await f.s.personInbox.poll(f.b,f.bb)).events.find(e=>e.id===second.id);
++ f.tick();const before=f.state();
++ f.sql.exec(`CREATE TRIGGER fail_receipt BEFORE UPDATE OF submitted_at ON cp_inbox_deliveries WHEN NEW.id='${next.receiptId}' BEGIN SELECT RAISE(ABORT,'synthetic receipt failure'); END`);
++ const input={...f.bb,label:'Failed poll',received:[f.event.receiptId],delivered:[f.event.receiptId,next.receiptId],receiptsOnly:true};
++ await assert.rejects(f.s.personInbox.poll(f.b,input),/synthetic receipt failure/);
++ assert.deepEqual(f.state(),before);
++ f.sql.exec('DROP TRIGGER fail_receipt');
++ assert.deepEqual((await f.s.personInbox.poll(f.b,input)).events,[]);
++ const saved=f.state();assert.equal(saved.session.label,'Failed poll');
++ assert.equal(saved.session.polled_at,before.session.polled_at,'receipt flush never claims polling activity');
++ assert.ok(saved.receipts.every(r=>r.submitted_at===Date.now()));
++ assert.equal((await f.s.personInbox.poll(f.b,f.bb)).events.length,0,'committed retry is not redelivered');
++});
++
++test('poll timestamp failure rolls back the complete bounded write phase before acknowledgment',async t=>{
++ const f=await fixture(t),before=f.state();
++ f.sql.exec("CREATE TRIGGER fail_poll BEFORE UPDATE OF polled_at ON cp_inbox_sessions BEGIN SELECT RAISE(ABORT,'synthetic poll failure'); END");
++ await assert.rejects(f.s.personInbox.poll(f.b,{...f.bb,received:[f.event.receiptId],delivered:[f.event.receiptId]}),/synthetic poll failure/);
++ assert.deepEqual(f.state(),before);
++ f.sql.exec('DROP TRIGGER fail_poll');
++ await f.s.personInbox.poll(f.b,{...f.bb,received:[f.event.receiptId],delivered:[f.event.receiptId]});
++ assert.equal(f.state().session.polled_at,Date.now());
++ assert.equal(f.state().receipts[0].submitted_at,Date.now());
++});
++
++test('receipt retries preserve first timestamps and do not update already recorded receipts',async t=>{
++ const f=await fixture(t),input={...f.bb,received:[f.event.receiptId],delivered:[f.event.receiptId],receiptsOnly:true};
++ await f.s.personInbox.poll(f.b,input);const saved=f.state().receipts;
++ f.sql.exec('CREATE TABLE receipt_updates(n INTEGER); INSERT INTO receipt_updates VALUES(0); CREATE TRIGGER count_receipt_updates AFTER UPDATE OF received_at,submitted_at ON cp_inbox_deliveries BEGIN UPDATE receipt_updates SET n=n+1; END');
++ f.tick();await f.s.personInbox.poll(f.b,input);
++ assert.deepEqual(f.state().receipts,saved);
++ assert.equal(f.sql.prepare('SELECT n FROM receipt_updates').get().n,0);
++});
++
++test('presence, lease and bounded receipts commit once per registration or poll',async t=>{
++ const f=await fixture(t,{persistent:true}),file=f.sql.prepare('PRAGMA database_list').all().find(r=>r.name==='main').file;
++ const commits=()=>{const b=readFileSync(file+'-wal'),ps=b.readUInt32BE(8);let n=0;for(let o=32;o+24+ps<=b.length;o+=24+ps)if(b.readUInt32BE(o+4)!==0)n++;return n;};
++ const results={};
++ const measure=async(name,work)=>{f.tick();const before=commits();await work();results[name]=commits()-before;};
++ await measure('registration',()=>f.s.personInbox.register(f.b,f.bb));
++ await measure('emptyPoll',()=>f.s.personInbox.poll(f.b,f.bb));
++ // Distinct messages and receipts, all in the current route generation.
++ const receipts=Array.from({length:100},()=>id());
++ const insert=f.sql.prepare('INSERT INTO cp_inbox_deliveries(id,link,owner,message,generation) VALUES(?,?,?,?,?)');
++ const sender=f.sql.prepare('SELECT sender FROM cp_chat_messages WHERE id=?').get(f.question.id).sender;
++ const message=f.sql.prepare("INSERT INTO cp_chat_messages(id,link,sender,kind,body,at) VALUES(?,?,?,'context','Synthetic batch update',?)");
++ f.sql.exec('BEGIN');for(const receipt of receipts){const key=id();message.run(key,f.room.linkId,sender,Date.now());insert.run(receipt,f.room.linkId,f.b.owner,key,f.event.generation);}f.sql.exec('COMMIT');
++ await measure('receiptFlush100',()=>f.s.personInbox.poll(f.b,{...f.bb,received:receipts,delivered:receipts,receiptsOnly:true}));
++ console.log('synthetic PersonInbox WAL commits '+JSON.stringify(results));
++ assert.deepEqual(results,{registration:1,emptyPoll:1,receiptFlush100:1});
++});
++
++test('nested registration savepoints preserve outer rollback and never leave a transaction across await',async t=>{
++ const f=await fixture(t),before=f.state();
++ f.sql.exec('BEGIN IMMEDIATE');
++ const pending=f.s.personInbox.register(f.b,{...f.bb,label:'Outer transaction'});
++ assert.equal(f.sql.prepare('SELECT label FROM cp_inbox_sessions WHERE id=?').get(f.me).label,'Outer transaction');
++ assert.equal(f.sql.isTransaction,true);
++ f.sql.exec('ROLLBACK');await pending;
++ assert.deepEqual(f.state(),before);
++ f.sql.exec("CREATE TRIGGER fail_nested_lease BEFORE UPDATE OF expires ON cp_inbox_routes BEGIN SELECT RAISE(ABORT,'synthetic nested failure'); END");
++ f.sql.exec('BEGIN IMMEDIATE');
++ f.sql.prepare('UPDATE cp_inbox_sessions SET label=? WHERE id=?').run('Outer work',f.me);
++ const failed=f.s.personInbox.register(f.b,{...f.bb,label:'Failed nested work'});
++ assert.equal(f.sql.isTransaction,true);
++ assert.equal(f.sql.prepare('SELECT label FROM cp_inbox_sessions WHERE id=?').get(f.me).label,'Outer work','inner rollback preserves preceding outer work');
++ f.sql.exec('ROLLBACK');await assert.rejects(failed,/synthetic nested failure/);
++ f.sql.exec('DROP TRIGGER fail_nested_lease');
++ assert.deepEqual(f.state(),before);
++ const observed=[];const original=f.sql.prepare.bind(f.sql);
++ t.mock.method(f.sql,'prepare',sql=>{queueMicrotask(()=>observed.push(f.sql.isTransaction));return original(sql);});
++ await f.s.personInbox.poll(f.b,{...f.bb,received:[f.event.receiptId],delivered:[f.event.receiptId],receiptsOnly:true});
++ assert.equal(f.sql.isTransaction,false);
++ assert.ok(observed.length>0);assert.ok(observed.every(value=>value===false));
++});
++
++test('batched receipts retain owner, session and generation fences and input bounds',async t=>{
++ const f=await fixture(t),flush={...f.bb,received:[f.event.receiptId],delivered:[f.event.receiptId],receiptsOnly:true};
++ await f.s.personInbox.poll(f.stranger,flush);
++ await f.s.personInbox.poll(f.b,{...flush,sessionId:id()});
++ assert.equal(f.state().receipts[0].submitted_at,null);
++ const next={...f.bb,sessionId:id()};await f.s.personInbox.takeover(f.b,{...next,linkId:f.room.linkId});
++ await f.s.personInbox.poll(f.b,flush);
++ assert.equal(f.state().receipts[0].submitted_at,null);
++ const before=f.state();
++ await assert.rejects(f.s.personInbox.poll(f.b,{...f.bb,received:Array(10001).fill(f.event.receiptId)}),{status:400});
++ await assert.rejects(f.s.personInbox.poll(f.b,{...f.bb,received:['bad']}),{status:400});
++ assert.deepEqual(f.state(),before,'invalid receipt arrays cannot partially refresh presence');
++ await assert.rejects(f.s.personInbox.register({...f.b,workspaceId:id()},f.bb),{status:403});
++});
+diff --git a/tests/cloud-archive-warm-scheduler.test.mjs b/tests/cloud-archive-warm-scheduler.test.mjs
+new file mode 100644
+index 0000000..e524258
+--- /dev/null
++++ b/tests/cloud-archive-warm-scheduler.test.mjs
+@@ -0,0 +1,156 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {mkdtemp,rm} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {openDatabase} from '../apps/commonplace-account/server/sqlite.mjs';
++import {AccountService} from '../apps/commonplace-account/server/service.mjs';
++import {CloudArchive} from '../apps/commonplace-account/server/cloud-archive.mjs';
++import {CloudWork} from '../apps/commonplace-account/server/cloud-work.mjs';
++import {cloudHttp} from '../apps/commonplace-account/server/cloud-http.mjs';
++import {ContextSetup} from '../apps/commonplace-account/server/context-setup.mjs';
++import {createHash,randomBytes} from 'node:crypto';
++import {warmSharedContext,sharedContext,closeSharedContext} from '../apps/commonplace-account/server/shared-context.mjs';
++const flush=()=>new Promise(resolve=>setImmediate(resolve));
++const actualCurrent=CloudArchive.prototype.current,actualRefresh=CloudArchive.prototype.refresh;
++function fakeClock(){
++ let time=1000,unrefs=0;const timers=new Set();
++ return {now:()=>time,setTimeout(fn,delay){const timer={at:time+delay,fn,unref(){unrefs++;}};timers.add(timer);return timer;},clearTimeout:timer=>timers.delete(timer),get timers(){return timers.size;},get unrefs(){return unrefs;},async advance(ms){const target=time+ms;while(true){const next=[...timers].sort((a,b)=>a.at-b.at)[0];if(!next||next.at>target)break;time=next.at;timers.delete(next);next.fn();await flush();}time=target;await flush();}};
++}
++async function fixture(t){
++ const dir=await mkdtemp(path.join(tmpdir(),'quiet-warm-')),db=openDatabase(path.join(dir,'db.sqlite'),{migrations:path.resolve('apps/commonplace-account/drizzle')}),service=new AccountService(db,'https://relay.example'),clock=fakeClock();
++ t.after(async()=>{await closeSharedContext({db});db.close();await rm(dir,{recursive:true,force:true});});
++ const owner=async label=>{const profile=await service.profile({userId:label,email:label+'@example.test'});db.sqlite.prepare('INSERT OR IGNORE INTO cp_cloud_archive_state(owner,revision) VALUES(?,1)').run(profile.id);return profile.id;};
++ const a=await owner('A'),published=new Map(),builds=[];
++ const revision=id=>db.sqlite.prepare('SELECT revision FROM cp_cloud_archive_state WHERE owner=?').get(id).revision;
++ const change=id=>db.sqlite.prepare('UPDATE cp_cloud_archive_state SET revision=revision+1 WHERE owner=?').run(id);
++ t.mock.method(CloudArchive.prototype,'current',async id=>published.get(id)||null);
++ t.mock.method(CloudArchive.prototype,'refresh',async id=>{builds.push({owner:id,at:clock.now(),revision:revision(id)});const snapshot={manifest:{owner:id,revision:revision(id),expiresAt:null}};published.set(id,snapshot);return snapshot;});
++ const warm=(id=a)=>warmSharedContext(new AccountService(db,service.origin),id,{scheduled:true,clock});
++ return {dir,db,service,clock,a,owner,revision,change,published,builds,warm};
++}
++test('scheduled warms defer a changing archive until 30 seconds after the last observed revision',async t=>{
++ const f=await fixture(t),first=f.warm();await flush();assert.equal(f.builds.length,0);
++ await f.clock.advance(20000);f.change(f.a);const same=f.warm();await flush();
++ await f.clock.advance(29999);assert.equal(f.builds.length,0);
++ await f.clock.advance(1);await Promise.all([first,same]);assert.equal(f.builds.length,1);assert.equal(f.builds[0].revision,f.revision(f.a));
++});
++test('same-revision polling coalesces without postponing the original quiet deadline',async t=>{
++ const f=await fixture(t),first=f.warm();await flush();assert.equal(f.builds.length,0);
++ await f.clock.advance(20000);const second=f.warm();await flush();
++ await f.clock.advance(10000);await Promise.all([first,second]);assert.equal(f.builds.length,1);assert.equal(f.builds[0].at,31000);assert.ok(f.clock.unrefs>0);
++});
++test('explicit awaited warm retains immediate completion semantics',async t=>{
++ const f=await fixture(t);await warmSharedContext(f.service,f.a);assert.equal(f.builds.length,1);assert.equal(f.clock.timers,0);
++});
++test('the timer notices uploads between polls and continuous changes do not start builds',async t=>{
++ const f=await fixture(t),warming=f.warm();
++ await f.clock.advance(20000);f.change(f.a);
++ await f.clock.advance(10000);assert.equal(f.builds.length,0);
++ for(let i=0;i<4;i++){await f.clock.advance(25000);f.change(f.a);f.warm();await flush();assert.equal(f.builds.length,0);}
++ await f.clock.advance(30000);await warming;assert.equal(f.builds.length,1);assert.equal(f.builds[0].revision,f.revision(f.a));
++});
++test('one database build runs at a time, ready owners are fair and dirty active owners coalesce one follow-up',async t=>{
++ const f=await fixture(t),b=await f.owner('B'),gate=Promise.withResolvers();let active=0,maximum=0;
++ t.mock.method(CloudArchive.prototype,'refresh',async id=>{
++  const revision=f.revision(id);active++;maximum=Math.max(maximum,active);f.builds.push({owner:id,revision});
++  try{if(f.builds.length===1)await gate.promise;const snapshot={manifest:{revision,expiresAt:null}};f.published.set(id,snapshot);return snapshot;}finally{active--;}
++ });
++ const first=f.warm(),second=f.warm(b);await f.clock.advance(30000);assert.deepEqual(f.builds.map(b=>b.owner),[f.a]);
++ f.change(f.a);const dirty=f.warm();f.warm();f.warm();gate.resolve();await flush();await flush();
++ assert.deepEqual(f.builds.map(b=>b.owner),[f.a,b]);assert.equal(maximum,1);
++ await f.clock.advance(30000);await Promise.all([first,second,dirty]);assert.deepEqual(f.builds.map(b=>b.owner),[f.a,b,f.a]);assert.equal(maximum,1);
++});
++test('the owner queue is bounded and capacity recovers without dropping accepted owners',async t=>{
++ const f=await fixture(t),owners=[f.a];for(let i=1;i<9;i++)owners.push(await f.owner('Owner'+i));
++ const accepted=owners.slice(0,8).map(id=>f.warm(id));await assert.rejects(f.warm(owners[8]),e=>e.status===503);
++ await f.clock.advance(30000);await Promise.all(accepted);assert.deepEqual(f.builds.map(b=>b.owner),owners.slice(0,8));
++ const retry=f.warm(owners[8]);await f.clock.advance(30000);await retry;assert.equal(f.builds.length,9);
++});
++test('a failed owner does not strand other owners or leak background capacity',async t=>{
++ const f=await fixture(t),b=await f.owner('B'),refresh=CloudArchive.prototype.refresh;let fail=true;
++ t.mock.method(CloudArchive.prototype,'refresh',async function(id){if(id===f.a&&fail){fail=false;throw Error('Synthetic build failure');}return refresh.call(this,id);});
++ const first=f.warm(),failure=assert.rejects(first,/Synthetic build failure/),second=f.warm(b);
++ await f.clock.advance(30000);await Promise.all([failure,second]);assert.deepEqual(f.builds.map(b=>b.owner),[b]);
++ const retry=f.warm();await f.clock.advance(30000);await retry;assert.deepEqual(f.builds.map(b=>b.owner),[b,f.a]);
++});
++test('expired snapshots rebuild at an unchanged revision and expiry during a build queues a bounded follow-up',async t=>{
++ const f=await fixture(t);f.published.set(f.a,{manifest:{revision:f.revision(f.a),expiresAt:f.clock.now()+10000}});
++ const first=f.warm();await f.clock.advance(30000);await first;assert.equal(f.builds.length,1);
++ f.change(f.a);const refresh=CloudArchive.prototype.refresh;let once=true;
++ t.mock.method(CloudArchive.prototype,'refresh',async function(id){const snapshot=await refresh.call(this,id);if(once){once=false;snapshot.manifest.expiresAt=f.clock.now()-1;}return snapshot;});
++ const second=f.warm();await f.clock.advance(30000);await second;assert.equal(f.builds.length,2);
++ await f.clock.advance(30000);assert.equal(f.builds.length,3);assert.equal(f.clock.timers,0);
++});
++test('closing cancels pending timers, settles callers and blocks fresh work on another service wrapper',async t=>{
++ const f=await fixture(t),warming=f.warm();assert.equal(f.clock.timers,1);
++ await closeSharedContext(new AccountService(f.db,f.service.origin));await warming;
++ assert.equal(f.clock.timers,0);await f.clock.advance(60000);assert.equal(f.builds.length,0);
++ await f.warm();await warmSharedContext(f.service,f.a);await assert.rejects(sharedContext(f.service,f.a,'archive-list',{}),e=>e.status===503);
++});
++test('close drains a warm already checking the pointer and cancels all queued owners',async t=>{
++ const f=await fixture(t),b=await f.owner('B'),entered=Promise.withResolvers(),release=Promise.withResolvers();
++ t.mock.method(CloudArchive.prototype,'current',async()=>{entered.resolve();await release.promise;return null;});
++ const active=f.warm(),queued=f.warm(b);await f.clock.advance(30000);await entered.promise;
++ let done=false;const closing=closeSharedContext({db:f.db}).then(()=>{done=true;});await flush();assert.equal(done,false);await queued;
++ assert.equal(f.db.sqlite.prepare('SELECT 1 AS alive').get().alive,1);release.resolve();await Promise.all([active,closing]);assert.equal(done,true);assert.deepEqual(f.builds.map(b=>b.owner),[f.a]);assert.equal(f.clock.timers,0);
++});
++test('status, browser setup status and successful live reads schedule instead of eagerly building',async t=>{
++ const f=await fixture(t),work=new CloudWork(f.service),deviceId=randomBytes(12).toString('hex');
++ work.run('INSERT INTO cp_devices(id,owner,client,name,scope,created_at) VALUES(?,?,?,?,?,?)',deviceId,f.a,'test','Synthetic','commonplace',Date.now());
++ const device=work.get('SELECT * FROM cp_devices WHERE id=?',deviceId);t.mock.method(f.service,'authenticate',async()=>device);
++ const initial=f.warm(); // Bind the deterministic clock before exercising HTTP callers.
++ const request=(route,body={})=>new Request(f.service.origin+route,{method:'POST',headers:{origin:f.service.origin,'content-type':'application/json'},body:JSON.stringify(body)});
++ const status=await cloudHttp(request('/account/api/cloud/status'),f.service);assert.equal(status.status,200);assert.equal(f.builds.length,0);
++ const token='commonplace-context:'+randomBytes(32).toString('base64url');new ContextSetup(f.service).begin(f.a,{token,app:'codex'});
++ const setup=await cloudHttp(request('/account/web/cloud/context-setup-status',{token}),f.service,{identity:async()=>({userId:'A',email:'A@example.test'})});assert.equal(setup.status,200);assert.equal(f.builds.length,0);
++ t.mock.method(CloudArchive.prototype,'liveQuery',async()=>({value:{documents:[],revision:f.revision(f.a)},revision:f.revision(f.a),expiresAt:null}));
++ await sharedContext(f.service,f.a,'archive-list',{});await flush();assert.equal(f.builds.length,0);
++ await f.clock.advance(30000);await initial;assert.equal(f.builds.length,1);
++});
++test('explicit demand preparation bypasses a scheduled warm without waiting for its timer',async t=>{
++ const f=await fixture(t);t.mock.method(CloudArchive.prototype,'current',actualCurrent);t.mock.method(CloudArchive.prototype,'refresh',actualRefresh);
++ const pending=f.warm(),archive=new CloudArchive(new CloudWork(f.service),{directory:path.join(f.dir,'demand')});
++ const snapshot=await archive.prepare(f.a);try{assert.equal(snapshot.manifest.revision,f.revision(f.a));assert.equal(f.clock.now(),1000);assert.equal(f.clock.timers,1);}finally{await snapshot.release();}
++ await closeSharedContext({db:f.db});await pending;
++});
++test('revision-read failures from a timer reject queued callers without uncaught errors or retry loops',async t=>{
++ const f=await fixture(t),b=await f.owner('B'),prepare=f.db.sqlite.prepare;let fail=false,failedReads=0;
++ t.mock.method(f.db.sqlite,'prepare',function(sql){if(fail&&sql==='SELECT revision FROM cp_cloud_archive_state WHERE owner=?'){failedReads++;throw Error('Synthetic timer revision read failure');}return prepare.call(this,sql);});
++ const first=f.warm(),second=f.warm(b),checks=Promise.all([assert.rejects(first,/Synthetic timer revision read failure/),assert.rejects(second,/Synthetic timer revision read failure/)]);fail=true;
++ await f.clock.advance(30000);await checks;assert.equal(f.clock.timers,0);assert.equal(f.builds.length,0);
++ const reads=failedReads;await f.clock.advance(120000);assert.equal(failedReads,reads);
++ fail=false;const retry=f.warm();await f.clock.advance(30000);await retry;assert.equal(f.builds.length,1);
++ await closeSharedContext({db:f.db});fail=true;await f.warm();await f.clock.advance(60000);assert.equal(failedReads,reads);
++});
++test('a postbuild revision-read failure settles the active caller and pending owners, then recovers on a new poll',async t=>{
++ const f=await fixture(t),b=await f.owner('B'),prepare=f.db.sqlite.prepare,refresh=CloudArchive.prototype.refresh;let fail=false,once=true;
++ t.mock.method(f.db.sqlite,'prepare',function(sql){if(fail&&sql==='SELECT revision FROM cp_cloud_archive_state WHERE owner=?')throw Error('Synthetic finish revision read failure');return prepare.call(this,sql);});
++ t.mock.method(CloudArchive.prototype,'refresh',async function(id){const result=await refresh.call(this,id);if(once){once=false;fail=true;}return result;});
++ const first=f.warm(),second=f.warm(b),checks=Promise.all([assert.rejects(first,/Synthetic finish revision read failure/),assert.rejects(second,/Synthetic finish revision read failure/)]);
++ await f.clock.advance(30000);await checks;assert.equal(f.clock.timers,0);assert.equal(f.builds.length,1);
++ fail=false;const retry=f.warm(b);await f.clock.advance(30000);await retry;assert.equal(f.builds.length,2);
++ await closeSharedContext({db:f.db});await f.clock.advance(60000);assert.equal(f.builds.length,2);
++});
++test('initial scheduler read errors reject asynchronously and closing drains a failing active build',async t=>{
++ const f=await fixture(t),prepare=f.db.sqlite.prepare;let fail=true,pending;
++ t.mock.method(f.db.sqlite,'prepare',function(sql){if(fail&&sql==='SELECT revision FROM cp_cloud_archive_state WHERE owner=?')throw Error('Synthetic initial revision read failure');return prepare.call(this,sql);});
++ assert.doesNotThrow(()=>{pending=f.warm();});await assert.rejects(pending,/Synthetic initial revision read failure/);assert.equal(f.clock.timers,0);
++ fail=false;const gate=Promise.withResolvers(),entered=Promise.withResolvers();
++ t.mock.method(CloudArchive.prototype,'refresh',async()=>{entered.resolve();await gate.promise;throw Error('Synthetic closing build failure');});
++ const active=f.warm(),check=assert.rejects(active,/Synthetic closing build failure/);await f.clock.advance(30000);await entered.promise;
++ let closed=false;const closing=closeSharedContext({db:f.db}).then(()=>{closed=true;});await flush();assert.equal(closed,false);
++ gate.resolve();await Promise.all([closing,check]);assert.equal(closed,true);assert.equal(f.clock.timers,0);await f.clock.advance(60000);assert.equal(f.builds.length,0);
++});
++test('canonical mirror and read retain owner, exclusion and revision fences while warming is deferred',async t=>{
++ const f=await fixture(t),work=new CloudWork(f.service),device=randomBytes(12).toString('hex'),b=await f.owner('B');
++ work.run('INSERT INTO cp_devices(id,owner,client,name,scope,created_at) VALUES(?,?,?,?,?,?)',device,f.a,'test','Synthetic','commonplace',Date.now());
++ const source=work.upload(f.a,{id:device},{key:'visible',text:'SYNTHETIC_CURRENT_SOURCE',title:'Codex chats: Canonical',revision:1,capturedAt:1000}),id='native-'+createHash('sha256').update(device+':visible').digest('hex').slice(0,24),pending=f.warm();
++ const read=await sharedContext(f.service,f.a,'archive-read',{documentId:id});assert.match(read.text,/SYNTHETIC_CURRENT_SOURCE/);
++ await assert.rejects(sharedContext(f.service,b,'archive-read',{documentId:id}),/not in this account/);
++ const head=await sharedContext(f.service,f.a,'archive-manifest',{});assert.equal(head.total,1);assert.equal(f.builds.length,0);
++ work.run('DELETE FROM cp_cloud_sources WHERE id=?',source.id);
++ const stale=await sharedContext(f.service,f.a,'archive-files',{revision:head.revision,paths:[head.documents[0].path]});assert.equal(stale.restart,true);assert.equal(stale.files,undefined);
++ assert.equal((await sharedContext(f.service,f.a,'archive-manifest',{})).total,0);assert.equal(f.builds.length,0);
++ await closeSharedContext({db:f.db});await pending;
++});
+diff --git a/tests/cloud-archive.test.mjs b/tests/cloud-archive.test.mjs
+index a462277..f50c314 100644
+--- a/tests/cloud-archive.test.mjs
++++ b/tests/cloud-archive.test.mjs
+@@ -233,11 +233,12 @@ test('concurrent HTTP service wrappers share archive builds and preserve searcha
+   const gate=new Promise(resolve=>{release=resolve;}),materialize=CloudArchive.prototype.materialize;
+   t.mock.method(CloudArchive.prototype,'materialize',async function(owner){started++;signalStarted();await gate;return materialize.call(this,owner);});
+   const services=Array.from({length:3},()=>new AccountService(f.db,f.service.origin));
++  const warming=Promise.all(services.map(service=>warmSharedContext(service,f.owner)));
+   const pending=Promise.all(services.map(service=>sharedContext(service,f.owner,'archive-search',{query:'Orchid'})));
+   // The production runtime recreates these wrappers on a persistent DB. All
+   // requests must await one builder instead of clearing each other's staging.
+   await ready;const builds=started;release();
+-  const pages=await pending;
++  const pages=await pending;await warming;
+   assert.equal(builds,1);assert.ok(pages.every(p=>p.results.length===1));
+   assert.equal(new Set(pages.map(p=>p.revision)).size,1);
+   const result=await sharedContext(new AccountService(f.db,f.service.origin),f.owner,'archive-read',{documentId:pages[0].results[0].documentId,revision:pages[0].revision});

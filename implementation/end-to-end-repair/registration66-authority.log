@@ -1,0 +1,58 @@
+✔ both invitation directions and repeat acceptance share one exact-pair thread; no peer history or other agent access (670.444545ms)
+✔ a can sever immediately, stop pending dispatch and retain shared audit only (453.253646ms)
+✔ b can sever immediately, stop pending dispatch and retain shared audit only (475.059539ms)
+✔ new invitations on an active pair preserve old restrictions and apply shorter new boundaries (421.899342ms)
+✔ browser acceptance uses authenticated owner and selected existing binding without fake presence or takeover (255.081365ms)
+2026-11-01T02:41:19.930Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ the native MCP connection tools bind to the calling chat and deliver on the same canonical thread (1980.616652ms)
+✔ Chief of Staff consent is per owner and exact agent, with no implicit legacy upgrade (218.31427ms)
+✔ an older outstanding invitation cannot restore a newer disabled answer consent (176.846211ms)
+✔ reconnecting an expired pair cannot deliver messages queued under its expired authority (241.621717ms)
+✔ a changed installation owner suppresses answer mandates, sends and native dispatch while retaining owner audit (236.462253ms)
+✔ pair acceptance reuses an exact legacy mailbox thread without copying private context or authorizing answers (261.527055ms)
+✔ proven legacy native pairs retain their private delegation instead of creating or merging a second thread (796.61777ms)
+2026-11-01T02:41:17.698Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ connected agents automatically discover, inspect and message across devices with bulk sync off (2129.643102ms)
+✔ history search and read paginate sanitized text and detect a changed source revision (1858.295911ms)
+✔ cross-person messaging stays authorized while personal history and result IDs stay private (1332.32777ms)
+✔ owner exclusions erase retained results, fence in-flight completion and leave messages working (634.195298ms)
+{"event":"meet_proxy_agent_auth_failure","category":"reported-status","reportedStatus":500}
+✔ history completion rechecks target-revoked (610.263376ms)
+✔ history completion rechecks requester-revoked (549.333552ms)
+✔ history completion rechecks target-rebound (630.417324ms)
+✔ history completion rechecks requester-rebound (450.496107ms)
+✔ history completion rechecks account-changed (733.758428ms)
+✔ history completion rechecks expired (625.463678ms)
+✔ read-only jobs recover after a lost response and report cached/offline results honestly (728.41788ms)
+✔ native reader only opens its own transcript and excludes symlinks and mismatched sessions (409.404032ms)
+✔ Conductor transcript extraction takes visible final text, never config, reasoning or tools (2.568427ms)
+✔ personal directory search has bounded fan-out and a complete stable cursor (479.017527ms)
+✔ history jobs use exclusive leases and reject a stale claimant after recovery (684.500718ms)
+✔ workspace-scoped clients cannot list, invoke or poll personal-history tools (228.675506ms)
+✔ native history resolves a root ancestor alias and still rejects linked transcripts (415.134242ms)
+✔ Codex file reader excludes reasoning/tool destinations and verifies the actual native thread (303.745157ms)
+✔ Conductor cloud history uses only the bound session read APIs and never posts a message (76.344076ms)
+✔ a third personal agent browses and reads the board without joining, sending as a peer or acknowledging (845.308127ms)
+✔ personal observation respects cross-person grants and never grants foreign private board or context (911.84726ms)
+✔ personal board observation fences excluded (745.030822ms)
+✔ personal board observation fences device-revoked (604.258652ms)
+✔ personal board observation fences account-relinked (654.875194ms)
+✔ board pagination pins its snapshot while new replies arrive; transcript pages remain complete (1124.698433ms)
+✔ published working context supports durable revisioned chunks, retries, redaction and Unicode pagination (839.138242ms)
+✔ context manifest pagination, exclusions and native generation changes never return stale resources (770.236807ms)
+✔ an offline cached native page is reusable by another personal agent with original retention and private job IDs (734.968284ms)
+✔ streaming collector preserves literal search, Unicode, boundary matches and consistent cursors (118.205119ms)
+✔ native history can read and search beyond eight million visible characters in a file over fifty MB (1829.859966ms)
+2026-11-01T02:41:17.930Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ simultaneously opened chats share one usable Google connection link and one browser launch (792.327137ms)
+✔ an explicit retry renews an expired offer after a simultaneous automatic check (456.21273ms)
+✔ a failed browser launch returns a reusable link without discarding the connection (345.617192ms)
+✔ reconnecting the same chat refreshes delivery capability and label without changing its address (535.113181ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 46
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23750.550883

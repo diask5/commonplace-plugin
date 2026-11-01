@@ -1,0 +1,20 @@
+{
+  "installation": {
+    "state": "passed",
+    "installedVersion": "0.4.42",
+    "zipSha256": "b892a7eb23fef42a19b0b83cf6638b5b694db080c20dd282c50c2ee4695ff5dc",
+    "accountPreserved": true,
+    "savedPermissionsPreserved": true,
+    "codexOnlyPluginPathsChanged": true,
+    "claudePluginManagerUpdated": true
+  },
+  "activation": {
+    "state": "passed",
+    "initialRevision": 74,
+    "forcedSignals": false,
+    "attempts": 10,
+    "activeRevision": 75,
+    "backgroundVersion": "0.4.42",
+    "accountAndPermissionsPreserved": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "source": "Root read-only production inspection observed 2026-11-01 04:13 UTC; no resets/changes",
+  "exactRequiredFingerprint": {
+    "MainPID": "0",
+    "Result": "timeout",
+    "ExecMainStartTimestamp": "Sun 2026-11-01 04:03:23 UTC",
+    "ExecMainStartTimestampMonotonic": "3827523228312",
+    "ExecMainExitTimestamp": "Sun 2026-11-01 04:08:23 UTC",
+    "ExecMainExitTimestampMonotonic": "3827823218295",
+    "ExecMainPID": "883648",
+    "ExecMainCode": "2",
+    "ExecMainStatus": "15",
+    "ActiveState": "failed",
+    "SubState": "failed",
+    "InvocationID": "b87cb0f36fe4490db77a36c6aff71f13"
+  }
+}

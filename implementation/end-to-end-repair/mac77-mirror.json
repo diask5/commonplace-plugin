@@ -1,0 +1,12 @@
+{
+  "state": "passed",
+  "checkedAt": 1793505106.193064,
+  "accountMatches": true,
+  "revision": 8560,
+  "documents": 823,
+  "characters": 41196479,
+  "digestsVerified": 823,
+  "mismatchCount": 0,
+  "pinnedGeneration": true,
+  "sourceContentNotPublished": true
+}

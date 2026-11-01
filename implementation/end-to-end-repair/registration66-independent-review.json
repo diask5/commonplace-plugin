@@ -1,0 +1,14 @@
+{
+  "state": "passed",
+  "session": "92f00686-334b-40fb-b2d2-8ca3807d3eff",
+  "testsPassed": 72,
+  "blockingFindings": [],
+  "checked": [
+    "Exact device/session/provider/generation scope",
+    "Expiry and rebinding",
+    "Forged tool arguments cannot supply provenance",
+    "Startup races, validated retirement and bounded retries"
+  ],
+  "sourceHashesUnchangedDuringReview": true,
+  "readOnly": true
+}

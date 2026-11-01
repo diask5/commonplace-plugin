@@ -1,0 +1,12 @@
+{
+  "state": "passed",
+  "tool": "read_shared_context",
+  "documentId": "unified-2bbb50726db3f77ae81f4265",
+  "revision": 306,
+  "offset": 31500,
+  "totalCharacters": 38637,
+  "roleHeader": "assistant [message msg_0d7ddba381464793016ae6a462cd2c87d29793f59882afc64f:0]:",
+  "marker": "Cedar Orchard native collection check completed.",
+  "withinSameAssistantRecord": true,
+  "quotedUserPromptNotCounted": true
+}

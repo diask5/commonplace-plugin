@@ -1,0 +1,62 @@
+✔ mirror manifest bypasses a pending full filesystem/index build (285.003271ms)
+✔ mirror file transfer reads selected canonical documents without building unrelated indexes (188.11297ms)
+✔ source mirror preserves projected document metadata, ordering, Unicode and generated index contract (163.736709ms)
+✔ selected files never read unrelated source bodies, even without a manifest cache (118.452721ms)
+✔ file slices, response budget, duplicate offsets, path checks and stale revisions retain protocol behavior (1412.633679ms)
+✔ cached manifest heads are cheap, owner-scoped, and invalidated by source exclusion or generation changes (351.187602ms)
+✔ postworker source changes and exclusions withhold both manifest metadata and file bytes (398.537797ms)
+✔ expired worker results withhold bytes, and expired cache stamps require a full authorized manifest (408.592552ms)
+✔ projection equality survives metadata eviction; legacy final checks keep failing closed on a cache miss (1840.624468ms)
+✔ manifest requests coalesce, file workers share bounded live slots, excess waiters receive 503 (847.866442ms)
+✔ mirror metadata and files recheck stream-excluded (413.945458ms)
+✔ mirror metadata and files recheck history-excluded (470.180438ms)
+✔ mirror metadata and files recheck binding-generation (455.932028ms)
+✔ mirror metadata and files recheck device-revoked (353.796071ms)
+✔ mirror metadata and files recheck account-changed (387.81485ms)
+✔ mirror metadata and files recheck agent-revoked (417.975169ms)
+✔ mirror grant-revoked removes shared messages and never exposes a peer private resource (493.682751ms)
+✔ mirror grant-expired removes shared messages and never exposes a peer private resource (478.745791ms)
+✔ synthetic 684-document/13694-section/39438987-character mirror projects without a full FTS/filesystem build (4486.723567ms)
+ℹ {"synthetic":true,"documents":684,"sections":13694,"characters":39438987,"manifest":{"elapsedMs":753.100302,"rssBefore":55767040,"rssAfter":85463040,"peakRss":85647360},"selectedFile":{"elapsedMs":169.744937,"rssBefore":55885824,"rssAfter":70438912,"peakRss":71393280,"characters":57600},"fullFilesystemOrFtsBuilds":0}
+2026-11-01T02:39:42.180Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ projection handshake publishes after metadata eviction at every final fence and detects a changed same-revision view (2575.668471ms)
+✔ the local context folder mirrors every synced conversation as plain files with a working search command (917.384427ms)
+✔ only changed conversations are downloaded; unchanged files are hard-linked and old generations retire (1075.006117ms)
+✔ exclusions and deletions disappear from the folder, and turning it off removes the files (1191.757235ms)
+✔ relay file access is limited to the pinned snapshot’s own documents (2134.641554ms)
+✔ a changed or missing account resets the folder instead of mixing archives (784.653419ms)
+✔ project catalog upgrades locally without re-downloading unchanged source files (657.574751ms)
+✔ a first install downloads a 33 MB archive across file batches and recovers an interrupted transfer (5590.606172ms)
+✔ runtime drain retains the last complete mirror and resumes unfinished pages after update (1146.325011ms)
+✔ manifest restart responses are explicit retries before accessing documents (3.724257ms)
+✔ manifest continuations pin revision, and changed continuations never download files (11.25042ms)
+▶ manifest pagination rejects a repeated cursor and duplicate document paths
+  ✔ repeated-cursor (2.919519ms)
+  ✔ duplicate-path (2.361083ms)
+✔ manifest pagination rejects a repeated cursor and duplicate document paths (6.089365ms)
+✔ verified completed files survive an interrupted batch, revision change and companion reopen (14.500027ms)
+✔ a changed final fence retains complete files but current manifests cannot revive excluded or edited cache entries (16.849157ms)
+✔ cache corruption is re-downloaded even if its name matches the current digest (22.919909ms)
+✔ disabling during a file request clears private cache and prevents publication (6.223058ms)
+✔ disable then re-enable while the final fence is pending invalidates the old build (14.865559ms)
+✔ an owner change at the final fence clears cached bytes and cannot publish the previous owner (16.855384ms)
+✔ switching owners discards an interrupted cache even when the new manifest names identical bytes (14.839413ms)
+✔ filesystem errors racing disable cannot recreate a cache or mark the disabled mirror ready (5.226688ms)
+✔ failed digest verification never creates a reusable cache entry (9.538718ms)
+✔ runtime drain immediately after the atomic swap finishes committing a readable generation (10.040452ms)
+▶ file pagination stops on deferred-only, empty, missing, duplicate and invalid-offset responses
+  ✔ deferred-only (4.623697ms)
+  ✔ empty (4.53125ms)
+  ✔ missing (5.006285ms)
+  ✔ duplicate (4.574421ms)
+  ✔ offset (3.931415ms)
+  ✔ next-offset (4.254739ms)
+✔ file pagination stops on deferred-only, empty, missing, duplicate and invalid-offset responses (28.530806ms)
+ℹ tests 50
+ℹ suites 0
+ℹ pass 50
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17345.19995

@@ -1,0 +1,53 @@
+{
+  "state": "source-and-new-test-frozen-for-independent-review",
+  "frozenAt": "2026-11-01T04:29:53.426775+00:00",
+  "ownedFiles": [
+    "apps/commonplace-account/server/backup.mjs",
+    "tests/production-backup-location.test.mjs"
+  ],
+  "fileSha256": {
+    "apps/commonplace-account/server/backup.mjs": "2ab3a6e85ffb2d5bab6c38ec09a0ff0d889a867a5ae50f689ea0aba1e1dae79e",
+    "tests/production-backup-location.test.mjs": "ac3d85640f81f1cc76c9f826eac1ce5a0f3e688b6996acfeae8b509b31dac01f"
+  },
+  "baselineBackupSha256": "91ea88827587adffcd1ef48d802d484ca8391d84706181b5155fe01a0a422597",
+  "change": "Resolve configured database symlinks with realpath before selecting the existing backups subdirectory; all other backup behavior retained.",
+  "tests": {
+    "before": {
+      "command": "node --test tests/production-backup-location.test.mjs",
+      "passed": 2,
+      "failed": 2,
+      "failureCause": "Both symlink scenarios wrote under logical directory; regular-path scenarios passed.",
+      "log": ".context/end-to-end-repair/backup-location70-before.log"
+    },
+    "after": {
+      "command": "node --test tests/production-backup-location.test.mjs tests/production-backup.test.mjs",
+      "passed": 6,
+      "failed": 0,
+      "log": ".context/end-to-end-repair/backup-location70-after.log"
+    },
+    "initialFixtureFailureRetained": ".context/end-to-end-repair/backup-location70-before-initial-fixture.log",
+    "fixtureCorrection": "Snapshot assertions ignore existing SQLite auxiliary WAL/SHM files; no production cleanup behavior changed."
+  },
+  "coverage": [
+    "real entrypoint with synthetic SQLite and open WAL writer",
+    "symlink and regular database directory selection",
+    "directory0700 and backup0600 permissions",
+    "actual integrity check and committed snapshot contents",
+    "mocked metadata and upload only; upload body SQLite header",
+    "successful upload removes completed backup",
+    "503 upload retains completed verified backup",
+    "existing pinned snapshot under concurrent writes and timeout cleanup"
+  ],
+  "unchanged": [
+    "sqlite.mjs pinned snapshot and verification",
+    "metadata credentials/upload protocol and error paths",
+    "local backup retention on failure",
+    "backup/service timeouts",
+    "permissions and service sandbox settings"
+  ],
+  "diff": ".context/end-to-end-repair/backup-location70.diff",
+  "productionOrMacCalls": false,
+  "networkUsedByTests": false,
+  "committed": false,
+  "packagedInstalledDeployed": false
+}

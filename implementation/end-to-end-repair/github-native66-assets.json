@@ -1,0 +1,44 @@
+{
+  "releaseId": 430324190,
+  "tag": "meet-proxy-v0.4.42",
+  "target": "4e476b8b5af1d3850bfbdb528a8863e8fcd39735",
+  "draft": false,
+  "checks": [
+    {
+      "name": "meet-proxy-0.4.42.zip",
+      "sha256": "b892a7eb23fef42a19b0b83cf6638b5b694db080c20dd282c50c2ee4695ff5dc",
+      "bytes": 230180826,
+      "verified": true
+    },
+    {
+      "name": "meet-proxy-0.4.42.sha256",
+      "sha256": "85481e43eb7c914ad60b6b6569197de3dcfe3e1869539628b742a09cb0756a26",
+      "bytes": 88,
+      "verified": true
+    },
+    {
+      "name": "meet-proxy-0.4.42-build.json",
+      "sha256": "997694a20bb5ba939453d7ad15d1f5cd0981aa013e995162552d949747a68503",
+      "bytes": 8451,
+      "verified": true
+    },
+    {
+      "name": "commonplace-0.4.42.zip",
+      "sha256": "2385885ee1103db0c6b0ce0ad4d2d52bc282fdd8b02589b460c687b9336830bf",
+      "bytes": 230180826,
+      "verified": true
+    },
+    {
+      "name": "commonplace-0.4.42.sha256",
+      "sha256": "284fbc0c647c64c6ebf3c3139232f1a18dfe0c372d95666a7c73db160956975c",
+      "bytes": 89,
+      "verified": true
+    },
+    {
+      "name": "commonplace-0.4.42-build.json",
+      "sha256": "f7915690d542bcd14584268bd0385aa75b239396ef7ffcaf92a937039f188bbb",
+      "bytes": 8453,
+      "verified": true
+    }
+  ]
+}

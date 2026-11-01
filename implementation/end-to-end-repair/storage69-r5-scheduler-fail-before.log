@@ -1,0 +1,29 @@
+test_finally_restores_timer_after_all_post_cutover_checks (__main__.SchedulerChecks) ... ok
+test_pre_pause_holder_gate_exists (__main__.SchedulerChecks) ... FAIL
+test_prepared_nested_disk_is_reused_without_mount_or_format_or_renames (__main__.SchedulerChecks) ... ok
+test_timer_helpers_exist (__main__.SchedulerChecks) ... FAIL
+
+======================================================================
+FAIL: test_pre_pause_holder_gate_exists (__main__.SchedulerChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-scheduler-checks.py", line 23, in test_pre_pause_holder_gate_exists
+    def test_pre_pause_holder_gate_exists(self):extract('expected_holders_only')
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-scheduler-checks.py", line 10, in extract
+    if missing:raise AssertionError('Missing backup/holder safety helper: '+','.join(sorted(missing)))
+AssertionError: Missing backup/holder safety helper: expected_holders_only
+
+======================================================================
+FAIL: test_timer_helpers_exist (__main__.SchedulerChecks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-scheduler-checks.py", line 22, in test_timer_helpers_exist
+    def test_timer_helpers_exist(self):extract('backup_schedule_snapshot','pause_backup_timer','wait_backup_idle','assert_backup_paused','restore_backup_timer')
+  File "/home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/storage69-r5-scheduler-checks.py", line 10, in extract
+    if missing:raise AssertionError('Missing backup/holder safety helper: '+','.join(sorted(missing)))
+AssertionError: Missing backup/holder safety helper: assert_backup_paused,backup_schedule_snapshot,pause_backup_timer,restore_backup_timer,wait_backup_idle
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.011s
+
+FAILED (failures=2)

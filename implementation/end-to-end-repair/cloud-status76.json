@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-11-01T03:25:01.873Z",
+  "runtime": {
+    "revision": 76,
+    "pid": 2533542
+  },
+  "cloud_agent_status": {
+    "syncEnabled": true,
+    "elapsedMs": 4126
+  },
+  "context_folder_status": {
+    "enabled": true,
+    "ready": true,
+    "running": false,
+    "error": null,
+    "diagnostics": {
+      "phase": "ready",
+      "revision": 329,
+      "requests": 1,
+      "completed": 1,
+      "reused": 85,
+      "resumed": 0,
+      "code": null
+    },
+    "documents": 86,
+    "revision": 329,
+    "lastSyncedAt": 1793503498704,
+    "characters": 1869376,
+    "elapsedMs": 3
+  },
+  "workspace_receiver_status": {
+    "enabled": true,
+    "provider": "codex",
+    "state": "answering",
+    "elapsedMs": 4
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "seconds": 29.72,
+  "health": [
+    {
+      "elapsed": 4.487695845309645,
+      "ready": true
+    },
+    {
+      "elapsed": 4.5284917410463095,
+      "ready": true
+    },
+    {
+      "elapsed": 4.475112037733197,
+      "ready": true
+    },
+    {
+      "elapsed": 4.259353974368423,
+      "ready": true
+    },
+    {
+      "elapsed": 5.7436661762185395,
+      "ready": true
+    }
+  ],
+  "wchan": {
+    "0": 87,
+    "jbd2_log_wait_commit": 25,
+    "folio_wait_bit_common": 6,
+    "futex_wait_queue": 3
+  },
+  "cpu": {
+    "userPercent": 44.417593040115996,
+    "systemPercent": 15.853069115514742,
+    "idlePercent": 18.801353310778154,
+    "iowaitPercent": 17.303044949250847,
+    "stealPercent": 0.04833252779120348,
+    "mainProcessPercent": 163.5104867312529
+  },
+  "disk": {
+    "readIOPS": 7.066722003202946,
+    "writeIOPS": 97.21790412977766,
+    "awaitMs": 4.108422071636012,
+    "utilPercent": 31.147418505545936,
+    "weightedQueue": 0.4370599303695231
+  },
+  "traceCollected": false
+}

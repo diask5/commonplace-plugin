@@ -1,0 +1,13 @@
+# Resumable context pages
+
+1 November 2026. Patch 68 addresses two measured blockers in the first large Mac context mirror. Native candidate **0.4.43/runtime76** preserves partial download progress, and server candidate **20261101-resumable-context** avoids repeated legacy metadata scans. Packaging, publication, installation and live acceptance are recorded separately in [verification](../implementation/resumable-context-pages-verification.json).
+
+The native mirror stores atomic private partial checkpoints tied to the current owner, document path, full digest and character count. A UTF-16 prefix hash preserves split surrogate boundaries. Changed sources, exclusions, owner changes, disable and corrupt checkpoints invalidate reuse. A complete SHA256 is still required before any file is used or published; authority, projection, revision and expiry fences remain intact. The 6,343,047-character regression completes across seven interrupted/reopened attempts with each accepted character transferred once, where the prior implementation restarted at zero.
+
+The server scans legacy metadata once per archive-files request and retains metadata only for the selected IDs. Bodies remain lazy within the read transaction. An opaque selection handle is bound to the database, owner and synchronous callback; it cannot be forged by request JSON and is invalid after callback exit, including suspended iterators. Visibility predicates, unknown-path validation, response budgets and the early 64 MB document limit are unchanged.
+
+The paired synthetic benchmark requests 24 files from 684 documents, 13,694 sections and 39,438,987 characters. Metadata scans fall from 24 to one and examined rows from 328,656 to 13,694; selected body reads remain 494. Runtime falls from 3,241.64 ms to 279.72 ms and observed RSS growth from 27,881,472 to 5,402,624 bytes. These local measurements do not establish production latency.
+
+Native regression checks fail before/pass after, the full mirror suite passes 55, server-related checks pass 93, and exact replay of 68 patches matches 264 changed files. Full-core, package and independent final-source validation are recorded in the verification file. Original failed fixture/harness attempts are retained. No classifier, sharing policy, authentication, quota, host permission or durability setting changed.
+
+Live Mac mirror completion, source-backed retrieval and targeted Work/native replies remain acceptance gates until measured after installation. A complete mirror describes currently eligible archived sources, not unavailable web-only history or malformed local transcript replicas.

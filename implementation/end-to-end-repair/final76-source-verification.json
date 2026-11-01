@@ -1,0 +1,16 @@
+{
+  "state": "passed",
+  "documentId": "unified-9fc18e8c3cd60fd25cd5f3a8",
+  "revision": 342,
+  "offset": 0,
+  "marker": "Willow Creek native context check completed.",
+  "successfulSourceRead": true,
+  "actualAssistantFinalRead": true,
+  "matchingAssistantRecords": [
+    {
+      "markerOffset": 3572,
+      "messageId": "msg_098857aa50d89e27016ae6b15581bc87d2a28f1d22febf2332:0"
+    }
+  ],
+  "quotedUserPromptNotCounted": true
+}

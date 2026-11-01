@@ -1,0 +1,12 @@
+{
+  "startedAt": 1793504654.8261232,
+  "state": "rolled-back",
+  "oldDiskRetained": true,
+  "databasePathPreserved": true,
+  "hostPoliciesChanged": false,
+  "sqliteAliasProbe": true,
+  "newDiskUuid": "4b9a5959-5eed-4a88-a902-b4f30c7993cd",
+  "failure": "AssertionError: Unexpected remaining database holder 253145",
+  "finishedAt": 1793504672.591878
+}
+

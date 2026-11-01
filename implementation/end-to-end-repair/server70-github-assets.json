@@ -1,0 +1,29 @@
+{
+  "assets": [
+    {
+      "name": "deploy-cloud-update.py",
+      "size": 12916,
+      "digest": "sha256:6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
+      "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-server-20261101-context-throughput/deploy-cloud-update.py"
+    },
+    {
+      "name": "runtime-update-manifest.json",
+      "size": 28097,
+      "digest": "sha256:2932d0200e258cddd2375574c70f3efa7a1ed83ac5a9114cdd9b4fd8c79f5b51",
+      "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-server-20261101-context-throughput/runtime-update-manifest.json"
+    },
+    {
+      "name": "runtime-update.json",
+      "size": 2854769,
+      "digest": "sha256:7afc42c5b0f7634246ca81b96075a6684e5c058f5af7f69cbb7fd22a89505589",
+      "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-server-20261101-context-throughput/runtime-update.json"
+    },
+    {
+      "name": "runtime-update.sha256",
+      "size": 86,
+      "digest": "sha256:1cca87c1cae655c79a947ddcd30f36e544204f38caa741c156517acf7a8773b0",
+      "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-server-20261101-context-throughput/runtime-update.sha256"
+    }
+  ],
+  "verificationTiming": "After publication and before deployment. Initial draft tag REST lookup returned 404; gh release view then resolved the published release."
+}

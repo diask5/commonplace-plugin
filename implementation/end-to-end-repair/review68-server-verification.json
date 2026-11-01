@@ -1,0 +1,123 @@
+{
+  "patch": 68,
+  "state": "Independent read-only source review and focused synthetic tests complete",
+  "startedAt": "2026-11-01T03:21:26.741848+00:00",
+  "completedAt": "2026-11-01T03:21:53.939568+00:00",
+  "baseline": "replay67-verified",
+  "command": [
+    "node",
+    "--test",
+    "--test-concurrency=2",
+    "tests/cloud-archive-selected-metadata.test.mjs",
+    "tests/cloud-archive-mirror-source.test.mjs",
+    "tests/archive-short-transaction-authority.test.mjs",
+    "tests/archive-short-transaction.test.mjs"
+  ],
+  "exitCode": 0,
+  "totals": {
+    "tests": 34,
+    "pass": 34,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "expectedFrozenSha256": {
+    "apps/commonplace-account/server/archive-source.mjs": "d4ef5f2f549482caf1816c81ea804ce1cf2779af4c3e1700e75deb098f948512",
+    "apps/commonplace-account/server/archive-mirror.mjs": "0d4bccb0f358edc679eb083cd267ee55a455e1f9a8f81dbff12fcff8e3df143f",
+    "tests/cloud-archive-selected-metadata.test.mjs": "d5804405ad8e0c27bc5c82e261d144e7992a3cc58017f5c9068e4d0a344b22ec"
+  },
+  "beforeSha256": {
+    "apps/commonplace-account/server/archive-source.mjs": "d4ef5f2f549482caf1816c81ea804ce1cf2779af4c3e1700e75deb098f948512",
+    "apps/commonplace-account/server/archive-mirror.mjs": "0d4bccb0f358edc679eb083cd267ee55a455e1f9a8f81dbff12fcff8e3df143f",
+    "tests/cloud-archive-selected-metadata.test.mjs": "d5804405ad8e0c27bc5c82e261d144e7992a3cc58017f5c9068e4d0a344b22ec",
+    "tests/cloud-archive-mirror-source.test.mjs": "1bc840647edffdf344d590af4a35d3d074c7158947ec92154810e582442e8d06",
+    "tests/archive-short-transaction-authority.test.mjs": "cbe56da6396edb10c1cf62736fa526242efdc328e5b2d4052ff5cb48786e6f31",
+    "tests/archive-short-transaction.test.mjs": "67558923a3286a87ba7359d010499363fdbe6a194f44d743631ae9c24d63906f",
+    "apps/commonplace-account/server/archive-builder.mjs": "edeee0fb2a92098261e8d43de35b8a1fdcae162e514f203744cf23dd12975c04",
+    "apps/commonplace-account/server/shared-context.mjs": "941650ef11931b6ef941718673aace7ad21bb1912175d5747941d72c80b01cda",
+    "apps/commonplace-account/server/unified-context.mjs": "382bfef28e6a7ccd8f97156a3682cac4e280345aa8d9aca397d662705632f0b2",
+    "apps/commonplace-account/server/workspace-network.mjs": "1004b5b71cd32f893d2fe37600791b7e964d56fd8f7fa94803656c8f72305de9"
+  },
+  "afterSha256": {
+    "apps/commonplace-account/server/archive-source.mjs": "d4ef5f2f549482caf1816c81ea804ce1cf2779af4c3e1700e75deb098f948512",
+    "apps/commonplace-account/server/archive-mirror.mjs": "0d4bccb0f358edc679eb083cd267ee55a455e1f9a8f81dbff12fcff8e3df143f",
+    "tests/cloud-archive-selected-metadata.test.mjs": "d5804405ad8e0c27bc5c82e261d144e7992a3cc58017f5c9068e4d0a344b22ec",
+    "tests/cloud-archive-mirror-source.test.mjs": "1bc840647edffdf344d590af4a35d3d074c7158947ec92154810e582442e8d06",
+    "tests/archive-short-transaction-authority.test.mjs": "cbe56da6396edb10c1cf62736fa526242efdc328e5b2d4052ff5cb48786e6f31",
+    "tests/archive-short-transaction.test.mjs": "67558923a3286a87ba7359d010499363fdbe6a194f44d743631ae9c24d63906f",
+    "apps/commonplace-account/server/archive-builder.mjs": "edeee0fb2a92098261e8d43de35b8a1fdcae162e514f203744cf23dd12975c04",
+    "apps/commonplace-account/server/shared-context.mjs": "941650ef11931b6ef941718673aace7ad21bb1912175d5747941d72c80b01cda",
+    "apps/commonplace-account/server/unified-context.mjs": "382bfef28e6a7ccd8f97156a3682cac4e280345aa8d9aca397d662705632f0b2",
+    "apps/commonplace-account/server/workspace-network.mjs": "1004b5b71cd32f893d2fe37600791b7e964d56fd8f7fa94803656c8f72305de9"
+  },
+  "changedDuringRun": [],
+  "supportingAuthorityFilesUnchangedFromBaseline": {
+    "apps/commonplace-account/server/archive-builder.mjs": true,
+    "apps/commonplace-account/server/shared-context.mjs": true,
+    "apps/commonplace-account/server/unified-context.mjs": true,
+    "apps/commonplace-account/server/workspace-network.mjs": true
+  },
+  "syntheticMetrics": [
+    {
+      "synthetic": true,
+      "documents": 684,
+      "sections": 13694,
+      "characters": 39438987,
+      "manifest": {
+        "elapsedMs": 757.088809,
+        "rssBefore": 56004608,
+        "rssAfter": 76820480,
+        "peakRss": 77094912
+      },
+      "selectedFile": {
+        "elapsedMs": 233.941796,
+        "rssBefore": 56000512,
+        "rssAfter": 70737920,
+        "peakRss": 70983680,
+        "characters": 57600
+      },
+      "fullFilesystemOrFtsBuilds": 0
+    },
+    {
+      "synthetic": true,
+      "documents": 684,
+      "sections": 13694,
+      "characters": 39438987,
+      "requested": 24,
+      "elapsedMs": 546.8481980000006,
+      "rssBefore": 129105920,
+      "rssAfter": 134348800,
+      "scans": 1,
+      "rows": 13694,
+      "bodies": 494,
+      "closed": 1
+    }
+  ],
+  "review": {
+    "blockingDefects": [],
+    "areas": [
+      "Owner/database/requested-ID binding of opaque handles; forged, expired and suspended legacy iterators fail closed.",
+      "One synchronous request-scoped metadata scan using exact legacyVisibleSql and owner predicates; lazy selected body reads remain in the caller transaction.",
+      "No cross-request cache or fabricated HTTP selection option.",
+      "Unknown and deferred paths, repeat offsets, ordering and byte/digest equivalence.",
+      "Selected metadata only for maximum 32 requested IDs; existing response/document bounds unchanged.",
+      "Current revision, exclusion, grant expiry, device/account/generation and final release authority fences.",
+      "Metadata cursor cleanup on callback exit, partial iteration and body-read error."
+    ],
+    "limits": [
+      "Synthetic timing is not production performance.",
+      "INDEX.md retains its existing full manifest projection path.",
+      "Native suite previously passed separately and was not repeated."
+    ],
+    "conclusion": "No blocking defects found in the frozen server patch68 selection delta."
+  },
+  "scope": {
+    "sourceEdits": false,
+    "productionCalls": false,
+    "meetProxyCalls": false,
+    "rawContentStored": false,
+    "fixtures": "Disposable synthetic fixtures only"
+  },
+  "finalCheckAt": "2026-11-01T03:22:25.709689+00:00",
+  "changedAfterTestCompletion": []
+}

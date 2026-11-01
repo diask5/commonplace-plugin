@@ -1,0 +1,36 @@
+✔ scheduled warms defer a changing archive until 30 seconds after the last observed revision (134.347753ms)
+✔ same-revision polling coalesces without postponing the original quiet deadline (108.873626ms)
+✔ explicit awaited warm retains immediate completion semantics (144.585311ms)
+✔ the timer notices uploads between polls and continuous changes do not start builds (123.39692ms)
+✔ one database build runs at a time, ready owners are fair and dirty active owners coalesce one follow-up (108.243623ms)
+✔ the owner queue is bounded and capacity recovers without dropping accepted owners (120.340437ms)
+✔ a failed owner does not strand other owners or leak background capacity (142.137465ms)
+✔ expired snapshots rebuild at an unchanged revision and expiry during a build queues a bounded follow-up (117.047781ms)
+✔ closing cancels pending timers, settles callers and blocks fresh work on another service wrapper (101.272621ms)
+✔ close drains a warm already checking the pointer and cancels all queued owners (150.995527ms)
+✔ status, browser setup status and successful live reads schedule instead of eagerly building (161.347066ms)
+✖ explicit demand preparation bypasses a scheduled warm without waiting for its timer (104.442693ms)
+✔ canonical mirror and read retain owner, exclusion and revision fences while warming is deferred (432.99283ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 12
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2261.985713
+
+✖ failing tests:
+
+test at tests/cloud-archive-warm-scheduler.test.mjs:110:1
+✖ explicit demand preparation bypasses a scheduled warm without waiting for its timer (104.442693ms)
+  Error: database is not open
+      at revision (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/cloud-archive-warm-scheduler.test.mjs:24:31)
+      at CloudArchive.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/cloud-archive-warm-scheduler.test.mjs:27:106)
+      at Object.apply (node:internal/test_runner/mock/mock:805:20)
+      at CloudArchive.prepare (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace-account/server/cloud-archive.mjs:135:61)
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/cloud-archive-warm-scheduler.test.mjs:113:31)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    code: 'ERR_INVALID_STATE'
+  }

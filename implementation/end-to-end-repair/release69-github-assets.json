@@ -1,0 +1,12 @@
+{
+  "id": 430343026,
+  "assets": {
+    "commonplace-0.4.44-build.json": "9ba7c80aba4025df953bbf68c35d12603d314f7c2f704e3c85dce1638a8c0607",
+    "commonplace-0.4.44.sha256": "c2e2d33dc4b9bfef9f37e585a1e86b283bfc0220f13186c47a25274453b60a4f",
+    "commonplace-0.4.44.zip": "3de5befca15cd3bf8b4e72e5f98689f6c614f72e772dbe85fca2db24613da8fd",
+    "meet-proxy-0.4.44-build.json": "0fa173a27d0fa9de10b2c12d92e499f52e377f211cf80b2a3dec5b3d62c9d419",
+    "meet-proxy-0.4.44.sha256": "23fbe89054c7016662ff009b362ba17bba33d36a0f162cce756de250c6a7efb1",
+    "meet-proxy-0.4.44.zip": "0322d29a92422495f4b3791d2c7fa17d02806231150ff0805a0c50245356120a"
+  },
+  "verifiedBeforePublication": true
+}

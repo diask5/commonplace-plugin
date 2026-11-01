@@ -1,0 +1,14 @@
+{
+  "pid": 883648,
+  "exe": "/opt/node/bin/node",
+  "cwd": "/opt/commonplace/releases/20261101-resumable-context",
+  "comm": "node",
+  "cgroup": "0::/system.slice/commonplace-backup.service",
+  "status": [
+    "State:\tD (disk sleep)",
+    "PPid:\t1",
+    "Uid:\t999\t999\t999\t999",
+    "Gid:\t994\t994\t994\t994"
+  ]
+}
+

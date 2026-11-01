@@ -1,0 +1,11 @@
+{
+  "id": 430337431,
+  "tag": "meet-proxy-server-20261101-resumable-context",
+  "assets": {
+    "deploy-cloud-update.py": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
+    "runtime-update-manifest.json": "b513f90e71f0940f97235338dc50450a6a33da8d02ced27c241e4cd60af275ef",
+    "runtime-update.json": "4bb23d9e0d614510cf78968602662146ce3195352234dc1ee6f813bfb878f188",
+    "runtime-update.sha256": "1d04090e51657bdb9e66e8c1055695910b13535a5de587579767662f107f0150"
+  },
+  "verifiedBeforePublication": true
+}

@@ -1,0 +1,61 @@
+{
+  "state": "published-not-deployed",
+  "native": "0.4.44/runtime77 unchanged",
+  "targetServer": "20261101-archive-visibility",
+  "currentLiveServer": "20261101-context-throughput",
+  "patch": 71,
+  "runtimeFiles": 166,
+  "changedRuntimeFiles": [
+    "dist/standalone/account-runtime/archive-source.mjs"
+  ],
+  "unchangedMigrations": 47,
+  "artifactSha256": {
+    "runtime-update.json": "1c5e63036293377470484bc0aa46b752d2cae875c1ede402a0d90b2d01ad134d",
+    "runtime-update-manifest.json": "af7aa91a50edd6b7944924e0da952b9cdb5e15ab19235edff87b11509130569c",
+    "runtime-update.sha256": "9c41e68388ada79f8a7e510cdf86ba0748e1e2e97d079c1a74dccc3535020cb1",
+    "deploy-cloud-update.py": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32"
+  },
+  "tests": {
+    "coreExistingSuite": {
+      "passed": 853,
+      "failed": 0
+    },
+    "newFocused": {
+      "passed": 6,
+      "failed": 0,
+      "inPermanentNpmCommand": true,
+      "initialRootCommandPathErrorRetained": true,
+      "newTestsWereRunSeparatelyFrom853Suite": true
+    },
+    "independent": 42,
+    "extracted": 34,
+    "extractedHttpSmoke": {
+      "passed": true,
+      "dependencies": "linked unchanged dependencies; not independent dependency packaging",
+      "googleOrNativeHostExercised": false
+    },
+    "replay": {
+      "patches": 71,
+      "changedFiles": 268,
+      "mismatches": 0
+    }
+  },
+  "performanceSynthetic": {
+    "selected4385Rows700Aliases24Files": {
+      "beforeMedianMs": 1864,
+      "afterMedianMs": 65
+    },
+    "full13694Sections224Aliases": {
+      "beforeMedianMs": 1894,
+      "afterMedianMs": 294
+    }
+  },
+  "privacy": "Owner/device/source matching, Unicode/NUL semantics, pinned snapshots, revision/expiry/exclusion fences unchanged; hidden bodies filtered before loading.",
+  "blocker": {
+    "tool": "mcp__conductor__RunLocalCommand",
+    "reason": "No authorized Mac is bound to this chat. Send a message from the Mac you want to use.",
+    "capacityMutationStarted": false,
+    "deploymentAttempted": false
+  },
+  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261101-archive-visibility"
+}

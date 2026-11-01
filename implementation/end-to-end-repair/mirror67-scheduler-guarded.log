@@ -1,0 +1,24 @@
+✔ scheduled warms defer a changing archive until 30 seconds after the last observed revision (95.154281ms)
+✔ same-revision polling coalesces without postponing the original quiet deadline (105.575172ms)
+✔ explicit awaited warm retains immediate completion semantics (116.110922ms)
+✔ the timer notices uploads between polls and continuous changes do not start builds (132.772239ms)
+✔ one database build runs at a time, ready owners are fair and dirty active owners coalesce one follow-up (98.392149ms)
+✔ the owner queue is bounded and capacity recovers without dropping accepted owners (142.907748ms)
+✔ a failed owner does not strand other owners or leak background capacity (105.242366ms)
+✔ expired snapshots rebuild at an unchanged revision and expiry during a build queues a bounded follow-up (145.742439ms)
+✔ closing cancels pending timers, settles callers and blocks fresh work on another service wrapper (106.00374ms)
+✔ close drains a warm already checking the pointer and cancels all queued owners (101.300767ms)
+✔ status, browser setup status and successful live reads schedule instead of eagerly building (143.564987ms)
+✔ explicit demand preparation bypasses a scheduled warm without waiting for its timer (136.384306ms)
+✔ revision-read failures from a timer reject queued callers without uncaught errors or retry loops (112.028616ms)
+✔ a postbuild revision-read failure settles the active caller and pending owners, then recovers on a new poll (108.168096ms)
+✔ initial scheduler read errors reject asynchronously and closing drains a failing active build (95.936719ms)
+✔ canonical mirror and read retain owner, exclusion and revision fences while warming is deferred (407.055126ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2448.648418

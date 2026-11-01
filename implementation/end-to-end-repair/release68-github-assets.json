@@ -1,0 +1,13 @@
+{
+  "id": 430337378,
+  "tag": "meet-proxy-v0.4.43",
+  "assets": {
+    "commonplace-0.4.43-build.json": "5ee5371eddace0f8ceefbbb01369cf44a4e626e4934bbdea49ad9c7c9eb82d55",
+    "commonplace-0.4.43.sha256": "149262ea30403b51449d7a868d179fd4ee37463e6bcd9c5170d80250a683a208",
+    "commonplace-0.4.43.zip": "f3824453604498a4a3c886482ecd414e10b9278edade2aa66099afb5710fa55c",
+    "meet-proxy-0.4.43-build.json": "5897319c06bc85e135b8c5c66da792e81df9f5f832f71d91026a41ef2fccd21c",
+    "meet-proxy-0.4.43.sha256": "89cc9e596b0e97efc0ab02699c0df5a55f2bc787b43460e904b379f8ab71f159",
+    "meet-proxy-0.4.43.zip": "191c35a1690d2b5b87f69fd416d547f4b5ec88772258031c1ca88966071adae6"
+  },
+  "verifiedBeforePublication": true
+}

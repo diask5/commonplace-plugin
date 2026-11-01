@@ -1,0 +1,14 @@
+✔ symlink database uses its physical backup directory and removes the uploaded snapshot (276.651383ms)
+✔ symlink database uses its physical backup directory and retains the verified snapshot after upload failure (342.315894ms)
+✔ regular database uses its physical backup directory and removes the uploaded snapshot (322.772823ms)
+✔ regular database uses its physical backup directory and retains the verified snapshot after upload failure (424.48016ms)
+✔ online backup finishes under continuous writes and restores one consistent snapshot (877.839837ms)
+✔ a timed-out backup retains the last verified destination and removes partial data (149.923836ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1504.060829

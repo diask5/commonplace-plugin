@@ -1,0 +1,35 @@
+{
+  "release": "20261101-background-throughput",
+  "metadataOnly": true,
+  "projectionElapsedMs": 4038,
+  "revision": 8241,
+  "documents": 748,
+  "characters": 40296350,
+  "nativeDocuments": 224,
+  "largestDocumentsCharacters": [
+    6343047,
+    2103384,
+    2103338,
+    1768979,
+    815816,
+    793461,
+    760951,
+    754081,
+    730552,
+    691508,
+    648379,
+    563895
+  ],
+  "macCache": {
+    "files": 525,
+    "bytes": 10121013,
+    "largestBytes": [
+      2109033,
+      759862,
+      241954,
+      230664,
+      186338
+    ]
+  },
+  "hypothesis": "Large-file partial download is lost on unrelated revision restart; deterministic reproduction pending."
+}

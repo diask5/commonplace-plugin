@@ -1,0 +1,60 @@
+✖ stable cloud plugin preserves baseline assets, dependencies and executable modes (27319.610138ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 27434.525814
+
+✖ failing tests:
+
+test at tests/packaging.test.mjs:12:1
+✖ stable cloud plugin preserves baseline assets, dependencies and executable modes (27319.610138ms)
+  Error: Command failed: /usr/local/bin/node --input-type=module -e 
+  import assert from 'node:assert/strict';import {pathToFileURL} from 'node:url';
+  const root=process.argv[1];const {pluginResponse}=await import(pathToFileURL(root+'/server/plugin-surface.mjs'));const {accountInboxMcp}=await import(pathToFileURL(root+'/server/account-inbox.mjs'));
+  const init=pluginResponse({method:'initialize'},{result:{}});assert.equal(init.result.serverInfo.version,'0.4.42');
+  const r={jsonrpc:'2.0',id:1,method:'tools/list'};const tools=pluginResponse(r,await accountInboxMcp({},r)).result.tools.map(t=>t.name);
+  for(const name of ['invite_agent_connection','preview_agent_connection','accept_agent_connection','read_agent_connection','list_agent_connections','sever_agent_connection','cloud_agent_status','connect_cloud_agent','run_cloud_task','read_cloud_task','cancel_cloud_task','configure_cloud_sync','send_agent_message','list_my_agent_conversations','read_agent_context','publish_agent_context','search_my_chats','read_my_chat','configure_my_chat_history','setup_status','add_person_to_chat','search_shared_context','read_shared_context','context_sync_status','configure_context_source','read_project_context'])assert.ok(tools.includes(name),name);
+  const {RUNTIME_REVISION}=await import(pathToFileURL(root+'/server/local-client.mjs'));assert.equal(RUNTIME_REVISION,74);
+  const {BACKGROUND_VERSION}=await import(pathToFileURL(root+'/server/cloud-background.mjs'));assert.equal(BACKGROUND_VERSION,'0.4.42');
+  // setup_status is added by the stdio surface, even while an older companion is busy.
+  const surfaced=pluginResponse(r,{result:{tools:[]}}).result.tools.find(t=>t.name==='setup_status');
+  for(const name of ['invite_agent_connection','accept_agent_connection','sever_agent_connection'])assert.ok(surfaced.inputSchema.properties.blockedTool.enum.includes(name));
+  for(const name of ['cloud-sync','cloud-browser-login','cloud-background','agent-history'])await import(pathToFileURL(root+'/server/'+name+'.mjs'));
+  console.log('Packaged cloud tools and imports passed.');
+   /tmp/cloud-package-eijl9Q/plugin
+  node:internal/modules/run_main:107
+      triggerUncaughtException(
+      ^
+  
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  75 !== 74
+  
+      at file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/[eval1]:7:94 {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 75,
+    expected: 74,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+  
+  Node.js v24.22.1
+  
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at ChildProcess.exithandler (node:child_process:417:12)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1172:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:335:5) {
+    code: 1,
+    killed: false,
+    signal: null,
+    cmd: "/usr/local/bin/node --input-type=module -e \nimport assert from 'node:assert/strict';import {pathToFileURL} from 'node:url';\nconst root=process.argv[1];const {pluginResponse}=await import(pathToFileURL(root+'/server/plugin-surface.mjs'));const {accountInboxMcp}=await import(pathToFileURL(root+'/server/account-inbox.mjs'));\nconst init=pluginResponse({method:'initialize'},{result:{}});assert.equal(init.result.serverInfo.version,'0.4.42');\nconst r={jsonrpc:'2.0',id:1,method:'tools/list'};const tools=pluginResponse(r,await accountInboxMcp({},r)).result.tools.map(t=>t.name);\nfor(const name of ['invite_agent_connection','preview_agent_connection','accept_agent_connection','read_agent_connection','list_agent_connections','sever_agent_connection','cloud_agent_status','connect_cloud_agent','run_cloud_task','read_cloud_task','cancel_cloud_task','configure_cloud_sync','send_agent_message','list_my_agent_conversations','read_agent_context','publish_agent_context','search_my_chats','read_my_chat','configure_my_chat_history','setup_status','add_person_to_chat','search_shared_context','read_shared_context','context_sync_status','configure_context_source','read_project_context'])assert.ok(tools.includes(name),name);\nconst {RUNTIME_REVISION}=await import(pathToFileURL(root+'/server/local-client.mjs'));assert.equal(RUNTIME_REVISION,74);\nconst {BACKGROUND_VERSION}=await import(pathToFileURL(root+'/server/cloud-background.mjs'));assert.equal(BACKGROUND_VERSION,'0.4.42');\n// setup_status is added by the stdio surface, even while an older companion is busy.\nconst surfaced=pluginResponse(r,{result:{tools:[]}}).result.tools.find(t=>t.name==='setup_status');\nfor(const name of ['invite_agent_connection','accept_agent_connection','sever_agent_connection'])assert.ok(surfaced.inputSchema.properties.blockedTool.enum.includes(name));\nfor(const name of ['cloud-sync','cloud-browser-login','cloud-background','agent-history'])await import(pathToFileURL(root+'/server/'+name+'.mjs'));\nconsole.log('Packaged cloud tools and imports passed.');\n /tmp/cloud-package-eijl9Q/plugin",
+    stdout: '',
+    stderr: "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n75 !== 74\n\n    at file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/[eval1]:7:94 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: 75,\n  expected: 74,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.22.1\n"
+  }

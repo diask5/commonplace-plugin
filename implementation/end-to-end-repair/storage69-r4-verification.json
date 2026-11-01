@@ -1,0 +1,56 @@
+{
+  "state": "refrozen for independent review; helper not executed",
+  "frozenAt": "2026-11-01T04:04:06.993620+00:00",
+  "path": ".context/end-to-end-repair/migrate-database-storage69-r4.py",
+  "sha256": "3aab196a49f859a0716b7c99a28fe72b0d0f4a7a3f9a81ed07e6b249a00f0eb3",
+  "supersedes": {
+    "sha256": "a52e3afd3aab0653484da561b1fe728d69c471ff99ad8616f46ca45d3c05c319",
+    "preserved": ".context/end-to-end-repair/migrate-database-storage69-r4.py.before-review-fixes"
+  },
+  "basedOn": {
+    "path": ".context/end-to-end-repair/migrate-database-storage69-r3.py",
+    "sha256": "b083030b11605af73a7409396fd5f01c40ac7d468fc46c2b1a782aacfa940324"
+  },
+  "checks": {
+    "pythonSyntax": "pass",
+    "bothEmbeddedNodeSyntax": "pass",
+    "originalSyntheticChecks": {
+      "passed": 6,
+      "total": 6,
+      "log": ".context/end-to-end-repair/storage69-r4-local-checks.log"
+    },
+    "correctionSyntheticChecks": {
+      "passed": 13,
+      "total": 13,
+      "log": ".context/end-to-end-repair/storage69-r4-review-fix-checks.log"
+    },
+    "behaviorFailuresBeforeCorrections": {
+      "failed": 3,
+      "passed": 1,
+      "log": ".context/end-to-end-repair/storage69-r4-review-fix-behavior-fail-before.log"
+    },
+    "retainedInitialFailures": [
+      ".context/end-to-end-repair/storage69-r4-local-checks-initial.log",
+      ".context/end-to-end-repair/storage69-r4-review-fix-fail-before.log",
+      ".context/end-to-end-repair/storage69-r4-review-fix-first-after.log"
+    ]
+  },
+  "sourceContract": "Owner/root supplied production metadata: Files node:sqlite DatabaseSync(accountDbPath,{readOnly:true}); query_only=ON; busy_timeout=5000; configured FILES_ACCOUNT_DB=/var/lib/commonplace/account.sqlite. No production inspection by this agent.",
+  "corrections": [
+    "Exclusive open(x)/O_EXCL started marker, fsynced file and directory; existing ROOT must be root-owned0700; launcher migrate.py accepted.",
+    "After actual restarted Files config200, verify PID/executable/UID/GID/cgroup, whitelisted FILES_ACCOUNT_DB and unchanged unit roles.",
+    "Enter actual Files mount namespace as existing commonplace user; same read-only driver/options; verify selected canonical path/device/inode,47 migration digests and required auth schema; no private/token rows.",
+    "Same shared startup gate runs on forward cutover and reverse-current-data rollback; PID/starttime/configuration and selected DB identity rechecked after read."
+  ],
+  "limits": [
+    "No production or Mac calls; no migration helper execution.",
+    "Local extracted/synthetic tests exercise filesystem/SQLite and fake process/systemd/namespace dispatch; live mount propagation and post-start readiness remain to be established by reviewed helper execution.",
+    "No unit sandbox/configuration/permissions changes; no immutable mode.",
+    "Previous frozen helper must not execute; root must regenerate launcher for this hash after independent review."
+  ],
+  "fileSha256": {
+    ".context/end-to-end-repair/migrate-database-storage69-r4.py": "3aab196a49f859a0716b7c99a28fe72b0d0f4a7a3f9a81ed07e6b249a00f0eb3",
+    ".context/end-to-end-repair/storage69-r4-review-fix-checks.py": "869960cdf90f67a6badfdfdbf3239a8ed5409fc53d7330a888ff75ffd432ba8b",
+    ".context/end-to-end-repair/storage69-r4-local-checks.py": "804e0cc1f41948a8fbf26ec96060905749347d83c374b9ce9cf19f75a29169b4"
+  }
+}

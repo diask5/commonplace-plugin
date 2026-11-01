@@ -1,0 +1,47 @@
+✖ production-shape selected mirror request evaluates 700 aliases once across 4,385 rows and 40M characters (7307.12885ms)
+ℹ {"sections":4385,"aliases":700,"characters":40000000,"aliasOverlap":0,"requested":24,"elapsedMs":4781.2,"aliasEvaluations":9208500}
+✖ full mirror manifests share the same bounded alias lookup (274.677824ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7763.575666
+
+✖ failing tests:
+
+test at tests/archive-legacy-visibility.test.mjs:46:1
+✖ production-shape selected mirror request evaluates 700 aliases once across 4,385 rows and 40M characters (7307.12885ms)
+  AssertionError [ERR_ASSERTION]: one alias evaluation per alias, got 9208500
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/archive-legacy-visibility.test.mjs:54:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/archive-legacy-visibility.test.mjs:57:1
+✖ full mirror manifests share the same bounded alias lookup (274.677824ms)
+  AssertionError [ERR_ASSERTION]: one alias evaluation per alias, got 72000
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/archive-legacy-visibility.test.mjs:61:40)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

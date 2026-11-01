@@ -1,0 +1,414 @@
+diff --git a/apps/commonplace-account/server/backup.mjs b/apps/commonplace-account/server/backup.mjs
+index 58746b2..512713b 100644
+--- a/apps/commonplace-account/server/backup.mjs
++++ b/apps/commonplace-account/server/backup.mjs
+@@ -1,6 +1,6 @@
+ // Runs as the existing backup service identity, never in the HTTP process.
+ import { DatabaseSync } from 'node:sqlite';
+-import { mkdir, rm } from 'node:fs/promises';
++import { mkdir, realpath, rm } from 'node:fs/promises';
+ import { openAsBlob } from 'node:fs';
+ import path from 'node:path';
+ import { backupDatabase } from './sqlite.mjs';
+@@ -8,7 +8,8 @@ import { backupDatabase } from './sqlite.mjs';
+ const bucket = process.env.COMMONPLACE_BACKUP_BUCKET;
+ const database = process.env.COMMONPLACE_DB;
+ if (!bucket || !/^[a-z0-9][a-z0-9.-]+$/.test(bucket) || !database) throw new Error('Backup storage is not configured.');
+-const directory = path.join(path.dirname(database), 'backups');
++// Keep the snapshot and its integrity verification on the actual database volume.
++const directory = path.join(path.dirname(await realpath(database)), 'backups');
+ await mkdir(directory, { recursive: true, mode: 0o700 });
+ const name = `commonplace-${new Date().toISOString().replace(/[:.]/g, '-')}.sqlite`;
+ const filename = path.join(directory, name);
+diff --git a/apps/commonplace-account/server/cloud-work.mjs b/apps/commonplace-account/server/cloud-work.mjs
+index 49d9dce..c13f456 100644
+--- a/apps/commonplace-account/server/cloud-work.mjs
++++ b/apps/commonplace-account/server/cloud-work.mjs
+@@ -14,6 +14,31 @@ const text = (value, max = 16000) => {
+   if (typeof value !== 'string' || !value.trim() || value.length > max || /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/.test(value)) fail(400, 'Invalid text.');
+   return value.trim();
+ };
++function savedSourceStatus(db,owner){
++  // Keep the old statement's snapshot across these metadata-only reads. A
++  // savepoint also works when a caller already owns a synchronous transaction.
++  db.exec('SAVEPOINT cloud_source_status');
++  try{
++    const aliases=new Map();
++    for(const row of db.prepare('SELECT device,source_key FROM cp_context_legacy_aliases WHERE owner=?').iterate(owner)){
++      let keys=aliases.get(row.device);if(!keys){keys=new Set();aliases.set(row.device,keys);}keys.add(row.source_key);
++    }
++    const saved=db.prepare('SELECT count(*) AS count,max(synced_at) AS lastSyncedAt FROM cp_context_chunks WHERE owner=?').get(owner);
++    for(const row of db.prepare('SELECT device,source_key,synced_at FROM cp_cloud_sources WHERE owner=?').iterate(owner)){
++      const keys=aliases.get(row.device),key=row.source_key;
++      let hidden=keys?.has(key)??false;
++      // Match exact aliases and literal colon-delimited prefixes, without an
++      // owner/device alias scan for every source. SQLite substr stops at NUL.
++      const nul=key.indexOf('\0');
++      if(keys&&!hidden)for(let i=key.indexOf(':');i!==-1&&(nul===-1||i<nul);i=key.indexOf(':',i+1))if(keys.has(key.slice(0,i))){hidden=true;break;}
++      if(hidden)continue;
++      saved.count++;
++      if(saved.lastSyncedAt===null||row.synced_at>saved.lastSyncedAt)saved.lastSyncedAt=row.synced_at;
++    }
++    db.exec('RELEASE cloud_source_status');
++    return saved;
++  }catch(error){db.exec('ROLLBACK TO cloud_source_status; RELEASE cloud_source_status');throw error;}
++}
+ export const cloudTaskSchema = {
+   type: 'object', additionalProperties: false, required: ['kind','text','targetAgentId','citations'],
+   properties: {
+@@ -180,7 +205,7 @@ export class CloudWork {
+     return this.all('SELECT f.id,f.title,substr(f.body,1,8000) AS text,coalesce(s.captured_at,c.captured_at) AS capturedAt,coalesce(s.synced_at,c.synced_at) AS syncedAt FROM cp_cloud_source_search f LEFT JOIN cp_cloud_sources s ON s.id=f.id LEFT JOIN cp_context_chunks c ON c.id=f.id WHERE cp_cloud_source_search MATCH ? AND f.owner=? AND (s.id IS NULL OR '+legacyVisibleSql+') ORDER BY rank LIMIT 8', match, owner);
+   }
+   sourceStatus(owner) {
+-    const saved=this.get('SELECT count(*) AS count,max(synced_at) AS lastSyncedAt FROM (SELECT synced_at FROM cp_cloud_sources s WHERE owner=? AND '+legacyVisibleSql+' UNION ALL SELECT synced_at FROM cp_context_chunks WHERE owner=?)',owner,owner);
++    const saved=savedSourceStatus(this.db,owner);
+     // Canonical collectors no longer write cp_cloud_sources. Include their
+     // actual collection receipts, restricted to current owner/device bindings.
+     const rows=this.all(`SELECT s.id,o.state,o.seen_at FROM cp_context_streams s JOIN cp_context_origins o ON o.stream=s.id JOIN cp_devices d ON d.id=o.device
+diff --git a/apps/commonplace-account/server/unified-context.mjs b/apps/commonplace-account/server/unified-context.mjs
+index 7faa905..4d96e37 100644
+--- a/apps/commonplace-account/server/unified-context.mjs
++++ b/apps/commonplace-account/server/unified-context.mjs
+@@ -114,19 +114,23 @@ export class UnifiedContext {
+   this.run('UPDATE cp_context_streams SET excluded=?,epoch=max(epoch,?),updated_at=? WHERE id=?',Number(!!(a.excluded||b.excluded)),b.epoch,this.now(),target);
+   if(a.excluded||b.excluded)this.run('DELETE FROM cp_context_events WHERE stream=?',target);
+  }
+- events(s){
++ events(s){return this.#events(s);}
++ #events(s,metadataOnly=false){
+   if(!this.allowed(s))return [];
+   const origins=this.activeOrigins(s.id),keys=new Set(origins.map(o=>o.device+'\0'+o.source_key));
+-  const rows=this.all(`SELECT e.*,o.device,o.source_key FROM cp_context_events e JOIN cp_context_event_origins o USING(stream,message,version,digest) WHERE e.stream=? ORDER BY e.position,e.message,e.version DESC,e.digest`,s.id);
++  // Coverage needs the same authoritative versions and tombstones, but no
++  // bodies, citations or position sort. Keep selection shared with full reads.
++  const fields=metadataOnly?'e.message,e.version,e.digest,e.deleted':'e.*';
++  const rows=this.all(`SELECT ${fields},o.device,o.source_key FROM cp_context_events e JOIN cp_context_event_origins o USING(stream,message,version,digest) WHERE e.stream=?`+(metadataOnly?'':' ORDER BY e.position,e.message,e.version DESC,e.digest'),s.id);
+   const grouped=new Map();
+   for(const row of rows){if(!keys.has(row.device+'\0'+row.source_key))continue;let versions=grouped.get(row.message);if(!versions){versions=[];grouped.set(row.message,versions);}if(!versions.some(v=>v.digest===row.digest&&v.version===row.version))versions.push(row);}
+   const out=[];
+   for(const versions of grouped.values()){
+    const newest=Math.max(...versions.map(v=>v.version)),current=versions.filter(v=>v.version===newest),deleted=current.some(v=>v.deleted);
+    if(deleted)continue;
+-   for(const row of current)out.push({...row,conflict:current.length>1,citation:contextCitation(s.id,row.message,row.version,row.digest)});
++   for(const row of current)out.push(metadataOnly?{message:row.message,conflict:current.length>1}:{...row,conflict:current.length>1,citation:contextCitation(s.id,row.message,row.version,row.digest)});
+   }
+-  return out.sort((a,b)=>a.position-b.position||a.message.localeCompare(b.message)||a.digest.localeCompare(b.digest));
++  return metadataOnly?out:out.sort((a,b)=>a.position-b.position||a.message.localeCompare(b.message)||a.digest.localeCompare(b.digest));
+  }
+  *sections(owner,streamId){
+   for(const s of this.all('SELECT * FROM cp_context_streams WHERE owner=? AND (? IS NULL OR id=?) ORDER BY id',owner,streamId??null,streamId??null)){
+@@ -156,7 +160,7 @@ export class UnifiedContext {
+  coverage(owner,{after='',agentAfter='',project}={}){
+   if(after)str(after);if(project!==undefined)str(project,200);
+   const streams=this.all('SELECT * FROM cp_context_streams WHERE owner=? AND id>? AND (? IS NULL OR project=?) ORDER BY id LIMIT 51',owner,after,project??null,project??null),more=streams.length>50;streams.length=Math.min(50,streams.length);
+-  const conversations=streams.map(s=>{const origins=this.activeOrigins(s.id),events=this.events(s),lastSeen=Math.max(0,...origins.map(o=>o.seen_at));return {id:s.id,title:s.title,project:s.project,provider:s.provider,excluded:!this.allowed(s),epoch:s.epoch,messages:new Set(events.map(e=>e.message)).size,conflicts:new Set(events.filter(e=>e.conflict).map(e=>e.message)).size,lastSeenAt:lastSeen||null,state:!this.allowed(s)?'excluded':!origins.length?'unavailable':origins.some(o=>o.state==='backfilling')?'backfilling':origins.some(o=>o.state==='partial')?'partial':origins.every(o=>o.state==='unavailable')?'unavailable':this.now()-lastSeen>60000?'not_recently_checked':'current',origins:origins.map(o=>({device:o.device,agentId:o.agent,lastCapturedAt:o.captured_at,lastSeenAt:o.seen_at,state:o.state,cursor:o.cursor}))};});
++  const conversations=streams.map(s=>{const origins=this.activeOrigins(s.id),events=this.#events(s,true),lastSeen=Math.max(0,...origins.map(o=>o.seen_at));return {id:s.id,title:s.title,project:s.project,provider:s.provider,excluded:!this.allowed(s),epoch:s.epoch,messages:new Set(events.map(e=>e.message)).size,conflicts:new Set(events.filter(e=>e.conflict).map(e=>e.message)).size,lastSeenAt:lastSeen||null,state:!this.allowed(s)?'excluded':!origins.length?'unavailable':origins.some(o=>o.state==='backfilling')?'backfilling':origins.some(o=>o.state==='partial')?'partial':origins.every(o=>o.state==='unavailable')?'unavailable':this.now()-lastSeen>60000?'not_recently_checked':'current',origins:origins.map(o=>({device:o.device,agentId:o.agent,lastCapturedAt:o.captured_at,lastSeenAt:o.seen_at,state:o.state,cursor:o.cursor}))};});
+   const agents=this.all("SELECT a.id,b.label,b.provider,b.seen_at AS lastSeenAt,h.enabled FROM cp_agent_addresses a JOIN cp_agent_bindings b ON b.agent=a.id JOIN cp_devices d ON d.id=b.device LEFT JOIN cp_agent_history_hosts h ON h.agent=a.id WHERE a.owner=? AND a.revoked_at IS NULL AND d.revoked=0 AND a.id>? ORDER BY a.id LIMIT 51",owner,agentAfter);
+   const moreAgents=agents.length>50;agents.length=Math.min(50,agents.length);
+   for(const a of agents){const o=this.get('SELECT max(seen_at) AS seen,count(*) AS n FROM cp_context_origins WHERE agent=?',a.id);a.collection=a.enabled===0?'excluded':!o.n?'not_collected':this.now()-(o.seen||0)>60000?'not_recently_checked':'collecting';}
+diff --git a/package.json b/package.json
+index 5047518..471f632 100644
+--- a/package.json
++++ b/package.json
+@@ -7,7 +7,7 @@
+   },
+   "scripts": {
+     "start": "node scripts/relay.mjs",
+-    "test": "node --test tests/space-events.test.mjs tests/personal-space.test.mjs tests/account-profiles.test.mjs tests/account-profiles-native.test.mjs tests/transcript-visibility.test.mjs tests/remote-archive-errors.test.mjs tests/agent-network.test.mjs apps/commonplace-account/tests/*.test.mjs apps/commonplace/tests/person-inbox.test.mjs apps/commonplace/tests/session-invitations.test.mjs apps/commonplace/tests/chat-wait.test.mjs apps/commonplace/tests/account-origin.test.mjs apps/commonplace/tests/delegation-client.test.mjs tests/relay.test.mjs tests/delegation-http.test.mjs tests/production-*.test.mjs tests/mailbox-*.test.mjs tests/cloud-*.test.mjs tests/context-mirror.test.mjs tests/conductor-history.test.mjs tests/people-invitations.test.mjs tests/chat-setup.test.mjs tests/codex-host-context.test.mjs tests/local-environment.test.mjs tests/mcp-*.test.mjs tests/agent-connections.test.mjs tests/policy-context.test.mjs tests/decisions-scheduler.test.mjs tests/space-context*.test.mjs tests/context-setup.test.mjs tests/context-setup-request.test.mjs tests/context-setup-cross-host.test.mjs tests/contact-delivery.test.mjs tests/personal-assistant-setup.test.mjs tests/seamless-routing.test.mjs tests/seamless-collection.test.mjs tests/seamless-retrieval.test.mjs tests/agent-auth-rate-storage.test.mjs tests/agent-auth-registration-queue.test.mjs tests/archive-document-reuse.test.mjs tests/context-read-indexes.test.mjs tests/archive-io-hotpath.test.mjs tests/archive-short-transaction.test.mjs tests/archive-short-transaction-authority.test.mjs tests/archive-coordination.test.mjs tests/live-index-reuse.test.mjs",
++    "test": "node --test tests/context-status-performance.test.mjs tests/space-events.test.mjs tests/personal-space.test.mjs tests/account-profiles.test.mjs tests/account-profiles-native.test.mjs tests/transcript-visibility.test.mjs tests/remote-archive-errors.test.mjs tests/agent-network.test.mjs apps/commonplace-account/tests/*.test.mjs apps/commonplace/tests/person-inbox.test.mjs apps/commonplace/tests/session-invitations.test.mjs apps/commonplace/tests/chat-wait.test.mjs apps/commonplace/tests/account-origin.test.mjs apps/commonplace/tests/delegation-client.test.mjs tests/relay.test.mjs tests/delegation-http.test.mjs tests/production-*.test.mjs tests/mailbox-*.test.mjs tests/cloud-*.test.mjs tests/context-mirror.test.mjs tests/conductor-history.test.mjs tests/people-invitations.test.mjs tests/chat-setup.test.mjs tests/codex-host-context.test.mjs tests/local-environment.test.mjs tests/mcp-*.test.mjs tests/agent-connections.test.mjs tests/policy-context.test.mjs tests/decisions-scheduler.test.mjs tests/space-context*.test.mjs tests/context-setup.test.mjs tests/context-setup-request.test.mjs tests/context-setup-cross-host.test.mjs tests/contact-delivery.test.mjs tests/personal-assistant-setup.test.mjs tests/seamless-routing.test.mjs tests/seamless-collection.test.mjs tests/seamless-retrieval.test.mjs tests/agent-auth-rate-storage.test.mjs tests/agent-auth-registration-queue.test.mjs tests/archive-document-reuse.test.mjs tests/context-read-indexes.test.mjs tests/archive-io-hotpath.test.mjs tests/archive-short-transaction.test.mjs tests/archive-short-transaction-authority.test.mjs tests/archive-coordination.test.mjs tests/live-index-reuse.test.mjs",
+     "test:backend": "node --test apps/commonplace-account/tests/*.test.mjs",
+     "test:package": "node --test tests/packaging.test.mjs",
+     "test:deployment": "python3 -m unittest tests.test_deployment tests.test_public_assets_deployment tests.test_runtime_public_assets",
+diff --git a/tests/context-status-performance.test.mjs b/tests/context-status-performance.test.mjs
+new file mode 100644
+index 0000000..521bcab
+--- /dev/null
++++ b/tests/context-status-performance.test.mjs
+@@ -0,0 +1,173 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {DatabaseSync} from 'node:sqlite';
++import {readFileSync,readdirSync} from 'node:fs';
++import {performance} from 'node:perf_hooks';
++import path from 'node:path';
++import {CloudWork} from '../apps/commonplace-account/server/cloud-work.mjs';
++import {UnifiedContext,legacyVisibleSql} from '../apps/commonplace-account/server/unified-context.mjs';
++
++const savedSql='SELECT count(*) AS count,max(synced_at) AS lastSyncedAt FROM (SELECT synced_at FROM cp_cloud_sources s WHERE owner=? AND '+legacyVisibleSql+' UNION ALL SELECT synced_at FROM cp_context_chunks WHERE owner=?)';
++const key=n=>n.toString(16).padStart(64,'0');
++function fixture(t){
++ const db=new DatabaseSync(':memory:');
++ db.exec('PRAGMA foreign_keys=ON');
++ const directory=path.resolve('apps/commonplace-account/drizzle');
++ for(const file of readdirSync(directory).filter(n=>/^\d{4}_[\w-]+\.sql$/.test(n)).sort())db.exec(readFileSync(path.join(directory,file),'utf8'));
++ t.after(()=>db.close());
++ const run=(sql,...args)=>db.prepare(sql).run(...args);
++ for(const owner of ['owner','other'])run('INSERT INTO cp_profiles(id,subject,name,email,created_at) VALUES(?,?,?,?,1)',owner,'firebase:'+owner,owner,owner+'@example.test');
++ const device=(id,owner='owner',client='test')=>run('INSERT INTO cp_devices(id,owner,client,name,scope,created_at) VALUES(?,?,?,?,?,1)',id,owner,client,id,'commonplace:read');
++ device('dev-a');device('dev-b');device('dev-other','other');
++ let now=100000;
++ const service={db:{sqlite:db}},work=new CloudWork(service,{now:()=>now}),unified=new UnifiedContext(service,{now:()=>now});
++ const stream=(id,owner='owner',project='')=>run("INSERT INTO cp_context_streams(id,owner,provider,external_id,title,project,updated_at) VALUES(?,?,'codex',?,?,?,1)",id,owner,id,'Synthetic '+id,project);
++ const source=(id,sourceKey,{owner='owner',device='dev-a',at=1}={})=>run('INSERT INTO cp_cloud_sources VALUES(?,?,?,?,1,?,?,?,?,?)',id,owner,device,sourceKey,'Synthetic source','','digest',1,at);
++ const alias=(sourceKey,{owner='owner',device='dev-a',stream='alias-stream'}={})=>run('INSERT INTO cp_context_legacy_aliases VALUES(?,?,?,?)',owner,device,sourceKey,stream);
++ const origin=(stream,device='dev-a',sourceKey='source',{state='current',seen=now,agent=null,generation=null}={})=>run('INSERT INTO cp_context_origins(stream,device,source_key,captured_at,seen_at,state,agent,generation) VALUES(?,?,?,1,?,?,?,?)',stream,device,sourceKey,seen,state,agent,generation);
++ const agent=(id,device='dev-a',generation=1)=>{run('INSERT INTO cp_agent_addresses VALUES(?,?,1,NULL)',id,'owner');run("INSERT INTO cp_agent_bindings(agent,device,session,provider,label,machine,host,delivery,generation,seen_at) VALUES(?,?,?,'Codex',?,'Synthetic','Conductor','automatic',?,?)",id,device,id,id,generation,now);};
++ const event=(stream,message,version,digest,{device='dev-a',sourceKey='source',deleted=0,body='Synthetic body',position=1}={})=>{
++  run("INSERT OR IGNORE INTO cp_context_events VALUES(?,?,?,?,'assistant',?,NULL,?,?)",stream,message,version,digest,body,position,deleted);
++  run('INSERT INTO cp_context_event_origins VALUES(?,?,?,?,?,?)',stream,message,version,digest,device,sourceKey);
++ };
++ return {db,run,work,unified,device,stream,source,alias,origin,agent,event,advance:n=>now+=n};
++}
++function seedLegacy(f,{documents=684,sections=13694,aliases=224,aliasStart=0}={}){
++ f.stream('alias-stream');
++ f.db.exec('BEGIN');
++ try{
++  for(let i=0;i<sections;i++)f.source('section-'+i,key(i%documents)+':'+Math.floor(i/documents),{at:i+1});
++  for(let i=0;i<aliases;i++)f.alias(key(i+aliasStart));
++  f.db.exec('COMMIT');
++ }catch(error){f.db.exec('ROLLBACK');throw error;}
++}
++// The body-bearing reader is the independent visibility/version/deletion oracle.
++function referenceConversations(f,owner,input={}){
++ const {unified:u}=f;
++ return u.all('SELECT * FROM cp_context_streams WHERE owner=? AND id>? AND (? IS NULL OR project=?) ORDER BY id LIMIT 50',owner,input.after||'',input.project??null,input.project??null).map(s=>{
++  const origins=u.activeOrigins(s.id),events=u.events(s),lastSeen=Math.max(0,...origins.map(o=>o.seen_at));
++  return {id:s.id,title:s.title,project:s.project,provider:s.provider,excluded:!u.allowed(s),epoch:s.epoch,messages:new Set(events.map(e=>e.message)).size,conflicts:new Set(events.filter(e=>e.conflict).map(e=>e.message)).size,lastSeenAt:lastSeen||null,state:!u.allowed(s)?'excluded':!origins.length?'unavailable':origins.some(o=>o.state==='backfilling')?'backfilling':origins.some(o=>o.state==='partial')?'partial':origins.every(o=>o.state==='unavailable')?'unavailable':u.now()-lastSeen>60000?'not_recently_checked':'current',origins:origins.map(o=>({device:o.device,agentId:o.agent,lastCapturedAt:o.captured_at,lastSeenAt:o.seen_at,state:o.state,cursor:o.cursor}))};
++ });
++}
++
++test('source status evaluates each owner alias once rather than per legacy section',t=>{
++ const f=fixture(t);seedLegacy(f,{documents:60,sections:1200,aliases:20});
++ const expected=f.db.prepare(savedSql).get('owner','owner');
++ let evaluations=0;
++ f.db.function('status_alias_probe',value=>{evaluations++;return value;});
++ f.db.exec('ALTER TABLE cp_context_legacy_aliases RENAME TO status_alias_rows; CREATE VIEW cp_context_legacy_aliases AS SELECT owner,device,status_alias_probe(source_key) AS source_key,stream FROM status_alias_rows');
++ const got=f.work.sourceStatus('owner');
++ assert.equal(got.count,expected.count);assert.equal(got.lastSyncedAt,expected.lastSyncedAt);
++ assert.ok(evaluations<=20,'alias evaluations must be bounded by aliases, got '+evaluations);
++});
++
++test('source status preserves exact delimiter, Unicode, device, owner and live-edit visibility',t=>{
++ const f=fixture(t);f.stream('alias-stream');f.stream('other-alias','other');
++ const keys=['root','root:child','root::child','rootish:child',':front','emoji😀:a:b','emoji😀:ab','%_:part','Case','case','colon:','nul\0alias','nul\0alias:child','root:before\0after'];
++ keys.forEach((k,i)=>f.source('source-'+i,k,{at:i+1}));
++ f.source('replica','root:child',{device:'dev-b',at:30});
++ f.source('other','root:child',{owner:'other',device:'dev-other',at:100});
++ for(const a of ['root','','emoji😀:a','%_','Case','nul\0alias'])f.alias(a);
++ f.alias('case',{device:'dev-b'});f.alias('root',{owner:'other',device:'dev-other',stream:'other-alias'});
++ f.run("INSERT INTO cp_context_documents(id,owner,provider,external_id,title,source_url,captured_at,synced_at) VALUES('import','owner','chatgpt','import','Synthetic','',1,1)");
++ f.run("INSERT INTO cp_context_chunks VALUES('chunk','import','owner','Synthetic','',1,200)");
++ const check=()=>{for(const owner of ['owner','other','nobody']){const expected=f.db.prepare(savedSql).get(owner,owner),got=f.work.sourceStatus(owner);assert.equal(got.count,expected.count);assert.equal(got.lastSyncedAt,expected.lastSyncedAt||null);}};
++ check();
++ f.run('DELETE FROM cp_context_legacy_aliases WHERE owner=? AND device=? AND source_key=?','owner','dev-a','root');check();
++ f.alias('root');f.run('DELETE FROM cp_cloud_sources WHERE id=?','source-8');check();
++ f.run('UPDATE cp_context_chunks SET synced_at=300 WHERE owner=?','owner');check();
++});
++
++test('source status composes with an outer transaction and rolls back failed reads',t=>{
++ const f=fixture(t);f.source('original','original');
++ f.db.exec('BEGIN IMMEDIATE');f.source('uncommitted','uncommitted');assert.equal(f.work.sourceStatus('owner').count,2);f.db.exec('ROLLBACK');assert.equal(f.work.sourceStatus('owner').count,1);
++ const db=f.work.db;
++ f.work.db={exec:sql=>db.exec(sql),prepare:sql=>{if(sql.startsWith('SELECT device,source_key,synced_at'))throw Error('Synthetic metadata read interrupted');return db.prepare(sql);}};
++ assert.throws(()=>f.work.sourceStatus('owner'),/Synthetic metadata read interrupted/);
++ f.work.db=db;
++ f.db.exec('BEGIN IMMEDIATE');f.source('after-failure','after-failure');f.db.exec('COMMIT');assert.equal(f.work.sourceStatus('owner').count,2);
++});
++
++test('coverage counts a 6,343,047-character source without returning message bodies to JavaScript',t=>{
++ const f=fixture(t);f.stream('large');f.origin('large');
++ const characters=6343047;let left=characters;
++ for(let i=0;left;i++){const n=Math.min(40000,left);f.event('large','message-'+i,1,'digest-'+i,{body:'x'.repeat(n),position:i});left-=n;}
++ const expected=referenceConversations(f,'owner');
++ let returnedCharacters=0,queries=0;
++ const all=f.unified.all.bind(f.unified);
++ f.unified.all=(sql,...args)=>{const rows=all(sql,...args);if(/FROM cp_context_events\b/.test(sql)){queries++;for(const row of rows)returnedCharacters+=row.body?.length||0;}return rows;};
++ const start=performance.now(),got=f.unified.coverage('owner');
++ t.diagnostic(JSON.stringify({characters,messages:got.conversations[0].messages,coverageMs:Number((performance.now()-start).toFixed(2)),returnedCharacters}));
++ assert.deepEqual(got.conversations,expected);assert.equal(got.conversations[0].messages,159);assert.ok(queries>0);
++ assert.equal(returnedCharacters,0,'metadata coverage must not load full body strings');
++ assert.doesNotMatch(JSON.stringify(got),/xxxxxxxxxx/);
++});
++
++test('coverage metadata matches body reader for replicas, conflicts, tombstones, exclusions and authority changes',t=>{
++ const f=fixture(t);f.stream('live');f.origin('live');f.origin('live','dev-b','replica');
++ f.event('live','edited',1,'old');f.event('live','edited',2,'new-a');f.event('live','edited',2,'new-b',{device:'dev-b',sourceKey:'replica'});
++ f.event('live','duplicate',1,'same');f.event('live','duplicate',1,'same',{device:'dev-b',sourceKey:'replica'});
++ f.event('live','deleted',1,'visible-before');f.event('live','deleted',2,'tombstone',{deleted:1});
++ f.device('dev-revoked');f.origin('live','dev-revoked','revoked');f.event('live','revoked',1,'revoked',{device:'dev-revoked',sourceKey:'revoked'});f.run('UPDATE cp_devices SET revoked=1 WHERE id=?','dev-revoked');
++ f.agent('bound','dev-b',2);f.origin('live','dev-b','old-binding',{agent:'bound',generation:1});f.event('live','stale-generation',1,'stale',{device:'dev-b',sourceKey:'old-binding'});
++ f.device('dev-moved');f.origin('live','dev-moved','moved');f.event('live','moved-owner',1,'moved',{device:'dev-moved',sourceKey:'moved'});
++ f.run('INSERT INTO cp_installation_accounts VALUES(?,?,?,1)','dev-moved','dev-moved','other');
++ f.stream('excluded');f.origin('excluded');f.event('excluded','hidden',1,'hidden');f.run('UPDATE cp_context_streams SET excluded=1 WHERE id=?','excluded');
++ f.stream('history-disabled');f.agent('excluded-agent');f.origin('history-disabled','dev-a','history',{agent:'excluded-agent',generation:1});
++ f.run('INSERT INTO cp_agent_history_hosts(agent,generation,enabled,seen_at) VALUES(?,1,0,1)','excluded-agent');f.event('history-disabled','hidden-history',1,'hidden-history',{sourceKey:'history'});
++ f.stream('other-stream','other');f.origin('other-stream','dev-other');f.event('other-stream','other',1,'other',{device:'dev-other'});
++ const check=()=>{for(const owner of ['owner','other'])assert.deepEqual(f.unified.coverage(owner).conversations,referenceConversations(f,owner));};
++ check();let live=f.unified.coverage('owner').conversations.find(c=>c.id==='live');assert.equal(live.messages,2);assert.equal(live.conflicts,1);
++ f.run('UPDATE cp_agent_bindings SET generation=1 WHERE agent=?','bound');check();
++ f.run('UPDATE cp_installation_accounts SET owner=? WHERE device=?','owner','dev-moved');check();
++ f.run('UPDATE cp_agent_addresses SET revoked_at=1 WHERE id=?','bound');check();
++ f.run('UPDATE cp_context_events SET deleted=1 WHERE stream=? AND message=? AND version=2','live','edited');check();
++ f.advance(60001);check();assert.equal(f.unified.coverage('owner').conversations.find(c=>c.id==='live').state,'not_recently_checked');
++});
++
++test('source collection status keeps current freshness and authority fences without a cache',t=>{
++ const f=fixture(t);f.stream('stream');f.origin('stream');
++ assert.equal(f.work.sourceStatus('owner').count,1);assert.equal(f.work.sourceStatus('owner').collection,'current');
++ f.advance(60000);assert.equal(f.work.sourceStatus('owner').collection,'current');f.advance(1);assert.equal(f.work.sourceStatus('owner').collection,'not_recently_checked');
++ for(const [state,expected] of [['backfilling','backfilling'],['partial','partial'],['unavailable','partial']]){f.run('UPDATE cp_context_origins SET state=? WHERE stream=?',state,'stream');assert.equal(f.work.sourceStatus('owner').collection,expected);}
++ f.run('INSERT INTO cp_installation_accounts VALUES(?,?,?,1)','dev-a','dev-a','other');assert.equal(f.work.sourceStatus('owner').count,0);
++ f.run('UPDATE cp_installation_accounts SET owner=? WHERE device=?','owner','dev-a');assert.equal(f.work.sourceStatus('owner').count,1);
++ f.agent('agent');f.run('UPDATE cp_context_origins SET agent=?,generation=1 WHERE stream=?','agent','stream');assert.equal(f.work.sourceStatus('owner').count,1);
++ f.run('UPDATE cp_agent_bindings SET generation=2 WHERE agent=?','agent');assert.equal(f.work.sourceStatus('owner').count,0);
++ f.run('UPDATE cp_agent_bindings SET generation=1 WHERE agent=?','agent');f.run('UPDATE cp_agent_addresses SET revoked_at=1 WHERE id=?','agent');assert.equal(f.work.sourceStatus('owner').count,0);
++ f.run('UPDATE cp_agent_addresses SET revoked_at=NULL WHERE id=?','agent');f.run('UPDATE cp_devices SET revoked=1 WHERE id=?','dev-a');assert.equal(f.work.sourceStatus('owner').count,0);
++});
++
++test('coverage retains owner/project pagination and agent metadata limits',t=>{
++ const f=fixture(t);
++ for(let i=0;i<55;i++){const id='stream-'+String(i).padStart(2,'0');f.stream(id,'owner',i%2?'odd':'even');f.origin(id);}
++ for(let i=0;i<52;i++)f.agent('agent-'+String(i).padStart(2,'0'));
++ const first=f.unified.coverage('owner');assert.equal(first.conversations.length,50);assert.equal(first.agents.length,50);assert.equal(first.nextAfter,'stream-49');assert.equal(first.nextAgentAfter,'agent-49');
++ const next=f.unified.coverage('owner',{after:first.nextAfter,agentAfter:first.nextAgentAfter});assert.equal(next.conversations.length,5);assert.equal(next.agents.length,2);assert.equal(next.nextAfter,null);assert.equal(next.nextAgentAfter,null);
++ for(const input of [{},{after:first.nextAfter},{project:'odd'}])assert.deepEqual(f.unified.coverage('owner',input).conversations,referenceConversations(f,'owner',input));
++ assert.equal(f.unified.coverage('other').conversations.length,0);
++});
++
++test('warmed synthetic status benchmark: 684 documents, 13,694 sections, 224 aliases',t=>{
++ const f=fixture(t);seedLegacy(f);
++ const old=f.db.prepare(savedSql),reference=()=>old.get('owner','owner'),current=()=>f.work.sourceStatus('owner');
++ reference();current();const beforeMs=[],afterMs=[];
++ for(let i=0;i<3;i++){
++  let start=performance.now();const expected=reference();beforeMs.push(Number((performance.now()-start).toFixed(2)));
++  start=performance.now();const got=current();afterMs.push(Number((performance.now()-start).toFixed(2)));
++  assert.equal(got.count,9200);assert.equal(got.count,expected.count);assert.equal(got.lastSyncedAt,expected.lastSyncedAt);
++ }
++ t.diagnostic(JSON.stringify({documents:684,sections:13694,aliases:224,beforeMs,afterMs}));
++});
++
++test('warmed actual-size synthetic status benchmark: 4,385 legacy rows and 700 disjoint aliases',t=>{
++ const f=fixture(t);seedLegacy(f,{documents:700,sections:4385,aliases:700,aliasStart:700});
++ const old=f.db.prepare(savedSql),reference=()=>old.get('owner','owner'),current=()=>f.work.sourceStatus('owner');
++ reference();current();const beforeMs=[],afterMs=[];
++ for(let i=0;i<3;i++){
++  let start=performance.now();const expected=reference();beforeMs.push(Number((performance.now()-start).toFixed(2)));
++  start=performance.now();const got=current();afterMs.push(Number((performance.now()-start).toFixed(2)));
++  assert.equal(got.count,4385);assert.equal(got.count,expected.count);assert.equal(got.lastSyncedAt,expected.lastSyncedAt);
++ }
++ t.diagnostic(JSON.stringify({documents:700,sections:4385,aliases:700,aliasOverlap:0,beforeMs,afterMs}));
++});
+diff --git a/tests/production-backup-location.test.mjs b/tests/production-backup-location.test.mjs
+new file mode 100644
+index 0000000..c3479f3
+--- /dev/null
++++ b/tests/production-backup-location.test.mjs
+@@ -0,0 +1,108 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {DatabaseSync} from 'node:sqlite';
++import {mkdtemp,mkdir,symlink,chmod,readdir,stat,rm} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {fileURLToPath} from 'node:url';
++import {execFile} from 'node:child_process';
++import {promisify} from 'node:util';
++
++const exec=promisify(execFile);
++const entrypoint=fileURLToPath(new URL('../apps/commonplace-account/server/backup.mjs',import.meta.url));
++// Run the real entrypoint in an isolated process. Every fetch is intercepted;
++// the snapshot, integrity verification and upload body use real synthetic SQLite.
++const runner=String.raw`
++import assert from 'node:assert/strict';
++import {DatabaseSync} from 'node:sqlite';
++import {readdir,stat} from 'node:fs/promises';
++import {pathToFileURL} from 'node:url';
++import path from 'node:path';
++const [entrypoint,physical,configured,status]=process.argv.slice(1);
++const logs=[],calls=[],snapshots=[];
++const print=console.log.bind(console);
++console.log=(...args)=>logs.push(args.join(' '));
++globalThis.fetch=async(url,options={})=>{
++ calls.push(url);
++ if(url==='http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token'){
++  assert.equal(options.headers['Metadata-Flavor'],'Google');
++  assert.equal(logs.at(-1),'Consistent database snapshot verified; uploading.');
++  return new Response(JSON.stringify({access_token:'synthetic-token'}));
++ }
++ const upload=new URL(url);
++ assert.equal(upload.origin,'https://storage.googleapis.com');
++ assert.equal(upload.pathname,'/upload/storage/v1/b/synthetic-backup-bucket/o');
++ assert.equal(upload.searchParams.get('uploadType'),'media');
++ assert.equal(upload.searchParams.get('ifGenerationMatch'),'0');
++ assert.equal(options.method,'POST');
++ assert.equal(options.headers.Authorization,'Bearer synthetic-token');
++ const name=upload.searchParams.get('name');
++ assert.match(name,/^commonplace-.*\.sqlite$/);
++ const body=Buffer.from(await options.body.arrayBuffer());
++ assert.equal(body.subarray(0,16).toString(),'SQLite format 3\0');
++ for(const directory of new Set([path.join(path.dirname(physical),'backups'),path.join(path.dirname(configured),'backups')])){
++  const names=await readdir(directory).catch(error=>{if(error.code==='ENOENT')return [];throw error;});
++  if(!names.includes(name))continue;
++  const filename=path.join(directory,name),db=new DatabaseSync(filename,{readOnly:true});
++  try{
++   snapshots.push({directory,name,bytes:body.length,fileMode:(await stat(filename)).mode&0o777,
++    directoryMode:(await stat(directory)).mode&0o777,integrity:db.prepare('PRAGMA integrity_check').get().integrity_check,
++    values:db.prepare('SELECT value FROM synthetic_records ORDER BY value').all().map(row=>row.value)});
++  }finally{db.close();}
++ }
++ assert.equal(snapshots.length,1);
++ return new Response('',{status:Number(status)});
++};
++let error=null;
++try{await import(pathToFileURL(entrypoint).href);}catch(failure){error=failure.message;}
++print(JSON.stringify({error,logs,calls,snapshots}));
++`;
++
++async function fixture(t,linked){
++ const root=await mkdtemp(path.join(tmpdir(),'backup-location-'));
++ const physicalDirectory=path.join(root,'balanced'),logicalDirectory=path.join(root,'logical');
++ await mkdir(physicalDirectory);await mkdir(logicalDirectory);
++ const physical=path.join(physicalDirectory,'account.sqlite');
++ const configured=linked?path.join(logicalDirectory,'account.sqlite'):physical;
++ const writer=new DatabaseSync(physical);
++ writer.exec("PRAGMA journal_mode=WAL; CREATE TABLE synthetic_records(value TEXT); INSERT INTO synthetic_records VALUES('committed-in-wal');");
++ await chmod(physical,0o600);
++ t.after(async()=>{writer.close();await rm(root,{recursive:true,force:true});});
++ if(linked)await symlink(path.relative(logicalDirectory,physical),configured);
++ return {root,physical,configured,physicalDirectory,logicalDirectory,writer};
++}
++
++for(const linked of [true,false])for(const uploadStatus of [200,503]){
++ test(`${linked?'symlink':'regular'} database uses its physical backup directory and ${uploadStatus===200?'removes the uploaded snapshot':'retains the verified snapshot after upload failure'}`,{timeout:15000},async t=>{
++  const f=await fixture(t,linked);
++  const {stdout}=await exec(process.execPath,['--input-type=module','-e',runner,entrypoint,f.physical,f.configured,String(uploadStatus)],{
++   env:{...process.env,COMMONPLACE_DB:f.configured,COMMONPLACE_BACKUP_BUCKET:'synthetic-backup-bucket'},timeout:12000,
++  });
++  const result=JSON.parse(stdout.trim());
++  assert.equal(result.calls.length,2,'only mocked metadata and upload requests occur');
++  assert.equal(result.snapshots.length,1);
++  const snapshot=result.snapshots[0],expectedDirectory=path.join(f.physicalDirectory,'backups');
++  assert.equal(snapshot.directory,expectedDirectory,'snapshot and integrity verification stay beside the actual database');
++  assert.equal(snapshot.directoryMode,0o700);assert.equal(snapshot.fileMode,0o600);
++  assert.equal(snapshot.integrity,'ok');assert.deepEqual(snapshot.values,['committed-in-wal']);assert.ok(snapshot.bytes>0);
++  assert.deepEqual(f.writer.prepare('SELECT value FROM synthetic_records').all().map(row=>row.value),['committed-in-wal']);
++  if(linked)await assert.rejects(stat(path.join(f.logicalDirectory,'backups')),{code:'ENOENT'});
++  const names=await readdir(expectedDirectory);
++  assert.ok(!names.some(name=>name.endsWith('.partial')));
++  const databaseNames=names.filter(name=>name.endsWith('.sqlite'));
++  if(uploadStatus===200){
++   assert.equal(result.error,null);assert.deepEqual(databaseNames,[]);
++   await assert.rejects(stat(path.join(expectedDirectory,snapshot.name)),{code:'ENOENT'});
++   assert.equal(result.logs.at(-1),'Database backup verified and saved.');
++  }else{
++   assert.match(result.error,/Backup upload failed \(503\); verified local backup retained/);
++   assert.deepEqual(databaseNames,[snapshot.name]);
++   assert.equal(result.logs.at(-1),'Consistent database snapshot verified; uploading.');
++   const retained=new DatabaseSync(path.join(expectedDirectory,snapshot.name),{readOnly:true});
++   try{
++    assert.equal(retained.prepare('PRAGMA integrity_check').get().integrity_check,'ok');
++    assert.equal(retained.prepare('SELECT value FROM synthetic_records').get().value,'committed-in-wal');
++   }finally{retained.close();}
++  }
++ });
++}

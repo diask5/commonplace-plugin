@@ -1,0 +1,105 @@
+✖ supported startup replaces an obsolete lock winner instead of returning it as the new receiver (219.620839ms)
+✖ concurrent supported startups serialize and retain the current receiver without spawning contenders (226.311416ms)
+✖ a current receiver owns its native lock before slow host verification, without claiming readiness (129.67363ms)
+2026-11-01T02:39:20.148Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✖ current receiver metadata survives legacy registrations without extending its expiry or changing native authority (621.156303ms)
+✖ receiver metadata is fenced by generation, provider and account; missing verified names cannot renew a previous title (328.868877ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 0
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1931.603232
+
+✖ failing tests:
+
+test at tests/mailbox-conductor-receiver.test.mjs:169:1
+✖ supported startup replaces an obsolete lock winner instead of returning it as the new receiver (219.620839ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  73 !== 74
+  
+      at TestContext.<anonymous> (file:///tmp/registration-baseline-kacimytm/tests/mailbox-conductor-receiver.test.mjs:172:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 73,
+    expected: 74,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/mailbox-conductor-receiver.test.mjs:175:1
+✖ concurrent supported startups serialize and retain the current receiver without spawning contenders (226.311416ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///tmp/registration-baseline-kacimytm/tests/mailbox-conductor-receiver.test.mjs:178:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/mailbox-conductor-receiver.test.mjs:182:1
+✖ a current receiver owns its native lock before slow host verification, without claiming readiness (129.67363ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== 74
+  
+      at TestContext.<anonymous> (file:///tmp/registration-baseline-kacimytm/tests/mailbox-conductor-receiver.test.mjs:193:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 74,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/mailbox-http.test.mjs:20:1
+✖ current receiver metadata survives legacy registrations without extending its expiry or changing native authority (621.156303ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'prompt' !== 'native'
+  
+      at TestContext.<anonymous> (file:///tmp/registration-baseline-kacimytm/tests/mailbox-http.test.mjs:34:9)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'prompt',
+    expected: 'native',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/mailbox-http.test.mjs:47:1
+✖ receiver metadata is fenced by generation, provider and account; missing verified names cannot renew a previous title (328.868877ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'Unverified fallback'
+  - 'Verified original title'
+  
+      at TestContext.<anonymous> (file:///tmp/registration-baseline-kacimytm/tests/mailbox-http.test.mjs:52:9)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Unverified fallback',
+    expected: 'Verified original title',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

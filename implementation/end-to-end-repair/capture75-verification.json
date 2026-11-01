@@ -1,0 +1,103 @@
+{
+  "task": "Read-only diagnosis of delayed completed Conductor chat capture",
+  "observedAt": "2026-11-01T02:59:51.956632Z",
+  "ownerId": "7365434dafb30ab7430944d5",
+  "runtimeRevision": 75,
+  "installedVersion": "0.4.42",
+  "conversation": {
+    "hostSessionId": "d0254837-0b87-4a62-b0f1-0c780e5f79d0",
+    "nativeThreadId": "01a194eb-edd7-7ae1-a107-cd9b8bab7e99",
+    "streamId": "2bbb50726db3f77ae81f4265",
+    "archiveDocumentId": "unified-2bbb50726db3f77ae81f4265"
+  },
+  "syntheticFinalMarker": "Cedar Orchard native collection check completed.",
+  "staged": {
+    "sourceKey": "1ee0b5113cf4dda5ccdeb3816dc8eae3135eaf13fd2cc0958e9a70bcccd209ed",
+    "bytes": 6848,
+    "visibleRecords": 10,
+    "userRecords": 2,
+    "assistantRecords": 8,
+    "mtimeMs": 1793500343674,
+    "actualAssistantFinalEndsWithMarker": true,
+    "finalMessageId": "msg_0d7ddba381464793016ae6a462cd2c87d29793f59882afc64f:0",
+    "finalTimestampMs": 1793500260935,
+    "checkpointHasMore": false,
+    "digestMatchesFile": true,
+    "noUploadCheckpointObservedThrough": "2026-11-01T02:58:35.374241Z",
+    "uploadAcknowledgedAtMs": 1793501929703,
+    "uploadRevision": 1,
+    "uploadedOffset": 6848,
+    "uploadedIndex": 10,
+    "captureComplete": true,
+    "queuedMessages": 0,
+    "error": null,
+    "excluded": false
+  },
+  "rawReplica": {
+    "sourceKey": "0310a04115dffb38ef5f8fb2cd3ceed9d66926da46a3bb29585835996be771fd",
+    "bytes": 951163,
+    "checkpointOffset": 827290,
+    "checkpointIndex": 175,
+    "captureComplete": false,
+    "error": "A transcript record could not be parsed.",
+    "malformedRecords": [
+      {
+        "lineIndex": 175,
+        "offset": 827290,
+        "bytes": 103
+      },
+      {
+        "lineIndex": 176,
+        "offset": 827393,
+        "bytes": 4096
+      }
+    ],
+    "retryObserved": true,
+    "sameCanonicalStreamAsStaged": true
+  },
+  "archive": {
+    "revision303": {
+      "visibleRecords": 8,
+      "actualAssistantFinalPresent": false,
+      "promptQuotedMarkerPresent": true
+    },
+    "revision305": {
+      "visibleRecords": 15,
+      "actualAssistantFinalPresent": true,
+      "actualFinalMessageId": "msg_0d7ddba381464793016ae6a462cd2c87d29793f59882afc64f:0",
+      "mirrorError": null,
+      "asOfMs": 1793501929819
+    }
+  },
+  "uploader": {
+    "enabled": true,
+    "retryAt": null,
+    "globalError": "Collection is continuing; see source coverage for missing or partial chats.",
+    "observedUploadSliceMs": [
+      9259.668347000028,
+      13514.66392999998
+    ],
+    "configuredSliceMs": 2000,
+    "deferredSourcesObserved": true,
+    "pendingExactPayloadObserved": false
+  },
+  "conclusions": [
+    "Staged complete source uploaded and actual assistant final reached the local archive during observation.",
+    "Raw replica is obstructed at malformed interior records; it remains partial.",
+    "No staging starvation bug proven; historical cause of the entire delay not established.",
+    "Serial status/progress requests and slow uploads constrain throughput; incomplete raw replica did not suppress complete staged publication."
+  ],
+  "tests": {
+    "command": "node --test tests/seamless-collection.test.mjs tests/conductor-history.test.mjs tests/cloud-continuous-sync.test.mjs",
+    "passed": 38,
+    "failed": 0
+  },
+  "scope": {
+    "sourceEdits": false,
+    "liveApiCalls": false,
+    "meetProxyMessages": false,
+    "settingsChanges": false,
+    "credentialsIncluded": false,
+    "rawTranscriptIncluded": false
+  }
+}

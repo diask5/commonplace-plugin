@@ -1,0 +1,58 @@
+{
+  "seconds": 44.5,
+  "health": [
+    {
+      "elapsed": 4.776637449860573,
+      "ready": true
+    },
+    {
+      "elapsed": 4.519398719072342,
+      "ready": true
+    },
+    {
+      "elapsed": 3.957356418017298,
+      "ready": true
+    },
+    {
+      "elapsed": 4.99769523087889,
+      "ready": true
+    },
+    {
+      "elapsed": 9.003376417793334,
+      "ready": true
+    },
+    {
+      "elapsed": 9.511823451146483,
+      "ready": true
+    }
+  ],
+  "wchan": {
+    "0": 133,
+    "jbd2_log_wait_commit": 21,
+    "ptrace_stop.part.0": 23,
+    "folio_wait_bit_common": 4
+  },
+  "cpu": {
+    "userPercent": 32.85921625544267,
+    "systemPercent": 14.513788098693759,
+    "idlePercent": 37.59071117561684,
+    "iowaitPercent": 12.394775036284472,
+    "stealPercent": 0.05805515239477503,
+    "mainProcessPercent": 133.42961234578766
+  },
+  "disk": {
+    "readIOPS": 0,
+    "writeIOPS": 100.23514755974617,
+    "awaitMs": 2.74932735426009,
+    "utilPercent": 18.50979092605537,
+    "weightedQueue": 0.28189449682553724
+  },
+  "traceCollected": true,
+  "flush": {
+    "count": 1273,
+    "maxSeconds": 0.244413,
+    "totalSeconds": 9.624601999999992,
+    "over100ms": 35
+  }
+}
+

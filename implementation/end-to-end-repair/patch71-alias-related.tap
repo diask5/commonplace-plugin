@@ -1,0 +1,62 @@
+✔ mirror manifest bypasses a pending full filesystem/index build (520.409257ms)
+✔ mirror file transfer reads selected canonical documents without building unrelated indexes (215.792933ms)
+✔ source mirror preserves projected document metadata, ordering, Unicode and generated index contract (243.408907ms)
+✔ selected files never read unrelated source bodies, even without a manifest cache (188.163427ms)
+✔ oversized conversations stop during source iteration before full assembly in both mirror paths (233.285931ms)
+✔ unified-only mirrors report the latest included source observation instead of epoch zero (396.028405ms)
+✔ file slices, response budget, duplicate offsets, path checks and stale revisions retain protocol behavior (1850.746145ms)
+✔ cached manifest heads are cheap, owner-scoped, and invalidated by source exclusion or generation changes (504.753461ms)
+✔ postworker source changes and exclusions withhold both manifest metadata and file bytes (546.282969ms)
+✔ expired worker results withhold bytes, and expired cache stamps require a full authorized manifest (505.805282ms)
+✔ projection equality survives metadata eviction; legacy final checks keep failing closed on a cache miss (1833.517686ms)
+✔ manifest requests coalesce, file workers share bounded live slots, excess waiters receive 503 (897.534656ms)
+✔ mirror metadata and files recheck stream-excluded (422.301455ms)
+✔ mirror metadata and files recheck history-excluded (453.724037ms)
+✔ mirror metadata and files recheck binding-generation (493.104415ms)
+✔ mirror metadata and files recheck device-revoked (434.829231ms)
+✔ mirror metadata and files recheck account-changed (384.926278ms)
+✔ mirror metadata and files recheck agent-revoked (366.409784ms)
+✔ mirror grant-revoked removes shared messages and never exposes a peer private resource (489.291525ms)
+✔ mirror grant-expired removes shared messages and never exposes a peer private resource (481.877338ms)
+✔ synthetic 684-document/13694-section/39438987-character mirror projects without a full FTS/filesystem build (5065.750029ms)
+ℹ {"synthetic":true,"documents":684,"sections":13694,"characters":39438987,"manifest":{"elapsedMs":893.8727879999999,"rssBefore":56197120,"rssAfter":77500416,"peakRss":77762560},"selectedFile":{"elapsedMs":178.52214200000003,"rssBefore":55934976,"rssAfter":70639616,"peakRss":70721536,"characters":57600},"fullFilesystemOrFtsBuilds":0}
+✔ 24 selected files share one metadata scan at 684 documents/13694 sections/39438987 characters (4083.922157ms)
+ℹ {"synthetic":true,"documents":684,"sections":13694,"characters":39438987,"requested":24,"elapsedMs":198.514991,"rssBefore":129794048,"rssAfter":134197248,"scans":1,"rows":13694,"bodies":494,"closed":1}
+✔ selected bytes match the original archive projection for interleaved keys, numeric positions and repeated paths (174.098639ms)
+✔ response budget defers known paths, checks unknown paths and reads no deferred remainder bodies (334.974886ms)
+✔ opaque selections reject foreign owners/databases, unselected IDs, forged and expired handles (187.104023ms)
+✔ selection metadata is fresh per request and exclusion never resurrects the legacy replica (176.621884ms)
+✔ metadata and lazily selected bodies stay in one WAL read snapshot while another connection writes (126.866146ms)
+✔ partial selections and body-read errors close their one metadata cursor without retaining a reusable handle (162.780039ms)
+✔ unchanged current snapshot runs and finishes (335.563576ms)
+✔ snapshot older than live (change during held prepare) never invokes the model (238.549232ms)
+✔ source excluded during held prepare never invokes the model, snapshot released (170.77695ms)
+✔ source excluded during the held model run: uncited output never finishes, rotated auth retained, resources released (206.205834ms)
+✔ source revised during the held model run is withheld (269.096681ms)
+✔ snapshot expiry during the model run is withheld (423.370283ms)
+✔ snapshot already expired before the run never invokes the model (183.302192ms)
+✔ source changed after the worker postmodel check but before finish is withheld by the transactional guard (272.812127ms)
+✔ finish without an archive expectation is unchanged (172.271953ms)
+✔ final archive check and publication exclude a concurrent external writer (268.185058ms)
+✔ archive change after a consultation was sent keeps the durable wait, publishes nothing, keeps rotated auth (221.376525ms)
+✔ archive change with an unobserved consultation reply requeues without publishing (190.982222ms)
+✔ idle optional worker does not duplicate indexing; web readiness still converges (344.335621ms)
+✔ queued optional job prepares current archive before model and releases it (179.426005ms)
+✔ subscription setup check does not need an archive build (245.451987ms)
+✔ patched contentless FTS matches full rebuild after add/edit/delete with ranking and paging (633.756075ms)
+✔ removed private source and another owner never appear through a stale index (270.7524ms)
+✔ corrupt index, corrupt removed body and a retired base fall back without stale text (374.674206ms)
+✔ small changes only index changed documents in a larger real archive (1446.468481ms)
+ℹ 7 MB authoritative projection + patched/full equality: 242 ms; patched 85 ms, fresh 157 ms
+✔ retirement reclaims only dead-process scratch and preserves live queries (275.956144ms)
+✔ derived index work can release the captured read transaction without mixing snapshots (237.873007ms)
+✔ title-only and capture-date changes update both FTS and filters (328.190748ms)
+✔ PID reuse reclaims an orphan without removing the current process generation (371.265484ms)
+ℹ tests 51
+ℹ suites 0
+ℹ pass 51
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17121.896567

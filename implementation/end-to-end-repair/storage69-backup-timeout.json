@@ -1,0 +1,17 @@
+{
+  "unit": "commonplace-backup.service",
+  "state": "failed",
+  "result": "timeout",
+  "startedAt": "2026-11-01T04:03:23Z",
+  "finishedAt": "2026-11-01T04:08:23Z",
+  "mainPID": 0,
+  "formerPID": 883648,
+  "invocationId": "b87cb0f36fe4490db77a36c6aff71f13",
+  "exitCode": 2,
+  "exitStatus": 15,
+  "existingSystemdTimeout": "5min",
+  "signaledByThisRepair": false,
+  "resetFailed": false,
+  "snapshotSuccessObserved": false,
+  "nextTimerTrigger": "2026-11-02T04:06:43Z"
+}

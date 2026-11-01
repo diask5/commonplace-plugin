@@ -1,0 +1,123 @@
+{
+  "name": "Resumable native context pages and one-pass legacy selection; patch68",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch",
+    "deployment-source-modes.patch",
+    "visible-transcript-envelopes.patch",
+    "native-message-excerpts.patch",
+    "p0-excerpts-candidate.patch",
+    "private-native-titles.patch",
+    "space-request-diagnostics.patch",
+    "bounded-classification.patch",
+    "question-discovery.patch",
+    "sharing-stress.patch",
+    "cross-host-context-sync.patch",
+    "bounded-sync-catchup.patch",
+    "classifier-reliability.patch",
+    "imported-context-excerpts.patch",
+    "invite-cta.patch",
+    "setup-preflight-recovery.patch",
+    "current-space-invite.patch",
+    "multiple-accounts.patch",
+    "faster-chat-sync.patch",
+    "personal-space-events.patch",
+    "continuous-chat-sync.patch",
+    "oob-activation.patch",
+    "upload-fairness.patch",
+    "staged-collection.patch",
+    "work-sync-recovery.patch",
+    "live-context-recovery.patch",
+    "background-throughput.patch"
+  ],
+  "patch": "resumable-context-pages.patch",
+  "sha256": "ecb91e35aff4dadb6718a17406623da5890df0b9b8dc2a76125f79a624ad7874",
+  "state": "Packaged 0.4.43/runtime76 and 20261101-resumable-context; 830 final core,105 extracted-native checks and independent review pass. Not yet installed or deployed.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/archive-mirror.mjs",
+      "beforeSha256": "951f9c6c251bbf4bf91ef4c500a33465acc562c6a21d65ce04bb99a9949d3c0e",
+      "sha256": "0d4bccb0f358edc679eb083cd267ee55a455e1f9a8f81dbff12fcff8e3df143f"
+    },
+    {
+      "path": "apps/commonplace-account/server/archive-source.mjs",
+      "beforeSha256": "bf780c6e8bd40398d7d97817449cccc26d049ffd4b54e895741e737d97308535",
+      "sha256": "d4ef5f2f549482caf1816c81ea804ce1cf2779af4c3e1700e75deb098f948512"
+    },
+    {
+      "path": "apps/commonplace/server/context-mirror.mjs",
+      "beforeSha256": "e524369714f5f64b48d1d069c44591c676bf33b98e82578ffdcf043798ca6c97",
+      "sha256": "d7e9f3ba9b9637d50653889fa7d10b2c564595c84585a826cc92f40d0344d32f"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "f3f2666f30b9c0a6b8d77097b0db026709b2b1ced185580823fcba429c7ee0ba",
+      "sha256": "3aed1cd2eb16fa1bb4a4a28460bda89778b58a4b7e863e00d345708b0a7b54e9"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "adae371aef56aaa9a473f4dfafb619ad739cffefc5c94d6a2053b4c5f4df62bb",
+      "sha256": "eb608a266d95e15307ad106b35bd6cd8f788fcd4c7f108e3b77775045c47e3ee"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "e7a8c7b53633fa60003eb53083d1f178057914d91b091d9ceb294681753d996c",
+      "sha256": "59f006961541782de412e57222ac3aa99f22be677dbb746a59b4bfd719ac66e4"
+    },
+    {
+      "path": "tests/cloud-archive-selected-metadata.test.mjs",
+      "beforeSha256": null,
+      "sha256": "d5804405ad8e0c27bc5c82e261d144e7992a3cc58017f5c9068e4d0a344b22ec"
+    },
+    {
+      "path": "tests/context-mirror.test.mjs",
+      "beforeSha256": "71a3f2ace68be064290452e39224b7eab1dc70087ffa8201463303de0bf158b4",
+      "sha256": "74bef541b8ff8da4302c99dc283983cb113c05e51f04440f343e11f14c7d8d99"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "714615f3ad2423f186fba35a4b075e670455e6f3d02f4162c3b8d3be3a9c9b98",
+      "sha256": "902022df2480b0f68efdc12a9b8ea52d4009d83e6abda229bc69d6120c1e12e4"
+    }
+  ]
+}

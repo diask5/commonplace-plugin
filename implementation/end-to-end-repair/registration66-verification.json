@@ -1,0 +1,68 @@
+{
+  "stage": "source-only",
+  "frozenAt": "2026-11-01T02:41:39.304441+00:00",
+  "ownedFiles": {
+    "apps/commonplace-account/server/mailboxes.mjs": "663fa3451207e10e255fb6aadd01d7e1c8698853f40f1e066f363d0ed1cdd500",
+    "apps/commonplace/server/mailbox-client.mjs": "f9a111625875ba723668f2438e10c7f8d100f382342a64bbfbc6b109bfb11656",
+    "apps/commonplace/server/conductor-receiver.mjs": "ec9a595a35c9a074672b9756d0cf68bfa7597561c15f491e22b137699367783f",
+    "tests/mailbox-http.test.mjs": "d444f393323350abd55dbe013bf7f4170ace0e848abcb9fa479e092751e3fc23",
+    "tests/mailbox-conductor-receiver.test.mjs": "8c8b4e25dd1fbd7956d553ab8222a5692309a8d60669537a53f3cb54ae827b5e"
+  },
+  "runs": [
+    {
+      "log": "registration66-main.log",
+      "exitCode": 0,
+      "summary": [
+        "\u2139 tests 62",
+        "\u2139 suites 0",
+        "\u2139 pass 62",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 16471.090455"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/mailbox-http.test.mjs",
+        "tests/mailbox-conductor-receiver.test.mjs",
+        "tests/mailbox-adapter.test.mjs",
+        "tests/mailbox-conductor.test.mjs",
+        "tests/mcp-conductor-naming.test.mjs",
+        "tests/mcp-probe.test.mjs",
+        "tests/account-profiles-native.test.mjs"
+      ]
+    },
+    {
+      "log": "registration66-authority.log",
+      "exitCode": 0,
+      "summary": [
+        "\u2139 tests 46",
+        "\u2139 suites 0",
+        "\u2139 pass 46",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 23750.550883"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/agent-connections.test.mjs",
+        "tests/agent-network.test.mjs",
+        "tests/mailbox-onboarding.test.mjs"
+      ]
+    }
+  ],
+  "newRegressions": {
+    "beforeFailures": 5,
+    "afterPasses": 5,
+    "before": "registration66-before.log",
+    "after": "registration66-after.log"
+  },
+  "metadataSemantics": "Only label/capability precedence; no grants, identity, generation or permission changes. Exact binding scoped, 90000ms expiry, lower revisions cannot renew.",
+  "productionChanges": false,
+  "liveMessagesSent": false
+}

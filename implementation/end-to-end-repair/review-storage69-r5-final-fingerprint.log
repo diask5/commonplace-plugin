@@ -1,0 +1,8 @@
+{
+  "literalMatchesOwner": true,
+  "fields": 12,
+  "changedFieldChecks": 36,
+  "rejected": 36,
+  "unchangedHistoricalFailureAllowed": true,
+  "helperSha256": "84bf47d080ed1aa0fac230035000d7451f705b756b8a98656964f7e361cd0aab"
+}

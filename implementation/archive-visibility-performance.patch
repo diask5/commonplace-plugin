@@ -1,0 +1,245 @@
+diff --git a/apps/commonplace-account/server/archive-source.mjs b/apps/commonplace-account/server/archive-source.mjs
+index 251245f..1ff612d 100644
+--- a/apps/commonplace-account/server/archive-source.mjs
++++ b/apps/commonplace-account/server/archive-source.mjs
+@@ -1,6 +1,6 @@
+ import {createHash} from 'node:crypto';
+ import {setupCheckPrompt} from './agent-setup.mjs';
+-import {UnifiedContext,legacyVisibleSql} from './unified-context.mjs';
++import {UnifiedContext} from './unified-context.mjs';
+ import {WorkspaceNetwork} from './workspace-network.mjs';
+ import {DatabaseSync} from 'node:sqlite';
+ import {ArchiveTools} from './archive-tools.mjs';
+@@ -13,7 +13,24 @@ const nativeIdentity=metadata=>{
+   const key=metadata.source_key.match(/^([a-f0-9]{64}):(\d+)$/),base=key?key[1]:metadata.source_key;
+   return {key,id:'native-'+hash(metadata.device+':'+base).slice(0,24)};
+ };
+-const legacyMetadata=(db,owner,columns)=>db.prepare('SELECT '+columns+' FROM cp_cloud_sources s WHERE owner=? AND '+legacyVisibleSql+' ORDER BY device,source_key').iterate(owner);
++function* legacyMetadata(db,owner){
++  // The caller's read transaction pins aliases, metadata and selected bodies.
++  // Keep the lookup request-local: revocation/exclusion and source edits must
++  // be observed anew, never served from an earlier projection's alias cache.
++  const aliases=new Map();
++  for(const row of db.prepare('SELECT device,source_key FROM cp_context_legacy_aliases WHERE owner=?').iterate(owner)){
++    let keys=aliases.get(row.device);if(!keys){keys=new Set();aliases.set(row.device,keys);}keys.add(row.source_key);
++  }
++  for(const row of db.prepare('SELECT s.id,s.source_key,s.device,s.title FROM cp_cloud_sources s WHERE owner=? ORDER BY device,source_key').iterate(owner)){
++    const keys=aliases.get(row.device),key=row.source_key;
++    let hidden=keys?.has(key)??false;
++    // Exact equality plus literal colon prefixes, matching legacyVisibleSql.
++    // SQLite length/substr stop at NUL; aliases past it can only match exactly.
++    const nul=key.indexOf('\0');
++    if(keys&&!hidden)for(let i=key.indexOf(':');i!==-1&&(nul===-1||i<nul);i=key.indexOf(':',i+1))if(keys.has(key.slice(0,i))){hidden=true;break;}
++    if(!hidden)yield row;
++  }
++}
+ // A synchronous, request-scoped selection shares one lazy metadata scan. Only
+ // requested IDs retain metadata; bodies are still fetched as sections are read.
+ // The opaque handle cannot be reused after the callback or by another owner/db.
+@@ -29,7 +46,7 @@ function* selectedMetadata(state,documentId){
+     if(!state.active)throw Error('Invalid archive selection.');
+     if(index<rows.length){yield rows[index++];continue;}
+     if(state.done)return;
+-    state.iterator??=legacyMetadata(state.db,state.owner,'s.id,s.source_key,s.device,s.title');
++    state.iterator??=legacyMetadata(state.db,state.owner);
+     const next=state.iterator.next();
+     if(next.done){state.done=true;return;}
+     state.rows.get(nativeIdentity(next.value).id)?.push(next.value);
+@@ -44,11 +61,12 @@ export function* archiveSections(db,owner,{now=Date.now(),documentId,selection}=
+   const selected=selection===undefined?null:selections.get(selection);
+   if(selection!==undefined&&(!selected||selected.db!==db||selected.owner!==owner||!selected.rows.has(documentId)))throw Error('Invalid archive selection.');
+   if(!documentId||documentId.startsWith('native-')){
+-    const columns=documentId?'s.id,s.source_key,s.device,s.title':'s.*';
+-    for(const metadata of selected?selectedMetadata(selected,documentId):legacyMetadata(db,owner,columns)){
++    const section=db.prepare('SELECT * FROM cp_cloud_sources WHERE owner=? AND id=?');
++    for(const metadata of selected?selectedMetadata(selected,documentId):legacyMetadata(db,owner)){
+       const {key,id}=nativeIdentity(metadata);
+       if(documentId&&documentId!==id)continue;
+-      const s=documentId?db.prepare('SELECT * FROM cp_cloud_sources WHERE owner=? AND id=?').get(owner,metadata.id):metadata;
++      // Hidden/unselected bodies are never loaded, including full projections.
++      const s=section.get(owner,metadata.id);
+       yield {doc:{id,kind:s.title.startsWith('Codex chats:')||s.title.startsWith('Archived Codex chats:')||s.title.startsWith('Conductor Codex chats:')?'codex':'claude',title:s.title.replace(/ · \d+$/,''),device:s.device},section:s,position:key?Number(key[2]):0};
+     }
+   }
+diff --git a/package.json b/package.json
+index 471f632..2f10f74 100644
+--- a/package.json
++++ b/package.json
+@@ -7,7 +7,7 @@
+   },
+   "scripts": {
+     "start": "node scripts/relay.mjs",
+-    "test": "node --test tests/context-status-performance.test.mjs tests/space-events.test.mjs tests/personal-space.test.mjs tests/account-profiles.test.mjs tests/account-profiles-native.test.mjs tests/transcript-visibility.test.mjs tests/remote-archive-errors.test.mjs tests/agent-network.test.mjs apps/commonplace-account/tests/*.test.mjs apps/commonplace/tests/person-inbox.test.mjs apps/commonplace/tests/session-invitations.test.mjs apps/commonplace/tests/chat-wait.test.mjs apps/commonplace/tests/account-origin.test.mjs apps/commonplace/tests/delegation-client.test.mjs tests/relay.test.mjs tests/delegation-http.test.mjs tests/production-*.test.mjs tests/mailbox-*.test.mjs tests/cloud-*.test.mjs tests/context-mirror.test.mjs tests/conductor-history.test.mjs tests/people-invitations.test.mjs tests/chat-setup.test.mjs tests/codex-host-context.test.mjs tests/local-environment.test.mjs tests/mcp-*.test.mjs tests/agent-connections.test.mjs tests/policy-context.test.mjs tests/decisions-scheduler.test.mjs tests/space-context*.test.mjs tests/context-setup.test.mjs tests/context-setup-request.test.mjs tests/context-setup-cross-host.test.mjs tests/contact-delivery.test.mjs tests/personal-assistant-setup.test.mjs tests/seamless-routing.test.mjs tests/seamless-collection.test.mjs tests/seamless-retrieval.test.mjs tests/agent-auth-rate-storage.test.mjs tests/agent-auth-registration-queue.test.mjs tests/archive-document-reuse.test.mjs tests/context-read-indexes.test.mjs tests/archive-io-hotpath.test.mjs tests/archive-short-transaction.test.mjs tests/archive-short-transaction-authority.test.mjs tests/archive-coordination.test.mjs tests/live-index-reuse.test.mjs",
++    "test": "node --test tests/archive-legacy-visibility.test.mjs tests/context-status-performance.test.mjs tests/space-events.test.mjs tests/personal-space.test.mjs tests/account-profiles.test.mjs tests/account-profiles-native.test.mjs tests/transcript-visibility.test.mjs tests/remote-archive-errors.test.mjs tests/agent-network.test.mjs apps/commonplace-account/tests/*.test.mjs apps/commonplace/tests/person-inbox.test.mjs apps/commonplace/tests/session-invitations.test.mjs apps/commonplace/tests/chat-wait.test.mjs apps/commonplace/tests/account-origin.test.mjs apps/commonplace/tests/delegation-client.test.mjs tests/relay.test.mjs tests/delegation-http.test.mjs tests/production-*.test.mjs tests/mailbox-*.test.mjs tests/cloud-*.test.mjs tests/context-mirror.test.mjs tests/conductor-history.test.mjs tests/people-invitations.test.mjs tests/chat-setup.test.mjs tests/codex-host-context.test.mjs tests/local-environment.test.mjs tests/mcp-*.test.mjs tests/agent-connections.test.mjs tests/policy-context.test.mjs tests/decisions-scheduler.test.mjs tests/space-context*.test.mjs tests/context-setup.test.mjs tests/context-setup-request.test.mjs tests/context-setup-cross-host.test.mjs tests/contact-delivery.test.mjs tests/personal-assistant-setup.test.mjs tests/seamless-routing.test.mjs tests/seamless-collection.test.mjs tests/seamless-retrieval.test.mjs tests/agent-auth-rate-storage.test.mjs tests/agent-auth-registration-queue.test.mjs tests/archive-document-reuse.test.mjs tests/context-read-indexes.test.mjs tests/archive-io-hotpath.test.mjs tests/archive-short-transaction.test.mjs tests/archive-short-transaction-authority.test.mjs tests/archive-coordination.test.mjs tests/live-index-reuse.test.mjs",
+     "test:backend": "node --test apps/commonplace-account/tests/*.test.mjs",
+     "test:package": "node --test tests/packaging.test.mjs",
+     "test:deployment": "python3 -m unittest tests.test_deployment tests.test_public_assets_deployment tests.test_runtime_public_assets",
+diff --git a/tests/archive-legacy-visibility.test.mjs b/tests/archive-legacy-visibility.test.mjs
+new file mode 100644
+index 0000000..9f3e742
+--- /dev/null
++++ b/tests/archive-legacy-visibility.test.mjs
+@@ -0,0 +1,129 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {DatabaseSync} from 'node:sqlite';
++import {createHash} from 'node:crypto';
++import {readFileSync,readdirSync,mkdtempSync,rmSync} from 'node:fs';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {performance} from 'node:perf_hooks';
++import {archiveSections,withArchiveSectionSelection} from '../apps/commonplace-account/server/archive-source.mjs';
++import {sourceMirrorManifest,readMirrorSource} from '../apps/commonplace-account/server/archive-mirror.mjs';
++import {legacyVisibleSql} from '../apps/commonplace-account/server/unified-context.mjs';
++
++const hash=s=>createHash('sha256').update(s).digest('hex');
++const owner='a'.repeat(24),other='b'.repeat(24),key=n=>n.toString(16).padStart(64,'0');
++const metadata='SELECT s.id,s.source_key,s.device,s.title FROM cp_cloud_sources s WHERE owner=? ORDER BY device,source_key';
++function fixture(t,{persistent=false}={}){
++ const scratch=persistent?mkdtempSync(path.join(tmpdir(),'archive-alias-')):null,file=scratch?path.join(scratch,'db.sqlite'):':memory:';
++ const db=new DatabaseSync(file);db.exec('PRAGMA foreign_keys=ON');if(persistent)db.exec('PRAGMA journal_mode=WAL');
++ const directory=path.resolve('apps/commonplace-account/drizzle');
++ for(const file of readdirSync(directory).filter(n=>/^\d{4}_[\w-]+\.sql$/.test(n)).sort())db.exec(readFileSync(path.join(directory,file),'utf8'));
++ t.after(()=>{db.close();if(scratch)rmSync(scratch,{recursive:true,force:true});});
++ const run=(sql,...args)=>db.prepare(sql).run(...args);
++ for(const who of [owner,other])run('INSERT INTO cp_profiles(id,subject,name,email,created_at) VALUES(?,?,?,?,1)',who,'firebase:'+who,'Synthetic','synthetic@example.test');
++ for(const [device,who] of [['dev-a',owner],['dev-b',owner],['dev-other',other]])run("INSERT INTO cp_devices(id,owner,client,name,scope,created_at) VALUES(?,?,'test','Synthetic','commonplace',1)",device,who);
++ for(const [stream,who] of [['alias-stream',owner],['other-stream',other]])run("INSERT INTO cp_context_streams(id,owner,provider,external_id,title,updated_at) VALUES(?,?,'codex',?,'Synthetic',1)",stream,who,stream);
++ const source=(sourceKey,{device='dev-a',who=owner,body='Synthetic'}={})=>{const id=hash(JSON.stringify([who,device,sourceKey])).slice(0,24);run('INSERT INTO cp_cloud_sources VALUES(?,?,?,?,1,?,?,?,?,?)',id,who,device,sourceKey,'Synthetic',body,hash(body),1,2);return id;};
++ const alias=(sourceKey,{device='dev-a',who=owner}={})=>run('INSERT OR IGNORE INTO cp_context_legacy_aliases VALUES(?,?,?,?)',who,device,sourceKey,who===owner?'alias-stream':'other-stream');
++ const read=fn=>{db.exec('BEGIN');try{return fn();}finally{db.exec('ROLLBACK');}};
++ const expected=(who=owner)=>db.prepare('SELECT s.* FROM cp_cloud_sources s WHERE owner=? AND '+legacyVisibleSql+' ORDER BY device,source_key').all(who);
++ const document=(sourceKey,device='dev-a')=>'native-'+hash(device+':'+sourceKey).slice(0,24);
++ return {db,file,run,source,alias,read,expected,document};
++}
++function probeAliases(f){
++ let evaluations=0;
++ f.db.function('archive_alias_probe',value=>{evaluations++;return value;});
++ f.db.exec('ALTER TABLE cp_context_legacy_aliases RENAME TO archive_alias_rows; CREATE VIEW cp_context_legacy_aliases AS SELECT owner,device,archive_alias_probe(source_key) AS source_key,stream FROM archive_alias_rows');
++ return ()=>evaluations;
++}
++function seed(f,{sections,documents,aliases,characters}){
++ f.db.exec('BEGIN');
++ try{
++  for(let i=0;i<sections;i++)f.source(key(i%documents)+':'+Math.floor(i/documents),{body:'x'.repeat(Math.floor(characters/sections)+(i<characters%sections?1:0))});
++  for(let i=0;i<aliases;i++)f.alias(key(documents+i));
++  f.db.exec('COMMIT');
++ }catch(error){f.db.exec('ROLLBACK');throw error;}
++}
++
++test('production-shape selected mirror request evaluates 700 aliases once across 4,385 rows and 40M characters',t=>{
++ const f=fixture(t);seed(f,{sections:4385,documents:684,aliases:700,characters:40000000});
++ const paths=Array.from({length:24},(_,i)=>'documents/'+f.document(key(i))+'.txt');
++ const correlated={prepare(sql){return f.db.prepare(sql===metadata?sql.replace(' ORDER BY',' AND '+legacyVisibleSql+' ORDER BY'):sql);}};
++ const request=db=>f.read(()=>readMirrorSource(db,owner,'archive-files',{paths}));
++ request(f.db);request(correlated);const beforeMs=[],afterMs=[];
++ for(let i=0;i<3;i++){
++  let start=performance.now();const expected=request(correlated);beforeMs.push(Number((performance.now()-start).toFixed(2)));
++  start=performance.now();const got=request(f.db);afterMs.push(Number((performance.now()-start).toFixed(2)));assert.deepEqual(got,expected);
++ }
++ const evaluations=probeAliases(f),start=performance.now();
++ const result=f.read(()=>readMirrorSource(f.db,owner,'archive-files',{paths}));
++ t.diagnostic(JSON.stringify({sections:4385,aliases:700,characters:40000000,aliasOverlap:0,requested:24,elapsedMs:Number((performance.now()-start).toFixed(2)),aliasEvaluations:evaluations(),beforeMs,afterMs}));
++ for(const file of result.value.files){assert.equal(file.digest,hash(file.text));assert.equal(file.totalCharacters,file.text.length);}
++ assert.ok(evaluations()<=700,'one alias evaluation per alias, got '+evaluations());
++});
++
++test('full mirror manifests share the same bounded alias lookup',t=>{
++ const f=fixture(t);seed(f,{sections:1200,documents:60,aliases:20,characters:120000});
++ const expected=f.read(()=>sourceMirrorManifest(f.db,owner)),evaluations=probeAliases(f);
++ const got=f.read(()=>sourceMirrorManifest(f.db,owner));
++ assert.deepEqual(got,expected);assert.ok(evaluations()<=20,'one alias evaluation per alias, got '+evaluations());
++});
++
++test('legacy projection exactly matches SQLite for Unicode, NUL, delimiters, devices and owners',t=>{
++ const f=fixture(t),special=['','root','root:child','root::child','rootish:child',':front','emoji😀:a:b','emoji😀:ab','%_:part','Case','case','nul\0alias','nul\0alias:child','root:before\0after','😀\0:after',':\0:tail'];
++ let random=17;const alphabet=['a','😀','界',':','\0','é','e\u0301','%','_','\uffff'];
++ const word=()=>{let s='';for(let i=0;i<7;i++){random=(Math.imul(random,1664525)+1013904223)>>>0;s+=alphabet[random%alphabet.length];}return s;};
++ const keys=[...special,...Array.from({length:250},(_,i)=>word()+':'+i)];
++ for(const [device,who] of [['dev-a',owner],['dev-b',owner],['dev-other',other]])for(const [i,k] of keys.entries())f.source(k,{device,who,body:'Synthetic '+i});
++ for(const a of ['root','','emoji😀:a','%_','Case','nul\0alias','😀\0'])f.alias(a);
++ for(let i=0;i<keys.length;i+=3){f.alias(keys[i]);const colon=keys[i].indexOf(':');if(colon>=0)f.alias(keys[i].slice(0,colon));}
++ f.alias('root',{device:'dev-b'});f.alias('case',{who:other,device:'dev-other'});
++ const check=()=>{for(const who of [owner,other])f.read(()=>{
++  const expected=f.expected(who).map(s=>[s.id,s.body]);
++  const got=[...archiveSections(f.db,who)].filter(r=>r.doc.id.startsWith('native-')).map(r=>[r.section.id,r.section.body]);
++  assert.deepEqual(got,expected);
++ });};
++ check();f.run('DELETE FROM cp_context_legacy_aliases WHERE owner=? AND device=? AND source_key=?',owner,'dev-a','root');check();
++ f.alias('root');f.run('UPDATE cp_context_streams SET excluded=1 WHERE id=?','alias-stream');check();
++ f.run('UPDATE cp_devices SET revoked=1 WHERE id=?','dev-a');check(); // retain the existing legacy SQL semantics exactly
++});
++
++test('hidden legacy bodies are never fetched, and edits/aliases are fresh on the next request',t=>{
++ const f=fixture(t),visible=f.source('visible'),hidden=f.source('hidden:part',{body:'Withheld synthetic'});f.alias('hidden');
++ const fetched=[];const db={prepare(sql){const statement=f.db.prepare(sql);if(sql==='SELECT * FROM cp_cloud_sources WHERE owner=? AND id=?')return {get(...args){fetched.push(args[1]);return statement.get(...args);}};return statement;}};
++ f.read(()=>{const rows=[...archiveSections(db,owner)];assert.equal(rows.length,1);assert.equal(rows[0].section.id,visible);});
++ assert.ok(!fetched.includes(hidden));
++ f.alias('visible');assert.equal(f.read(()=>[...archiveSections(db,owner)]).length,0);
++ f.run('DELETE FROM cp_context_legacy_aliases WHERE owner=? AND source_key=?',owner,'visible');
++ f.run('UPDATE cp_cloud_sources SET body=? WHERE id=?','New synthetic text',visible);
++ assert.equal(f.read(()=>[...archiveSections(db,owner)])[0].section.body,'New synthetic text');
++ const id=f.document('visible');let expired;
++ f.read(()=>withArchiveSectionSelection(db,owner,[id],selection=>{expired=selection;assert.throws(()=>[...archiveSections(db,other,{documentId:id,selection})],/Invalid archive selection/);}));
++ assert.throws(()=>[...archiveSections(db,owner,{documentId:id,selection:expired})],/Invalid archive selection/);
++});
++
++test('aliases, selected bytes and revisions share the pinned snapshot during a concurrent retirement',t=>{
++ const f=fixture(t,{persistent:true});f.source('source:part',{body:'Before synthetic'});
++ const writer=new DatabaseSync(f.file);t.after(()=>writer.close());
++ const head=f.read(()=>sourceMirrorManifest(f.db,owner)),file='documents/'+f.document('source:part')+'.txt';let written=false;
++ const db={prepare(sql){const statement=f.db.prepare(sql);if(sql!==metadata)return statement;return {iterate:function*(...args){for(const row of statement.iterate(...args)){
++  if(!written){written=true;writer.exec('BEGIN');writer.prepare('INSERT INTO cp_context_legacy_aliases VALUES(?,?,?,?)').run(owner,'dev-a','source','alias-stream');writer.prepare('UPDATE cp_cloud_archive_state SET revision=revision+1 WHERE owner=?').run(owner);writer.exec('COMMIT');}
++  yield row;
++ }}};}};
++ const prior=f.read(()=>readMirrorSource(db,owner,'archive-files',{revision:head.revision,paths:[file]}));
++ assert.ok(written);assert.equal(prior.value.files[0].text,'Before synthetic');assert.equal(prior.revision,head.revision);
++ const stale=f.read(()=>readMirrorSource(f.db,owner,'archive-files',{revision:head.revision,paths:[file]}));assert.equal(stale.value.restart,true);assert.equal(stale.value.files,undefined);
++ assert.throws(()=>f.read(()=>readMirrorSource(f.db,owner,'archive-files',{paths:[file]})),/Unknown context file/);
++});
++
++test('warmed 13,694-section/224-alias benchmark retains the correlated SQL reference projection',t=>{
++ const f=fixture(t);seed(f,{sections:13694,documents:684,aliases:224,characters:136940});
++ const correlated={prepare(sql){return f.db.prepare(sql===metadata?sql.replace(' ORDER BY',' AND '+legacyVisibleSql+' ORDER BY'):sql);}};
++ const project=db=>f.read(()=>[...archiveSections(db,owner)].map(r=>r.section.id));
++ project(f.db);project(correlated);const beforeMs=[],afterMs=[];
++ for(let i=0;i<3;i++){
++  let start=performance.now();const expected=project(correlated);beforeMs.push(Number((performance.now()-start).toFixed(2)));
++  start=performance.now();const got=project(f.db);afterMs.push(Number((performance.now()-start).toFixed(2)));assert.deepEqual(got,expected);
++ }
++ t.diagnostic(JSON.stringify({sections:13694,aliases:224,aliasOverlap:0,beforeMs,afterMs}));
++});
+diff --git a/tests/cloud-archive-mirror-source.test.mjs b/tests/cloud-archive-mirror-source.test.mjs
+index 57b5dd0..ea54e02 100644
+--- a/tests/cloud-archive-mirror-source.test.mjs
++++ b/tests/cloud-archive-mirror-source.test.mjs
+@@ -86,6 +86,7 @@ test('oversized conversations stop during source iteration before full assembly
+   const row=i=>({id:i.toString(16).padStart(24,'0'),device,source_key:key+':'+i,title:'Codex chats: Oversized',body,captured_at:1000,synced_at:2000});
+   const db={prepare(sql){
+    if(sql.startsWith('SELECT revision')||sql.startsWith('SELECT updated_at'))return {get:()=>({revision:1,updated_at:1000})};
++   if(sql==='SELECT device,source_key FROM cp_context_legacy_aliases WHERE owner=?')return {iterate:function*(){}};
+    if(sql.includes('FROM cp_cloud_sources s'))return {iterate:function*(){for(let i=0;i<total;i++){visited++;yield row(i);}}};
+    if(sql==='SELECT * FROM cp_cloud_sources WHERE owner=? AND id=?')return {get:(owner,id)=>row(parseInt(id,16))};
+    throw Error('Unexpected query after oversized source: '+sql);
+diff --git a/tests/cloud-archive-selected-metadata.test.mjs b/tests/cloud-archive-selected-metadata.test.mjs
+index 9cfc51f..1d8e0d9 100644
+--- a/tests/cloud-archive-selected-metadata.test.mjs
++++ b/tests/cloud-archive-selected-metadata.test.mjs
+@@ -9,7 +9,7 @@ import {AccountService} from '../apps/commonplace-account/server/service.mjs';
+ import {CloudWork} from '../apps/commonplace-account/server/cloud-work.mjs';
+ import {archiveSections,withArchiveSectionSelection} from '../apps/commonplace-account/server/archive-source.mjs';
+ import {readMirrorSource} from '../apps/commonplace-account/server/archive-mirror.mjs';
+-import {UnifiedContext,legacyVisibleSql} from '../apps/commonplace-account/server/unified-context.mjs';
++import {UnifiedContext} from '../apps/commonplace-account/server/unified-context.mjs';
+ import {DatabaseSync} from 'node:sqlite';
+ const hash=s=>createHash('sha256').update(s).digest('hex'),uid=()=>randomBytes(12).toString('hex');
+ 
+@@ -27,7 +27,7 @@ function observed(f,allowed){
+   const stmt=f.db.sqlite.prepare(sql);
+   if(sql.includes('FROM cp_cloud_sources s')){
+    assert.ok(sql.startsWith('SELECT s.id,s.source_key,s.device,s.title FROM '),'metadata scan never selects body');
+-   assert.ok(sql.includes('WHERE owner=? AND '+legacyVisibleSql+' ORDER BY device,source_key'),'preserve the exact owner/legacy visibility/order predicate');
++   assert.ok(sql.includes('WHERE owner=? ORDER BY device,source_key'),'preserve owner scope and metadata order; alias parity is checked independently');
+    return {iterate:function*(...args){stats.scans++;try{for(const row of stmt.iterate(...args)){stats.rows++;yield row;}}finally{stats.closed++;}}};
+   }
+   if(sql==='SELECT * FROM cp_cloud_sources WHERE owner=? AND id=?')return {get(...args){stats.bodies++;assert.equal(args[0],f.owner);if(allowed)assert.ok(allowed.has(args[1]),'no unrelated body read');return stmt.get(...args);}};

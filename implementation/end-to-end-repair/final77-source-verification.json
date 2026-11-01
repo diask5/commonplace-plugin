@@ -1,0 +1,17 @@
+{
+  "state": "passed",
+  "documentId": "unified-a1f6c99cccf3f3d32373628d",
+  "revision": 461,
+  "offset": 36000,
+  "marker": "Juniper Ridge post-maintenance context check completed.",
+  "successfulSourceRead": true,
+  "actualAssistantFinalRead": true,
+  "matchingAssistantRecords": [
+    {
+      "markerOffset": 40373,
+      "messageId": "msg_0bb343cb97b4652e016ae6c4a8054087d298e8c978ce35faa8:0"
+    }
+  ],
+  "quotedUserPromptNotCounted": true,
+  "privateSourceTextNotPublished": true
+}

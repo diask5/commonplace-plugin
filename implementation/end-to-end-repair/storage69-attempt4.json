@@ -1,0 +1,65 @@
+{
+  "startedAt": 1793505952.7602615,
+  "state": "rolled-back",
+  "oldDiskRetained": true,
+  "databasePathPreserved": true,
+  "hostPoliciesChanged": false,
+  "r3HelperSha256": "b083030b11605af73a7409396fd5f01c40ac7d468fc46c2b1a782aacfa940324",
+  "preparedFiles": {
+    "account.sqlite": {
+      "sha256": "901c2189f8c81de8399bc1b61fb4fd9825492ffe161a765b26245be227d7213a",
+      "bytes": 360534016
+    }
+  },
+  "originalMounts": [
+    {
+      "target": "/var/lib/commonplace",
+      "source": "/dev/sdb",
+      "fstype": "ext4",
+      "options": "rw,relatime"
+    },
+    {
+      "target": "/var/lib/commonplace/ssh-workspaces/1e8b151ab401b7c55e76e9f9/workspace",
+      "source": "/dev/loop0",
+      "fstype": "ext4",
+      "options": "rw,nosuid,nodev,relatime,mb_optimize_scan=0"
+    },
+    {
+      "target": "/var/lib/commonplace/ssh-workspaces/f90e699a83dce1c046e2a317/workspace",
+      "source": "/dev/loop2",
+      "fstype": "ext4",
+      "options": "rw,nosuid,nodev,relatime"
+    },
+    {
+      "target": "/var/lib/commonplace/ssh-workspaces/fcdb0ff984f2cf787cfd8dcd/workspace",
+      "source": "/dev/loop1",
+      "fstype": "ext4",
+      "options": "rw,nosuid,nodev,relatime"
+    }
+  ],
+  "unitRoles": {
+    "commonplace-files": "User=commonplace\nGroup=commonplace\nReadWritePaths=/var/lib/commonplace-files\nReadOnlyPaths=/var/lib/commonplace\nInaccessiblePaths=-/run/docker.sock -/var/run/docker.sock\nPrivateMounts=no\nProtectSystem=strict\nBindPaths=\nBindReadOnlyPaths=",
+    "commonplace-runtime": "User=root\nGroup=\nReadWritePaths=\nReadOnlyPaths=\nInaccessiblePaths=\nPrivateMounts=no\nProtectSystem=no\nBindPaths=\nBindReadOnlyPaths=",
+    "commonplace": "User=commonplace\nGroup=commonplace\nReadWritePaths=/var/lib/commonplace\nReadOnlyPaths=\nInaccessiblePaths=\nPrivateMounts=no\nProtectSystem=strict\nBindPaths=\nBindReadOnlyPaths="
+  },
+  "preservedTarget": "/var/lib/commonplace/database-storage/account.before-r4.sqlite",
+  "mainPid": 882162,
+  "namespaceProbe": {
+    "device": 2080,
+    "namespaceWrite": true,
+    "sqliteAlias": true,
+    "walShared": true
+  },
+  "failure": "AssertionError: Unexpected database holder PID 883648",
+  "filesAuthDatabaseProof": {
+    "readOnly": true,
+    "walAware": true,
+    "selectedDatabase": true,
+    "schemaMatches": true,
+    "migrations": 47,
+    "schemaSha256": "ef3e099aa6887746c1111bb92207a8fa49edea85d2aded503a550e2e4945a557"
+  },
+  "finishedAt": 1793505982.7996867,
+  "balancedMountRetained": "/var/lib/commonplace/database-storage"
+}
+

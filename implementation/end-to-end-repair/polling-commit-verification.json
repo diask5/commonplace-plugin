@@ -1,0 +1,33 @@
+{
+  "evidenceType": "synthetic-source-tests",
+  "sourcePatch": 67,
+  "regressionsBeforeFailAfterPass": 6,
+  "relatedTestsPassed": 128,
+  "cases": [
+    {
+      "name": "registration-with-route",
+      "before": 2,
+      "after": 1
+    },
+    {
+      "name": "empty-poll-with-route",
+      "before": 3,
+      "after": 1
+    },
+    {
+      "name": "100-received-and-submitted-receipts",
+      "before": 202,
+      "after": 1
+    },
+    {
+      "name": "authenticated-empty-receiver-cycle",
+      "before": 16,
+      "after": 15
+    }
+  ],
+  "durability": "synchronous=FULL unchanged",
+  "limits": [
+    "Does not conclusively attribute production latency",
+    "Most idle-cycle auth/quota/transport commits remain durable and unchanged"
+  ]
+}

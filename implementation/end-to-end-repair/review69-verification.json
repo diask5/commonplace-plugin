@@ -1,0 +1,89 @@
+{
+  "patch": 69,
+  "reviewedAt": "2026-11-01T03:35:16.628505+00:00",
+  "mode": "Independent read-only source review with disposable synthetic local fixtures; only evidence files written in workspace.",
+  "baseline": ".context/end-to-end-repair/replay68-verified",
+  "scope": [
+    "apps/commonplace/server/setup-status.mjs",
+    "tests/mailbox-setup.test.mjs"
+  ],
+  "observedVersions": {
+    "loadedSourcePlugin": "0.4.44",
+    "sourceRuntime": 77,
+    "productionInspected": false
+  },
+  "result": "pass",
+  "blockingFindings": [],
+  "hashes": {
+    "apps/commonplace/server/setup-status.mjs": {
+      "beforeTests": "b88c593df19df53ccc809ef66e9818416fc9163d8e9a1767749c9c0c8c9b140c",
+      "afterTests": "b88c593df19df53ccc809ef66e9818416fc9163d8e9a1767749c9c0c8c9b140c",
+      "baseline": "eb608a266d95e15307ad106b35bd6cd8f788fcd4c7f108e3b77775045c47e3ee"
+    },
+    "tests/mailbox-setup.test.mjs": {
+      "beforeTests": "ade61e93c19781073daa0e12f11c25da080711cf07a469c02e0a054d5ce1981b",
+      "afterTests": "ade61e93c19781073daa0e12f11c25da080711cf07a469c02e0a054d5ce1981b",
+      "baseline": "ae2b2d649329fc1108eb691f5794959aab19719a52ca819fad6cf4041a35f614"
+    },
+    "apps/commonplace/server/conductor-receiver.mjs": {
+      "beforeTests": "ec9a595a35c9a074672b9756d0cf68bfa7597561c15f491e22b137699367783f",
+      "afterTests": "ec9a595a35c9a074672b9756d0cf68bfa7597561c15f491e22b137699367783f",
+      "baseline": "ec9a595a35c9a074672b9756d0cf68bfa7597561c15f491e22b137699367783f"
+    },
+    "apps/commonplace/server/mailbox-client.mjs": {
+      "beforeTests": "f9a111625875ba723668f2438e10c7f8d100f382342a64bbfbc6b109bfb11656",
+      "afterTests": "f9a111625875ba723668f2438e10c7f8d100f382342a64bbfbc6b109bfb11656",
+      "baseline": "f9a111625875ba723668f2438e10c7f8d100f382342a64bbfbc6b109bfb11656"
+    }
+  },
+  "hashesStableBeforeAfter": true,
+  "tests": [
+    {
+      "command": "node --test tests/mailbox-setup.test.mjs",
+      "exitCode": 0,
+      "tests": 25,
+      "passed": 25,
+      "failed": 0,
+      "log": ".context/end-to-end-repair/review69-mailbox-setup.log"
+    },
+    {
+      "command": "Independent inline Node synthetic profile/session checks",
+      "exitCode": 0,
+      "checks": 5,
+      "passed": 5,
+      "failed": 0,
+      "details": [
+        "selected profile reports only its own stale checkpoint",
+        "same session in another owner profile cannot reuse checkpoint",
+        "another native session cannot reuse checkpoint",
+        "ready-shaped checkpoint with retained failure does not use stale-success guidance",
+        "newer compatible runtime retains stale and unconfirmed reporting"
+      ],
+      "log": ".context/end-to-end-repair/review69-isolation-checks.log"
+    }
+  ],
+  "validated": [
+    "Fresh completed checkpoint remains ready through 19999 ms; at exactly 20000 ms stale success is labeled stale with automatic delivery unconfirmed; next completed checkpoint restores readiness.",
+    "Stale-success reporting requires verified session, current-or-newer receiver runtime, exact host-session match, ready state, no retained failure and an aged integer timestamp.",
+    "Old runtime reports upgrade-required; dead PID and lock mismatch resolve stopped; reconnecting, stopped, startup, wrong host and unverified identity do not receive stale-success guidance.",
+    "Isolated stale-success guidance contains no helper/reconnect/reinstall instruction, exposes only timestamp and age, and does not rewrite status or lock evidence.",
+    "Synthetic secondary owner profile and different session do not reuse the primary checkpoint; active-profile cached account reporting remains separate.",
+    "Ready-shaped checkpoint with a retained failure cannot be presented as stale success; newer compatible runtime remains accepted for reporting.",
+    "Automatic-delivery expression is byte-identical to baseline; conductor-receiver and mailbox-client hashes are identical to baseline, preserving 20-second readiness and dispatch/eligibility.",
+    "Existing setup credential redaction, read-only behavior, scoped diagnostics, runtime/version guidance and permission-denial guidance pass focused suite."
+  ],
+  "limitations": [
+    "Synthetic local evidence only; no production calls, receiver startup, native messages, account/permission changes, source edits or package work performed.",
+    "Owner isolation is inherited from the existing selected profile directory and verified session contract; patch adds no new ownership or tool-level grant.",
+    "Stale reporting describes uncertainty only and is not host delivery or message-read evidence.",
+    "Before-failure snapshot remains under .context/end-to-end-repair/before-receiver-reporting; this review independently compared replay68 and ran final tests without rerunning the before suite."
+  ],
+  "logs": {
+    "review69-mailbox-setup.log": {
+      "sha256": "578db89e10797bbd21e26477bfb18cb8d817313cc5c4ddde5c099b4fd1e040c0"
+    },
+    "review69-isolation-checks.log": {
+      "sha256": "a2243020ca0d68025e557e5af022596a2f2a9ea163fc86f3618b39f43c12a90a"
+    }
+  }
+}
