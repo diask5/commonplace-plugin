@@ -1,5 +1,7 @@
 # Events are the common Spaces contract
 
+1 November rollout update: this work is included in published native **0.4.37/runtime70** and live server **20261101-space-events**. The earlier candidate and access-block records below are historical. See [current rollout evidence](SPACE-EVENTS-ROLLOUT.md) for publication, installation and activation separately.
+
 The owner clarified that events are fundamental to every Space. Personal is the
 private default space for a verified account, using the same group, membership,
 message and change-log infrastructure. There is no separate work-board service.

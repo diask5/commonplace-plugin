@@ -1,5 +1,7 @@
 # Invite into the current space — 31 October 2026
 
+1 November rollout update: this work is included in published native **0.4.37/runtime70** and live server **20261101-space-events**. The earlier candidate and access-block records below are historical. See [current rollout evidence](SPACE-EVENTS-ROLLOUT.md) for publication, installation and activation separately.
+
 Patch 57 is **published, not deployed**, as `20261031-current-space-invite`.
 Conductor rejected `RunLocalCommand` with “Local execution is not enabled for
 this session” before executing the deployment command. The public asset still

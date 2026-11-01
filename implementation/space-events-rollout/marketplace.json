@@ -1,0 +1,38 @@
+{
+  "name": "commonplace",
+  "owner": {
+    "name": "Meat Proxy"
+  },
+  "plugins": [
+    {
+      "name": "commonplace",
+      "version": "0.4.37",
+      "description": "Meet Proxy \u2014 compatible update for existing Commonplace installations.",
+      "source": {
+        "source": "archive",
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.37/commonplace-0.4.37.zip",
+        "sha256": "19bbdbbb39f881b7aae047e1139d1996d77ffcb59a3ce166455e5d00da7fe953"
+      }
+    },
+    {
+      "name": "commonplace-files",
+      "version": "0.1.0",
+      "description": "Versioned cloud folders with private drafts, checked sharing, and Windows drive access.",
+      "source": {
+        "source": "archive",
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/files-v0.1.0/commonplace-files-0.1.0.zip",
+        "sha256": "66ab9296fdbacdbc6577150c7ebfa59f05b17574b1a595e1ea54a27958e93086"
+      }
+    },
+    {
+      "name": "meet-proxy",
+      "version": "0.4.37",
+      "description": "Meet Proxy \u2014 connect your existing assistant and share context with your people, with your own rules.",
+      "source": {
+        "source": "archive",
+        "url": "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.4.37/meet-proxy-0.4.37.zip",
+        "sha256": "c98d4de81e6d076d78da142bbcca626cecf720d192bd5a4c82c0fcaff64cf525"
+      }
+    }
+  ]
+}

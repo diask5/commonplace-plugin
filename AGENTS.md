@@ -1,5 +1,19 @@
 # Meet Proxy product contract
 
+1 November production rollout: server **20261101-space-events** is live. Its
+165 files and service readability, all 47 migration digests, verified database
+backup/rehearsal, fresh worker heartbeat and three services pass. Native
+**0.4.37/runtime70** is published in both aliases and the distribution branch;
+Mac installation passed with the account and saved permissions preserved.
+Runtime66 remains active after 12 supported upgrade attempts returned the active-work
+guard; the temporary collection pause was restored and sync is healthy. Runtime70
+activation and fresh-host tool loading remain open. Signed production event/cursor
+reads, Personal invitation rejection, archived-space denial and cleanup pass.
+The earlier 60-second smoke-command timeout is retained. This supersedes the
+older source-only/deployment-blocked status below. The explicit new deployment
+request restored Mac execution; no permission bypass was used. See
+[rollout evidence](docs/SPACE-EVENTS-ROLLOUT.md).
+
 1 November continuous upload candidate: patch 61 removes the six-upload clamp
 and five-second backlog pause, using cooperative catch-up slices and an
 incremental file index with periodic reconciliation. Server backpressure persists

@@ -1,0 +1,136 @@
+{
+  "install-result.json": {
+    "state": "passed",
+    "installedVersion": "0.4.37",
+    "zipSha256": "c98d4de81e6d076d78da142bbcca626cecf720d192bd5a4c82c0fcaff64cf525",
+    "accountPreserved": true,
+    "savedPermissionsPreserved": true,
+    "codexOnlyPluginPathsChanged": true,
+    "claudePluginManagerUpdated": true
+  },
+  "activation-result.json": {
+    "state": "incomplete",
+    "previousRevision": 66,
+    "maximumAttempts": 12,
+    "forcedSignals": false,
+    "attempts": 12,
+    "error": "Commonplace is reconnecting. Your messages remain saved."
+  },
+  "maintenance-handoff.json": {
+    "state": "upgrade-still-deferred",
+    "scope": "temporary existing-account collection pause for native maintenance",
+    "forcedSignals": false,
+    "priorSyncEnabled": true,
+    "startedAt": 1793494351202,
+    "pauseConfirmed": true,
+    "restored": true,
+    "finalSyncEnabled": true,
+    "finishedAt": 1793494480410
+  },
+  "live-space-smoke.json": {
+    "kind": "signed production API, existing owner, disposable empty space",
+    "state": "passed",
+    "priorAttempt": "Mac command timed out at 60 seconds; no final receipt",
+    "completedActions": [
+      "space-list",
+      "space-create",
+      "space-events",
+      "space-events",
+      "space-events",
+      "space-activity",
+      "space-list",
+      "space-events",
+      "space-archive"
+    ],
+    "currentAction": "space-events",
+    "reconciledExistingSpace": false,
+    "eventsRead": true,
+    "pinnedCursorReplay": true,
+    "resumeWithoutDuplicates": true,
+    "activityRead": true,
+    "personalEventsRead": true,
+    "personalInvitationRejected": true,
+    "unknownSpaceRejected": true,
+    "archivedSpaceEventsRejected": true,
+    "disposableSpaceArchived": true
+  },
+  "sync-before.json": {
+    "enabled": true,
+    "lastSyncedAt": 1793493417212,
+    "error": "Collection is continuing; see source coverage for missing or partial chats.",
+    "coverage": {
+      "conductor": {
+        "available": true,
+        "conversations": 49,
+        "partial": false,
+        "cached": true
+      },
+      "transcriptRoots": 4,
+      "discoveryPartial": false,
+      "canonical": {
+        "partial": true,
+        "files": 197,
+        "protocol": 1,
+        "sent": {
+          "fresh": 0,
+          "continuing": 6,
+          "retry": 0,
+          "heartbeat": 0
+        },
+        "deferred": {
+          "fresh": 0,
+          "continuing": 0,
+          "retry": 0,
+          "heartbeat": 196
+        },
+        "backedOff": 0,
+        "scanned": 197,
+        "discovered": 197
+      }
+    }
+  },
+  "runtime": {
+    "revision": 66,
+    "responding": true,
+    "backgroundVersion": "0.4.33"
+  },
+  "syncAfter": {
+    "enabled": true,
+    "lastSyncedAt": 1793494490820,
+    "error": null,
+    "coverage": {
+      "conductor": {
+        "available": true,
+        "conversations": 49,
+        "partial": false,
+        "cached": true
+      },
+      "transcriptRoots": 4,
+      "discoveryPartial": false,
+      "canonical": {
+        "partial": false,
+        "files": 197,
+        "protocol": 1,
+        "sent": {
+          "fresh": 1,
+          "continuing": 0,
+          "retry": 0,
+          "heartbeat": 4
+        },
+        "deferred": {
+          "fresh": 0,
+          "continuing": 0,
+          "retry": 0,
+          "heartbeat": 192
+        },
+        "backedOff": 0,
+        "scanned": 197,
+        "discovered": 197
+      }
+    }
+  },
+  "claudeVersions": [
+    "0.4.37"
+  ],
+  "codexTargetUpdated": true
+}
