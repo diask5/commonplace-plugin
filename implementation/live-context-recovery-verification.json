@@ -20,7 +20,8 @@
       "skipped": 1
     },
     "extractedNative": 50,
-    "packagingFirst": "Failed because test expected runtime74; package correctly returned75. Test expectation corrected; final check pending."
+    "packagingFirst": "Retained test failure: expected runtime74, packaged75. Test expectation corrected; final both-alias check passes.",
+    "packagingBothAliases": true
   },
   "liveBefore": {
     "native": "0.4.41/runtime74",
@@ -50,5 +51,8 @@
     "runtime-update-manifest.json": "e4aa7544fb63f67da75c99d194a81f7832a6c342f31b53fd6eafeb7916ccdb62",
     "runtime-update.sha256": "548caed831f4a694a9e58278abed7d94e83ee44511cff536eed815d75740b308",
     "deploy-cloud-update.py": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32"
+  },
+  "prs": {
+    "source": 68
   }
 }
