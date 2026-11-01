@@ -1,0 +1,20 @@
+{
+  "state": "activated",
+  "fromRevision": 66,
+  "activeRevision": 73,
+  "backgroundVersion": "0.4.40",
+  "previous": {
+    "syncEnabled": true,
+    "mirrorEnabled": true
+  },
+  "settingsRestored": true,
+  "accountAndPermissionsPreserved": true,
+  "forcedSignals": false,
+  "independentStatusRead": {
+    "syncEnabled": true,
+    "mirrorEnabled": true,
+    "mirrorReady": false,
+    "mirrorError": "Context folder update interrupted; it will retry automatically."
+  },
+  "source": "Authorized RunLocalCommand: completed legacy-handoff.json plus independent normal status tool reads."
+}

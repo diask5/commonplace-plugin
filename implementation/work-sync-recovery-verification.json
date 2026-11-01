@@ -1,0 +1,49 @@
+{
+  "state": "Source patch65; native0.4.41/runtime74 and server20261101-work-sync-recovery being verified before publication.",
+  "sourcePatch": 65,
+  "nativeVersion": "0.4.41",
+  "runtimeRevision": 74,
+  "serverRelease": "20261101-work-sync-recovery",
+  "changes": [
+    "Targeted group questions and replies on the existing Work board",
+    "Receiver RPC duration, independent capture/polling and safe diagnostics",
+    "Exact late idempotent acceptance receipts without uncertainty bypass",
+    "Verified native chat names",
+    "Private resumable context mirror with final authority checks"
+  ],
+  "tests": {
+    "coreFirst": 744,
+    "coreFinal": 749,
+    "browser": 36,
+    "deployment": {
+      "run": 58,
+      "skipped": 1
+    },
+    "receiver": 33,
+    "groupAndClassifier": 67,
+    "naming": 24,
+    "mirrorAndAdjacent": 77,
+    "lateAcceptanceAndAdapters": 29,
+    "independentMailboxReview": 71,
+    "packagingFirstBuild": true
+  },
+  "replay": {
+    "patches": 65,
+    "changedFiles": 259,
+    "mismatches": [],
+    "matched": true
+  },
+  "hostPermissionsChanged": false,
+  "sharingPoliciesChanged": false,
+  "classifierConfigurationChanged": false,
+  "newMigrations": 0,
+  "limits": [
+    "Real live rollout and postdeployment Work/native checks remain pending.",
+    "Old root host may retain loaded0.4.14 despite configured/new active runtime.",
+    "Web-only chats are not collected by remote MCP."
+  ],
+  "independentReview": {
+    "mirror": "No blocking findings",
+    "receiver": "Late acceptance timing defect found, reproduced through signed HTTP, fixed and independently verified"
+  }
+}

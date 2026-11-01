@@ -1,0 +1,38 @@
+2026-11-01T02:12:09.039Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✖ confirmed idempotent host acceptance survives lease expiry without overriding a replacement claim or uncertainty (1020.078062ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2691.712274
+
+✖ failing tests:
+
+test at tests/mailbox-http.test.mjs:117:1
+✖ confirmed idempotent host acceptance survives lease expiry without overriding a replacement claim or uncertainty (1020.078062ms)
+  Error: _mailbox_receipt: {"jsonrpc":"2.0","id":1,"result":{"isError":true,"content":[{"type":"text","text":"{\"error\":\"Account server request failed for mailbox/receipt (HTTP 409). Delivery claim expired.\"}"}],"structuredContent":{"error":"Account server request failed for mailbox/receipt (HTTP 409). Delivery claim expired."}}}
+      at mailboxFailure (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace/server/mailbox-client.mjs:92:24)
+      at drainMailbox (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace/server/mailbox-client.mjs:132:27)
+      at async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/mailbox-http.test.mjs:120:2)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    mailboxPhase: 'accept_receipt',
+    code: 'ERR_ASSERTION',
+    notSubmitted: undefined,
+    [cause]: AssertionError [ERR_ASSERTION]: _mailbox_receipt: {"jsonrpc":"2.0","id":1,"result":{"isError":true,"content":[{"type":"text","text":"{\"error\":\"Account server request failed for mailbox/receipt (HTTP 409). Delivery claim expired.\"}"}],"structuredContent":{"error":"Account server request failed for mailbox/receipt (HTTP 409). Delivery claim expired."}}}
+        at call (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/signed-fixture.mjs:33:14)
+        at async drainMailbox (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/apps/commonplace/server/mailbox-client.mjs:131:11)
+        at async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/mailbox-http.test.mjs:120:2)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+      generatedMessage: false,
+      code: 'ERR_ASSERTION',
+      actual: false,
+      expected: true,
+      operator: '==',
+      diff: 'simple'
+    }
+  }
