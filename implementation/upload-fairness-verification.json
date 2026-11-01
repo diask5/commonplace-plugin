@@ -1,0 +1,24 @@
+{
+  "state": "Native candidate packaged; core and extracted checks pass; publication and activation pending",
+  "nativeVersion": "0.4.39",
+  "runtimeRevision": 72,
+  "sourcePatch": 63,
+  "tests": {
+    "focused": 34,
+    "regressionsFailBeforePassAfter": 2,
+    "core": 697,
+    "extracted": 34
+  },
+  "replay": {
+    "patches": 63,
+    "files": 246,
+    "matched": true
+  },
+  "serverChange": false,
+  "limits": [
+    "First complete captures remain unpublished until complete.",
+    "Existing loaded hosts may retain an older MCP process.",
+    "Web-only chat history is not collected by remote MCP.",
+    "No automatic cross-account transcript sharing is enabled."
+  ]
+}
