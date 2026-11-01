@@ -1,5 +1,5 @@
 {
-  "state": "Source and server artifact verified; publication/deployment pending",
+  "state": "Published and live; exact production files, schema, services and public smoke pass. Latency improved in observed samples; first large Mac mirror and communication acceptance remain open.",
   "patch": 67,
   "nativeUnchanged": "0.4.42/runtime75",
   "serverRelease": "20261101-background-throughput",
@@ -16,7 +16,8 @@
     "archiveRelated": 193,
     "inboxRelated": 128,
     "independentReview": 130,
-    "note": "Counts overlap; do not add."
+    "note": "Counts overlap; do not add.",
+    "alreadyRunningDisclosure": 116
   },
   "replay": {
     "patches": 67,
@@ -37,11 +38,17 @@
   "sqliteDurability": "FULL unchanged",
   "retainedFailures": [
     "First scheduler fixture restored a previous mock referencing a closed database; test fixture fixed, original log retained.",
-    "Initial export included ignored Python bytecode; exporter excluded generated caches and exact replay reverified before publication."
+    "Initial export included ignored Python bytecode; exporter excluded generated caches and exact replay reverified before publication.",
+    "GitHub rejected abbreviated target_commitish before creating the release; full pushed commit SHA succeeded. Draft asset digests verified before publication."
   ],
   "limitations": [
     "Synthetic WAL reductions do not establish live throughput.",
     "Authenticated idle cycle still uses15commits versus16; replay and quota durability remain.",
     "Live Mac mirror and Work/native communication acceptance remain open."
-  ]
+  ],
+  "publishedRelease": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261101-background-throughput",
+  "sourceCommit": "a204ffdf1f522b183118017bce247105d50f4bfe",
+  "githubAssetsVerifiedBeforePublication": 4,
+  "production": "end-to-end-repair/server67-live.json",
+  "publicSmoke": "end-to-end-repair/public-smoke67.json"
 }

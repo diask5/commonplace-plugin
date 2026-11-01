@@ -1,0 +1,31 @@
+{
+  "state": "passed",
+  "release": "20261101-background-throughput",
+  "filesVerified": 166,
+  "serviceReadableFiles": 166,
+  "appliedMigrations": 47,
+  "newMigration": null,
+  "services": [
+    "active",
+    "active",
+    "active"
+  ],
+  "schemaUnchanged": true,
+  "codeOnly": true,
+  "freshWorkerHeartbeat": true,
+  "previousRelease": "20261101-context-recovery",
+  "finishedAt": 1793502556.7142072,
+  "rolloutSeconds": 28.476902723312378,
+  "latencyBeforeLocalHealthSeconds": [
+    9.512,
+    7.272,
+    7.496
+  ],
+  "latencyAfterLocalHealthSeconds": [
+    2.548,
+    2.058,
+    4.406
+  ],
+  "macStatusElapsedMs": 3476,
+  "notControlledBenchmark": true
+}

@@ -1,0 +1,109 @@
+{
+  "patch": 67,
+  "state": "owned source and tests frozen; source-only; parent owns export, full core, independent review and deployment",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/shared-context.mjs",
+      "sha256": "941650ef11931b6ef941718673aace7ad21bb1912175d5747941d72c80b01cda",
+      "before67Sha256": "48c2fa5e5d491089574f02ea96dfadfd18b50b5f74d18db87d677e6d626696f2"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-http.mjs",
+      "sha256": "b613d364790404dd266bc812ca561df61f95dc902e29471e06bded9f03db2049",
+      "before67Sha256": "cd45945019e665641aa1170bb80b7e05daac7de243717e9a9321d9ab5f443b8e"
+    },
+    {
+      "path": "tests/cloud-archive-warm-scheduler.test.mjs",
+      "sha256": "0707cfcb5ebea94a0919ecf120be4eb7e66c127a3d24cbd629baff17e40c00bb",
+      "before67Sha256": null
+    },
+    {
+      "path": "tests/cloud-archive.test.mjs",
+      "sha256": "0345fdd436a38d4df860626d62b7db9e9cb49791b1aa2005f0489d48d684a91a",
+      "before67Sha256": "a0bdc6d5d9eb29a880df0107636187a00fea3f00d2f960a4267cc26b7abcbf5e"
+    }
+  ],
+  "checks": {
+    "diffCheck": "passed",
+    "logs": {
+      "before": {
+        "path": "mirror67-scheduler-before.log",
+        "complete": true,
+        "tests": 3,
+        "pass": 1,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "initialExpanded": {
+        "path": "mirror67-scheduler-focused.log",
+        "complete": true,
+        "tests": 13,
+        "pass": 12,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "focused": {
+        "path": "mirror67-scheduler-guarded.log",
+        "complete": true,
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "relevant": {
+        "path": "mirror67-relevant-tests.log",
+        "complete": true,
+        "tests": 193,
+        "pass": 193,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "disclosure": {
+        "path": "mirror67-disclosure-tests.log",
+        "complete": true,
+        "tests": 116,
+        "pass": 116,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    "focusedIncludedInRelevant": true,
+    "disclosureExitCode": 0
+  },
+  "retainedFailures": [
+    "Before implementation: scheduled warming built immediately and failed quiet-period/coalescing assertions.",
+    "Initial expanded test run: database is not open caused by nested fixture mock restoration; fixed with stable actual-method references."
+  ],
+  "behavior": [
+    "Scheduled background warms wait 30 seconds after the last observed revision change; same-revision polls do not reset the quiet period.",
+    "One scheduled build per database connection with a fair queue capped at eight total accepted entries.",
+    "Explicit awaited warmSharedContext and demand prepare remain immediate.",
+    "Current authority/revision/expiry fences retained; timer and completion read failures settle promises; next poll may retry.",
+    "Close cancels queued timers, settles pending calls, drains active work and rejects fresh work."
+  ],
+  "caveats": [
+    "Continuous revision changes intentionally defer optional filesystem/FTS warming; archive readiness remains strict.",
+    "Coordination is per database connection/runtime process, not a new distributed lock.",
+    "No WAL transaction or durability changes."
+  ],
+  "scope": [
+    "shared-context.mjs scheduler and live-read scheduling",
+    "cloud-http.mjs two status/setup warm call sites",
+    "new focused scheduler suite",
+    "existing archive coordination test explicitly requests warm and preserves original shared-build assertion"
+  ],
+  "noProductionCalls": true,
+  "noSettingsOrPermissionsChanges": true,
+  "noCommitOrDeployment": true,
+  "frozenAt": "2026-11-01T03:06:58.736828+00:00"
+}
