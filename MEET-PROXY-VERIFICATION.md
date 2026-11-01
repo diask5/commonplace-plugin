@@ -1,5 +1,11 @@
 # Current release: 0.4.13
 
+The 0.4.39/runtime72 update prevents slow uploads from starving continuing
+captures, retries and heartbeats. 697 core tests and 34 extracted collector checks
+pass; both regressions fail before/pass after. All 63 source patches replay
+exactly. Publication and installation are separate from active runtime and
+complete collection. See the source branch’s `docs/UPLOAD-FAIRNESS.md`.
+
 See [production verification](docs/PRODUCTION-READINESS.md) for the completed
 cloud-to-Mac round trip, backup restore, release checks and host limitations.
 The records below describe historical releases.
