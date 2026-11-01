@@ -1,0 +1,62 @@
+{
+  "meet-proxy-v0.4.38": {
+    "draft": false,
+    "assets": [
+      {
+        "name": "commonplace-0.4.38-build.json",
+        "sha256": "77cbff56856152b4464275cff4f3eeedebdbc7507723323cf7e46241060daeda",
+        "bytes": 8453
+      },
+      {
+        "name": "commonplace-0.4.38.sha256",
+        "sha256": "6da6cfcf4bb105a72664f3fd76f39065ed9ba6596235304ae35774f6e94d0d69",
+        "bytes": 89
+      },
+      {
+        "name": "commonplace-0.4.38.zip",
+        "sha256": "9c5442f992bd22293f330b9ff95d81d2e5669fbea44d3555573f9124e9d18684",
+        "bytes": 230174641
+      },
+      {
+        "name": "meet-proxy-0.4.38-build.json",
+        "sha256": "09ad6ad705e8e8a279ef84a24fb547a24936d28c957236c631dc75d2df847231",
+        "bytes": 8451
+      },
+      {
+        "name": "meet-proxy-0.4.38.sha256",
+        "sha256": "3e5caec415630f7347b9a66f2bb7ec963d37bacd9724df604c68ba8ef7eaacdc",
+        "bytes": 88
+      },
+      {
+        "name": "meet-proxy-0.4.38.zip",
+        "sha256": "8673c329d904f59d71f214e815e45cc9c0c8e843cae87cb672a089a450b8a069",
+        "bytes": 230174641
+      }
+    ]
+  },
+  "meet-proxy-server-20261101-oob-activation": {
+    "draft": false,
+    "assets": [
+      {
+        "name": "deploy-cloud-update.py",
+        "sha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
+        "bytes": 12916
+      },
+      {
+        "name": "runtime-update-manifest.json",
+        "sha256": "027a69734274b299ac5e087c8bc920442cf5e1869f4f1227f5e50d5b7e9e993c",
+        "bytes": 27971
+      },
+      {
+        "name": "runtime-update.json",
+        "sha256": "9e0120a642f62b836c00c1c2533d19ec0503c88a12a81abe18b9602aaceebc6c",
+        "bytes": 2822015
+      },
+      {
+        "name": "runtime-update.sha256",
+        "sha256": "dee66baedb90104738d3b07c7830083c295d14a1b016b3e02b9b4c71486c2830",
+        "bytes": 86
+      }
+    ]
+  }
+}

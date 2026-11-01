@@ -1,6 +1,6 @@
 # Automatic startup and guarded update activation
 
-1 November 2026. Patch 62; candidate native 0.4.38/runtime71.
+1 November 2026. Patch 62; published native 0.4.38/runtime71.
 
 ## Problems reproduced
 
@@ -53,3 +53,20 @@ reported separately from package installation. Remote MCP retrieves existing
 context; it cannot collect web-only Claude or ChatGPT history. Shared-space
 membership does not publish everyone's private transcript or relax the classifier.
 Do not claim all-host out-of-box readiness from these tests.
+
+## Installed and live follow-through
+
+Both aliases are published and their registries point to 0.4.38. The Mac advanced
+from runtime66 to runtime71 through the supported guard (65 bounded checks), and
+its background launcher is 0.4.38. The cloud advanced from runtime48 to runtime71.
+Accounts and saved permissions were preserved. Source PR #59 and distribution
+PR #60 are merged. Server `20261101-oob-activation` verifies all 165 live/readable
+files, unchanged 47 migrations, three services, fresh worker heartbeat and public
+TLS/OAuth/asset/desktop/phone checks. The prior release remains retained.
+
+The selected cloud account had private sync disabled. The owner’s request to sync
+work authorized enabling it; sharing opt-ins were not changed. Its automatic
+Personal startup post is visible. The receiver recovered from rollout reconnects
+and reported ready. Large initial context catch-up remains separately observed.
+The older MCP process loaded into this existing host has not been silently
+replaced; future sessions use the configured release.

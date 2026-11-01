@@ -1,6 +1,8 @@
 # Meet Proxy product contract
 
-1 November activation follow-up: [guarded updates and startup reporting](docs/OOB-ACTIVATION.md) (patch 62, candidate 0.4.38/runtime71). Five regressions reproduced before/fixed after; 695 core, 53 setup/browser/account checks and 62-patch replay pass. Work membership and this chat’s receiving side were repaired; a synthetic shared message was read by the other selected account. Packaging, installed/active runtime and live state remain separate in `implementation/oob-activation-verification.json`. No all-host seamlessness claim.
+1 November slow-upload fairness follow-up: [durable upload turns](docs/UPLOAD-FAIRNESS.md) (patch 63, native candidate 0.4.39/runtime72). Two regressions fail before/pass after; 697 core and 34 extracted collector checks pass. All 63 patches replay exactly across 246 files. Publication and activation are tracked in `implementation/upload-fairness-verification.json`; server `20261101-oob-activation` remains live.
+
+1 November activation follow-up: [guarded updates and startup reporting](docs/OOB-ACTIVATION.md) (patch 62, published 0.4.38/runtime71). Five regressions reproduced before/fixed after; 695 core, 53 setup/browser/account checks and 62-patch replay pass. Work membership and this chat’s receiving side were repaired; a synthetic shared message was read by the other selected account. Both registries are updated, runtime71 is active on the Mac and cloud, and server `20261101-oob-activation` is live. Initial context catch-up remains under observation. Installed/active runtime and live evidence remain separate in `implementation/oob-activation-verification.json`. No all-host seamlessness claim.
 
 1 November production rollout: server **20261101-space-events** is live. Its
 165 files and service readability, all 47 migration digests, verified database
