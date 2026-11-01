@@ -1,0 +1,37 @@
+{
+  "releaseId": 430302598,
+  "tag": "meet-proxy-v0.4.40",
+  "draft": false,
+  "assets": [
+    {
+      "name": "meet-proxy-0.4.40.zip",
+      "sha256": "0ef6f5365259184229e56bad6b49287b093c8f214219c41b38149357513673e7",
+      "verifiedAgainstGitHub": true
+    },
+    {
+      "name": "meet-proxy-0.4.40.sha256",
+      "sha256": "c47389810d7d0d6552425084fadb6e77caca11306113ad48373b4f75f3510e0b",
+      "verifiedAgainstGitHub": true
+    },
+    {
+      "name": "meet-proxy-0.4.40-build.json",
+      "sha256": "475759ace99cda043d89afee0d133b52b31bd93a2f9ef9d682e1e38f3989a2a2",
+      "verifiedAgainstGitHub": true
+    },
+    {
+      "name": "commonplace-0.4.40.zip",
+      "sha256": "2bffe0549be745122e53be31b51b82308f02451a3f50cd407864cfb81dd45849",
+      "verifiedAgainstGitHub": true
+    },
+    {
+      "name": "commonplace-0.4.40.sha256",
+      "sha256": "6c91f3c8203d51f74ad78c265bde781a35c9454a34ff38eece61ec71e4121903",
+      "verifiedAgainstGitHub": true
+    },
+    {
+      "name": "commonplace-0.4.40-build.json",
+      "sha256": "e18093faa5f29fed64120e057b4b137eb317ffef33454127e713c8e3bc6e2bf0",
+      "verifiedAgainstGitHub": true
+    }
+  ]
+}

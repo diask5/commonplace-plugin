@@ -1,12 +1,14 @@
 {
-  "state": "Source verified; native packaging and full tests in progress",
+  "state": "Published 0.4.40/runtime73; cloud active and fresh native setup/message/archive read verified. Mac installed; final activation and maintenance restoration cannot be verified after host unbound Mac execution.",
   "nativeVersion": "0.4.40",
   "runtimeRevision": 73,
   "sourcePatch": 64,
   "tests": {
     "focused": 29,
     "regressionsFailBeforePassAfter": 2,
-    "core": 699
+    "core": 699,
+    "extracted": 48,
+    "packagingBothAliases": true
   },
   "replay": {
     "patches": 64,
@@ -16,5 +18,99 @@
   "serverChange": false,
   "accountOrSharingRulesChanged": false,
   "hostPermissionsChanged": false,
-  "harnessCorrection": "The first extracted run lacked the relay test fixture. It failed before that test ran; the harness now uses the source relay fixture and the actual packaged plugin."
+  "harnessCorrection": "The first extracted run lacked the relay test fixture. It failed before that test ran; the harness now uses the source relay fixture and the actual packaged plugin.",
+  "cloudActivation": {
+    "state": "passed",
+    "initialRevision": 72,
+    "forcedSignals": false,
+    "attempts": 9,
+    "activeRevision": 73,
+    "accountAndPermissionsPreserved": true
+  },
+  "prs": {
+    "source": 63,
+    "distribution": 64
+  },
+  "release": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.40",
+  "productionServer": "20261101-oob-activation",
+  "initialLiveProgress": {
+    "beforeRecord": 94,
+    "afterRecord": 194,
+    "complete": false
+  },
+  "artifacts": {
+    "meet-proxy": "0ef6f5365259184229e56bad6b49287b093c8f214219c41b38149357513673e7",
+    "commonplace": "2bffe0549be745122e53be31b51b82308f02451a3f50cd407864cfb81dd45849"
+  },
+  "mac": {
+    "installedVersion": "0.4.40",
+    "zipVerified": true,
+    "accountPreserved": true,
+    "savedPermissionsPreserved": true,
+    "codexOnlyPluginPathsChanged": true,
+    "lastObservedActiveRevision": 66,
+    "lastObservedUpgradeState": "waiting",
+    "lastObservedAttempts": 288,
+    "temporaryUploadPause": {
+      "authorizedMaintenance": true,
+      "maximumWaitMs": 150000,
+      "restoreInFinally": true,
+      "finalRestorationVerified": false
+    },
+    "verificationBlock": {
+      "tool": "mcp__conductor__RunLocalCommand",
+      "reason": "No authorized Mac is bound to this chat. Send a message from the Mac you want to use."
+    },
+    "forcedSignals": false,
+    "alternateExecutionRouteUsed": false
+  },
+  "freshNativeCheck": {
+    "provider": "Codex",
+    "ordinaryNewConductorChat": true,
+    "loadedPlugin": "0.4.40",
+    "activeRuntime": 73,
+    "sameVerifiedOwner": true,
+    "progressPublishedRevision": 1,
+    "messageId": "4908417af0581b10f84234cf",
+    "conversationId": "330dd966a67841b7ca9b2508",
+    "oneSend": true,
+    "initialDelivery": "pending",
+    "intermediateDelivery": "claimed",
+    "finalDelivery": "accepted",
+    "sentAt": 1793497965627,
+    "acceptedAt": 1793498066850,
+    "acceptanceDelayMs": 101223,
+    "nativeIncomingObserved": true,
+    "archive": {
+      "documentId": "unified-e720dc556a437b1f07c80a5e",
+      "kind": "native",
+      "revision": 152,
+      "readOffset": 1800,
+      "readLength": 1600,
+      "assistantMarkerRead": true,
+      "marker": "Aster Meadow collection check finished in the fresh Codex chat.",
+      "citation": "unified_d1ebc21de7d04eb3dc417454",
+      "completeDocumentRead": false
+    },
+    "initialReceiverStatus": "stopped",
+    "laterReceiverStatus": "reconnecting before successful acceptance",
+    "cleanMachine": false,
+    "independentHumans": false,
+    "allHostAcceptance": false
+  },
+  "largeChatCatchup": {
+    "beforeRecord": 94,
+    "latestObservedRecord": 577,
+    "latestObservedRevision": 18,
+    "complete": false
+  },
+  "limits": [
+    "New Codex check uses an existing signed-in cloud installation, not a clean machine or independent person.",
+    "Message acceptance took about 101 seconds; do not describe automatic delivery as instant.",
+    "The current long chat is still catching up; fresh short-chat readback does not prove full history coverage.",
+    "The old root host MCP process may remain loaded at 0.4.14 despite new configuration and active runtime.",
+    "Mac final runtime and temporary-upload-pause restoration were not verified after incoming delivery invalidated Mac binding.",
+    "Web-only Claude/ChatGPT history is not collected by remote MCP.",
+    "Shared-space private-library sharing opt-ins and host permissions are unchanged."
+  ]
 }
