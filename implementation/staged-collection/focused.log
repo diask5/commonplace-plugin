@@ -1,0 +1,38 @@
+2026-11-01T01:45:20.345Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ actual stdio chooses a second signed account, retains first chat routing, and pins subsequent requests (1758.105494ms)
+✔ catch-up sends more than six chunks, keeps payload bounds and skips unchanged file scans (173.606218ms)
+✔ file index uses native change events and periodic fallback; incomplete discovery never asserts deletion (8.549906ms)
+✔ cached discovery cannot follow a file replaced with a foreign symlink (10.690226ms)
+✔ server throttling suspends the pump across restart and retries the exact durable chunk (24.072943ms)
+✔ cooperative deadlines leave a resumable backlog and the pump continues without a five-second pause (51.174292ms)
+✔ a disconnected or already-running collector yields instead of spinning the catch-up loop (1.670631ms)
+✔ history roots under a symlinked ancestor collect only their own visible files (30.240898ms)
+✔ work sync recovers lost acknowledgement before changed content after restart (12.859437ms)
+✔ work sync only uploads visible messages, respects opt-in, and deletes removed sources (10.460328ms)
+✔ bounded sync resumes chunk progress and skips oversized JSON without starving later chats (16.026511ms)
+✔ an inaccessible history root does not delete previously uploaded chats (5.137492ms)
+✔ Codex discovery restricts uploads to transcript folders, never account credentials (2.550265ms)
+✔ Codex visible transcript sync excludes reasoning channels, tool destinations and hidden records (5.816841ms)
+✔ privacy format upgrades reparse unchanged files and supersede an old pending revision (7.766964ms)
+✔ automatic discovery includes enabled owner-selected transcript roots without collecting arbitrary folders (2.605867ms)
+✔ current Conductor Codex envelopes retain visible answers while excluding hidden and tool messages (2.617779ms)
+✔ Conductor capture reads only visible conversation text and uploads it through normal resumable sync (47.750008ms)
+✔ incomplete or evicted Conductor caches do not replace complete captured chats or delete uploaded context (22.415489ms)
+✔ Conductor staging is account-scoped and absent databases do not claim successful capture (17.429702ms)
+✔ cloud-native sync stages every API page atomically, retains provenance and uploads through the existing pipeline (73.311943ms)
+✔ each native capture requires enabled sync and a current personal scope before publishing (11.00943ms)
+✔ a background companion uploads staged cloud chats without inheriting a native chat environment (18.497704ms)
+✔ staged cloud discovery keeps account, symlink and incomplete-capture boundaries (10.711756ms)
+✔ cloud capture checkpoints host cursors in bounded pages and resumes without scanning old history (21.325985ms)
+✔ Conductor uses explicit native message IDs without interpreting literal user content (0.746555ms)
+✔ mac Conductor backfill finishes while new messages keep arriving (282.136477ms)
+✔ cloud Conductor backfill finishes while new messages keep arriving (273.254552ms)
+✔ editing earlier Conductor messages still replaces the source and starts a new capture (157.856786ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2838.647019

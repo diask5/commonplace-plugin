@@ -1,0 +1,46 @@
+✖ a background companion uploads staged cloud chats without inheriting a native chat environment (26.396531ms)
+✖ staged cloud discovery keeps account, symlink and incomplete-capture boundaries (19.221408ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 162.435787
+
+✖ failing tests:
+
+test at tests/conductor-history.test.mjs:96:1
+✖ a background companion uploads staged cloud chats without inheriting a native chat environment (26.396531ms)
+  AssertionError [ERR_ASSERTION]: staged source remains discoverable after a daemon restart
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/conductor-history.test.mjs:105:27)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/conductor-history.test.mjs:111:1
+✖ staged cloud discovery keeps account, symlink and incomplete-capture boundaries (19.221408ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/conductor-history.test.mjs:115:40)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

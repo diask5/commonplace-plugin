@@ -67,7 +67,7 @@
   ],
   "patch": "upload-fairness.patch",
   "sha256": "d6f57070a33a58c3f1b2eb3fb6fe55528073697e8ecaa8735038b5a4a6d101df",
-  "state": "Source candidate; native packaging and verification in progress. Not installed or activated.",
+  "state": "Published native 0.4.39/runtime72; cloud companion active; Mac activation verification pending.",
   "files": [
     {
       "path": "apps/commonplace/server/canonical-sync.mjs",

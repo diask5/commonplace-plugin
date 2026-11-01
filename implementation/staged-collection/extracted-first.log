@@ -1,0 +1,325 @@
+TAP version 13
+# node:internal/modules/esm/resolve:275
+#     throw new ERR_MODULE_NOT_FOUND(
+#           ^
+# Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/vercel-sandbox/commonplace-plugin/.context/staged-collection/extracted40/scripts/relay.mjs' imported from /home/vercel-sandbox/commonplace-plugin/.context/staged-collection/extracted40/tests/account-profiles-native.test.mjs
+#     at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+#     at moduleResolve (node:internal/modules/esm/resolve:861:10)
+#     at defaultResolve (node:internal/modules/esm/resolve:985:11)
+#     at \#cachedDefaultResolve (node:internal/modules/esm/loader:747:20)
+#     at ModuleLoader.resolve (node:internal/modules/esm/loader:724:38)
+#     at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:320:38)
+#     at ModuleJob._link (node:internal/modules/esm/module_job:182:49) {
+#   code: 'ERR_MODULE_NOT_FOUND',
+#   url: 'file:///home/vercel-sandbox/commonplace-plugin/.context/staged-collection/extracted40/scripts/relay.mjs'
+# }
+# Node.js v22.23.2
+# Subtest: .context/staged-collection/extracted40/tests/account-profiles-native.test.mjs
+not ok 1 - .context/staged-collection/extracted40/tests/account-profiles-native.test.mjs
+  ---
+  duration_ms: 215.252241
+  type: 'test'
+  location: '/home/vercel-sandbox/commonplace-plugin/.context/staged-collection/extracted40/tests/account-profiles-native.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# (node:1702250) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: catch-up sends more than six chunks, keeps payload bounds and skips unchanged file scans
+ok 2 - catch-up sends more than six chunks, keeps payload bounds and skips unchanged file scans
+  ---
+  duration_ms: 232.342387
+  type: 'test'
+  ...
+# Subtest: file index uses native change events and periodic fallback; incomplete discovery never asserts deletion
+ok 3 - file index uses native change events and periodic fallback; incomplete discovery never asserts deletion
+  ---
+  duration_ms: 10.724901
+  type: 'test'
+  ...
+# Subtest: cached discovery cannot follow a file replaced with a foreign symlink
+ok 4 - cached discovery cannot follow a file replaced with a foreign symlink
+  ---
+  duration_ms: 18.23257
+  type: 'test'
+  ...
+# Subtest: server throttling suspends the pump across restart and retries the exact durable chunk
+ok 5 - server throttling suspends the pump across restart and retries the exact durable chunk
+  ---
+  duration_ms: 23.44087
+  type: 'test'
+  ...
+# Subtest: cooperative deadlines leave a resumable backlog and the pump continues without a five-second pause
+ok 6 - cooperative deadlines leave a resumable backlog and the pump continues without a five-second pause
+  ---
+  duration_ms: 56.532092
+  type: 'test'
+  ...
+# Subtest: a disconnected or already-running collector yields instead of spinning the catch-up loop
+ok 7 - a disconnected or already-running collector yields instead of spinning the catch-up loop
+  ---
+  duration_ms: 1.698258
+  type: 'test'
+  ...
+# (node:1702252) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: history roots under a symlinked ancestor collect only their own visible files
+ok 8 - history roots under a symlinked ancestor collect only their own visible files
+  ---
+  duration_ms: 35.739174
+  type: 'test'
+  ...
+# Subtest: work sync recovers lost acknowledgement before changed content after restart
+ok 9 - work sync recovers lost acknowledgement before changed content after restart
+  ---
+  duration_ms: 32.180958
+  type: 'test'
+  ...
+# Subtest: work sync only uploads visible messages, respects opt-in, and deletes removed sources
+ok 10 - work sync only uploads visible messages, respects opt-in, and deletes removed sources
+  ---
+  duration_ms: 15.002355
+  type: 'test'
+  ...
+# Subtest: bounded sync resumes chunk progress and skips oversized JSON without starving later chats
+ok 11 - bounded sync resumes chunk progress and skips oversized JSON without starving later chats
+  ---
+  duration_ms: 50.557265
+  type: 'test'
+  ...
+# Subtest: an inaccessible history root does not delete previously uploaded chats
+ok 12 - an inaccessible history root does not delete previously uploaded chats
+  ---
+  duration_ms: 9.458949
+  type: 'test'
+  ...
+# Subtest: Codex discovery restricts uploads to transcript folders, never account credentials
+ok 13 - Codex discovery restricts uploads to transcript folders, never account credentials
+  ---
+  duration_ms: 2.862361
+  type: 'test'
+  ...
+# Subtest: Codex visible transcript sync excludes reasoning channels, tool destinations and hidden records
+ok 14 - Codex visible transcript sync excludes reasoning channels, tool destinations and hidden records
+  ---
+  duration_ms: 7.58613
+  type: 'test'
+  ...
+# Subtest: privacy format upgrades reparse unchanged files and supersede an old pending revision
+ok 15 - privacy format upgrades reparse unchanged files and supersede an old pending revision
+  ---
+  duration_ms: 12.65581
+  type: 'test'
+  ...
+# Subtest: automatic discovery includes enabled owner-selected transcript roots without collecting arbitrary folders
+ok 16 - automatic discovery includes enabled owner-selected transcript roots without collecting arbitrary folders
+  ---
+  duration_ms: 4.071768
+  type: 'test'
+  ...
+# (node:1702257) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: current Conductor Codex envelopes retain visible answers while excluding hidden and tool messages
+ok 17 - current Conductor Codex envelopes retain visible answers while excluding hidden and tool messages
+  ---
+  duration_ms: 3.519589
+  type: 'test'
+  ...
+# Subtest: Conductor capture reads only visible conversation text and uploads it through normal resumable sync
+ok 18 - Conductor capture reads only visible conversation text and uploads it through normal resumable sync
+  ---
+  duration_ms: 76.410846
+  type: 'test'
+  ...
+# Subtest: incomplete or evicted Conductor caches do not replace complete captured chats or delete uploaded context
+ok 19 - incomplete or evicted Conductor caches do not replace complete captured chats or delete uploaded context
+  ---
+  duration_ms: 44.91984
+  type: 'test'
+  ...
+# Subtest: Conductor staging is account-scoped and absent databases do not claim successful capture
+ok 20 - Conductor staging is account-scoped and absent databases do not claim successful capture
+  ---
+  duration_ms: 17.753254
+  type: 'test'
+  ...
+# Subtest: cloud-native sync stages every API page atomically, retains provenance and uploads through the existing pipeline
+ok 21 - cloud-native sync stages every API page atomically, retains provenance and uploads through the existing pipeline
+  ---
+  duration_ms: 103.532708
+  type: 'test'
+  ...
+# Subtest: each native capture requires enabled sync and a current personal scope before publishing
+ok 22 - each native capture requires enabled sync and a current personal scope before publishing
+  ---
+  duration_ms: 8.432706
+  type: 'test'
+  ...
+# Subtest: a background companion uploads staged cloud chats without inheriting a native chat environment
+ok 23 - a background companion uploads staged cloud chats without inheriting a native chat environment
+  ---
+  duration_ms: 16.431732
+  type: 'test'
+  ...
+# Subtest: staged cloud discovery keeps account, symlink and incomplete-capture boundaries
+ok 24 - staged cloud discovery keeps account, symlink and incomplete-capture boundaries
+  ---
+  duration_ms: 12.807286
+  type: 'test'
+  ...
+# Subtest: cloud capture checkpoints host cursors in bounded pages and resumes without scanning old history
+ok 25 - cloud capture checkpoints host cursors in bounded pages and resumes without scanning old history
+  ---
+  duration_ms: 17.194975
+  type: 'test'
+  ...
+# Subtest: Conductor uses explicit native message IDs without interpreting literal user content
+ok 26 - Conductor uses explicit native message IDs without interpreting literal user content
+  ---
+  duration_ms: 0.550238
+  type: 'test'
+  ...
+# Subtest: mac Conductor backfill finishes while new messages keep arriving
+ok 27 - mac Conductor backfill finishes while new messages keep arriving
+  ---
+  duration_ms: 204.742424
+  type: 'test'
+  ...
+# Subtest: cloud Conductor backfill finishes while new messages keep arriving
+ok 28 - cloud Conductor backfill finishes while new messages keep arriving
+  ---
+  duration_ms: 199.078881
+  type: 'test'
+  ...
+# Subtest: editing earlier Conductor messages still replaces the source and starts a new capture
+ok 29 - editing earlier Conductor messages still replaces the source and starts a new capture
+  ---
+  duration_ms: 157.275341
+  type: 'test'
+  ...
+# Subtest: a new chat is not queued behind a full budget of unchanged heartbeats
+ok 30 - a new chat is not queued behind a full budget of unchanged heartbeats
+  ---
+  duration_ms: 123.382413
+  type: 'test'
+  ...
+# Subtest: a changed old chat and a new chat both beat heartbeats, newest first
+ok 31 - a changed old chat and a new chat both beat heartbeats, newest first
+  ---
+  duration_ms: 64.136401
+  type: 'test'
+  ...
+# Subtest: initial backfill leads with the newest chat and still serves the longest-waiting one
+ok 32 - initial backfill leads with the newest chat and still serves the longest-waiting one
+  ---
+  duration_ms: 9.773815
+  type: 'test'
+  ...
+# Subtest: constant fresh traffic cannot starve heartbeats or an old backfill
+ok 33 - constant fresh traffic cannot starve heartbeats or an old backfill
+  ---
+  duration_ms: 110.587837
+  type: 'test'
+  ...
+# Subtest: slow uploads and restarts cannot starve continuations, retries, old fresh chats or heartbeats
+ok 34 - slow uploads and restarts cannot starve continuations, retries, old fresh chats or heartbeats
+  ---
+  duration_ms: 1982.393778
+  type: 'test'
+  ...
+# Subtest: a pending slow upload retains the next service class when replayed after restart
+ok 35 - a pending slow upload retains the next service class when replayed after restart
+  ---
+  duration_ms: 28.232129
+  type: 'test'
+  ...
+# Subtest: a failed upload replays identically before any newer work and does not mark complete
+ok 36 - a failed upload replays identically before any newer work and does not mark complete
+  ---
+  duration_ms: 10.573083
+  type: 'test'
+  ...
+# Subtest: an unreadable source is skipped without consuming upload budget or hiding other chats
+ok 37 - an unreadable source is skipped without consuming upload budget or hiding other chats
+  ---
+  duration_ms: 9.073119
+  type: 'test'
+  ...
+# Subtest: changing accounts discards another account's pending state and recollects only under the new owner
+ok 38 - changing accounts discards another account's pending state and recollects only under the new owner
+  ---
+  duration_ms: 7.652433
+  type: 'test'
+  ...
+# Subtest: a restored relay checkpoint makes the source fresh and is recollected before heartbeats
+ok 39 - a restored relay checkpoint makes the source fresh and is recollected before heartbeats
+  ---
+  duration_ms: 25.120775
+  type: 'test'
+  ...
+# Subtest: source heartbeats still report unchanged chats once the queue is clear
+ok 40 - source heartbeats still report unchanged chats once the queue is clear
+  ---
+  duration_ms: 5.201284
+  type: 'test'
+  ...
+# Subtest: a partial malformed capture stays partial through backoff and retries before heartbeats
+ok 41 - a partial malformed capture stays partial through backoff and retries before heartbeats
+  ---
+  duration_ms: 12.419951
+  type: 'test'
+  ...
+# Subtest: a deferred retry keeps the tick partial even with no fresh work
+ok 42 - a deferred retry keeps the tick partial even with no fresh work
+  ---
+  duration_ms: 6.106133
+  type: 'test'
+  ...
+# Subtest: bounded scans rotate through every file and never imply a source disappeared
+ok 43 - bounded scans rotate through every file and never imply a source disappeared
+  ---
+  duration_ms: 28.71397
+  type: 'test'
+  ...
+# Subtest: an unreadable root never marks its previously collected chats unavailable
+ok 44 - an unreadable root never marks its previously collected chats unavailable
+  ---
+  duration_ms: 3.428495
+  type: 'test'
+  ...
+# Subtest: privacy parser upgrade recaptures unchanged sources without replaying old pending text
+ok 45 - privacy parser upgrade recaptures unchanged sources without replaying old pending text
+  ---
+  duration_ms: 5.873432
+  type: 'test'
+  ...
+# Subtest: one long active conversation uses remaining upload slots before unchanged heartbeats
+ok 46 - one long active conversation uses remaining upload slots before unchanged heartbeats
+  ---
+  duration_ms: 60.976986
+  type: 'test'
+  ...
+# Subtest: requeued chunks rotate across active sources and reserve overdue heartbeats
+ok 47 - requeued chunks rotate across active sources and reserve overdue heartbeats
+  ---
+  duration_ms: 40.916621
+  type: 'test'
+  ...
+# Subtest: failed later chunk resumes exactly without losing the earlier chunk
+ok 48 - failed later chunk resumes exactly without losing the earlier chunk
+  ---
+  duration_ms: 12.330122
+  type: 'test'
+  ...
+1..48
+# tests 48
+# suites 0
+# pass 47
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2657.497059

@@ -1,5 +1,5 @@
 {
-  "state": "Native candidate packaged; core and extracted checks pass; publication and activation pending",
+  "state": "Published; cloud runtime72 active. Mac installed, but a legacy loaded host restarted runtime49 during guarded activation.",
   "nativeVersion": "0.4.39",
   "runtimeRevision": 72,
   "sourcePatch": 63,
@@ -7,7 +7,8 @@
     "focused": 34,
     "regressionsFailBeforePassAfter": 2,
     "core": 697,
-    "extracted": 34
+    "extracted": 34,
+    "packagingBothAliases": true
   },
   "replay": {
     "patches": 63,
@@ -20,5 +21,37 @@
     "Existing loaded hosts may retain an older MCP process.",
     "Web-only chat history is not collected by remote MCP.",
     "No automatic cross-account transcript sharing is enabled."
-  ]
+  ],
+  "cloudActivation": {
+    "state": "passed",
+    "initialRevision": 71,
+    "forcedSignals": false,
+    "attempts": 19,
+    "lastRestartStatus": 200,
+    "activeRevision": 72,
+    "accountAndPermissionsPreserved": true
+  },
+  "artifacts": {
+    "meet-proxy": "71ee4cbad17257f7d64eadee7636f2ff435d026ae94bd746be8527355157ffb0",
+    "commonplace": "1fc09780a3a25857350870ebc82f637c2cdbe063902909d2c9e018184bf8a18c"
+  },
+  "prs": {
+    "source": 61,
+    "distribution": 62
+  },
+  "release": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.39",
+  "productionServer": "20261101-oob-activation",
+  "macActivation": {
+    "installedVersion": "0.4.39",
+    "intermediateRuntime": 49,
+    "guard": "HTTP409 active work",
+    "forcedSignals": false,
+    "savedPermissionsPreserved": true
+  },
+  "liveCollectionFollowUp": "staged-collection-verification.json",
+  "workQuestionProbe": {
+    "tool": "ask_chat",
+    "httpStatus": 400,
+    "reason": "Group boards accept updates/replies, not direct-chat question kind. No message was created."
+  }
 }

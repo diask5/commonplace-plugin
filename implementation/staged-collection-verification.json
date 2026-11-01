@@ -1,0 +1,20 @@
+{
+  "state": "Source verified; native packaging and full tests in progress",
+  "nativeVersion": "0.4.40",
+  "runtimeRevision": 73,
+  "sourcePatch": 64,
+  "tests": {
+    "focused": 29,
+    "regressionsFailBeforePassAfter": 2,
+    "core": 699
+  },
+  "replay": {
+    "patches": 64,
+    "files": 247,
+    "matched": true
+  },
+  "serverChange": false,
+  "accountOrSharingRulesChanged": false,
+  "hostPermissionsChanged": false,
+  "harnessCorrection": "The first extracted run lacked the relay test fixture. It failed before that test ran; the harness now uses the source relay fixture and the actual packaged plugin."
+}

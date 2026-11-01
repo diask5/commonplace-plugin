@@ -1,0 +1,229 @@
+diff --git a/apps/commonplace/server/conductor-history.mjs b/apps/commonplace/server/conductor-history.mjs
+index cbf8d64..0ef6ce5 100644
+--- a/apps/commonplace/server/conductor-history.mjs
++++ b/apps/commonplace/server/conductor-history.mjs
+@@ -1,6 +1,6 @@
+ import {acquireProcessLock} from './process-lock.mjs';
+ import {DatabaseSync} from 'node:sqlite';
+-import {mkdir,readFile,writeFile,appendFile,rename,rm,lstat,open} from 'node:fs/promises';
++import {mkdir,readFile,writeFile,appendFile,rename,rm,lstat,open,readdir} from 'node:fs/promises';
+ import {createHash,randomBytes} from 'node:crypto';
+ import {homedir} from 'node:os';
+ import path from 'node:path';
+@@ -35,8 +35,13 @@ export function conductorVisibleMessage(row){
+ // remote chats. Only conversation rows are read. Credentials, browser storage,
+ // pending commands, full_message, and tool payloads are never staged.
+ export async function prepareConductorHistory({dir,owner,home=homedir(),platform=process.platform,env=process.env,execute=run,now=Date.now}={}){
+-  if(platform!=='darwin'&&env.CONDUCTOR_IS_LOCAL==='0')return prepareConductorCloudHistory({dir,owner,env,execute,now});
+-  if(platform!=='darwin')return {roots:[],coverage:{available:false,conversations:0,partial:false}};
++  if(platform!=='darwin'){
++    const live=env.CONDUCTOR_IS_LOCAL==='0'?await prepareConductorCloudHistory({dir,owner,env,execute,now}):null;
++    const staged=await stagedConductorCloudHistory({dir,owner});
++    const roots=new Map(staged.roots.map(root=>[root.path,root]));
++    for(const root of live?.roots||[])roots.set(root.path,root);
++    return {roots:[...roots.values()],coverage:{...staged.coverage,available:staged.coverage.available||!!live?.coverage.available,partial:staged.coverage.partial||!!live?.coverage.partial,...(live?.coverage.observedAt?{observedAt:live.coverage.observedAt}:{})}};
++  }
+   if(!/^[a-f0-9]{24}$/.test(owner||''))throw Error('Connect an account before syncing Conductor history.');
+   const source=path.join(home,'Library','Application Support','com.conductor.app');
+   const root=path.join(dir,'cloud-history',owner,'conductor');
+@@ -90,6 +95,39 @@ export async function prepareConductorHistory({dir,owner,home=homedir(),platform
+   return {roots:[...roots.values()],coverage:{available,conversations,partial,cached:true}};
+ }
+ 
++// A background daemon has no native session environment. Its connected chat
++// receivers stage already-authorized, visible history in this exact owner's
++// folder. Discover only those files; never enumerate other accounts or use a
++// background CLI credential to inspect additional native conversations.
++async function stagedConductorCloudHistory({dir,owner}){
++  const roots=[],coverage={available:false,conversations:0,partial:false,cloud:true,cached:true};
++  if(!/^[a-f0-9]{24}$/.test(owner||''))return {roots,coverage};
++  let folder=dir;
++  try{
++    for(const segment of ['', 'cloud-history',owner,'conductor-cloud']){
++      if(segment)folder=path.join(folder,segment);
++      const info=await lstat(folder);if(!info.isDirectory()||info.isSymbolicLink()){coverage.partial=true;return {roots,coverage};}
++    }
++  }catch(error){if(!['ENOENT','ENOTDIR'].includes(error.code))coverage.partial=true;return {roots,coverage};}
++  for(const provider of ['claude','codex']){
++    const target=path.join(folder,provider);
++    try{
++      const info=await lstat(target);if(!info.isDirectory()||info.isSymbolicLink()){coverage.partial=true;continue;}
++      const files=(await readdir(target,{withFileTypes:true})).filter(e=>e.isFile()&&e.name.endsWith('.jsonl')&&uuid(e.name.slice(0,-6)));
++      if(!files.length)continue;
++      for(const entry of files){
++        try{
++          const checkpoint=path.join(target,entry.name+'.cursor'),stat=await lstat(checkpoint);
++          if(!stat.isFile()||stat.isSymbolicLink()||JSON.parse(await readFile(checkpoint,'utf8')).hasMore!==false)coverage.partial=true;
++        }catch{coverage.partial=true;}
++      }
++      roots.push({path:target,name:'Conductor '+(provider==='codex'?'Codex':'Claude')+' chats',kind:provider});
++      coverage.available=true;coverage.conversations+=files.length;
++    }catch(error){if(!['ENOENT','ENOTDIR'].includes(error.code))coverage.partial=true;}
++  }
++  return {roots,coverage};
++}
++
+ // Cloud adapters export only the host-bound conversation, not every project
+ // visible to an organization-level Conductor CLI credential.
+ export function conductorCloudVisibleMessage(row,nativeId){
+@@ -145,7 +183,7 @@ export async function prepareConductorCloudHistory({dir,owner,env=process.env,ex
+       else{await rename(temp,file);temp=null;}
+       await writeFile(stamp,revision,{mode:0o600});
+     }
+-    if(nextCursor){const pending=checkpoint+'.tmp';await writeFile(pending,JSON.stringify({nativeId,after:nextCursor,digest:revision}),{mode:0o600});await rename(pending,checkpoint);}
++    if(nextCursor){const pending=checkpoint+'.tmp';await writeFile(pending,JSON.stringify({nativeId,after:nextCursor,digest:revision,hasMore}),{mode:0o600});await rename(pending,checkpoint);}
+     return {roots:[{path:root,name:'Conductor '+(provider==='codex'?'Codex':'Claude')+' chats',kind:provider,titles:{[session+'.jsonl']:sanitizeChatText(binding.title||session).slice(0,220)}}],coverage:{available:true,conversations:1,partial:hasMore,cloud:true,observedAt:now()}};
+   }catch{return empty(true);}
+   finally{await handle?.close();if(temp)await rm(temp,{force:true});if(locked)await rm(lock,{force:true});}
+diff --git a/apps/commonplace/server/local-client.mjs b/apps/commonplace/server/local-client.mjs
+index 026f241..bc0bbc1 100644
+--- a/apps/commonplace/server/local-client.mjs
++++ b/apps/commonplace/server/local-client.mjs
+@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
+ import { spawn } from 'node:child_process';
+ import { setTimeout as delay } from 'node:timers/promises';
+ 
+-export const RUNTIME_REVISION = 72;
++export const RUNTIME_REVISION = 73;
+ 
+ export function createLocalClient({
+   dir = process.env.COMMONPLACE_DATA_DIR ||
+diff --git a/apps/commonplace/server/setup-status.mjs b/apps/commonplace/server/setup-status.mjs
+index 1729258..a25fb8b 100644
+--- a/apps/commonplace/server/setup-status.mjs
++++ b/apps/commonplace/server/setup-status.mjs
+@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
+ import path from 'node:path';
+ import {acquireProcessLock} from './process-lock.mjs';
+ 
+-export const PLUGIN_VERSION='0.4.39';
++export const PLUGIN_VERSION='0.4.40';
+ export const setupActions={
+   link_account:'Link another verified Google account in an isolated profile, preserving existing accounts.',
+   use_account:'Choose the account for this personal native chat.',
+diff --git a/scripts/build-plugin.py b/scripts/build-plugin.py
+index 5a7ce8a..df4cda3 100644
+--- a/scripts/build-plugin.py
++++ b/scripts/build-plugin.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Build candidate 0.4.39 from checksum-pinned 0.3.0, preserving all bundled runtimes, hooks, assets and licenses outside the explicit overlay."""
++"""Build candidate 0.4.40 from checksum-pinned 0.3.0, preserving all bundled runtimes, hooks, assets and licenses outside the explicit overlay."""
+ import argparse
+ import hashlib
+ import json
+@@ -11,7 +11,7 @@ import zipfile
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+ BASE_VERSION = "0.3.0"
+-VERSION = "0.4.39"
++VERSION = "0.4.40"
+ BASE_SHA256 = "146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968"
+ BASE_URL = "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.3.0/meet-proxy-0.3.0.zip"
+ OVERLAY_FILES = {
+@@ -91,9 +91,9 @@ def overrides(baseline, alias="meet-proxy"):
+         assert metadata["version"] == BASE_VERSION and metadata["name"] == "meet-proxy"
+         metadata.update(name=alias, version=VERSION)
+         changes[name] = (json.dumps(metadata, indent=2) + "\n").encode()
+-    assert b"PLUGIN_VERSION='0.4.39'" in changes["server/setup-status.mjs"]
++    assert b"PLUGIN_VERSION='0.4.40'" in changes["server/setup-status.mjs"]
+     assert b"BACKGROUND_VERSION=PLUGIN_VERSION" in changes["server/cloud-background.mjs"]
+-    assert b"RUNTIME_REVISION = 72;" in changes["server/local-client.mjs"]
++    assert b"RUNTIME_REVISION = 73;" in changes["server/local-client.mjs"]
+     readme = baseline.read("README.md").decode().replace("0.3.0", VERSION)
+     section = """## Your personal agent network
+ 
+diff --git a/tests/conductor-history.test.mjs b/tests/conductor-history.test.mjs
+index 2c41e3a..7f908dc 100644
+--- a/tests/conductor-history.test.mjs
++++ b/tests/conductor-history.test.mjs
+@@ -1,7 +1,7 @@
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+ import {DatabaseSync} from 'node:sqlite';
+-import {mkdtemp,mkdir,readFile,rm,stat} from 'node:fs/promises';
++import {mkdtemp,mkdir,readFile,rm,stat,writeFile,symlink} from 'node:fs/promises';
+ import path from 'node:path';
+ import {tmpdir} from 'node:os';
+ import {prepareConductorHistory,prepareConductorCloudHistory,createConductorCloudCapture,conductorCloudVisibleMessage} from '../apps/commonplace/server/conductor-history.mjs';
+@@ -93,6 +93,32 @@ test('each native capture requires enabled sync and a current personal scope bef
+  allowed=true;now+=5000;await capture(call,async()=>allowed);assert.equal(reads,2);await capture(call,async()=>allowed);assert.equal(reads,2,'rapid polls are coalesced');
+ });
+ 
++test('a background companion uploads staged cloud chats without inheriting a native chat environment',async t=>{
++ const f=await fixture(t),env={CONDUCTOR_IS_LOCAL:'0',CONDUCTOR_SESSION_ID:session,CONDUCTOR_WORKSPACE_ID:session,CODEX_THREAD_ID:session};
++ const execute=async(_,args)=>({stdout:JSON.stringify(args[1]==='get'?{id:session,deepLink:`conductor://workspace?id=${session}&session=${session}`}:{data:[{id:'1',sessionId:session,type:'userMessage',content:{message:'Staged visible update'}}],hasMore:false})});
++ await prepareConductorCloudHistory({dir:f.dir,owner,env,execute});
++ const uploads=[],app={dir:f.dir,accountClient:{state:{session:{humanAccount:{id:owner}}},view:()=>({connected:true}),request:async(route,input)=>{
++  if(route.endsWith('/status'))return {syncEnabled:true,contextProtocol:1,contextAtomicCaptures:true};
++  uploads.push(input);return {id:input.sourceKey};
++ }}};
++ const sync=await CloudSync.open(app,{discover:async()=>[],watchRoots:false,prepareHistory:opts=>prepareConductorHistory({...opts,platform:'linux',env:{},execute:async()=>{throw Error('Background discovery must not inspect another native session');}})});t.after(()=>sync.close());
++ await sync.tick();assert.equal(uploads.length,1,'staged source remains discoverable after a daemon restart');
++ assert.equal(uploads[0].conversation.id,session);assert.equal(uploads[0].messages[0].text,'Staged visible update');
++ assert.equal(sync.status().coverage.conductor.cached,true);
++ assert.equal(sync.status().coverage.conductor.partial,false);
++});
++
++test('staged cloud discovery keeps account, symlink and incomplete-capture boundaries',async t=>{
++ const f=await fixture(t),root=path.join(f.dir,'cloud-history',owner,'conductor-cloud','codex');await mkdir(root,{recursive:true});
++ const file=path.join(root,session+'.jsonl');await writeFile(file,JSON.stringify({role:'user',content:'Visible'})+'\n');
++ const prepare=(account=owner)=>prepareConductorHistory({dir:f.dir,owner:account,platform:'linux',env:{}});
++ const unproven=await prepare();assert.equal(unproven.roots.length,1);assert.equal(unproven.coverage.partial,true,'an old or missing export checkpoint cannot claim complete native history');
++ await writeFile(file+'.cursor',JSON.stringify({hasMore:true}));assert.equal((await prepare()).coverage.partial,true);
++ await writeFile(file+'.cursor',JSON.stringify({hasMore:false}));assert.equal((await prepare()).coverage.partial,false);
++ assert.equal((await prepare('b'.repeat(24))).roots.length,0,'another account cannot discover these staged chats');
++ await rm(root,{recursive:true});await symlink(f.home,root);assert.equal((await prepare()).roots.length,0,'linked provider directories are not collection roots');
++});
++
+ test('cloud capture checkpoints host cursors in bounded pages and resumes without scanning old history',async t=>{
+  const f=await fixture(t),nativeId='22222222-2222-2222-2222-222222222222',workspace='33333333-3333-3333-3333-333333333333';
+  const env={CONDUCTOR_IS_LOCAL:'0',CONDUCTOR_SESSION_ID:session,CONDUCTOR_WORKSPACE_ID:workspace,CODEX_THREAD_ID:nativeId};
+diff --git a/tests/packaging.test.mjs b/tests/packaging.test.mjs
+index 0c5bf00..e2b4513 100644
+--- a/tests/packaging.test.mjs
++++ b/tests/packaging.test.mjs
+@@ -12,8 +12,8 @@ const run=(cmd,args)=>exec(cmd,args,{cwd:root,timeout:240000,maxBuffer:1024*1024
+ test('stable cloud plugin preserves baseline assets, dependencies and executable modes', {timeout:300000},async t=>{
+   const scratch=await mkdtemp(path.join(tmpdir(),'cloud-package-'));t.after(()=>rm(scratch,{recursive:true,force:true}));
+   const baseline=process.env.COMMONPLACE_TEST_BASELINE||path.resolve('artifacts/.cache/meet-proxy-0.3.0.zip');
+-  let output=path.resolve(process.env.COMMONPLACE_TEST_PACKAGE_DIR||'artifacts/public-0.4.39');
+-  if(!existsSync(output+'/meet-proxy-0.4.39.zip')){output=path.join(scratch,'build');await run('python3',['scripts/build-plugin.py','--baseline',baseline,'--output',output]);}
++  let output=path.resolve(process.env.COMMONPLACE_TEST_PACKAGE_DIR||'artifacts/public-0.4.40');
++  if(!existsSync(output+'/meet-proxy-0.4.40.zip')){output=path.join(scratch,'build');await run('python3',['scripts/build-plugin.py','--baseline',baseline,'--output',output]);}
+   const bad=path.join(scratch,'bad.zip');await writeFile(bad,'wrong');
+   await assert.rejects(run('python3',['scripts/build-plugin.py','--baseline',bad,'--output',path.join(scratch,'bad')]),/SHA-256 mismatch/);
+   await run('python3',['-c',`
+@@ -30,7 +30,7 @@ def digest(stream):
+ with open(baseline,'rb') as f:assert digest(f)=='146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968'
+ with zipfile.ZipFile(baseline) as old:
+  for alias in ('meet-proxy','commonplace'):
+-  candidate=pathlib.Path(output)/(alias+'-0.4.39.zip')
++  candidate=pathlib.Path(output)/(alias+'-0.4.40.zip')
+   report=json.loads(candidate.with_name(candidate.stem+'-build.json').read_text())
+   with candidate.open('rb') as f:assert digest(f)==report['sha256']
+   with zipfile.ZipFile(candidate) as new:
+@@ -54,7 +54,7 @@ with zipfile.ZipFile(baseline) as old:
+       dep=posixpath.normpath(posixpath.join(posixpath.dirname(name),rel[1]))
+       assert dep in new.namelist(),name+' missing '+dep
+    for name in ('.claude-plugin/plugin.json','.codex-plugin/plugin.json'):
+-    metadata=json.loads(new.read(name));assert metadata['name']==alias and metadata['version']=='0.4.39'
++    metadata=json.loads(new.read(name));assert metadata['name']==alias and metadata['version']=='0.4.40'
+    if alias=='meet-proxy':
+     for item in new.infolist():
+      target=pathlib.Path(extracted)/item.filename;target.parent.mkdir(parents=True,exist_ok=True)
+@@ -64,11 +64,11 @@ with zipfile.ZipFile(baseline) as old:
+   const checked=await run(process.execPath,['--input-type=module','-e',`
+ import assert from 'node:assert/strict';import {pathToFileURL} from 'node:url';
+ const root=process.argv[1];const {pluginResponse}=await import(pathToFileURL(root+'/server/plugin-surface.mjs'));const {accountInboxMcp}=await import(pathToFileURL(root+'/server/account-inbox.mjs'));
+-const init=pluginResponse({method:'initialize'},{result:{}});assert.equal(init.result.serverInfo.version,'0.4.39');
++const init=pluginResponse({method:'initialize'},{result:{}});assert.equal(init.result.serverInfo.version,'0.4.40');
+ const r={jsonrpc:'2.0',id:1,method:'tools/list'};const tools=pluginResponse(r,await accountInboxMcp({},r)).result.tools.map(t=>t.name);
+ for(const name of ['invite_agent_connection','preview_agent_connection','accept_agent_connection','read_agent_connection','list_agent_connections','sever_agent_connection','cloud_agent_status','connect_cloud_agent','run_cloud_task','read_cloud_task','cancel_cloud_task','configure_cloud_sync','send_agent_message','list_my_agent_conversations','read_agent_context','publish_agent_context','search_my_chats','read_my_chat','configure_my_chat_history','setup_status','add_person_to_chat','search_shared_context','read_shared_context','context_sync_status','configure_context_source','read_project_context'])assert.ok(tools.includes(name),name);
+-const {RUNTIME_REVISION}=await import(pathToFileURL(root+'/server/local-client.mjs'));assert.equal(RUNTIME_REVISION,72);
+-const {BACKGROUND_VERSION}=await import(pathToFileURL(root+'/server/cloud-background.mjs'));assert.equal(BACKGROUND_VERSION,'0.4.39');
++const {RUNTIME_REVISION}=await import(pathToFileURL(root+'/server/local-client.mjs'));assert.equal(RUNTIME_REVISION,73);
++const {BACKGROUND_VERSION}=await import(pathToFileURL(root+'/server/cloud-background.mjs'));assert.equal(BACKGROUND_VERSION,'0.4.40');
+ // setup_status is added by the stdio surface, even while an older companion is busy.
+ const surfaced=pluginResponse(r,{result:{tools:[]}}).result.tools.find(t=>t.name==='setup_status');
+ for(const name of ['invite_agent_connection','accept_agent_connection','sever_agent_connection'])assert.ok(surfaced.inputSchema.properties.blockedTool.enum.includes(name));
