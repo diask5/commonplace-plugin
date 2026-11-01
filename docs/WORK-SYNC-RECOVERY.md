@@ -1,6 +1,6 @@
 # Work communication and context recovery
 
-1 November 2026. Patch 65 prepares native 0.4.41/runtime74 and server
+1 November 2026. Patch 65 publishes native 0.4.41/runtime74 and deploys server
 `20261101-work-sync-recovery`. Publication, installation and live checks are
 recorded separately in [verification](../implementation/work-sync-recovery-verification.json).
 
@@ -29,12 +29,26 @@ state, expiry and current revision. Raw errors, source contents and credentials
 are excluded from diagnostics. The historical Mac interruption is retained;
 these tests do not establish its exact original cause.
 
-The previous Mac upgrade completed: runtime73/background0.4.40, uploads and
-context mirror enabled, account and saved host permissions preserved. Its mirror
-was still rebuilding. This root chat's current long capture completed at record
-1553 after previously stalling at94; a successful archive read returned the
-assistant marker from revision216. See [handoff](../implementation/end-to-end-repair/mac-handoff.json)
-and [source read](../implementation/end-to-end-repair/long-chat-readback.json).
+Native 0.4.41/runtime74 is installed and active on both the Mac and cloud.
+The supported handoff preserved account and host permissions; uploads, the local
+mirror and the saved workspace responder were independently verified enabled
+again. Older open launchers won earlier restart races; those attempts remain
+preserved. The successful handoff used the unchanged packaged launcher waiting
+for the supported guard, with no forced signals or lock removal.
+
+The Mac archive contains 684 conversations and about 39.4 million characters.
+Uploads remain healthy, but the local mirror's manifest request hits the 30-second
+transport timeout while its published snapshot falls behind fresh captures. This
+live failure is retained and a follow-up server repair is in progress. The current
+root long capture completed at record 1553 after previously stalling at 94; a
+successful source read returned its assistant marker. See
+[source read](../implementation/end-to-end-repair/long-chat-readback.json).
+
+Production release `20261101-work-sync-recovery` verifies 165 files and service
+readability, unchanged 47 migrations, three active services and a fresh worker
+heartbeat. Public health, OAuth, exact assets and desktop/phone checks pass.
+The prior server release is retained. Work/native message roundtrips are still
+pending; receiver presence and publication alone do not prove delivery.
 
 First failures are retained. The initial native build overlapped the final mirror
 race tests; it is superseded by a fresh final build before publication. No claim

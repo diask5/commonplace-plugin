@@ -69,7 +69,7 @@
   ],
   "patch": "work-sync-recovery.patch",
   "sha256": "0405af25790f94c70d1119fb44ce2f169fe027a88c8b6a746c8edd85eb1ab084",
-  "state": "Source candidate; native packaging and verification in progress. Not installed or activated.",
+  "state": "Published native0.4.41/runtime74; installed and active on Mac/cloud. Server20261101-work-sync-recovery live. Live Mac mirror timeout retained; Work/native roundtrip pending.",
   "files": [
     {
       "path": "apps/commonplace-account/server/groups.mjs",

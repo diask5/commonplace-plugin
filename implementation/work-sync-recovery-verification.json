@@ -1,5 +1,5 @@
 {
-  "state": "Source patch65; native0.4.41/runtime74 and server20261101-work-sync-recovery being verified before publication.",
+  "state": "Native0.4.41/runtime74 published and active on Mac/cloud; server20261101-work-sync-recovery live. Work roundtrip pending; live Mac mirror manifest timeout under repair.",
   "sourcePatch": 65,
   "nativeVersion": "0.4.41",
   "runtimeRevision": 74,
@@ -25,7 +25,9 @@
     "mirrorAndAdjacent": 77,
     "lateAcceptanceAndAdapters": 29,
     "independentMailboxReview": 71,
-    "packagingFirstBuild": true
+    "packagingFirstBuild": true,
+    "packagingFinalBothAliases": true,
+    "extracted": 47
   },
   "replay": {
     "patches": 65,
@@ -38,12 +40,157 @@
   "classifierConfigurationChanged": false,
   "newMigrations": 0,
   "limits": [
-    "Real live rollout and postdeployment Work/native checks remain pending.",
-    "Old root host may retain loaded0.4.14 despite configured/new active runtime.",
-    "Web-only chats are not collected by remote MCP."
+    "Postdeployment Work/native roundtrip remains pending.",
+    "Mac context folder rebuild hits archive-manifest timeout while uploads advance; enabled sync is healthy.",
+    "Old root host retains loaded0.4.14 despite configured/new active runtime; fresh host loaded0.4.41.",
+    "Web-only chats are not collected by remote MCP.",
+    "Independent-human/clean-machine/all-host readiness is not established."
   ],
   "independentReview": {
     "mirror": "No blocking findings",
     "receiver": "Late acceptance timing defect found, reproduced through signed HTTP, fixed and independently verified"
+  },
+  "releases": {
+    "native": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.41",
+    "server": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261101-work-sync-recovery"
+  },
+  "production": {
+    "filesVerified": 165,
+    "serviceReadableFiles": 165,
+    "appliedMigrations": 47,
+    "newMigrations": 0,
+    "services": [
+      "active",
+      "active",
+      "active"
+    ],
+    "previousRelease": "20261101-oob-activation",
+    "publicChecks": {
+      "/healthz": 200,
+      "/.well-known/oauth-authorization-server": 200,
+      "/.well-known/agent-configuration": 200,
+      "authorize": {
+        "status": 303,
+        "redirect": "/signin-with-chatgpt"
+      },
+      "unauthenticatedMcp": 401,
+      "assets": [
+        {
+          "name": "context-product.mjs",
+          "sha256": "eed686c7d7ed69a2cf7869f27436632d8c05fec5ef2cf8a377cc3cd393ff715f"
+        },
+        {
+          "name": "context-spaces.mjs",
+          "sha256": "c7f1ce39e23a882143315e324f790242668c55c5f9e03c1d314e0949f3341fbd"
+        },
+        {
+          "name": "context-space-invitations.mjs",
+          "sha256": "6c364f764670372fbc1993b889f7dca1b3786036db88c0374a2f563b8e0afb5b"
+        },
+        {
+          "name": "context-native-setup.mjs",
+          "sha256": "ca3bc7bd45c1e6301e66bef072333aeb767040757d546e3be63628fea623bce1"
+        },
+        {
+          "name": "context-setup-request.mjs",
+          "sha256": "e7cf41c953595866fc4fd67c7427c926ea22658c0a4fbf7a3a06dc80b196aac3"
+        },
+        {
+          "name": "personal-assistant-setup.mjs",
+          "sha256": "3646b5c1294ab6327d1ca48d5d4aa76c3abacb2b952df7967bdaf62f08e0aea7"
+        },
+        {
+          "name": "mcp-resource-source-setup.mjs",
+          "sha256": "c1822b335c202b2fa98fa4546d92474771c2926552b86d4823529e2e4f76d52a"
+        }
+      ],
+      "screens": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "googleButtonVisible": true,
+          "overflow": false,
+          "errors": []
+        },
+        {
+          "name": "phone",
+          "width": 390,
+          "googleButtonVisible": true,
+          "overflow": false,
+          "errors": []
+        }
+      ]
+    }
+  },
+  "nativeArtifacts": {
+    "meet-proxy": "b834bccdf9d9127ee51e376478ed1669d575cc54c7227b57d6324734276d7162",
+    "commonplace": "c294088c51a89ce9698c4f359dccd1c4a577e3f2f19e291e1d44aee1013dddfa"
+  },
+  "prs": {
+    "source": 66,
+    "distribution": 67
+  },
+  "cloudActivation": {
+    "state": "passed",
+    "initialRevision": 48,
+    "forcedSignals": false,
+    "attempts": 135,
+    "activeRevision": 74,
+    "accountAndPermissionsPreserved": true
+  },
+  "cloudMaintenance": {
+    "state": "activated",
+    "forcedSignals": false,
+    "previous": {
+      "syncEnabled": true
+    },
+    "activeRevision": 74,
+    "configure_cloud_syncRestored": true,
+    "settingsRestored": true,
+    "accountPreserved": true
+  },
+  "macActivation": {
+    "state": "activated",
+    "forcedSignals": false,
+    "hostPermissionsChanged": false,
+    "previous": {
+      "syncEnabled": true,
+      "mirrorEnabled": true
+    },
+    "initialRevision": 66,
+    "activeRevision": 74,
+    "backgroundVersion": "0.4.41",
+    "configure_context_folderRestored": true,
+    "configure_cloud_syncRestored": true,
+    "settingsRestored": true,
+    "accountAndPermissionsPreserved": true
+  },
+  "macInstallation": {
+    "state": "passed",
+    "installedVersion": "0.4.41",
+    "zipSha256": "b834bccdf9d9127ee51e376478ed1669d575cc54c7227b57d6324734276d7162",
+    "accountPreserved": true,
+    "savedPermissionsPreserved": true,
+    "codexOnlyPluginPathsChanged": true,
+    "claudePluginManagerUpdated": true
+  },
+  "macMirrorFirst": {
+    "checkedAt": "2026-11-01T02:27:42.566Z",
+    "runtimeRevision": 74,
+    "syncEnabled": true,
+    "mirror": {
+      "enabled": true,
+      "ready": false,
+      "running": true,
+      "documents": 0,
+      "revision": null,
+      "phase": "manifest"
+    },
+    "signedDiagnostic": {
+      "identityMs": 10016,
+      "identityConnected": true,
+      "manifestMs": 30011,
+      "manifestFailureCode": "MEET_PROXY_TIMEOUT"
+    }
   }
 }

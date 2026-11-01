@@ -1,0 +1,94 @@
+✔ actual host registration survives filtered environment and preserves explicitly selected profile (27.213301ms)
+✔ ordinary chats retain default account and Claude never adopts Codex registration (7.554945ms)
+✔ a current host chat name takes precedence over a saved setup label without changing its binding (6.525616ms)
+✔ mismatched, public, and symlink registrations cannot bind an MCP process (7.062903ms)
+✔ Codex setup is idempotent and preserves server restrictions, accounts and other config (27.880736ms)
+✔ fresh Codex table forwards dynamic identity only, without pinning a chat globally (0.760293ms)
+✖ the shipped helper can configure a fresh chat twice without changing unrelated settings (53.399052ms)
+✔ a stale empty lock recovers; a live PID and a newly created empty lock remain protected (20.865539ms)
+✔ host failure never produces an accepted receipt; ambiguous sends stop for reconciliation (3.438794ms)
+✔ known non-submission can retry; successful transport records acceptance after submission (0.667223ms)
+✔ a delayed claim cannot submit after its remaining host lease becomes too short (1.139183ms)
+✔ a personal scope change during claim or dispatch cannot submit to the host (1.071395ms)
+✔ a lost dispatch receipt releases the claim without submitting to the host (1.471102ms)
+✔ an unrecoverable dispatch receipt failure never falls through to a host send (0.710481ms)
+✔ mailbox failures identify claim without changing delivery semantics (0.540038ms)
+✔ mailbox failures identify dispatch_receipt without changing delivery semantics (0.407884ms)
+✔ mailbox failures identify host_submit without changing delivery semantics (1.077247ms)
+✔ mailbox failures identify accept_receipt without changing delivery semantics (0.321156ms)
+✔ messages from the same human remain quoted agent content without private workspace claims (0.765689ms)
+✔ malformed native reply calls explain the correction before any account or mailbox request (2.278894ms)
+✔ Claude socket loss before submission retries; a timeout after submission stays uncertain (119.702533ms)
+✔ Codex pipe preflight failures retry and a reconciled mailbox can dispatch after an ambiguous send (6.445762ms)
+✔ Codex daemon loss before queueing retries and mailbox reconciliation survives local uncertainty (1.007668ms)
+✔ linked chat delivery reads authenticated content and acknowledges only after host acceptance (5.064573ms)
+✔ host outage and ambiguous receipt leave the message retryable with the same delivery key (1.526614ms)
+✔ lost receipt flush is retried after restart without submitting the message twice (1.221354ms)
+✔ pagination reaches the pending message without replaying history (0.753138ms)
+✔ a revoked delegation audit can arrive in the selected receiver without granting reply permission (1.573122ms)
+✔ changed route, mismatched workspace, outgoing messages and scope changes cannot dispatch (2.007768ms)
+✔ group requests preserve authenticated target intent and reject changed routing metadata (1.410555ms)
+✔ restart recovers saved receipts; receiver holds exact native identity and reports its real lifecycle (38.339135ms)
+✔ a stalled history capture cannot block linked-chat delivery or receiver health (46.050162ms)
+✔ upgrade gracefully retires the exact legacy receiver and retains delivery receipts (59.525982ms)
+✔ upgrade refuses another profile, changed native binding, or changed process lock (165.353568ms)
+✔ upgrade cannot replace a receiver that has not relinquished its lock (144.236552ms)
+✔ current and newer receivers are retained without a downgrade (0.408793ms)
+✔ stale presence never claims a working automatic receiver (13.145616ms)
+✔ a hookless Conductor receiver publishes its private startup observation automatically (14.182932ms)
+✔ a slow successful local mailbox RPC survives the former twelve-second timeout (12564.961348ms)
+✔ mailbox failure does not suppress linked delivery or startup capture and exposes only safe phase metadata (24.354274ms)
+✔ Conductor adapter binds the native thread to its exact host session and preserves agent provenance (5.743371ms)
+✔ Conductor adapter cannot target a different native thread, a local Mac or a mismatched workspace (0.686134ms)
+✔ Conductor preflight outages retry safely, and ambiguous submissions use the documented idempotency key (3.237856ms)
+✔ Conductor sends linked-chat questions to the existing chat with exact reply references (2.262208ms)
+✔ verified Conductor chat names distinguish chats sharing a workspace without changing native identity (3.740516ms)
+✔ Conductor name refresh accepts only verified session metadata and never tool-like identity fields (1.135768ms)
+✔ display-only Conductor lookups require the exact native binding and tolerate absent names (1.438363ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 46
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13329.327038
+
+✖ failing tests:
+
+test at .context/end-to-end-repair/extracted41/tests/codex-host-context.test.mjs:68:1
+✖ the shipped helper can configure a fresh chat twice without changing unrelated settings (53.399052ms)
+  Error: Command failed: /usr/local/bin/node apps/commonplace/server/configure-codex.mjs
+  node:internal/modules/cjs/loader:1568
+    throw err;
+    ^
+  
+  Error: Cannot find module '/home/vercel-sandbox/commonplace-plugin/apps/commonplace/server/configure-codex.mjs'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)
+      at Module._load (node:internal/modules/cjs/loader:1341:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.22.1
+  
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at checkExecSyncError (node:child_process:943:11)
+      at execFileSync (node:child_process:979:15)
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/end-to-end-repair/extracted41/tests/codex-host-context.test.mjs:73:27)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    status: 1,
+    signal: null,
+    output: [ null, '', "node:internal/modules/cjs/loader:1568\n  throw err;\n  ^\n\nError: Cannot find module '/home/vercel-sandbox/commonplace-plugin/apps/commonplace/server/configure-codex.mjs'\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\n    at node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v24.22.1\n" ],
+    pid: 1941115,
+    stdout: '',
+    stderr: "node:internal/modules/cjs/loader:1568\n  throw err;\n  ^\n\nError: Cannot find module '/home/vercel-sandbox/commonplace-plugin/apps/commonplace/server/configure-codex.mjs'\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1564:15)\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1118:27)\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1142:10)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1169:12)\n    at Module._load (node:internal/modules/cjs/loader:1341:5)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\n    at node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v24.22.1\n"
+  }

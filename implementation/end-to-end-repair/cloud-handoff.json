@@ -1,0 +1,11 @@
+{
+  "state": "activated",
+  "forcedSignals": false,
+  "previous": {
+    "syncEnabled": true
+  },
+  "activeRevision": 74,
+  "configure_cloud_syncRestored": true,
+  "settingsRestored": true,
+  "accountPreserved": true
+}
