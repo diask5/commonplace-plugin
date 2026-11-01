@@ -1,0 +1,172 @@
+{
+  "name": "Automatic startup reporting and guarded native activation; 0.4.38/runtime71",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch",
+    "deployment-source-modes.patch",
+    "visible-transcript-envelopes.patch",
+    "native-message-excerpts.patch",
+    "p0-excerpts-candidate.patch",
+    "private-native-titles.patch",
+    "space-request-diagnostics.patch",
+    "bounded-classification.patch",
+    "question-discovery.patch",
+    "sharing-stress.patch",
+    "cross-host-context-sync.patch",
+    "bounded-sync-catchup.patch",
+    "classifier-reliability.patch",
+    "imported-context-excerpts.patch",
+    "invite-cta.patch",
+    "setup-preflight-recovery.patch",
+    "current-space-invite.patch",
+    "multiple-accounts.patch",
+    "faster-chat-sync.patch",
+    "personal-space-events.patch",
+    "continuous-chat-sync.patch"
+  ],
+  "patch": "oob-activation.patch",
+  "sha256": "375553147d987a82282a2bd5b5366260bc814c59babf9a862111e4199eab493e",
+  "state": "Source candidate; native packaging and verification in progress. Not installed or activated.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-setup-request.mjs",
+      "beforeSha256": "ff13aa252f0a967d918b5b3281a8b2d3b84145d68f57f105a884707bffcd1825",
+      "sha256": "e7cf41c953595866fc4fd67c7427c926ea22658c0a4fbf7a3a06dc80b196aac3"
+    },
+    {
+      "path": "apps/commonplace/server/cloud-background.mjs",
+      "beforeSha256": "19c7daf974810d3b39d3f248fbd67fda56cfda2ab81f249dbf0edae791f670ff",
+      "sha256": "4a59204b5bc30f8aab5bd4283e3a344d9a6517730bc68705715feed5e57b335f"
+    },
+    {
+      "path": "apps/commonplace/server/cloud-sync.mjs",
+      "beforeSha256": "a807c80f25952c25250e5583f565c3fc588c0ea2105cd156e65bb18c13ccedde",
+      "sha256": "8d8edda52593de7d6965d3ff42ce9f49761f2a0c935428f10808ffa8125437b0"
+    },
+    {
+      "path": "apps/commonplace/server/conductor-receiver.mjs",
+      "beforeSha256": "04317d3768d593a71685d215ad95ab1721bf3e41434cdaef2b1b94847b43db50",
+      "sha256": "63d8e0c41bfea8b2a70a5ba6bd5305fde551e3642cd1c2e01632dd685ba146c5"
+    },
+    {
+      "path": "apps/commonplace/server/context-mirror.mjs",
+      "beforeSha256": "1bf69423bba38d43bda0b26976524a19844af37eafb3d6e7055dbf2d6488487a",
+      "sha256": "921a5aac5d176e407f72c380b5f2b2cc9b89d65b951313ddfeb4c25c5abfd957"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "8cea83c0ae2e0407c6ea5920ddc2c683b2c118511a627b8115a5775d0863d553",
+      "sha256": "8126d42495d61839d3850821811b5259ea0db8f4b505777ab42d15d369941f87"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-resource-ingestion.mjs",
+      "beforeSha256": "81d5ecd142d481aff7ec4c695c94003e86c6c833c6a3abf140b2ed18263b9e23",
+      "sha256": "dc61dd5c05b2e35471894fb4c6723d5a21f94b6e42e16ba39847f5a7323b4bd1"
+    },
+    {
+      "path": "apps/commonplace/server/plugin.mjs",
+      "beforeSha256": "4acdacf83f03e7fe5d1f0ec973ebbbede867d1a8c8eed8a2af74f207a88d4192",
+      "sha256": "9f7662de93e06da89259c7a02f484743bd82b6233aef825194271cdc293006c3"
+    },
+    {
+      "path": "apps/commonplace/server/runtime-upgrade.mjs",
+      "beforeSha256": null,
+      "sha256": "1d9bfa25c00cbeb1577ec526da1a6a4dca50b4f41d79b19513d90c918ae3fb92"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "bb978c0c757a47928befe4c373584ad8246d06eb94abb398966232098daa51a0",
+      "sha256": "61ca6f0757f1c27480270dfd97eb3bc75af1934455686e2a25cfc886ed9bbf2e"
+    },
+    {
+      "path": "apps/commonplace/server/start.mjs",
+      "beforeSha256": "89a898b7b9a85a0741c909700b5edcff838d8fbf06afe5553e4aa6635fad0d69",
+      "sha256": "e37c20003622c257198c5c10b438c7568327c59dfc66e62c5e93c13b25e95935"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "afc891d11ce3578c213bb5b3324d72146c69fa7c0475b4f849a12b88a399d72b",
+      "sha256": "0dd8b31d95b45be7492caf43023e30eb143f5c38837fd103cdbe3fbbfcd79250"
+    },
+    {
+      "path": "tests/cloud-background.test.mjs",
+      "beforeSha256": "bc0b7fe54443a396db46c23e18332e5c0773a9086b0b4352696d06a2c5f11f77",
+      "sha256": "160eb97365fdf73e4eb9173eee00586e27ea62c00b0129e8528aec4683f931e8"
+    },
+    {
+      "path": "tests/context-mirror.test.mjs",
+      "beforeSha256": "bebfe93f5f619957f57d74d5e911147622de63ed4b0c982827645e93f994e8ba",
+      "sha256": "f0390f388e09caf5c91b7630afb0205d2dc16cc00a48fac0f25571e7aed4f62e"
+    },
+    {
+      "path": "tests/context-setup-request.test.mjs",
+      "beforeSha256": "f40ef361d9087ad92d06ec5260d4adcf5196cd2c601996e54da05f082580596c",
+      "sha256": "bd19dc3577776b560b8103b51f056f6d2a2202e872237a3fb166096f0394de05"
+    },
+    {
+      "path": "tests/mailbox-conductor-receiver.test.mjs",
+      "beforeSha256": "12e2277d7e043989ea5f26d320075966b643dd1dcd2d4ffe2a0adec1816dfd22",
+      "sha256": "2ff6a7776dfe06a6ee77737885eac6bb34a6f5545f4d461ba10c55e9af93783e"
+    },
+    {
+      "path": "tests/mailbox-runtime-drain.test.mjs",
+      "beforeSha256": null,
+      "sha256": "821b4d7acbae140b875f27989946b8f6d7f16541f2df5800e14a60df5ec3d75e"
+    },
+    {
+      "path": "tests/mailbox-runtime-upgrade.test.mjs",
+      "beforeSha256": "b5ee65cdd261258eade59dae25cbe67cc9d044b515a5d74beecff7496dcd852e",
+      "sha256": "a22bf11ad3f585b6597678ee011d0bca575a6b2b2d7b4c9f5f879b56a90fe57c"
+    },
+    {
+      "path": "tests/mailbox-setup.test.mjs",
+      "beforeSha256": "f0c42fd7b6d860212825465f4003918e93f1c604af9185500bdd336d2587ff79",
+      "sha256": "ae2b2d649329fc1108eb691f5794959aab19719a52ca819fad6cf4041a35f614"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "dd44eed00951f7d40b231fbeeab6b4787f6901a40049f0f598d6982e4204ba2f",
+      "sha256": "99fa4453c39fde65330740548faa1bc9edb3b5a1074ad09728721ef649bcfcce"
+    }
+  ]
+}

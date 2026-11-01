@@ -1,0 +1,11 @@
+ℹ Five protocol clients read initial content, edits and recovered uploads; exclusions propagated to all five and another account read nothing. Native and Google identities are synthetic.
+ℹ 7 MB authoritative projection + patched/full equality: 318 ms; patched 164 ms, fresh 154 ms
+ℹ {"owners":10,"requests":30,"approvedExcerpts":160,"providerCalls":640,"peakProviderCalls":80,"perOwnerPeak":[8,8,8,8,8,8,8,8,8,8],"elapsedMs":2404,"results":[{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16},{"pages":3,"excerpts":16}]}
+ℹ tests 695
+ℹ suites 0
+ℹ pass 695
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 91298.414052
