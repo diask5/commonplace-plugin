@@ -1,5 +1,5 @@
 {
-  "state": "packaged-reviewed-not-published-not-deployed",
+  "state": "published-not-deployed",
   "native": "0.4.44/runtime77 unchanged",
   "targetServer": "20261101-archive-visibility",
   "currentLiveServer": "20261101-context-throughput",
@@ -56,5 +56,6 @@
     "reason": "No authorized Mac is bound to this chat. Send a message from the Mac you want to use.",
     "capacityMutationStarted": false,
     "deploymentAttempted": false
-  }
+  },
+  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261101-archive-visibility"
 }

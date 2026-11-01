@@ -1,6 +1,6 @@
 # Archive visibility performance
 
-1 November 2026. Patch 71 is packaged and independently reviewed for server `20261101-archive-visibility`; it is not deployed. Production remains `20261101-context-throughput`, with native 0.4.44/runtime77 unchanged.
+1 November 2026. Patch 71 is published and independently reviewed for server `20261101-archive-visibility`; it is not deployed. Production remains `20261101-context-throughput`, with native 0.4.44/runtime77 unchanged.
 
 Archive projection still evaluated every alias for every legacy row after patch 70 repaired status polling. The same owner/device metadata lookup now filters hidden rows before fetching their bodies. It runs within the existing pinned snapshot and is discarded after each request. Document IDs, ordering, source authority and revision/expiry/exclusion checks are unchanged.
 

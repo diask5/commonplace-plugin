@@ -75,7 +75,7 @@
   ],
   "patch": "archive-visibility-performance.patch",
   "sha256": "0a46154cf13680578887a0c2d24203642e18f5f01ffa1180117cafb994d59c03",
-  "state": "Source candidate; native 0.4.44/runtime 77 unchanged. Server packaging and live acceptance pending.",
+  "state": "published-not-deployed",
   "files": [
     {
       "path": "apps/commonplace-account/server/archive-source.mjs",
@@ -102,5 +102,6 @@
       "beforeSha256": "d5804405ad8e0c27bc5c82e261d144e7992a3cc58017f5c9068e4d0a344b22ec",
       "sha256": "879a992d9a6b7a6d83eee359376531aa4c6458fea91cd34ffcef9153ec912047"
     }
-  ]
+  ],
+  "releaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261101-archive-visibility"
 }

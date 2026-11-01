@@ -1,0 +1,29 @@
+{
+  "state": "published-digests-verified-before-publication",
+  "assets": [
+    {
+      "name": "deploy-cloud-update.py",
+      "size": 12916,
+      "digest": "sha256:6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
+      "url": "https://github.com/diask5/commonplace-plugin/releases/download/untagged-d6eb894b7f5fab3addfe/deploy-cloud-update.py"
+    },
+    {
+      "name": "runtime-update-manifest.json",
+      "size": 28097,
+      "digest": "sha256:af7aa91a50edd6b7944924e0da952b9cdb5e15ab19235edff87b11509130569c",
+      "url": "https://github.com/diask5/commonplace-plugin/releases/download/untagged-d6eb894b7f5fab3addfe/runtime-update-manifest.json"
+    },
+    {
+      "name": "runtime-update.json",
+      "size": 2856017,
+      "digest": "sha256:1c5e63036293377470484bc0aa46b752d2cae875c1ede402a0d90b2d01ad134d",
+      "url": "https://github.com/diask5/commonplace-plugin/releases/download/untagged-d6eb894b7f5fab3addfe/runtime-update.json"
+    },
+    {
+      "name": "runtime-update.sha256",
+      "size": 86,
+      "digest": "sha256:9c41e68388ada79f8a7e510cdf86ba0748e1e2e97d079c1a74dccc3535020cb1",
+      "url": "https://github.com/diask5/commonplace-plugin/releases/download/untagged-d6eb894b7f5fab3addfe/runtime-update.sha256"
+    }
+  ]
+}
