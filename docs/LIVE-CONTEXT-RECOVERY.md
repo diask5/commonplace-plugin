@@ -1,6 +1,6 @@
 # Live context and receiver recovery
 
-1 November 2026. Patch 66 prepares native **0.4.42/runtime75** and server
+1 November 2026. Patch 66 publishes native **0.4.42/runtime75** and server
 **20261101-context-recovery**. Publication, installation, activation and live
 checks are recorded separately in
 [verification](../implementation/live-context-recovery-verification.json).
@@ -48,3 +48,9 @@ metadata eviction. An unchanged 0.4.41 client still fails closed in that case.
 Continuous uploads can still require revision restarts. Remote MCP cannot collect
 web-only chat history. Source tests and service health do not establish completed
 Work replies or all-host, clean-machine, independent-human readiness.
+
+Both native aliases are published; distribution PR #69 is merged. Both the Mac and cloud now run companion75 with accounts and permissions preserved. The server rollout verifies 166 readable files and unchanged 47 migration digests. Public health, OAuth, asset and desktop/phone browser checks pass. These live results are distinct from the source tests above.
+
+The Mac mirror cache progresses, but its first full publication remains pending. A fresh 0.4.42 native chat read another same-account agent’s published Personal progress and published its own; the earlier chat’s actual final assistant sentence has not yet appeared in saved archive reads. Incoming native roundtrip and Work reply tests are deliberately deferred until Mac-dependent deployment work finishes, because earlier incoming messages invalidated this chat’s Mac execution binding.
+
+Production throughput remains under repair: repeated localhost health requests took 5.5–9.5 seconds while the main process waited on filesystem commits. Synthetic investigation found 16 WAL commits per empty receiver cycle; this does not conclusively attribute the live delay. Original evidence and published artifacts are retained.

@@ -1,0 +1,32 @@
+{
+  "releaseId": 430324198,
+  "tag": "meet-proxy-server-20261101-context-recovery",
+  "target": "4e476b8b5af1d3850bfbdb528a8863e8fcd39735",
+  "draft": false,
+  "checks": [
+    {
+      "name": "runtime-update.json",
+      "sha256": "6fbd6e3e4a1936d979d58c16dc9bdf3e308b2d411c790fc8255c35607f805696",
+      "bytes": 2843669,
+      "verified": true
+    },
+    {
+      "name": "runtime-update-manifest.json",
+      "sha256": "e4aa7544fb63f67da75c99d194a81f7832a6c342f31b53fd6eafeb7916ccdb62",
+      "bytes": 28097,
+      "verified": true
+    },
+    {
+      "name": "runtime-update.sha256",
+      "sha256": "548caed831f4a694a9e58278abed7d94e83ee44511cff536eed815d75740b308",
+      "bytes": 86,
+      "verified": true
+    },
+    {
+      "name": "deploy-cloud-update.py",
+      "sha256": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32",
+      "bytes": 12916,
+      "verified": true
+    }
+  ]
+}

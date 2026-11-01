@@ -1,5 +1,5 @@
 {
-  "state": "Native0.4.42/runtime75 and 166-file server candidate packaged; publication/install/live checks pending.",
+  "state": "Published, installed and active on Mac/cloud; server live and public checks pass. Live throughput, full Mac mirror, final transcript catch-up and communication acceptance remain in progress.",
   "sourcePatch": 66,
   "nativeVersion": "0.4.42",
   "runtimeRevision": 75,
@@ -53,6 +53,52 @@
     "deploy-cloud-update.py": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32"
   },
   "prs": {
-    "source": 68
+    "source": 68,
+    "distribution": {
+      "number": 69,
+      "state": "merged",
+      "commit": "1feb3c73fd0dbabf7630ec5ff09d4b6e88b2f849"
+    }
+  },
+  "nativeRelease": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.42",
+  "serverReleaseUrl": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-server-20261101-context-recovery",
+  "publicationVerification": "All ten GitHub asset hashes checked after publication; local artifacts verified before publication. Draft-by-tag API lookup returned404 before publication; retained workflow sequencing limitation.",
+  "liveAfter": {
+    "mac": {
+      "installation": {
+        "state": "passed",
+        "installedVersion": "0.4.42",
+        "zipSha256": "b892a7eb23fef42a19b0b83cf6638b5b694db080c20dd282c50c2ee4695ff5dc",
+        "accountPreserved": true,
+        "savedPermissionsPreserved": true,
+        "codexOnlyPluginPathsChanged": true,
+        "claudePluginManagerUpdated": true
+      },
+      "activation": {
+        "state": "passed",
+        "initialRevision": 74,
+        "forcedSignals": false,
+        "attempts": 10,
+        "activeRevision": 75,
+        "backgroundVersion": "0.4.42",
+        "accountAndPermissionsPreserved": true
+      }
+    },
+    "cloud": {
+      "state": "passed",
+      "initialRevision": 74,
+      "forcedSignals": false,
+      "attempts": 92,
+      "activeRevision": 75,
+      "accountAndPermissionsPreserved": true
+    },
+    "publicSmoke": "end-to-end-repair/public-smoke66.json",
+    "currentOpenChecks": [
+      "Mac full mirror not yet published; verified file cache progresses",
+      "Server local health responses5.5\u20139.5seconds under background work",
+      "Same-owner native reply and targeted Work reply not yet sent"
+    ],
+    "server": "end-to-end-repair/server66-live.json",
+    "freshFinalSourceRead": "end-to-end-repair/final75-read-verification.json"
   }
 }

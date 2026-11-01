@@ -1,0 +1,47 @@
+{
+  "state": "Source and server artifact verified; publication/deployment pending",
+  "patch": 67,
+  "nativeUnchanged": "0.4.42/runtime75",
+  "serverRelease": "20261101-background-throughput",
+  "serverFiles": 166,
+  "changedModules": [
+    "dist/standalone/account-runtime/cloud-http.mjs",
+    "dist/standalone/account-runtime/person-inbox.mjs",
+    "dist/standalone/account-runtime/shared-context.mjs"
+  ],
+  "newMigrations": 0,
+  "tests": {
+    "core": 801,
+    "schedulerFocused": 16,
+    "archiveRelated": 193,
+    "inboxRelated": 128,
+    "independentReview": 130,
+    "note": "Counts overlap; do not add."
+  },
+  "replay": {
+    "patches": 67,
+    "changedFiles": 263,
+    "mismatches": [],
+    "matched": true
+  },
+  "artifacts": {
+    "runtime-update.json": "3e355b9937c514edf4e487e1431e80c40d2a2a886e2e823099feca2eaa401486",
+    "runtime-update-manifest.json": "932aa7f82a5175521af7f9b2dfe66b01199fa2a740117cc6d140737381169903",
+    "runtime-update.sha256": "087894bf4b9ca7d6018b32956e2e9718fef25e59d21c500f9c39648cbe407dfa",
+    "deploy-cloud-update.py": "6698a63da1841553cc112991386bf682b72a758eae9e910c7381cf07d603ff32"
+  },
+  "sharingPoliciesChanged": false,
+  "hostPermissionsChanged": false,
+  "classifierConfigurationChanged": false,
+  "authReplayAndQuotasChanged": false,
+  "sqliteDurability": "FULL unchanged",
+  "retainedFailures": [
+    "First scheduler fixture restored a previous mock referencing a closed database; test fixture fixed, original log retained.",
+    "Initial export included ignored Python bytecode; exporter excluded generated caches and exact replay reverified before publication."
+  ],
+  "limitations": [
+    "Synthetic WAL reductions do not establish live throughput.",
+    "Authenticated idle cycle still uses15commits versus16; replay and quota durability remain.",
+    "Live Mac mirror and Work/native communication acceptance remain open."
+  ]
+}
