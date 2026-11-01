@@ -1,5 +1,7 @@
 # Multiple native accounts
 
+1 November rollout update: this work is included in published native **0.4.37/runtime70** and live server **20261101-space-events**. The earlier candidate and access-block records below are historical. See [current rollout evidence](SPACE-EVENTS-ROLLOUT.md) for publication, installation and activation separately.
+
 31 October 2026 — patch 58, native **0.4.34/runtime67 is published**:
 https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.34
 

@@ -1,0 +1,140 @@
+{
+  "date": "2026-11-01",
+  "state": "Server live; native published, distributed and installed. Mac runtime70 activation deferred after 12 supported attempts; runtime66 remains healthy and collection is restored.",
+  "includedPatches": [
+    57,
+    58,
+    59,
+    60,
+    61
+  ],
+  "source": {
+    "pr": "https://github.com/diask5/commonplace-plugin/pull/56",
+    "mergeCommit": "7c966616c6d162cf73dba11f3af9a8c3a272b675",
+    "coreTestsPassed": 685,
+    "browserAndProbeChecksPassed": 41,
+    "focusedRecoveryAndCrossHostChecksPassed": 19,
+    "extractedNativeChecksPassed": 17,
+    "exactReplayPatches": 61,
+    "exactReplayChangedFiles": 242,
+    "exactReplayMismatches": 0,
+    "candidateEvidencePreserved": true
+  },
+  "server": {
+    "release": "20261101-space-events",
+    "origin": "https://34.27.253.220",
+    "published": true,
+    "deployed": true,
+    "previousRelease": "20261031-setup-activation",
+    "bundleSha256": "10631db9521212f8645600d063d33f10bae14cca1724bd6eab782104a04cac5f",
+    "filesVerified": 165,
+    "serviceReadableFiles": 165,
+    "appliedMigrations": 47,
+    "newMigration": "0046_personal_space.sql",
+    "backupIntegrityChecked": true,
+    "migrationRehearsalIntegrityChecked": true,
+    "previousReleaseAndBackupRetained": true,
+    "freshWorkerHeartbeatVerified": true,
+    "servicesHealthy": [
+      "commonplace",
+      "commonplace-runtime",
+      "nginx"
+    ],
+    "seconds": 484.5786681175232,
+    "evidence": "implementation/space-events-rollout/server.json"
+  },
+  "publicChecks": {
+    "tlsCertificateVerification": true,
+    "health": 200,
+    "oauthDiscovery": 200,
+    "agentAuthDiscovery": 200,
+    "unauthenticatedMcp": 401,
+    "browserAssetHashesVerified": 7,
+    "desktopAndPhoneLogin": "passed; no page errors or horizontal overflow",
+    "evidence": "implementation/space-events-rollout/public-smoke.json"
+  },
+  "signedProductionCheck": {
+    "state": "passed",
+    "scope": "Existing signed owner, disposable empty space; no independent-human or classifier acceptance claim",
+    "eventsRead": true,
+    "pinnedCursorReplay": true,
+    "resumeWithoutDuplicates": true,
+    "activityRead": true,
+    "personalEventsRead": true,
+    "personalInvitationRejected": true,
+    "unknownSpaceRejected": true,
+    "archivedSpaceEventsRejected": true,
+    "disposableSpaceArchived": true,
+    "firstAttempt": "Mac command timed out after 60 seconds without a final receipt. Continuation reconciled existing spaces before creating and persisted progress; failure retained.",
+    "evidence": "implementation/space-events-rollout/mac-final.json"
+  },
+  "native": {
+    "version": "0.4.37",
+    "runtimeRevision": 70,
+    "published": true,
+    "distributionMerged": true,
+    "installedOnOwnerMac": true,
+    "activeOnOwnerMac": false,
+    "observedActiveRevision": 66,
+    "activationState": "Incomplete after 12 bounded supported attempts; active-work guard HTTP 409. Runtime66 remains responding.",
+    "aliases": {
+      "meet-proxy": "c98d4de81e6d076d78da142bbcca626cecf720d192bd5a4c82c0fcaff64cf525",
+      "commonplace": "19bbdbbb39f881b7aae047e1139d1996d77ffcb59a3ce166455e5d00da7fe953"
+    },
+    "release": "https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.37",
+    "distributionPr": "https://github.com/diask5/commonplace-plugin/pull/57",
+    "distributionMergeCommit": "e3615dd13cc70f22e5160e95fd23c1ba150459e2",
+    "defaultBranch": "codex/plugin-distribution",
+    "defaultBranchChanged": false,
+    "accountPreserved": true,
+    "savedPermissionsPreserved": true,
+    "codexConfigurationOnlyPluginPathsChanged": true,
+    "claudePluginManagerUpdated": true,
+    "loadedChatsAutomaticallyUpdated": false,
+    "restartGuardResponse": {
+      "status": 409,
+      "error": "Commonplace is finishing active work before updating.",
+      "evidence": "implementation/space-events-rollout/guard-response.json"
+    },
+    "activationAttempts": 12,
+    "backgroundVersion": "0.4.33",
+    "activationRetryStillRunning": false,
+    "evidence": "implementation/space-events-rollout/mac-final.json"
+  },
+  "access": {
+    "priorMacExecutionRejectionRetained": true,
+    "newExplicitDeploymentRequestMacExecutionSucceeded": true,
+    "existingGoogleCloudLoginUsed": true,
+    "permissionBypass": false,
+    "classifierModelPromptThresholdChanged": false
+  },
+  "limits": [
+    "The faster runtime70 collector is installed but not active on this Mac. Its current collection evidence uses runtime66. No fresh post-runtime70 transcript or host-notification claim.",
+    "Notification behavior is covered by extracted transport tests; no live host model-wake claim.",
+    "Synthetic upload benchmark is not production throughput evidence.",
+    "This configured Mac does not prove work-machine coverage, clean installation or every-host onboarding.",
+    "Regular Claude and ChatGPT MCP connections do not automatically collect web-only conversations.",
+    "Prior false withholding and cross-person acceptance limits remain open."
+  ],
+  "maintenance": {
+    "temporaryCollectionPause": true,
+    "priorSyncEnabled": true,
+    "finalSyncEnabled": true,
+    "restored": true,
+    "startedAt": 1793494351202,
+    "finishedAt": 1793494480410,
+    "forcedSignals": false,
+    "upgradeResult": "Still deferred by the normal active-work guard; no forced restart."
+  },
+  "liveCollection": {
+    "runtimeRevision": 66,
+    "enabled": true,
+    "lastSyncedAt": 1793494490820,
+    "error": null,
+    "discoveredFiles": 197,
+    "partial": false,
+    "conductorConversations": 49,
+    "discoveryPartial": false,
+    "scope": "Current configured Mac only; does not prove work-machine or unsupported web-chat coverage."
+  }
+}

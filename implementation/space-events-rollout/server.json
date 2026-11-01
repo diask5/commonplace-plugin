@@ -1,0 +1,18 @@
+{
+  "state": "passed",
+  "release": "20261101-space-events",
+  "filesVerified": 165,
+  "serviceReadableFiles": 165,
+  "appliedMigrations": 47,
+  "newMigration": "0046_personal_space.sql",
+  "services": [
+    "active",
+    "active",
+    "active"
+  ],
+  "backupVerified": true,
+  "migrationRehearsalPassed": true,
+  "freshWorkerHeartbeat": true,
+  "previousRelease": "20261031-setup-activation",
+  "finishedAt": 1793493676.2837133
+}

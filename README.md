@@ -8,9 +8,13 @@ simple membership controls.
 The [production application](https://34.27.253.220/) includes context-sharing
 spaces, one-request native plugin/MCP setup, automatic private collection,
 natural-language invitations, timed rules and leave/archive controls.
-Native **0.4.33/runtime66** is published and active on the verified Mac. Server
-**20261031-invite-cta** is live, with all 160 files and all three
-services verified. [Current release evidence](docs/INVITE-CTA.md).
+Native **0.4.37/runtime70** is published and installed on the verified Mac;
+the busy companion still runs runtime66 with sync enabled. Server
+**20261101-space-events** is
+live, with all 165 files, 47 migrations and all three services verified. This
+release adds common Space events, a private Personal space, account selection,
+compressed uploads and continuous context catch-up.
+[Current release evidence](docs/SPACE-EVENTS-ROLLOUT.md).
 [Paste-ready work-account Claude setup prompt](docs/WORK-ACCOUNT-CLAUDE-PROMPT.md).
 
 Start at the production application, choose **Continue with Google**, then
@@ -64,7 +68,7 @@ and simulated model/host responses. In the implementation repository, run
 
 ## One private cloud workspace
 
-[Download Meet Proxy / Commonplace 0.4.33](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.33)
+[Download Meet Proxy / Commonplace 0.4.37](https://github.com/diask5/commonplace-plugin/releases/tag/meet-proxy-v0.4.37)
 for a cloud workspace containing supported synced chats, permitted agent-message
 threads, published working context, and previous cloud results. Your cloud agent
 can query the live message board, consult your connected native agents, wait for

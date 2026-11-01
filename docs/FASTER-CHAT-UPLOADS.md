@@ -1,5 +1,7 @@
 # Faster chat uploads
 
+1 November rollout update: this work is included in published native **0.4.37/runtime70** and live server **20261101-space-events**. The earlier candidate and access-block records below are historical. See [current rollout evidence](SPACE-EVENTS-ROLLOUT.md) for publication, installation and activation separately.
+
 31 October 2026 — patch 59 publishes native **0.4.35/runtime68** and server
 **20261031-compressed-context**. Both releases and their asset hashes are verified; neither is
 installed or deployed. The server bundle includes the previously published,

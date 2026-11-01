@@ -1,0 +1,6 @@
+{
+  "status": 409,
+  "response": {
+    "error": "Commonplace is finishing active work before updating."
+  }
+}

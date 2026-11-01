@@ -1,5 +1,7 @@
 # Continuous catch-up and incremental history scanning
 
+1 November rollout update: this work is included in published native **0.4.37/runtime70** and live server **20261101-space-events**. The earlier candidate and access-block records below are historical. See [current rollout evidence](SPACE-EVENTS-ROLLOUT.md) for publication, installation and activation separately.
+
 The owner challenged the six-upload-per-pass cap and repeated rescanning of a
 6,722-file library. Inspection confirmed both in the existing collector:
 `Math.min(this.budget, 6)` limited each pass, and the companion scheduled another
