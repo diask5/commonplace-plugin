@@ -68,7 +68,7 @@
   ],
   "patch": "staged-collection.patch",
   "sha256": "31f8bb89bc50c49f5ff121cabaa905438838995af07fe3056a78733e0003e779",
-  "state": "Source candidate; native packaging and verification in progress. Not installed or activated.",
+  "state": "Published native 0.4.40/runtime73; cloud active and fresh Codex message/archive source read verified. Mac installed; final activation unverified after host execution binding loss.",
   "files": [
     {
       "path": "apps/commonplace/server/conductor-history.mjs",
