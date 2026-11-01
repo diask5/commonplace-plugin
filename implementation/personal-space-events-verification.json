@@ -1,0 +1,104 @@
+{
+  "date": "2026-11-01",
+  "patch": 60,
+  "state": "Locally packaged candidate; not published, installed, activated or deployed.",
+  "native": {
+    "version": "0.4.36",
+    "runtimeRevision": 69,
+    "published": false,
+    "installed": false,
+    "active": false,
+    "artifacts": [
+      {
+        "version": "0.4.36",
+        "alias": "meet-proxy",
+        "archive": "meet-proxy-0.4.36.zip",
+        "sha256": "36e33c1313fa3a0c8ca1dc58d441562c98cd32a2f611133336084ebc365471bc",
+        "bytes": 230170431
+      },
+      {
+        "version": "0.4.36",
+        "alias": "commonplace",
+        "archive": "commonplace-0.4.36.zip",
+        "sha256": "d6d706b263994c7279ee2aeee43c9cc360d1ffdbc6c9dd8dab6e7d1d3bb33eec",
+        "bytes": 230170431
+      }
+    ]
+  },
+  "server": {
+    "files": 165,
+    "deployed": false,
+    "liveBaseline": "20261031-setup-activation",
+    "migration": "0046_personal_space.sql",
+    "migrationRequired": true,
+    "codeOnlyRolloutAllowed": false,
+    "bundleSha256": "10631db9521212f8645600d063d33f10bae14cca1724bd6eab782104a04cac5f"
+  },
+  "checks": {
+    "core": {
+      "passed": 679,
+      "failed": 0,
+      "log": "implementation/personal-space-events/core-60-final.log"
+    },
+    "browserAndProbe": {
+      "passed": 41,
+      "failed": 0,
+      "log": "implementation/personal-space-events/ui-60-final.log"
+    },
+    "extractedNativeAndServer": {
+      "passed": 16,
+      "failed": 0,
+      "dependencies": "Existing source dependency installation reused; native and server modules extracted from candidate artifacts."
+    },
+    "runtimeSmoke": {
+      "passed": true,
+      "migrations": 47,
+      "checks": 12
+    },
+    "replay": {
+      "patches": 60,
+      "changedFiles": 239,
+      "mismatches": [],
+      "matched": true
+    },
+    "bothAliasPackaging": {
+      "passed": 1,
+      "failed": 0
+    }
+  },
+  "architecture": {
+    "personal": "Ordinary private group, existing workspace messages, attached agents derived from current account bindings.",
+    "events": "Existing cp_workspace_changes, cursor pages of at most 100; references only.",
+    "nativeTransports": [
+      "2025 stdio resources/subscribe",
+      "2026 stdio subscriptions/listen"
+    ],
+    "httpTransport": "Authenticated modern subscriptions/listen; legacy HTTP uses cursor reads.",
+    "notificationCheckIntervalMs": 15000,
+    "httpStreamLifetimeMs": 900000,
+    "hostWakeGuaranteed": false
+  },
+  "privacy": [
+    "Current membership and account rechecked on every event/context read and watcher poll.",
+    "Personal refuses invitations and foreign membership, including legacy paths.",
+    "Completed captures only; source exclusion, origin generation and account scope enforced.",
+    "Shared context events expose approved exchange references, never raw private transcript content or classifier checks.",
+    "Exclusion erases retained progress bodies from messages and copied change-log values.",
+    "Native observations are fixed lifecycle labels; Stop does not claim success.",
+    "No hidden reasoning, tool payloads, credentials or unsupported web-chat history."
+  ],
+  "limitations": [
+    "Synthetic local and extracted-candidate evidence; no actual host activation or live notification delivery established.",
+    "Watch errors stop that subscription; clients must reconnect and resume the durable cursor.",
+    "MCP events do not guarantee model execution or host wake.",
+    "Automatic progress requires supported activated native hooks and sync enabled; remote MCP alone does not collect transcripts.",
+    "Existing classifier readiness gaps remain unchanged."
+  ],
+  "hostBlock": {
+    "tool": "mcp__conductor__RunLocalCommand",
+    "reason": "Local execution is not enabled for this session",
+    "retried": false,
+    "bypassed": false
+  },
+  "retainedFailure": "Pagination fixture initially assumed two pages despite multiple mutations per post; corrected to follow hasMore and pinned through, with original log retained."
+}

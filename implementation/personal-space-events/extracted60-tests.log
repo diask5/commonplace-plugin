@@ -1,0 +1,26 @@
+✔ authenticated remote MCP supports modern and legacy; each task operation enforces owner and scope (1122.959223ms)
+✔ OAuth rejects redirect, resource, PKCE and replay substitutions before granting access (532.057403ms)
+✔ authenticated modern MCP space subscriptions push references and recover by cursor, then stop on removal (760.331388ms)
+✔ HTTP listens enforce capacity, release cancelled streams, and stop when the token expires (584.770483ms)
+2026-11-01T00:15:29.130Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ all same-account agents share one existing space history, across installations and reconnects (1627.932136ms)
+✔ Personal cannot be shared through groups, invitation APIs, legacy workspace routes or forged membership (776.45934ms)
+✔ native observations obey opt-out, coalesce activity and do not overwrite later progress on reconnect (1001.963756ms)
+✔ progress retries are atomic, sanitize credentials, and exclusions erase posts and block future updates (879.52401ms)
+✔ space message and current-agent pagination retain cursors and fence revoked or rebound bindings (716.128514ms)
+✔ native reporter sends fixed metadata only, gates old servers and rechecks capture scope (12.928257ms)
+✔ Codex owned receiver and existing inbox locks still permit lifecycle reporting without another receiver (73.150407ms)
+2026-11-01T00:15:29.034Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ the same durable event API serves Personal and shared spaces, resumes exactly, and fences removal (1855.096464ms)
+✔ only completed private captures produce readable transcript references, and exclusion invalidates them (953.030195ms)
+✔ shared context events only announce approved results and never private checks or source IDs (740.892545ms)
+✔ MCP resource subscription delivers URI notifications, supports catch-up, and stops after unsubscribe and scope change (179.758056ms)
+✔ modern stdio listens deduplicate shared watches, resume reads, and clean up cancellation and close (215.331092ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7398.737513

@@ -1,0 +1,12 @@
+✔ authenticated remote MCP supports modern and legacy; each task operation enforces owner and scope (602.322629ms)
+✔ OAuth rejects redirect, resource, PKCE and replay substitutions before granting access (300.683438ms)
+✔ authenticated modern MCP space subscriptions push references and recover by cursor, then stop on removal (452.808824ms)
+✔ HTTP listens enforce capacity, release cancelled streams, and stop when the token expires (521.54116ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2367.758136

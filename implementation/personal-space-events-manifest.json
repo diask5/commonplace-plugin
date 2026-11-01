@@ -1,0 +1,285 @@
+{
+  "name": "Event-driven Spaces and default private Personal space; 0.4.36/runtime69",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch",
+    "deployment-source-modes.patch",
+    "visible-transcript-envelopes.patch",
+    "native-message-excerpts.patch",
+    "p0-excerpts-candidate.patch",
+    "private-native-titles.patch",
+    "space-request-diagnostics.patch",
+    "bounded-classification.patch",
+    "question-discovery.patch",
+    "sharing-stress.patch",
+    "cross-host-context-sync.patch",
+    "bounded-sync-catchup.patch",
+    "classifier-reliability.patch",
+    "imported-context-excerpts.patch",
+    "invite-cta.patch",
+    "setup-preflight-recovery.patch",
+    "current-space-invite.patch",
+    "multiple-accounts.patch",
+    "faster-chat-sync.patch"
+  ],
+  "patch": "personal-space-events.patch",
+  "sha256": "118a61e1a6f6a607026382b24f8b76193bdc4ecb3e5312232499d359b366f596",
+  "state": "Locally packaged and verified native 0.4.36/runtime69 and server migration candidate; not published, installed or deployed.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/drizzle/0046_personal_space.sql",
+      "beforeSha256": null,
+      "sha256": "46d1fe71fc41c8429d16e80e7277d33a0433b995131151fd922352b733ba441c"
+    },
+    {
+      "path": "apps/commonplace-account/server/agent-board.mjs",
+      "beforeSha256": "95512dad13c199a47961bf0231fb5b5aef6e6140c914853e33f68e3eada47b46",
+      "sha256": "62886519529d23d3b1e9a57618115a4efb3777e7d4853a48b3a598f0d9af88d5"
+    },
+    {
+      "path": "apps/commonplace-account/server/agent-history.mjs",
+      "beforeSha256": "3189c642b236053f9edbc29b5aef358d6c5b65539aeaa2f038f728e44e251071",
+      "sha256": "4bcd7c88436f7126add76ca092b7efc539fc0f05a52f7549388018b02e7bdc92"
+    },
+    {
+      "path": "apps/commonplace-account/server/cloud-http.mjs",
+      "beforeSha256": "18a6b3b550b1f02d53a73cff1500d4caa8e679cd6163a0ecf87e4e52955a0679",
+      "sha256": "cd45945019e665641aa1170bb80b7e05daac7de243717e9a9321d9ab5f443b8e"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-conversations.mjs",
+      "beforeSha256": "0f749f9336695b7b828ce4b5a53684db1d6045ff34a1aaf8d6cc2afbf113acb3",
+      "sha256": "2b60fa3228755854c4effa48ea8430268c9ca429e4cfdb907744bde2f4fca078"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-space-invitations.mjs",
+      "beforeSha256": "8187a55f9df45e48ed4744b294277e81478a399f5833af8949ad4bc2f19e240a",
+      "sha256": "6c364f764670372fbc1993b889f7dca1b3786036db88c0374a2f563b8e0afb5b"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-space-rules.mjs",
+      "beforeSha256": "a3547056437d9028f9b1ed48d3415c1e26af90374267dfaa194c0d8e0172603b",
+      "sha256": "3473b7ea42dda2ad8fbefce00ec9aea6b309bb13e8e9a546092394a098039ade"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-assets/context-spaces.mjs",
+      "beforeSha256": "e0966dd4c27a57044775055b90ae3aa9e7a2b0d79232bcdc39d08e47982656e1",
+      "sha256": "c7f1ce39e23a882143315e324f790242668c55c5f9e03c1d314e0949f3341fbd"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-ui.mjs",
+      "beforeSha256": "4eadc784643002529f3be96c5ba50e94df9786e61a91962330811c21abc26b74",
+      "sha256": "c36ec266f757b656c1a263209447c6f843171d52da0389326f32ab1c0c7680b5"
+    },
+    {
+      "path": "apps/commonplace-account/server/groups.mjs",
+      "beforeSha256": "30d724f01a8f37f1b79a1a8be56a73d7e46378c9e7cafd49da6758d70394d026",
+      "sha256": "21738d8b0dfce4714a02f77650bf00a779922c44009e73c85f16d5261cf387bd"
+    },
+    {
+      "path": "apps/commonplace-account/server/mailboxes.mjs",
+      "beforeSha256": "7d3806c7e0d0372e326ec16612bec52c18e13f69a059d3278b7c93c84cd73232",
+      "sha256": "c2a6ec68dbca9d8c2664add7c16b467f45a15f52a38e09293fb555b13243ebf4"
+    },
+    {
+      "path": "apps/commonplace-account/server/mcp-adapter.mjs",
+      "beforeSha256": "3a9cffaf2f4d638d97d881e52a79164cec37dcb3bdef4a8cf70a843decaf37c8",
+      "sha256": "55f59aaf2dc26ccfc09a9ab5ab76b709d578896f577d7168f5774511cca260c3"
+    },
+    {
+      "path": "apps/commonplace-account/server/personal-space.mjs",
+      "beforeSha256": null,
+      "sha256": "2a14c95b1e2c3501b2ccb52c5a693a04e20cf511ed904409b88ecbd4d68e827a"
+    },
+    {
+      "path": "apps/commonplace-account/server/remote-mcp.mjs",
+      "beforeSha256": "19f530f6cbef5538c27d39d00d2355c751772cbe7443ffdcd8d4049cdfc376f0",
+      "sha256": "9592edcfec3840238cc004f613f57f92c936822f3aecec13b4540f4b21ddb2cd"
+    },
+    {
+      "path": "apps/commonplace-account/server/service.mjs",
+      "beforeSha256": "fc31b6c2afa488b098d1ca643f199e34de39648312366915284c1344c0566416",
+      "sha256": "b4f3022efa1d7ed21ec28dbbc8c07b9f177bd321449238ef61aa6f1db875503a"
+    },
+    {
+      "path": "apps/commonplace-account/server/space-context.mjs",
+      "beforeSha256": "7accf4957c977456a6dbe9ca3730a74fb05f2c24ce252ac5cdc16ad1c2002c27",
+      "sha256": "72c22adb78443978c54ec138896646df956ec3b3ee6c9ed5c53b6abe9dd747fb"
+    },
+    {
+      "path": "apps/commonplace-account/server/space-events.mjs",
+      "beforeSha256": null,
+      "sha256": "a4473b84dc578a2b9d66d83ef4b1e49092e47806f115ca0322b699f4db70c300"
+    },
+    {
+      "path": "apps/commonplace-account/server/space-invitations.mjs",
+      "beforeSha256": "149c452887dc14f5c138363e7405245afd7b91008958c3be957d9c02807392e2",
+      "sha256": "76f303c9a6ab37ec7998236a0dcc002174c3273d136dfd3aca961afff8d4957e"
+    },
+    {
+      "path": "apps/commonplace-account/server/space-resources.mjs",
+      "beforeSha256": null,
+      "sha256": "aa9ef56fac7b056dc1e136c6cb0c60e6bf356a3a89cbfbd431d951ddc0f9c722"
+    },
+    {
+      "path": "apps/commonplace-account/server/space-subscriptions.mjs",
+      "beforeSha256": null,
+      "sha256": "d07eeff0d9956fc15b3a322a6f10242a4ecfe2ba56f492cfe505007cce71b62b"
+    },
+    {
+      "path": "apps/commonplace-account/server/workspace-proxy.mjs",
+      "beforeSha256": "febff7dce1073de83d0ebdf77be3236bf16d5460285a2dd0521ea2b397a2082f",
+      "sha256": "b0c7c2f4a5b28d8d748cf7d45a345448257fc251ce8acd8751bbd778300c2236"
+    },
+    {
+      "path": "apps/commonplace-account/server/workspaces.mjs",
+      "beforeSha256": "8ade21097c607247217ecb594701f53b7fe9dde4f23019ef39aa18170343be8c",
+      "sha256": "e31c5949ad49581c591bc356d1fa0ebc3773389e5dede1a8f348c556335b5ac8"
+    },
+    {
+      "path": "apps/commonplace/server/account-inbox.mjs",
+      "beforeSha256": "890261c9ee2c7ba8504e758f44b8ac253bd63c467fe7e5f584f25b398197fbc9",
+      "sha256": "893510fc70c629f5f73bdd527f8881f030c47616120abc1907dec7391bdfa703"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "70bf1238ac2ab30b72fc0962e8f72bd71a6a5615f5196ca0b58246b1bd7875c1",
+      "sha256": "b682433a8764ae6ab38c65b56084b4abe338b3aa0d17f4ef0c62e3a65b1c0bac"
+    },
+    {
+      "path": "apps/commonplace/server/mailbox-client.mjs",
+      "beforeSha256": "7d3a3f82939fe55a68e1c9f782d5d25ccb954d34b2332c8e73fde80f964a4d55",
+      "sha256": "15dfdf993d7d3d5a64fad49149899663e76524a021c8de949c495f5e8ce4545a"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-adapter-source.mjs",
+      "beforeSha256": "d3040810977de481301077ba9babe9d9b5949e5857b213c1df127f5a263c00b2",
+      "sha256": "622926e6268c61aa3c49e72e8d7cd356bcf4ca2869f8dcbd4d33bcf82aabfc12"
+    },
+    {
+      "path": "apps/commonplace/server/mcp-adapter.mjs",
+      "beforeSha256": "3a9cffaf2f4d638d97d881e52a79164cec37dcb3bdef4a8cf70a843decaf37c8",
+      "sha256": "55f59aaf2dc26ccfc09a9ab5ab76b709d578896f577d7168f5774511cca260c3"
+    },
+    {
+      "path": "apps/commonplace/server/native-hook.mjs",
+      "beforeSha256": "6d86b8588e049db3c862967232201ae5d2b144d0d440155a68f781d38466e160",
+      "sha256": "77079a35dbca861b425e8631a8a136818d33bd0cead02db9b51323e4247f228a"
+    },
+    {
+      "path": "apps/commonplace/server/personal-space.mjs",
+      "beforeSha256": null,
+      "sha256": "8ee79fe63e876deb3badfba58ffc56a729ffe2bcc00bf336465a275d40a53191"
+    },
+    {
+      "path": "apps/commonplace/server/plugin-surface.mjs",
+      "beforeSha256": "8e008c0b2e8f022e12ab7ee3244b3b217624522194ee2b788a8428ace0aed09a",
+      "sha256": "ce7a55d73a92c73670f0b9a536d32092c90f0c55cce5b1f95f1b2d640802a583"
+    },
+    {
+      "path": "apps/commonplace/server/plugin.mjs",
+      "beforeSha256": "965e99cd7071328816980d54eb7a06771c28cd691b0d9218ca0dbe1add676c08",
+      "sha256": "4acdacf83f03e7fe5d1f0ec973ebbbede867d1a8c8eed8a2af74f207a88d4192"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "4797946f53ef9c7c40dd1a017b1f8f39c65eb98d603452f483b6d9811fc8252f",
+      "sha256": "27a81660dca55b5fb80ee8b7e30c8564671c85077f9863a4460c7a70d97ce2a7"
+    },
+    {
+      "path": "apps/commonplace/server/space-resources.mjs",
+      "beforeSha256": null,
+      "sha256": "aa9ef56fac7b056dc1e136c6cb0c60e6bf356a3a89cbfbd431d951ddc0f9c722"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "af0e0c618070b4666b18612204b6487ff9d63663d614b04942350e6ee4b0e167",
+      "sha256": "7012d5ea60a626e5163cb54887ad638c4974e7a7580b5e20c176a55bbf2dadcf"
+    },
+    {
+      "path": "scripts/build-mcp.mjs",
+      "beforeSha256": "99a232095890fc5907b62edd6d61752b08ce07de281c6d3ca7877c34662a6a84",
+      "sha256": "98e83387647bfdcb1a18f9396533e8f686880bad74de0b340aa2daa664c96077"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "ff50d6164efc49a29c7f878f44b8a79bb48aac4fbab1209a2206d0c7bf8410c6",
+      "sha256": "c187adbe3b56c5a1d9b46a2ac2543df4433531d31c9f1dc2bbb6892ba0852313"
+    },
+    {
+      "path": "tests/context-spaces-browser.test.mjs",
+      "beforeSha256": "e5dc50b59842a92ce93c201832723c8ca3e799c56e33427bc30ab19d756db1d9",
+      "sha256": "a91f01b992e6a4945f844eb7d0cf118fe406a92af6f39c7b2c3a648859e166a6"
+    },
+    {
+      "path": "tests/mcp-probe.test.mjs",
+      "beforeSha256": "41a1f33f67c1f4d580a22285f520a3de3c5ed3b9de025a76f0691d5b577d3ab6",
+      "sha256": "62b797662774c96520205740492b684d8e62a2e8e625d3e44c3a7bfa1f624c9d"
+    },
+    {
+      "path": "tests/mcp-remote.test.mjs",
+      "beforeSha256": "b24970b4c281caf383f82d458e5a7b9ff81d013b10c8a40e114bb1d434e3827a",
+      "sha256": "05a5951fffd1f498603feca605957933e9d6c95a9c85f38fbc13c43c0644f5a6"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "ee5186d8fdaf1d3888d650aecba7664cb9072938e29b90e9a510b48e6d1d9324",
+      "sha256": "9e8219b319191684b28517055cf76bcbc5bb781220222111c63fc8fbc94137e8"
+    },
+    {
+      "path": "tests/personal-space-browser.test.mjs",
+      "beforeSha256": null,
+      "sha256": "2f046a986a393cabef545b9dc2c65c403d1fe0eb5676dcb5b7f2d78c822efdc3"
+    },
+    {
+      "path": "tests/personal-space.test.mjs",
+      "beforeSha256": null,
+      "sha256": "2534f1e8956e6515bfbd406bae00cb1e9b782697d860e78edd3c1219740c89db"
+    },
+    {
+      "path": "tests/space-events.test.mjs",
+      "beforeSha256": null,
+      "sha256": "b04a283473df5a6d015717f5bd6857cf783a8ee99c428b8f68b80d3c55cf20eb"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+▶ Spaces: real groups, messages, explicit file sharing, per-owner rules and responsive controls
+  ✔ one space combines sharing and messages under a two-link navigation (278.696208ms)
+  ✔ rules persist per owner and per space with sharing explicitly off (1983.87849ms)
+  ✔ create a project with multiple connected people using real group membership (945.976033ms)
+  ✔ message retries reuse their nonce after a lost response and never duplicate a post (604.694156ms)
+  ✔ review and explicitly share a file; retries, member reads and foreign-space refusal work (1258.513424ms)
+  ✔ outsiders cannot list, read or upload files and removal stops member access (117.904829ms)
+  ✔ file endpoints require authentication and same-origin requests (7.475807ms)
+  ✔ MCP setup names the exact shared space without granting private archive access (721.601246ms)
+  ✔ shared context, messages and access work at 320px without overflow or accessibility violations (10054.189231ms)
+  ✔ shared context, messages and access work at 390px without overflow or accessibility violations (8019.721077ms)
+  ✔ shared context, messages and access work at 768px without overflow or accessibility violations (8097.287428ms)
+  ✔ shared context, messages and access work at 1024px without overflow or accessibility violations (7694.808531ms)
+  ✔ shared context, messages and access work at 1440px without overflow or accessibility violations (8696.666696ms)
+  ✔ shared context, messages and access work at 1920px without overflow or accessibility violations (8816.782932ms)
+  ✔ create and file-review dialogs remain usable at phone and desktop widths (10912.501769ms)
+  ✔ reduced motion is respected and owner reset clears private rule fields (559.242763ms)
+✔ Spaces: real groups, messages, explicit file sharing, per-owner rules and responsive controls (72287.354886ms)
+✔ actual plugin legacy discovery never creates setup state or starts a receiver (747.643402ms)
+✔ actual plugin modern probe never creates setup state or starts a receiver (765.246778ms)
+✔ Personal reuses Spaces with attributed live progress, account-only membership and transcript navigation (5980.554496ms)
+▶ context exchanges and native setup use real account boundaries and observed state
+  ✔ messages default, three keyboard tabs, and one compact desktop toolbar (432.169674ms)
+  ✔ owner enables multiple rules; actual request writes only approved context to the shared board (2430.113367ms)
+✔ context exchanges and native setup use real account boundaries and observed state (6338.38009ms)
+✔ requester loads further approved context with retry-safe nonce and no rejected excerpts (3193.475641ms)
+▶ space invite joins a new person after sign-in without granting their personal context
+  ✔ only owner issues links; stable retries, expiry and revocation preserve membership (6.893172ms)
+  ✔ public preview survives Google sign-in and opens exactly the invited group (4159.917777ms)
+  ✔ removed members cannot use an old reusable link to undo removal (6.347367ms)
+  ✔ owner can create, copy and revoke actual links from Members (781.254188ms)
+  ✔ invalid links are unavailable; temporary failures have a retry (1065.498459ms)
+✔ space invite joins a new person after sign-in without granting their personal context (8751.678494ms)
+▶ top-bar Invite works from any page with explicit account and space scope
+  ✔ visible from My context; opening never creates an invitation or opts into sharing (309.306861ms)
+  ✔ lost responses retry the same new space and link without duplicates (682.841046ms)
+  ✔ existing-space invitation uses only the explicitly selected owner space (233.83498ms)
+  ✔ loading failure offers a retry without creating anything (167.873459ms)
+  ✔ desktop and phone controls have no overflow or accessibility violations (6111.983749ms)
+  ✔ expired browser sign-in clears invitation state and hides the CTA (143.561536ms)
+✔ top-bar Invite works from any page with explicit account and space scope (10262.903782ms)
+▶ Invite keeps the visible space selected and explains member-only access without creating another space
+  ✔ owner space is preselected from its header and its invitation targets exactly that space (1238.669187ms)
+  ✔ navigating to a member space replaces the earlier target and shows the actual restriction (5511.761749ms)
+  ✔ a new space remains an explicit choice and unrelated pages do not reuse a hidden selected space (392.092616ms)
+✔ Invite keeps the visible space selected and explains member-only access without creating another space (8426.70492ms)
+ℹ tests 41
+ℹ suites 0
+ℹ pass 41
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 73897.64892
