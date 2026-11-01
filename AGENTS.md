@@ -1,5 +1,7 @@
 # Meet Proxy product contract
 
+1 November activation follow-up: [guarded updates and startup reporting](docs/OOB-ACTIVATION.md) (patch 62, candidate 0.4.38/runtime71). Five regressions reproduced before/fixed after; 695 core, 53 setup/browser/account checks and 62-patch replay pass. Work membership and this chat’s receiving side were repaired; a synthetic shared message was read by the other selected account. Packaging, installed/active runtime and live state remain separate in `implementation/oob-activation-verification.json`. No all-host seamlessness claim.
+
 1 November production rollout: server **20261101-space-events** is live. Its
 165 files and service readability, all 47 migration digests, verified database
 backup/rehearsal, fresh worker heartbeat and three services pass. Native

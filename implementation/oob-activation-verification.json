@@ -1,0 +1,42 @@
+{
+  "state": "source verified; package validation pending; not installed or live",
+  "nativeCandidate": "0.4.38",
+  "runtimeCandidate": 71,
+  "sourcePatch": 62,
+  "tests": {
+    "core": 695,
+    "setupBrowserAccountAndPersonal": 53,
+    "focused": 46,
+    "drainAndResource": 21,
+    "mirror": 8,
+    "reproducedBeforeFixedAfter": 5
+  },
+  "liveWorkRepair": {
+    "membershipAccepted": true,
+    "nativeReceiverBound": true,
+    "canReply": true,
+    "syntheticMessageSaved": true,
+    "secondSelectedAccountRead": true,
+    "independentHumans": false,
+    "privateSharingEnabled": false,
+    "automaticRecipientExecutionProved": false
+  },
+  "retainedLimitations": [
+    "Mac companion runtime66 still declines supported restart as busy; installed runtime70 has not activated.",
+    "This chat loaded native0.4.14/runtime48; native package installation and host activation remain distinct.",
+    "Web-only Claude/ChatGPT history is not automatically collected by remote MCP.",
+    "No claim that the currently running Bland session has been identified."
+  ],
+  "settingsChanged": false,
+  "forcedSignals": false,
+  "artifacts": {
+    "meet-proxy": "8673c329d904f59d71f214e815e45cc9c0c8e843cae87cb672a089a450b8a069",
+    "commonplace": "9c5442f992bd22293f330b9ff95d81d2e5669fbea44d3555573f9124e9d18684"
+  },
+  "serverCandidate": {
+    "release": "20261101-oob-activation",
+    "bundleSha256": "9e0120a642f62b836c00c1c2533d19ec0503c88a12a81abe18b9602aaceebc6c",
+    "files": 165,
+    "schemaChanges": false
+  }
+}

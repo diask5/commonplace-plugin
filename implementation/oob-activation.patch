@@ -1,0 +1,690 @@
+diff --git a/apps/commonplace-account/server/context-assets/context-setup-request.mjs b/apps/commonplace-account/server/context-assets/context-setup-request.mjs
+index a4ae549..5d12212 100644
+--- a/apps/commonplace-account/server/context-assets/context-setup-request.mjs
++++ b/apps/commonplace-account/server/context-assets/context-setup-request.mjs
+@@ -6,7 +6,7 @@ export function contextSetupRequest({app,origin,account,space,token}){
+  const install=app==='claude'?claudeInstall:app==='codex'?codexInstall:'Use the installer for this Conductor chat’s actual provider. '+claudeInstall+' '+codexInstall;
+  return 'Set up Meet Proxy in THIS '+(app==='claude'?'Claude Code':setupApps[app])+' chat at '+origin+'. Do the setup now, rather than giving me a list of steps. I already signed in as '+(account.email||account.name)+'.\n\n'
+  +'I authorize routine plugin installation/configuration, automatic private collection of supported visible work chats'+(space?.type==='group'?', and using THIS chat for space '+space.id:'')+'. Existing exclusions stay in force.\n\n'
+- +'1. Check the account before installing or claiming this request. First use setup_status if loaded. Otherwise, if an existing Meet Proxy profile is present, inspect only session.origin and session.humanAccount.email from account-client.json in the configured COMMONPLACE_DATA_DIR or ~/.commonplace. Do not print the file, tokens, credentials or unrelated settings. An absent profile is a fresh setup, not a mismatch. Compare any existing linked account and configured origin with the exact server and signed-in email above. If an existing account or origin differs, stop setup before installation or finish_context_setup and clearly name the mismatch. Preserve the existing account. Browser sign-in does not switch an installed account. Offer signing in here with that existing account, or using a separate computer/OS user profile for the work account. This setup flow does not support replacing a linked account: do not invent an account-switch tool, delete credentials, or call internal disconnect/revoke routes. Do not read another account’s synced chats to demonstrate progress.\n\n'
++ +'1. Check the account before installing or claiming this request. First use setup_status if loaded. Otherwise, if an existing Meet Proxy profile is present, inspect only session.origin and session.humanAccount.email from account-client.json in the configured COMMONPLACE_DATA_DIR or ~/.commonplace. Do not print the file, tokens, credentials or unrelated settings. An absent profile is a fresh setup, not a mismatch. Compare any existing linked account and configured origin with the exact server and signed-in email above. If an existing account or origin differs, resolve it before finish_context_setup and clearly name the mismatch. Preserve the existing account. Browser sign-in does not switch an installed account. Use list_linked_accounts when available. If the exact account is already verified on this server and this chat is unused, use_account selects its profile without another login; this setup request authorizes syncHistory=true for this chat. If the account is not linked, link_account can add its isolated profile only after its own Google verification. Do not claim the browser handoff can verify a different local profile. If accountPinned is true, preserve this chat and use a new chat with that verified profile selected before context or messaging. An old plugin without these tools needs the supported installation/activation below; a second computer is not required. For a server-origin mismatch, stop and preserve the current connection. do not invent an account-switch tool, delete credentials, or call internal disconnect/revoke routes. Do not read another account’s synced chats to demonstrate progress.\n\n'
+  +'2. If finish_context_setup is already available and the server/account match, skip installation. '+install+'\n\n'
+  +'3. If installation succeeds but finish_context_setup is not available in this session, return to the signed-in browser setup and select “Plugin installed? Finish in a new chat”. That action prepares an activation prompt carrying this same account, space and unclaimed handoff into the new chat the user chooses. Claude Desktop opens a new Code composer; Conductor needs a new chat in the same workspace. The user still sends the prompt. Do not prescribe /reload-plugins in Conductor or Claude Desktop, claim MCP status refresh mounts tools into an existing conversation, or keep probing missing tools. A terminal-only reload command is not a GUI setup step. Do not silently open or move conversations. Do not create memory files or save the token elsewhere.\n\n'
+  +'4. Call finish_context_setup with token '+token+'. This private 30-minute handoff carries my verified sign-in; do not call connect_account or request a second Google login. It starts collection automatically. Only after a successful matching-account claim, check context_sync_status and verify this installation’s collection receipts and a fresh successful source read. Cached conversation counts are not proof that this setup or collector works. The browser confirms progress. If the token expired, copy a fresh request from the still-signed-in setup page; no second Google login is needed.\n\n'
+@@ -18,7 +18,7 @@ export function contextSetupLink(app,prompt){return ({claude:'claude://code/new?
+ export function contextActivationRequest({app,origin,account,space,token}){
+  if(!Object.hasOwn(setupApps,app)||!account||!/^commonplace-context:[A-Za-z0-9_-]{43}$/.test(token||''))return '';
+  return 'Finish Meet Proxy setup in THIS new '+(app==='claude'?'Claude Desktop Code':setupApps[app])+' chat at '+origin+'. I signed in as '+(account.email||account.name)+'. I selected this new chat to finish the installation I requested'+(space?.type==='group'?' for space '+space.id:'')+'.\n\n'
+- +'Use the installed Meet Proxy tools. Check setup_status first. If the configured account or server differs, stop and name the mismatch; preserve the existing connection. Do not disconnect, replace credentials, or read another account’s context. If the tools are still absent, report that this new session has not loaded the installation and the supported host setup action needed. Do not repeat installation, invent a reload command, or use shell/HTTP instead of missing or denied tools.\n\n'
++ +'Use the installed Meet Proxy tools. Check setup_status first. If the configured account differs, use list_linked_accounts and select the exact verified account with use_account only in this unused chat; this setup request authorizes syncHistory=true. If it is not linked, link_account requires its own Google verification. Preserve any already-used chat binding and stop if the configured server differs; never fall back to another account. Do not disconnect, replace credentials, or read another account’s context. If the tools are still absent, report that this new session has not loaded the installation and the supported host setup action needed. Do not repeat installation, invent a reload command, or use shell/HTTP instead of missing or denied tools.\n\n'
+  +'With the correct account and server, call finish_context_setup with token '+token+'. This carries my verified sign-in and authorizes automatic private collection of supported visible work chats; existing exclusions stay in force. Do not call connect_account or ask for another Google login. After a successful claim, check context_sync_status and this installation’s collection receipts, then verify a fresh successful source read. Cached counts or an opened app do not prove completion.\n\n'
+  +'If expired or already claimed by another chat, stop and use the browser’s setup status; never move that chat silently. Respect host approvals; opening a new chat does not clear a denial. Do not store the token in files or memory. Do not enable cloud inference or share my private archive with others. Give a short result; the browser confirms actual progress.';
+ }
+diff --git a/apps/commonplace/server/cloud-background.mjs b/apps/commonplace/server/cloud-background.mjs
+index 1616d80..b865cd9 100644
+--- a/apps/commonplace/server/cloud-background.mjs
++++ b/apps/commonplace/server/cloud-background.mjs
+@@ -7,6 +7,8 @@ import { homedir } from 'node:os';
+ import { fileURLToPath } from 'node:url';
+ import path from 'node:path';
+ import {PLUGIN_VERSION} from './setup-status.mjs';
++import {RUNTIME_REVISION} from './local-client.mjs';
++import {processAlive} from './host-process.mjs';
+ export const BACKGROUND_VERSION=PLUGIN_VERSION;
+ const exec=promisify(execFile),version=BACKGROUND_VERSION;
+ const xml=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+@@ -17,6 +19,11 @@ export async function ensureCloudBackground(dir,{platform=process.platform,env=p
+   if(platform!=='darwin' || env.COMMONPLACE_DISABLE_BACKGROUND==='1')return {installed:false};
+   const base=path.join(dir,'background'),stable=path.join(base,version),marker=path.join(base,'version');
+   if(await readFile(marker,'utf8').catch(()=>'')===version)return {installed:true};
++  const active=await readFile(path.join(dir,'runtime.json'),'utf8').then(JSON.parse).catch(()=>null);
++  // Replacing a LaunchAgent terminates its process. Only change its launcher
++  // after the authenticated companion update has completed its work guard.
++  if(active&&Number.isSafeInteger(active.pid)&&processAlive(active.pid)&&(active.revision||0)<RUNTIME_REVISION)
++    return {installed:false,updating:true};
+   await mkdir(stable,{recursive:true,mode:0o700});
+   const source=path.dirname(fileURLToPath(import.meta.url));
+   await cp(source,path.join(stable,'server'),{recursive:true});
+diff --git a/apps/commonplace/server/cloud-sync.mjs b/apps/commonplace/server/cloud-sync.mjs
+index fe14183..e5afe8f 100644
+--- a/apps/commonplace/server/cloud-sync.mjs
++++ b/apps/commonplace/server/cloud-sync.mjs
+@@ -43,7 +43,7 @@ export class CloudSync {
+     delete this.state.pending;await this.save();
+   }
+   async tick() {
+-    if(this.closed)return;
++    if(this.closed||this.app.runtimeDraining)return;
+     if(this.running){this.nextDelayMs=250;return;}
+     const continuing=this.nextDelayMs===0;this.nextDelayMs=5000;
+     if(!this.app.accountClient?.view().connected)return;
+diff --git a/apps/commonplace/server/conductor-receiver.mjs b/apps/commonplace/server/conductor-receiver.mjs
+index 7dd1b6a..9c9528e 100644
+--- a/apps/commonplace/server/conductor-receiver.mjs
++++ b/apps/commonplace/server/conductor-receiver.mjs
+@@ -1,4 +1,5 @@
+ import {routedAccountDir,accountChatAllowed} from './account-profiles.mjs';
++import {reportPersonalSpace} from './personal-space.mjs';
+ import {spawn} from 'node:child_process';
+ import {mkdir,readFile,writeFile,rename,unlink} from 'node:fs/promises';
+ import path from 'node:path';
+@@ -92,7 +93,7 @@ export async function runConductorReceiver({env=process.env,client=createLocalCl
+     if(result?.error||result?.result?.isError)throw Error('Inbox unavailable.');
+     return JSON.parse(result.result.content.find(c=>c.type==='text').text);
+   };
+-  let failures=0,historyRunning=false,closed=false;
++  let failures=0,historyRunning=false,closed=false,personalReported=false,personalCheckedAt=0;
+   try{
+     await status('starting');
+     const saved=await read(cursor),delivered=new Set((Array.isArray(saved)?saved:[]).filter(validId));
+@@ -112,6 +113,13 @@ export async function runConductorReceiver({env=process.env,client=createLocalCl
+         if(!historyRunning){
+           historyRunning=true;
+           void (async()=>{
++            // GUI/cloud hosts may not emit CLI hooks. Register their fixed
++            // startup observation through the existing Personal space too.
++            // Keep failures and slow history work off the inbox dispatch path.
++            if(!personalReported&&Date.now()-personalCheckedAt>60000){
++              personalCheckedAt=Date.now();
++              try{const r=await reportPersonalSpace({client,session:native.session,event:'SessionStart',allowed});personalReported=r.recorded||r.reason==='unchanged';}catch{}
++            }
+             try{await captureCloudSession(call,allowed);}catch{}
+             try{if(await allowed()&&await accountChatAllowed(client.dir,native.session,{history:true}))await drainAgentHistory({call,read:async parameters=>await allowed()?historyReader(parameters):{state:'unavailable'}});}catch{}
+           })().finally(()=>{historyRunning=false;});
+diff --git a/apps/commonplace/server/context-mirror.mjs b/apps/commonplace/server/context-mirror.mjs
+index b49a953..b045c85 100644
+--- a/apps/commonplace/server/context-mirror.mjs
++++ b/apps/commonplace/server/context-mirror.mjs
+@@ -44,7 +44,7 @@ export class ContextMirror {
+     Object.assign(this.state,{revision:null,generation:null,documents:0,characters:0,lastSyncedAt:null});
+   }
+   async tick(){
+-    if(this.running||!this.state.enabled||!this.app.accountClient?.view().connected)return;
++    if(this.running||this.app.runtimeDraining||!this.state.enabled||!this.app.accountClient?.view().connected)return;
+     this.running=true;
+     try{
+       const client=this.app.accountClient;
+@@ -56,7 +56,7 @@ export class ContextMirror {
+       if(head.unchanged&&this.state.catalogLayout===CATALOG_LAYOUT&&this.state.generation&&await this.generationIntact())return;
+       await this.publish(owner,head.unchanged?await client.request('/account/api/cloud/archive-manifest',{}):head);
+       this.state.error=null;
+-    }catch(error){this.state.error=error.changed?'Context changed during mirroring; retrying.':'Context folder update interrupted; it will retry automatically.';}
++    }catch(error){if(!error.updating)this.state.error=error.changed?'Context changed during mirroring; retrying.':'Context folder update interrupted; it will retry automatically.';}
+     finally{try{await this.save();}catch{this.state.error='Could not save context folder progress; it will retry automatically.';}finally{this.running=false;}}
+   }
+   async generationIntact(){
+@@ -69,7 +69,7 @@ export class ContextMirror {
+   async publish(owner,head){
+     const client=this.app.accountClient,revision=head.revision;
+     const documents=[...head.documents];let cursor=head.nextCursor;
+-    while(cursor!==null&&cursor!==undefined){const page=await client.request('/account/api/cloud/archive-manifest',{cursor});if(page.revision!==revision)throw Object.assign(Error('changed'),{changed:true});documents.push(...page.documents);cursor=page.nextCursor;}
++    while(cursor!==null&&cursor!==undefined){if(this.app.runtimeDraining)throw Object.assign(Error('Updating'),{updating:true});const page=await client.request('/account/api/cloud/archive-manifest',{cursor});if(page.revision!==revision)throw Object.assign(Error('changed'),{changed:true});documents.push(...page.documents);cursor=page.nextCursor;}
+     for(const d of documents)if(typeof d.path!=='string'||!/^documents\/(?:native|chatgpt|work|unified|thread|context)-[a-f0-9]{24}\.txt$/.test(d.path)||typeof d.digest!=='string')throw Error('Invalid context manifest.');
+     await mkdir(this.directory,{recursive:true,mode:0o700});
+     if((await lstat(this.directory)).isSymbolicLink())throw Error('Context folder must be a real directory.');
+@@ -91,6 +91,7 @@ export class ContextMirror {
+         const batch=pending.slice(i,i+BATCH),parts=new Map(batch.map(d=>[d.path,{doc:d,text:'',offset:0,done:false}]));
+         let requests=batch.map(d=>({path:d.path,offset:0}));
+         while(requests.length){
++          if(this.app.runtimeDraining)throw Object.assign(Error('Updating'),{updating:true});
+           const response=await client.request('/account/api/cloud/archive-files',{revision,paths:requests});
+           if(response.changed||response.revision!==revision)throw Object.assign(Error('changed'),{changed:true});
+           const next=[];
+diff --git a/apps/commonplace/server/local-client.mjs b/apps/commonplace/server/local-client.mjs
+index 250761d..4026dbf 100644
+--- a/apps/commonplace/server/local-client.mjs
++++ b/apps/commonplace/server/local-client.mjs
+@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
+ import { spawn } from 'node:child_process';
+ import { setTimeout as delay } from 'node:timers/promises';
+ 
+-export const RUNTIME_REVISION = 70;
++export const RUNTIME_REVISION = 71;
+ 
+ export function createLocalClient({
+   dir = process.env.COMMONPLACE_DATA_DIR ||
+@@ -15,7 +15,12 @@ export function createLocalClient({
+   sleep = delay,
+ } = {}) {
+   dir = path.resolve(dir);
+-  let runtime, connecting;
++  let runtime, connecting, upgradeTimer;
++  function retryUpgrade() {
++    if(upgradeTimer)return;
++    upgradeTimer=setTimeout(()=>{upgradeTimer=undefined;void connect().catch(()=>{});},15000);
++    upgradeTimer.unref?.();
++  }
+   async function probe() {
+     try {
+       const candidate = JSON.parse(
+@@ -68,10 +73,17 @@ export function createLocalClient({
+             signal: AbortSignal.timeout(2000),
+             redirect: 'error',
+           });
++          if(upgraded.status===409){
++            // Legacy companions cannot drain. Keep their working connection
++            // usable and try again later; never spawn contenders while busy.
++            runtime=candidate;retryUpgrade();return true;
++          }
+           if (!upgraded.ok)
+             throw new Error(
+               'Commonplace is finishing active work before updating.',
+             );
++          const progress=await upgraded.json();
++          if(progress.draining===true){runtime=candidate;retryUpgrade();return true;}
+         } else {
+           // Releases predating the restart API still have a single owned daemon.
+           // SIGTERM is graceful on Unix; atomic state files recover on Windows.
+@@ -88,6 +100,7 @@ export function createLocalClient({
+         throw new Error('Commonplace is restarting.');
+       }
+       runtime = candidate;
++      clearTimeout(upgradeTimer);upgradeTimer=undefined;
+       return true;
+     } catch {
+       return false;
+diff --git a/apps/commonplace/server/mcp-resource-ingestion.mjs b/apps/commonplace/server/mcp-resource-ingestion.mjs
+index 899eead..8c1dff2 100644
+--- a/apps/commonplace/server/mcp-resource-ingestion.mjs
++++ b/apps/commonplace/server/mcp-resource-ingestion.mjs
+@@ -200,9 +200,10 @@ export class McpResourceIngestion {
+     finally{await connection?.close().catch(()=>{});await this.save();}
+   }
+   async tick(){
+-    if(!this.app.accountClient?.view().connected)return;
++    if(this.app.runtimeDraining||!this.app.accountClient?.view().connected)return;
+     let identity;try{identity=await this.identity();}catch{return;}
+     for(const source of Object.values(this.state.sources)){
++      if(this.app.runtimeDraining)return;
+       if(source.owner!==identity.owner||source.origin!==identity.origin||this.active.has(source.id))continue;
+       try{
+         if(source.removed&&source.status!=='removed')await this.remove({sourceId:source.id,ownerRequested:true});
+diff --git a/apps/commonplace/server/plugin.mjs b/apps/commonplace/server/plugin.mjs
+index e8f15b8..5ba3d9a 100644
+--- a/apps/commonplace/server/plugin.mjs
++++ b/apps/commonplace/server/plugin.mjs
+@@ -115,7 +115,7 @@ async function mailboxTick() {
+ }
+ let presenceTimer,
+   presenceRunning = false;
+-let inboxPresenceAt=0;
++let inboxPresenceAt=0,backgroundCheckedAt=0;
+ async function presence(active = true) {
+   if (presenceRunning && active) return;
+   presenceRunning = true;
+@@ -178,6 +178,10 @@ async function checkTools() {
+     const state = await localRequest('api/account/status', {}, 3000);
+     if (!['local', 'account', 'account-inbox'].includes(state?.toolset)) return;
+     const scope = await binding();
++    if(!scope&&Date.now()-backgroundCheckedAt>60000){
++      backgroundCheckedAt=Date.now();
++      void ensureCloudBackground(client.dir).catch(error=>recordSetupHealth(client.dir,{component:'background',error}).catch(()=>{}));
++    }
+     if (!scope && nativeSession.verified && Date.now()-inboxPresenceAt>10000 &&
+         (await scopeState(client.dir,s=>s.hasPrompt(nativeSession.sessionId)) || await desktopBinding(client.dir,nativeSession.sessionId))) {
+       inboxPresenceAt=Date.now();
+diff --git a/apps/commonplace/server/runtime-upgrade.mjs b/apps/commonplace/server/runtime-upgrade.mjs
+new file mode 100644
+index 0000000..5a83a0f
+--- /dev/null
++++ b/apps/commonplace/server/runtime-upgrade.mjs
+@@ -0,0 +1,52 @@
++// Drain recurring work without changing the owner's saved collection choices.
++// Foreground work retains the existing guard. A deadline resumes scheduling;
++// an update never forces a busy job to stop.
++export function runtimeWork(app) {
++  return Object.entries({
++    collection: app.cloudSync?.running,
++    mirror: app.contextMirror?.running,
++    resources: app.mcpResourceIngestion?.active?.size,
++    resourceCheck: app.resourceTicking,
++    signIn: app.cloudBrowserLogin?.current,
++    signInCheck: app.cloudBrowserLogin?.running,
++    import: app.historyImport?.running,
++    answer: app.historyAnswer?.running,
++    workspace: app.workspaceReceiver?.running,
++    desktop: app.desktopReceiver?.running,
++    ssh: app.sshWorkspaces?.running,
++    build: app.building,
++    organization: app.organizing,
++    capture: app.capturing,
++    jobs: app.jobs?.size,
++    background: app.backgroundTicking,
++  }).filter(([, active]) => active).map(([name]) => name);
++}
++
++export function createRuntimeUpgrade(app, {
++  restart, now = Date.now, schedule = setTimeout, cancel = clearTimeout,
++  deadlineMs = 120000, pollMs = 100,
++} = {}) {
++  let state = 'idle', startedAt = null, timer;
++  const status = () => ({state, startedAt, deadlineAt: startedAt === null ? null : startedAt + deadlineMs, waitingFor: runtimeWork(app)});
++  function enqueue() { timer = schedule(check, pollMs); timer.unref?.(); }
++  function check() {
++    if (state !== 'draining') return;
++    if (runtimeWork(app).length === 0) {
++      state = 'restarting';
++      // The guard is checked immediately before shutdown, in the same turn.
++      Promise.resolve().then(restart).catch(() => { state = 'failed'; app.runtimeDraining = false; });
++    } else if (now() - startedAt >= deadlineMs) {
++      state = 'busy'; app.runtimeDraining = false;
++    } else enqueue();
++  }
++  return {
++    status,
++    request() {
++      if (state !== 'draining' && state !== 'restarting') {
++        state = 'draining'; startedAt = now(); app.runtimeDraining = true; enqueue();
++      }
++      return {restarting: state === 'restarting', draining: state === 'draining', ...status()};
++    },
++    close() { cancel(timer); if (state !== 'restarting') app.runtimeDraining = false; state = 'closed'; },
++  };
++}
+diff --git a/apps/commonplace/server/setup-status.mjs b/apps/commonplace/server/setup-status.mjs
+index 752d16a..e3500a5 100644
+--- a/apps/commonplace/server/setup-status.mjs
++++ b/apps/commonplace/server/setup-status.mjs
+@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
+ import path from 'node:path';
+ import {acquireProcessLock} from './process-lock.mjs';
+ 
+-export const PLUGIN_VERSION='0.4.37';
++export const PLUGIN_VERSION='0.4.38';
+ export const setupActions={
+   link_account:'Link another verified Google account in an isolated profile, preserving existing accounts.',
+   use_account:'Choose the account for this personal native chat.',
+@@ -34,7 +34,7 @@ const json=async file=>{try{return JSON.parse(await readFile(file,'utf8'));}catc
+ function serverOrigin(value){
+   try{const u=new URL(value);return ['https:','http:'].includes(u.protocol)&&!u.username&&!u.password&&u.pathname==='/'&&!u.search&&!u.hash?u.origin:null;}catch{return null;}
+ }
+-const components=new Set(['native-hook','shared-chat-receiver','agent-mailbox-receiver','background']);
++const components=new Set(['native-hook','shared-chat-receiver','agent-mailbox-receiver','personal-space','background']);
+ const mailboxPhases=new Set(['claim','dispatch_receipt','host_submit','accept_receipt']);
+ const diagnosticCodes=new Set(['local_access_denied','inbox_busy','listener_unavailable',...Array.from(mailboxPhases,p=>'mailbox_'+p+'_failed')]);
+ const codeFor=e=>mailboxPhases.has(e?.mailboxPhase)?'mailbox_'+e.mailboxPhase+'_failed':e?.code==='EACCES'||e?.code==='EPERM'?'local_access_denied':/busy/i.test(e?.message||'')?'inbox_busy':'listener_unavailable';
+@@ -68,9 +68,9 @@ export async function setupStatus({dir,session={},blockedTool,home=homedir(),plu
+   const receiver=conductor?await conductorReceiverStatus({dir,sessionId:session.sessionId}):null;
+   const automatic=session.verified===true&&(conductor?receiver?.ready===true||session.transport==='native-host':session.delivery==='native');
+   const nextSteps=[];
+-  if(stale)nextSteps.push(`This chat loaded ${PLUGIN_VERSION}; ${installed} is installed. Reload the plugin in this same chat. If no reload is offered, restart Claude Desktop and reopen this existing conversation; installation alone cannot reload an existing MCP process.`);
++  if(stale)nextSteps.push(`This chat loaded ${PLUGIN_VERSION}; ${installed} is installed. Use the host’s supported activation action. In Conductor or Claude Desktop, return to browser setup and choose “Plugin installed? Finish in a new chat”, then send the prepared prompt. Use a reload command only when the actual host offers it. Installation alone cannot reload an existing MCP process.`);
+   if(!available)nextSteps.push('The local companion is not responding. Reconnect the plugin in your host; existing messages remain saved.');
+-  else if((runtime.revision||0)<expectedRevision)nextSteps.push('The companion is still completing its update. Let active work finish, then reconnect the plugin.');
++  else if((runtime.revision||0)<expectedRevision)nextSteps.push('The companion is still completing its update. The installed client retries automatically while keeping the current connection usable. Setup is not complete until the active revision catches up; do not force-stop active work.');
+   if(!connected)nextSteps.push('If your invitation prompt includes a commonplace-setup handoff, use connect_teammate with it; your Google sign-in is already verified. Otherwise use connect_account once.');
+   if(connected&&!configuredOrigin)nextSteps.push('The active profile server origin is unavailable. A matching Google account alone does not confirm the requested server; keep the existing profile and report the destination as unverified.');
+   if(!session.verified)nextSteps.push('This host has not supplied a verified native chat identity. Use the installed plugin in your existing supported chat; do not invent an identity.');
+diff --git a/apps/commonplace/server/start.mjs b/apps/commonplace/server/start.mjs
+index 6815f54..cc973ee 100644
+--- a/apps/commonplace/server/start.mjs
++++ b/apps/commonplace/server/start.mjs
+@@ -1,4 +1,5 @@
+ import {acquireProcessLock} from './process-lock.mjs';
++import {createRuntimeUpgrade} from './runtime-upgrade.mjs';
+ import { CloudBrowserLogin } from './cloud-browser-login.mjs';
+ import { CloudSync } from './cloud-sync.mjs';
+ import { ContextMirror } from './context-mirror.mjs';
+@@ -37,6 +38,8 @@ if(!await acquireProcessLock(lock)){console.error('Commonplace is already runnin
+ let app, vite, timer, captureTimer, receiverTimer, loginTimer, mirrorTimer, resourceTimer;
+ const servers = [];
+ async function shutdown() {
++  if(app)app.shuttingDown=true;
++  app?.runtimeUpgrade?.close();
+   clearInterval(timer);
+   app?.cloudSync?.close();
+   clearInterval(mirrorTimer);
+@@ -67,10 +70,10 @@ try {
+   const unavailable = (_req, res) =>
+     res.writeHead(503).end('Commonplace is starting.');
+   const owner = createServer((req, res) =>
+-    (handlers.owner || unavailable)(req, res),
++    (app?.shuttingDown ? unavailable : handlers.owner || unavailable)(req, res),
+   );
+   const peer = createServer((req, res) =>
+-    (handlers.peer || unavailable)(req, res),
++    (app?.shuttingDown ? unavailable : handlers.peer || unavailable)(req, res),
+   );
+   servers.push(owner, peer);
+   async function listen(server, preferred) {
+@@ -119,32 +122,9 @@ try {
+   app.workspaceReceiver = await WorkspaceReceiver.open(app);
+   app.desktopReceiver = await DesktopReceiver.open(app.accountClient);
+   app.sshWorkspaces = await SshWorkspaces.open(app.accountClient);
+-  receiverTimer = setInterval(() => { void app.workspaceReceiver.tick(); void app.desktopReceiver.tick(); void app.sshWorkspaces.tick(); }, 5000);
+-  app.restartRuntime = () => {
+-    if (
+-      app.cloudSync.running ||
+-      app.contextMirror.running ||
+-      app.mcpResourceIngestion.active.size > 0 ||
+-      app.cloudBrowserLogin.current ||
+-      app.historyImport.running ||
+-      app.historyAnswer.running ||
+-      app.workspaceReceiver.running ||
+-      app.desktopReceiver.running ||
+-      app.sshWorkspaces.running ||
+-      app.building ||
+-      app.organizing ||
+-      app.capturing ||
+-      app.jobs?.size
+-    )
+-      throw Object.assign(
+-        new Error('Commonplace is finishing active work before updating.'),
+-        { status: 409 },
+-      );
+-    setTimeout(() => {
+-      void shutdown().finally(() => process.exit(0));
+-    }, 100);
+-    return { restarting: true };
+-  };
++  receiverTimer = setInterval(() => { if(app.runtimeDraining)return; void app.workspaceReceiver.tick(); void app.desktopReceiver.tick(); void app.sshWorkspaces.tick(); }, 5000);
++  app.runtimeUpgrade = createRuntimeUpgrade(app, {restart: () => shutdown().finally(() => process.exit(0))});
++  app.restartRuntime = () => app.runtimeUpgrade.request();
+   if (process.argv.includes('--dev')) {
+     const { createServer: createViteServer } = await import('vite');
+     vite = await createViteServer({
+@@ -208,17 +188,22 @@ try {
+     `Commonplace inbox: ${origin}\nConnections: ${app.peerUrl}`,
+   );
+   void app.cloudBrowserLogin.tick();
+-  loginTimer=setInterval(()=>void app.cloudBrowserLogin.tick(),5000);
++  loginTimer=setInterval(()=>{if(!app.runtimeDraining)void app.cloudBrowserLogin.tick();},5000);
+   app.cloudSync.start();
+   // The local context folder follows the published archive; it keeps running
+   // in the background companion so files stay current while Claude is closed.
+   setTimeout(()=>void app.contextMirror.tick(),3000);
+   mirrorTimer=setInterval(()=>void app.contextMirror.tick(),15000);
+-  resourceTimer=setInterval(()=>void app.mcpResourceIngestion.tick(),15000);
++  resourceTimer=setInterval(()=>{
++    if(app.runtimeDraining||app.resourceTicking)return;
++    app.resourceTicking=true;
++    void app.mcpResourceIngestion.tick().catch(()=>{}).finally(()=>{app.resourceTicking=false;});
++  },15000);
+   let ticking = false;
+   timer = setInterval(async () => {
+-    if (ticking) return;
++    if (ticking || app.runtimeDraining) return;
+     ticking = true;
++    app.backgroundTicking = true;
+     try {
+       if (!app.accountClient.view().connected && process.env.COMMONPLACE_BACKGROUND_WORK_ONLY!=='1') {
+         await app.poll();
+@@ -229,6 +214,7 @@ try {
+     } catch {
+     } finally {
+       ticking = false;
++      app.backgroundTicking = false;
+     }
+   }, 2000);
+   process.on('SIGINT', () => {
+diff --git a/scripts/build-plugin.py b/scripts/build-plugin.py
+index e3e7e15..0e73856 100644
+--- a/scripts/build-plugin.py
++++ b/scripts/build-plugin.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Build candidate 0.4.37 from checksum-pinned 0.3.0, preserving all bundled runtimes, hooks, assets and licenses outside the explicit overlay."""
++"""Build candidate 0.4.38 from checksum-pinned 0.3.0, preserving all bundled runtimes, hooks, assets and licenses outside the explicit overlay."""
+ import argparse
+ import hashlib
+ import json
+@@ -11,13 +11,13 @@ import zipfile
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+ BASE_VERSION = "0.3.0"
+-VERSION = "0.4.37"
++VERSION = "0.4.38"
+ BASE_SHA256 = "146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968"
+ BASE_URL = "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.3.0/meet-proxy-0.3.0.zip"
+ OVERLAY_FILES = {
+     "server/" + name: "apps/commonplace/server/" + name for name in (
+         "personal-space.mjs", "space-resources.mjs", "workspace-chat.mjs", "account-profiles.mjs", "account-profile-tools.mjs", "owner.mjs", "account-inbox.mjs", "mailbox-client.mjs", "agent-history.mjs", "person-inbox.mjs", "inbox-envelope.mjs", "plugin.mjs", "plugin-surface.mjs", "local-client.mjs",
+-        "start.mjs", "history-scan.mjs", "canonical-sync.mjs", "cloud-sync.mjs", "cloud-background.mjs", "cloud-browser-login.mjs",
++        "start.mjs", "runtime-upgrade.mjs", "history-scan.mjs", "canonical-sync.mjs", "cloud-sync.mjs", "cloud-background.mjs", "cloud-browser-login.mjs",
+         "history-roots.mjs", "conductor-history.mjs", "ingest.mjs", "native-hook.mjs", "setup-status.mjs",
+         "account-client.mjs", "account-errors.mjs", "agent-auth-client.mjs", "connect-account.mjs", "conductor-session-inbox.mjs",
+         "chat-pairing.mjs", "chat-capture.mjs", "native-session.mjs", "codex-host-context.mjs", "codex-config.mjs", "configure-codex.mjs", "conductor-receiver.mjs",
+@@ -91,9 +91,9 @@ def overrides(baseline, alias="meet-proxy"):
+         assert metadata["version"] == BASE_VERSION and metadata["name"] == "meet-proxy"
+         metadata.update(name=alias, version=VERSION)
+         changes[name] = (json.dumps(metadata, indent=2) + "\n").encode()
+-    assert b"PLUGIN_VERSION='0.4.37'" in changes["server/setup-status.mjs"]
++    assert b"PLUGIN_VERSION='0.4.38'" in changes["server/setup-status.mjs"]
+     assert b"BACKGROUND_VERSION=PLUGIN_VERSION" in changes["server/cloud-background.mjs"]
+-    assert b"RUNTIME_REVISION = 70;" in changes["server/local-client.mjs"]
++    assert b"RUNTIME_REVISION = 71;" in changes["server/local-client.mjs"]
+     readme = baseline.read("README.md").decode().replace("0.3.0", VERSION)
+     section = """## Your personal agent network
+ 
+diff --git a/tests/cloud-background.test.mjs b/tests/cloud-background.test.mjs
+index ae345bc..322d112 100644
+--- a/tests/cloud-background.test.mjs
++++ b/tests/cloud-background.test.mjs
+@@ -29,3 +29,10 @@ test('unsupported and explicitly disabled hosts do not install background servic
+  assert.deepEqual(await ensureCloudBackground(f.dir,{...f.options,env:{COMMONPLACE_DISABLE_BACKGROUND:'1'}}),{installed:false});
+  assert.equal(f.calls.length,0);await assert.rejects(readFile(path.join(f.dir,'background/version')),{code:'ENOENT'});
+ });
++
++test('a busy older companion never gets terminated by updating its LaunchAgent',async t=>{
++ const f=await fixture(t);await writeFile(path.join(f.dir,'background/version'),'0.4.18');
++ await writeFile(path.join(f.dir,'runtime.json'),JSON.stringify({pid:process.pid,revision:1}));
++ assert.deepEqual(await ensureCloudBackground(f.dir,f.options),{installed:false,updating:true});assert.equal(f.calls.length,0);
++ assert.equal(await readFile(path.join(f.dir,'background/version'),'utf8'),'0.4.18');
++});
+diff --git a/tests/context-mirror.test.mjs b/tests/context-mirror.test.mjs
+index e89e16e..092fb9b 100644
+--- a/tests/context-mirror.test.mjs
++++ b/tests/context-mirror.test.mjs
+@@ -170,3 +170,19 @@ test('a first install downloads a 33 MB archive across file batches and recovers
+  assert.ok(f.calls.filter(c=>c.endpoint.endsWith('/archive-files')).length>count/24,'multiple file batches and response-budget pages');
+  const hits=await search(parseArgs(['--dir',f.mirror.current,'--phrase','END_69_11']));assert.equal(hits.results.length,1);
+ });
++
++test('runtime drain retains the last complete mirror and resumes unfinished pages after update',async t=>{
++ const f=await fixture(t);
++ f.ingest(f.a,'stable','Existing context',['Previously synced text.']);await f.mirror.tick();
++ const before=await realpath(f.mirror.current),saved=await manifestOf(before);
++ f.ingest(f.a,'large','Long context',Array.from({length:40},(_,i)=>'Page '+i+' '+ 'x'.repeat(39000)));
++ const client=f.mirror.app.accountClient,original=client.request.bind(client);let downloads=0;
++ client.request=async(endpoint,body)=>{const result=await original(endpoint,body);if(endpoint.endsWith('/archive-files')){downloads++;f.mirror.app.runtimeDraining=true;}return result;};
++ await f.mirror.tick();
++ assert.equal(downloads,1);assert.equal(await realpath(f.mirror.current),before);
++ assert.deepEqual(await manifestOf(before),saved);assert.equal(f.mirror.state.enabled,true);assert.equal(f.mirror.state.error,null);
++ assert.equal((await readdir(f.mirror.directory)).some(n=>n.startsWith('.building-')),false);
++ const calls=f.calls.length;await f.mirror.tick();assert.equal(f.calls.length,calls,'no new work while draining');
++ f.mirror.app.runtimeDraining=false;client.request=original;await f.mirror.tick();
++ assert.notEqual(await realpath(f.mirror.current),before);assert.equal(f.mirror.status().documents,2);assert.equal(f.mirror.status().error,null);
++});
+diff --git a/tests/context-setup-request.test.mjs b/tests/context-setup-request.test.mjs
+index a225421..ae2dd95 100644
+--- a/tests/context-setup-request.test.mjs
++++ b/tests/context-setup-request.test.mjs
+@@ -33,3 +33,11 @@ test('activation carries the exact handoff and scope without rerunning installat
+  }
+  for(const change of [{account:null},{app:'unknown'},{token:'public-invitation'}])assert.equal(contextActivationRequest({...input,app:'claude',...change}),'');
+ });
++
++test('setup and activation offer existing verified account profiles without a second computer',()=>{
++ for(const make of [contextSetupRequest,contextActivationRequest]){
++  const request=make({...input,app:'conductor'});
++  assert.match(request,/list_linked_accounts/);assert.match(request,/use_account/);assert.match(request,/syncHistory=true/);assert.match(request,/Google verification/);
++  assert.doesNotMatch(request,/using a separate computer\/OS user profile/);
++ }
++});
+diff --git a/tests/mailbox-conductor-receiver.test.mjs b/tests/mailbox-conductor-receiver.test.mjs
+index c0abafa..cda6059 100644
+--- a/tests/mailbox-conductor-receiver.test.mjs
++++ b/tests/mailbox-conductor-receiver.test.mjs
+@@ -135,3 +135,14 @@ test('stale presence never claims a working automatic receiver',async t=>{
+  assert.equal((await conductorReceiverStatus({dir,sessionId})).ready,false);
+  assert.equal(await conductorReceiverStatus({dir,sessionId,alive:()=>false}),null);
+ });
++
++test('a hookless Conductor receiver publishes its private startup observation automatically',async t=>{
++ const dir=await mkdtemp(path.join(tmpdir(),'conductor-personal-'));t.after(()=>rm(dir,{recursive:true,force:true}));
++ const env={CONDUCTOR_IS_LOCAL:'0',CONDUCTOR_SESSION_ID:'11111111-1111-4111-8111-111111111111',CONDUCTOR_WORKSPACE_ID:'22222222-2222-4222-8222-222222222222',CODEX_THREAD_ID:'33333333-3333-4333-8333-333333333333'},abort=new AbortController(),calls=[];
++ const client={dir,request:async(route,r)=>{calls.push(r);const name=r.params.name;return {result:{content:[{type:'text',text:JSON.stringify(name==='_mailbox_register'?{personalSpace:{supported:true}}:name==='_personal_space_observe'?{recorded:true}:{messages:[],events:[]})}]}};}};
++ await runConductorReceiver({env,client,signal:abort.signal,capture:async()=>{},adapter:{verify:async()=>{},post:async()=>assert.fail('No event should be sent')},sleep:async()=>{
++  for(let i=0;i<100&&!calls.some(r=>r.params.name==='_personal_space_observe');i++)await new Promise(r=>setTimeout(r,2));abort.abort();
++ }});
++ const observations=calls.filter(r=>r.params.name==='_personal_space_observe');assert.equal(observations.length,1);assert.equal(observations[0].params.arguments.event,'SessionStart');
++ assert.equal(observations[0]._commonplaceSession.sessionId,sessionKey('Codex',env.CODEX_THREAD_ID));assert.doesNotMatch(JSON.stringify(observations),/prompt|tool_input/);
++});
+diff --git a/tests/mailbox-runtime-drain.test.mjs b/tests/mailbox-runtime-drain.test.mjs
+new file mode 100644
+index 0000000..4c6bbe1
+--- /dev/null
++++ b/tests/mailbox-runtime-drain.test.mjs
+@@ -0,0 +1,45 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {createRuntimeUpgrade,runtimeWork} from '../apps/commonplace/server/runtime-upgrade.mjs';
++import {CloudSync} from '../apps/commonplace/server/cloud-sync.mjs';
++
++function fixture(app={}) {
++  let time=10, queued, restarts=0;
++  const upgrade=createRuntimeUpgrade(app,{restart:()=>{restarts++;},now:()=>time,schedule:fn=>{queued=fn;return {unref(){}};},cancel:()=>{queued=null;},deadlineMs:100});
++  return {app,upgrade,restarts:()=>restarts,step:async(ms=0)=>{time+=ms;const fn=queued;queued=null;fn?.();await Promise.resolve();}};
++}
++
++test('recurring collection drains once without changing saved sync settings',async()=>{
++  const app={cloudSync:{running:true,state:{enabled:true}},contextMirror:{running:true,state:{enabled:true,generation:'retained'}},jobs:new Set()};
++  const f=fixture(app),saved=JSON.stringify([app.cloudSync.state,app.contextMirror.state]);
++  assert.equal(f.upgrade.request().draining,true);assert.equal(app.runtimeDraining,true);
++  await f.step();assert.equal(f.restarts(),0);
++  app.cloudSync.running=false;app.contextMirror.running=false;
++  await f.step();assert.equal(f.restarts(),1);assert.equal(f.upgrade.request().restarting,true);
++  await f.step();assert.equal(f.restarts(),1);assert.equal(JSON.stringify([app.cloudSync.state,app.contextMirror.state]),saved);
++});
++
++test('active foreground jobs retain their guard and drain timeout resumes background scheduling',async()=>{
++  const app={resourceTicking:true,cloudBrowserLogin:{running:true},historyAnswer:{running:true},jobs:new Set(['job'])},f=fixture(app);
++  f.upgrade.request();await f.step(99);assert.equal(f.restarts(),0);
++  assert.deepEqual(runtimeWork(app),['resourceCheck','signInCheck','answer','jobs']);
++  await f.step(1);assert.equal(f.upgrade.status().state,'busy');assert.equal(app.runtimeDraining,false);
++  app.historyAnswer.running=false;app.jobs.clear();app.resourceTicking=false;app.cloudBrowserLogin.running=false;f.upgrade.request();await f.step();assert.equal(f.restarts(),1);
++});
++
++test('duplicate restart requests do not extend the drain deadline or lose a newly active job',async()=>{
++  const app={capturing:true},f=fixture(app);
++  const first=f.upgrade.request();await f.step(50);assert.equal(f.upgrade.request().deadlineAt,first.deadlineAt);
++  app.capturing=false;app.cloudBrowserLogin={current:{}};await f.step(50);
++  assert.equal(f.restarts(),0);assert.equal(f.upgrade.status().state,'busy');
++});
++
++test('closing a pending drain cancels restart and restores scheduling',async()=>{
++  const f=fixture({building:true});f.upgrade.request();f.upgrade.close();await f.step(200);
++  assert.equal(f.restarts(),0);assert.equal(f.app.runtimeDraining,false);
++});
++
++test('cloud collection starts no network or disk work during a runtime drain',async()=>{
++  let checked=0;const app={runtimeDraining:true,accountClient:{view:()=>{checked++;return {connected:true};}}};
++  await CloudSync.prototype.tick.call({app});assert.equal(checked,0);
++});
+diff --git a/tests/mailbox-runtime-upgrade.test.mjs b/tests/mailbox-runtime-upgrade.test.mjs
+index c1f6bfd..2298128 100644
+--- a/tests/mailbox-runtime-upgrade.test.mjs
++++ b/tests/mailbox-runtime-upgrade.test.mjs
+@@ -29,3 +29,25 @@ test('slow live startup is not multiplied and failed startup remains bounded',as
+   const unavailable=createLocalClient({dir:f.dir,spawnProcess:()=>{retries++;const c=f.child();c.exitCode=1;return c;},sleep:async()=>{}});
+   await assert.rejects(unavailable.connect(),/reconnecting/);assert.equal(retries,32);
+ });
++
++test('a busy legacy runtime or accepted drain keeps tools usable without spawning competing daemons',async t=>{
++ for(const status of [409,200]){
++  const dir=await mkdtemp(path.join(tmpdir(),'runtime-busy-'));t.after(()=>rm(dir,{recursive:true,force:true}));
++  let starts=0,restarts=0;
++  const server=createServer(async(req,res)=>{let raw='';for await(const c of req)raw+=c;const r=JSON.parse(raw);assert.equal(req.headers.authorization,'Bearer private-test');
++   if(req.url==='/api/runtime/restart'){restarts++;res.writeHead(status,{'content-type':'application/json'});res.end(JSON.stringify({draining:status===200}));}
++   else {res.writeHead(200,{'content-type':'application/json'});res.end(JSON.stringify({id:r.id,result:{}}));}
++  });
++  server.listen(0,'127.0.0.1');await once(server,'listening');t.after(()=>new Promise(resolve=>server.close(resolve)));
++  const pid=process.pid+1000000;
++  await writeFile(path.join(dir,'runtime.json'),JSON.stringify({origin:'http://127.0.0.1:'+server.address().port,token:'private-test',revision:RUNTIME_REVISION-1,pid}));
++  await writeFile(path.join(dir,'daemon.lock'),String(pid));
++  const client=createLocalClient({dir,spawnProcess:()=>{starts++;assert.fail('Must not spawn while the old daemon owns the lock');}});
++  await Promise.all([client.connect(),client.connect()]);
++  assert.equal((await client.request('local/mcp',{id:9,method:'ping'})).id,9);
++  assert.equal(restarts,1);assert.equal(starts,0);
++  // Refresh to current metadata clears the scheduled retry without a real PID.
++  await writeFile(path.join(dir,'runtime.json'),JSON.stringify({origin:'http://127.0.0.1:'+server.address().port,token:'private-test',revision:RUNTIME_REVISION,pid}));
++  await client.connect();
++ }
++});
+diff --git a/tests/mailbox-setup.test.mjs b/tests/mailbox-setup.test.mjs
+index f0ca500..b49d02c 100644
+--- a/tests/mailbox-setup.test.mjs
++++ b/tests/mailbox-setup.test.mjs
+@@ -27,7 +27,7 @@ test('setup status is read-only, omits credentials and ignores stale pending sig
+ });
+ test('loaded versus installed versions report the real host reload step and preserve account state',async t=>{
+  const f=await fixture(t);await writeFile(path.join(f.home,'.claude/plugins/installed_plugins.json'),JSON.stringify({plugins:{'meet-proxy@commonplace':[{scope:'user',version:'0.5.0',installPath:'/new/plugin'}]}}));
+- const r=await setupStatus(f);assert.equal(r.loadedVersion,PLUGIN_VERSION);assert.equal(r.installedVersion,'0.5.0');assert.equal(r.needsReload,true);assert.match(r.nextSteps[0],/restart Claude Desktop/);assert.equal(r.account.connected,true);
++ const r=await setupStatus(f);assert.equal(r.loadedVersion,PLUGIN_VERSION);assert.equal(r.installedVersion,'0.5.0');assert.equal(r.needsReload,true);assert.match(r.nextSteps[0],/Finish in a new chat/);assert.equal(r.account.connected,true);
+ });
+ test('setup reports only the active server origin and never leaks credential-bearing URLs',async t=>{
+  const f=await fixture(t),file=path.join(f.dir,'account-client.json'),account=JSON.parse(await readFile(file,'utf8'));
+diff --git a/tests/packaging.test.mjs b/tests/packaging.test.mjs
+index 30326d0..bc8d5bd 100644
+--- a/tests/packaging.test.mjs
++++ b/tests/packaging.test.mjs
+@@ -12,14 +12,14 @@ const run=(cmd,args)=>exec(cmd,args,{cwd:root,timeout:240000,maxBuffer:1024*1024
+ test('stable cloud plugin preserves baseline assets, dependencies and executable modes', {timeout:300000},async t=>{
+   const scratch=await mkdtemp(path.join(tmpdir(),'cloud-package-'));t.after(()=>rm(scratch,{recursive:true,force:true}));
+   const baseline=process.env.COMMONPLACE_TEST_BASELINE||path.resolve('artifacts/.cache/meet-proxy-0.3.0.zip');
+-  let output=path.resolve(process.env.COMMONPLACE_TEST_PACKAGE_DIR||'artifacts/public-0.4.37');
+-  if(!existsSync(output+'/meet-proxy-0.4.37.zip')){output=path.join(scratch,'build');await run('python3',['scripts/build-plugin.py','--baseline',baseline,'--output',output]);}
++  let output=path.resolve(process.env.COMMONPLACE_TEST_PACKAGE_DIR||'artifacts/public-0.4.38');
++  if(!existsSync(output+'/meet-proxy-0.4.38.zip')){output=path.join(scratch,'build');await run('python3',['scripts/build-plugin.py','--baseline',baseline,'--output',output]);}
+   const bad=path.join(scratch,'bad.zip');await writeFile(bad,'wrong');
+   await assert.rejects(run('python3',['scripts/build-plugin.py','--baseline',bad,'--output',path.join(scratch,'bad')]),/SHA-256 mismatch/);
+   await run('python3',['-c',`
+ import zipfile,json,hashlib,pathlib,shutil,re,posixpath,sys
+ baseline,output,root,extracted=sys.argv[1:]
+-expected={'server/'+n for n in ('history-scan.mjs','personal-space.mjs','space-resources.mjs','workspace-chat.mjs','owner.mjs','account-profiles.mjs','account-profile-tools.mjs','account-inbox.mjs','mailbox-client.mjs','agent-history.mjs','person-inbox.mjs','inbox-envelope.mjs','plugin.mjs','plugin-surface.mjs','local-client.mjs','start.mjs','canonical-sync.mjs','cloud-sync.mjs','cloud-background.mjs','cloud-browser-login.mjs','history-roots.mjs','conductor-history.mjs','ingest.mjs','native-hook.mjs','setup-status.mjs','account-client.mjs','account-errors.mjs','agent-auth-client.mjs','connect-account.mjs','conductor-session-inbox.mjs','chat-pairing.mjs','chat-capture.mjs','native-session.mjs','codex-host-context.mjs','codex-config.mjs','configure-codex.mjs','conductor-receiver.mjs','contact-delivery.mjs','mcp-resource-ingestion.mjs','mcp-resource-tools.mjs','mcp-resource-transport.mjs','mcp-resource-transport.LICENSE.txt','context-mirror.mjs','context-index.mjs','context-search.mjs','mcp-adapter.mjs','mcp-adapter.LICENSE.txt','mcp.mjs','desktop-receiver.mjs','workspace-session.mjs')}
++expected={'server/'+n for n in ('runtime-upgrade.mjs','history-scan.mjs','personal-space.mjs','space-resources.mjs','workspace-chat.mjs','owner.mjs','account-profiles.mjs','account-profile-tools.mjs','account-inbox.mjs','mailbox-client.mjs','agent-history.mjs','person-inbox.mjs','inbox-envelope.mjs','plugin.mjs','plugin-surface.mjs','local-client.mjs','start.mjs','canonical-sync.mjs','cloud-sync.mjs','cloud-background.mjs','cloud-browser-login.mjs','history-roots.mjs','conductor-history.mjs','ingest.mjs','native-hook.mjs','setup-status.mjs','account-client.mjs','account-errors.mjs','agent-auth-client.mjs','connect-account.mjs','conductor-session-inbox.mjs','chat-pairing.mjs','chat-capture.mjs','native-session.mjs','codex-host-context.mjs','codex-config.mjs','configure-codex.mjs','conductor-receiver.mjs','contact-delivery.mjs','mcp-resource-ingestion.mjs','mcp-resource-tools.mjs','mcp-resource-transport.mjs','mcp-resource-transport.LICENSE.txt','context-mirror.mjs','context-index.mjs','context-search.mjs','mcp-adapter.mjs','mcp-adapter.LICENSE.txt','mcp.mjs','desktop-receiver.mjs','workspace-session.mjs')}
+ expected|={'skills/'+n+'/SKILL.md' for n in ('setup','add','join','delegate','meet-proxy','context')}
+ expected|={'docs/PRODUCTION-VERIFICATION.md','docs/UNIFIED-CONTEXT.md','docs/SETUP.md','docs/PERSONAL-AGENTS.md'}
+ expected|={'.claude-plugin/plugin.json','.codex-plugin/plugin.json','README.md','.mcp.json','runtime/posix.exe','runtime/Windows_NT.exe'}
+@@ -30,7 +30,7 @@ def digest(stream):
+ with open(baseline,'rb') as f:assert digest(f)=='146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968'
+ with zipfile.ZipFile(baseline) as old:
+  for alias in ('meet-proxy','commonplace'):
+-  candidate=pathlib.Path(output)/(alias+'-0.4.37.zip')
++  candidate=pathlib.Path(output)/(alias+'-0.4.38.zip')
+   report=json.loads(candidate.with_name(candidate.stem+'-build.json').read_text())
+   with candidate.open('rb') as f:assert digest(f)==report['sha256']
+   with zipfile.ZipFile(candidate) as new:
+@@ -40,7 +40,7 @@ with zipfile.ZipFile(baseline) as old:
+    assert new.read('runtime/Windows_NT.exe')==old.read('runtime/node.exe')
+    for name in added_launchers:assert new.getinfo(name).external_attr>>16&0o111,name
+    assert list(json.loads(new.read('.mcp.json'))['mcpServers'])==[alias]
+-   assert set(new.namelist())==set(old.namelist())|added_launchers|{'server/history-scan.mjs','server/personal-space.mjs','server/space-resources.mjs','server/account-profiles.mjs','server/account-profile-tools.mjs','server/contact-delivery.mjs','server/mcp-resource-ingestion.mjs','server/mcp-resource-tools.mjs','server/mcp-resource-transport.mjs','server/mcp-resource-transport.LICENSE.txt','server/account-errors.mjs','docs/PRODUCTION-VERIFICATION.md','docs/UNIFIED-CONTEXT.md','server/canonical-sync.mjs','docs/PERSONAL-AGENTS.md','server/agent-history.mjs','server/conductor-history.mjs','server/cloud-sync.mjs','server/cloud-background.mjs','server/cloud-browser-login.mjs','server/setup-status.mjs','server/conductor-session-inbox.mjs','server/codex-host-context.mjs','server/codex-config.mjs','server/configure-codex.mjs','server/conductor-receiver.mjs','server/context-mirror.mjs','server/context-index.mjs','server/context-search.mjs','server/mcp-adapter.mjs','server/mcp-adapter.LICENSE.txt','skills/setup/SKILL.md','skills/context/SKILL.md','docs/SETUP.md'}
++   assert set(new.namelist())==set(old.namelist())|added_launchers|{'server/runtime-upgrade.mjs','server/history-scan.mjs','server/personal-space.mjs','server/space-resources.mjs','server/account-profiles.mjs','server/account-profile-tools.mjs','server/contact-delivery.mjs','server/mcp-resource-ingestion.mjs','server/mcp-resource-tools.mjs','server/mcp-resource-transport.mjs','server/mcp-resource-transport.LICENSE.txt','server/account-errors.mjs','docs/PRODUCTION-VERIFICATION.md','docs/UNIFIED-CONTEXT.md','server/canonical-sync.mjs','docs/PERSONAL-AGENTS.md','server/agent-history.mjs','server/conductor-history.mjs','server/cloud-sync.mjs','server/cloud-background.mjs','server/cloud-browser-login.mjs','server/setup-status.mjs','server/conductor-session-inbox.mjs','server/codex-host-context.mjs','server/codex-config.mjs','server/configure-codex.mjs','server/conductor-receiver.mjs','server/context-mirror.mjs','server/context-index.mjs','server/context-search.mjs','server/mcp-adapter.mjs','server/mcp-adapter.LICENSE.txt','skills/setup/SKILL.md','skills/context/SKILL.md','docs/SETUP.md'}
+    assert set(report['overlay'])==expected
+    for item in new.infolist():
+     name=item.filename
+@@ -54,7 +54,7 @@ with zipfile.ZipFile(baseline) as old:
+       dep=posixpath.normpath(posixpath.join(posixpath.dirname(name),rel[1]))
+       assert dep in new.namelist(),name+' missing '+dep
+    for name in ('.claude-plugin/plugin.json','.codex-plugin/plugin.json'):
+-    metadata=json.loads(new.read(name));assert metadata['name']==alias and metadata['version']=='0.4.37'
++    metadata=json.loads(new.read(name));assert metadata['name']==alias and metadata['version']=='0.4.38'
+    if alias=='meet-proxy':
+     for item in new.infolist():
+      target=pathlib.Path(extracted)/item.filename;target.parent.mkdir(parents=True,exist_ok=True)
+@@ -64,11 +64,11 @@ with zipfile.ZipFile(baseline) as old:
+   const checked=await run(process.execPath,['--input-type=module','-e',`
+ import assert from 'node:assert/strict';import {pathToFileURL} from 'node:url';
+ const root=process.argv[1];const {pluginResponse}=await import(pathToFileURL(root+'/server/plugin-surface.mjs'));const {accountInboxMcp}=await import(pathToFileURL(root+'/server/account-inbox.mjs'));
+-const init=pluginResponse({method:'initialize'},{result:{}});assert.equal(init.result.serverInfo.version,'0.4.37');
++const init=pluginResponse({method:'initialize'},{result:{}});assert.equal(init.result.serverInfo.version,'0.4.38');
+ const r={jsonrpc:'2.0',id:1,method:'tools/list'};const tools=pluginResponse(r,await accountInboxMcp({},r)).result.tools.map(t=>t.name);
+ for(const name of ['invite_agent_connection','preview_agent_connection','accept_agent_connection','read_agent_connection','list_agent_connections','sever_agent_connection','cloud_agent_status','connect_cloud_agent','run_cloud_task','read_cloud_task','cancel_cloud_task','configure_cloud_sync','send_agent_message','list_my_agent_conversations','read_agent_context','publish_agent_context','search_my_chats','read_my_chat','configure_my_chat_history','setup_status','add_person_to_chat','search_shared_context','read_shared_context','context_sync_status','configure_context_source','read_project_context'])assert.ok(tools.includes(name),name);
+-const {RUNTIME_REVISION}=await import(pathToFileURL(root+'/server/local-client.mjs'));assert.equal(RUNTIME_REVISION,70);
+-const {BACKGROUND_VERSION}=await import(pathToFileURL(root+'/server/cloud-background.mjs'));assert.equal(BACKGROUND_VERSION,'0.4.37');
++const {RUNTIME_REVISION}=await import(pathToFileURL(root+'/server/local-client.mjs'));assert.equal(RUNTIME_REVISION,71);
++const {BACKGROUND_VERSION}=await import(pathToFileURL(root+'/server/cloud-background.mjs'));assert.equal(BACKGROUND_VERSION,'0.4.38');
+ // setup_status is added by the stdio surface, even while an older companion is busy.
+ const surfaced=pluginResponse(r,{result:{tools:[]}}).result.tools.find(t=>t.name==='setup_status');
+ for(const name of ['invite_agent_connection','accept_agent_connection','sever_agent_connection'])assert.ok(surfaced.inputSchema.properties.blockedTool.enum.includes(name));
