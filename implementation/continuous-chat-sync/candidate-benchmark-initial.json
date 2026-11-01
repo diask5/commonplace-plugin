@@ -1,0 +1,21 @@
+{
+  "collectorSha256": "591579a55adb1c6590abd3baa47ae5004bd470dc06dc93a095310521a1759755",
+  "files": 6722,
+  "seededCompleteFiles": 6721,
+  "backlogMessages": 6000,
+  "receivedMessages": 6000,
+  "uploads": 60,
+  "passes": [
+    {
+      "uploads": 60,
+      "scanned": 6722,
+      "scanMode": "full",
+      "elapsedMs": 2296,
+      "scanMs": 529.7308
+    }
+  ],
+  "elapsedMs": 2296,
+  "totalFileChecks": 6722,
+  "network": "Immediate mocked responses; no transport latency, server rate limit or remote acceptance simulated.",
+  "limits": "Synthetic filesystem and seeded complete-file metadata. Not a live Mac throughput measurement."
+}

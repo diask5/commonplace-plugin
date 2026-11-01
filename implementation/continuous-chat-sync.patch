@@ -1,0 +1,591 @@
+diff --git a/apps/commonplace/server/account-client.mjs b/apps/commonplace/server/account-client.mjs
+index ed51f5c..ad68294 100644
+--- a/apps/commonplace/server/account-client.mjs
++++ b/apps/commonplace/server/account-client.mjs
+@@ -301,6 +301,7 @@ async function exchange(server, endpoint, { body, bearer, form = false } = {}) {
+         ? authError()
+         : new Error(`Account server request failed${api ? ` for ${endpoint.slice('/account/api/'.length)}` : ''} (HTTP ${response.status}).${detail ? ` ${detail}` : ''}`);
+     error.status = response.status;
++    if(response.status===429){const retry=Number(response.headers.get('Retry-After'));error.retryAfter=Number.isFinite(retry)&&retry>0?Math.min(300,retry):60;}
+     throw error;
+   }
+   if (response.status === 202 || response.status === 204) {
+diff --git a/apps/commonplace/server/canonical-sync.mjs b/apps/commonplace/server/canonical-sync.mjs
+index e443231..304b680 100644
+--- a/apps/commonplace/server/canonical-sync.mjs
++++ b/apps/commonplace/server/canonical-sync.mjs
+@@ -1,3 +1,4 @@
++import {HistoryScan} from './history-scan.mjs';
+ import {gzip} from 'node:zlib';
+ import {promisify} from 'node:util';
+ import {withAccountContext} from './account-profiles.mjs';
+@@ -12,7 +13,7 @@ const safeId=v=>typeof v==='string'&&v.length>0&&v.length<=500&&!/[\x00-\x1f]/.t
+ const timestamp=v=>typeof v==='number'?v<1e11?Math.floor(v*1000):Math.floor(v):typeof v==='string'?Date.parse(v):NaN;
+ const uuid=v=>typeof v==='string'&&/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(v);
+ // The relay already accepts 100 messages and a 64 KB request. Leave room for
+-// provenance/envelope fields; the upload count remains capped at six per tick.
++// provenance/envelope fields; each payload retains its decoded size bound.
+ const MESSAGE_LIMIT=100, MESSAGE_BYTES=52000;
+ const zip=promisify(gzip);
+ // This envelope also travels through the signed Agent Auth capability, whose
+@@ -70,7 +71,8 @@ export function transcriptRecord(raw,{index,conversation,provider='native',fallb
+  return {conversation,messages};
+ }
+ export class CanonicalSync {
+- constructor(app,{now=Date.now,budget=40,maxScan=20000}={}){this.app=app;this.now=now;this.budget=budget;this.maxScan=maxScan;this.state=null;}
++ constructor(app,{now=Date.now,budget=Infinity,maxScan=20000,maxDurationMs=2000,scanIntervalMs=0,watchRoots=false}={}){this.app=app;this.now=now;this.budget=budget;this.maxDurationMs=maxDurationMs;this.maxScan=maxScan;this.state=null;this.scanner=new HistoryScan({now,intervalMs:scanIntervalMs,maxScan,watchRoots});}
++ close(){this.scanner.close();}
+  async load(owner){
+   if(!this.state){try{this.state=JSON.parse(await readFile(path.join(this.app.dir,'canonical-sync.json'),'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}}
+   if(!this.state||this.state.owner!==owner)this.state={format:1,owner,files:{}};
+@@ -97,7 +99,7 @@ export class CanonicalSync {
+  async send(key,input,next){input={...input,ownerId:this.state.owner};this.state.pending={key,input,next};await this.save();await this.flush();}
+  async tick(owner,roots,{uploadEncoding}={}){
+   this.uploadEncoding=uploadEncoding;
+-  await this.load(owner);let budget=Math.min(this.budget,6);const io={readBytes:0,readCalls:0};
++  await this.load(owner);let budget=this.budget;const io={readBytes:0,readCalls:0};
+   if(this.state.format!==3){
+    // Old collectors admitted host API-request envelopes. Never replay their
+    // pending text. Reconcile its possibly accepted revision, then recapture
+@@ -110,35 +112,10 @@ export class CanonicalSync {
+    for(const record of Object.values(this.state.files))for(const key of ['captureId','captureComplete','queued','scanComplete','offset','index','version','scanVersion','seen','scannedAt','headDigest','headLength','inode','lastReported','error','errorVersion','errorAt'])delete record[key];
+    this.state.format=3;await this.save();
+   }
+-  if(this.state.pending){await this.flush();budget--;}
+-  const seen=new Set();let partial=false;
+-  const entries=[];this.state.cursors||={};
+-  // Walking only reads directory names. The costlier realpath+lstat stage is
+-  // capped at maxScan files per tick and rotated by a durable cursor. A walk,
+-  // stat or cap shortfall means the file set is incomplete: such a scan must
+-  // never imply a source disappeared, so the unavailable pass is skipped.
+-  let incomplete=false;const candidates=[];
+-  for(const root of roots){
+-   const files=[];
+-   const walk=async dir=>{for(const e of (await readdir(dir,{withFileTypes:true})).sort((a,b)=>a.name.localeCompare(b.name))){if(e.isSymbolicLink()||e.name.startsWith('.')||e.name==='node_modules')continue;const p=path.join(dir,e.name);if(e.isDirectory())await walk(p);else if(e.isFile()&&/\.(jsonl|json)$/i.test(e.name))files.push(p);}};
+-   let canonicalRoot;
+-   try{canonicalRoot=await canonicalHistoryRoot(root.path);await walk(root.path);}catch{partial=true;incomplete=true;continue;}
+-   for(const file of files)candidates.push({root,file,canonicalRoot,id:root.path+'\0'+file});
+-  }
+-  candidates.sort((a,b)=>a.id<b.id?-1:1);
+-  let scanList=candidates;
+-  if(candidates.length>this.maxScan){
+-   const c=this.state.cursors.scan,at=c?candidates.findIndex(e=>e.id>c):0,rotated=at>0?[...candidates.slice(at),...candidates.slice(0,at)]:candidates;
+-   scanList=rotated.slice(0,this.maxScan);this.state.cursors.scan=scanList.at(-1).id;partial=true;incomplete=true;
+-  }else delete this.state.cursors.scan;
+-  for(const {root,file,canonicalRoot,id} of scanList){
+-   try{
+-    const relative=path.relative(canonicalRoot,await realpath(file));if(relative.startsWith('..')||path.isAbsolute(relative))continue;
+-    const stat=await lstat(file);if(stat.isSymbolicLink())continue;
+-    const key=hash(root.path+':'+relative);seen.add(key);
+-    entries.push({root,file,relative,key,id,mtime:stat.mtimeMs,version:stat.size+':'+stat.mtimeMs});
+-   }catch{partial=true;incomplete=true;}
+-  }
++  let replayed=false;if(this.state.pending){await this.flush();budget--;replayed=true;}
++  this.state.cursors||={};
++  const scan=await this.scanner.scan(owner,roots,this.state.cursors),{entries,seen,incomplete}=scan;let partial=scan.partial;
++  const uploadStarted=performance.now(),deadline=uploadStarted+this.maxDurationMs;
+   // fresh: never captured or changed since a complete capture; continuation:
+   // mid-backfill; heartbeat: unchanged and due, or a recently failed source.
+   let backedOff=0;
+@@ -169,15 +146,19 @@ export class CanonicalSync {
+   const starved=(this.state.beatSkips||0)>=5&&beat.length;
+   plan.splice(starved?Math.min(2,Math.max(0,budget-1),plan.length):plan.length,0,...beat.map(e=>({...e,cls:'heartbeat',reserved:!!starved})).slice(0,starved?1:beat.length));
+   if(starved)plan.push(...beat.slice(1).map(e=>({...e,cls:'heartbeat'})));
+-  let attempts=Math.min(this.budget,6)*4,served=false;const sent={fresh:0,continuing:0,retry:0,heartbeat:0},deferred={fresh:0,continuing:0,retry:0,heartbeat:0};
++  let attempts=this.budget*4,served=false;const sent={fresh:0,continuing:0,retry:0,heartbeat:0},deferred={fresh:0,continuing:0,retry:0,heartbeat:0};
+   for(let planIndex=0;planIndex<plan.length;planIndex++){
+    const entry=plan[planIndex];
+    const {root,file,relative,key}=entry;
+-   if(budget<=0||attempts<=0){deferred[entry.cls]++;if(entry.cls!=='heartbeat')partial=true;continue;}
++   if(budget<=0||attempts<=0||performance.now()>=deadline){deferred[entry.cls]++;if(entry.cls!=='heartbeat')partial=true;continue;}
+    attempts--;
+    {
+     try{
+-    const stat=await lstat(file);if(stat.isSymbolicLink())continue;
++    // Revalidate each selected cached path against the currently accessible root.
++    const canonicalRoot=await canonicalHistoryRoot(root.path),resolved=await realpath(file),inside=path.relative(canonicalRoot,resolved);
++    if(canonicalRoot!==entry.canonicalRoot||inside.startsWith('..')||path.isAbsolute(inside)||inside!==relative)continue;
++    const stat=await lstat(file);if(!stat.isFile()||stat.isSymbolicLink())continue;
++    entry.version=stat.size+':'+stat.mtimeMs;entry.mtime=stat.mtimeMs;
+     let record=this.state.files[key]||{epoch:1,revision:0},next={...record};
+     const version=stat.size+':'+stat.mtimeMs;
+     if(entry.cls==='heartbeat'&&record.version===version&&this.now()-(record.lastReported||0)<30000)continue;
+@@ -242,7 +223,7 @@ export class CanonicalSync {
+      next.revision=input.revision;next.capturedAt=observed;await this.send(key,input,next);budget--;sent[entry.cls]++;if(!complete)partial=true;
+      // A long chat used to send just one chunk per tick, then spend the other
+      // slots on unchanged heartbeats. Rotate its next chunk behind other active
+-     // sources and the reserved heartbeat, within the same six-upload budget.
++     // sources and the reserved heartbeat until the cooperative time slice ends.
+      // Do not spin on malformed/empty input or an explicitly excluded source.
+      if(!complete&&!next.error&&budget>0&&!this.state.files[key]?.excluded&&!this.state.files[key]?.accountWithheld&&(messages.length||next.offset>(record.offset||0)||next.index>(record.index||0))){
+       let insert=planIndex+1;
+@@ -259,7 +240,8 @@ export class CanonicalSync {
+   }
+   const beatSkips=served||!beat.length?0:(this.state.beatSkips||0)+1;if(beatSkips!==(this.state.beatSkips||0)){this.state.beatSkips=beatSkips;await this.save();}
+   // Missing files are unavailable replicas, not global deletion commands.
+-  if(!incomplete)for(const [key,r] of Object.entries(this.state.files))if(!seen.has(key)&&r.conversation&&budget>0&&this.now()-(r.lastReported||0)>30000){await this.send(key,{conversation:{...r.conversation,title:r.conversation.title||'Unavailable conversation'},sourceKey:key,epoch:r.epoch||1,revision:(r.revision||0)+1,capturedAt:r.capturedAt||0,state:'unavailable',messages:[]},{...r,revision:(r.revision||0)+1});budget--;}
+-  return {partial,files:Object.keys(this.state.files).length,protocol:1,sent,deferred,backedOff,scanned:scanList.length,discovered:candidates.length,io};
++  if(!incomplete)for(const [key,r] of Object.entries(this.state.files))if(!seen.has(key)&&r.conversation&&budget>0&&performance.now()<deadline&&this.now()-(r.lastReported||0)>30000){await this.send(key,{conversation:{...r.conversation,title:r.conversation.title||'Unavailable conversation'},sourceKey:key,epoch:r.epoch||1,revision:(r.revision||0)+1,capturedAt:r.capturedAt||0,state:'unavailable',messages:[]},{...r,revision:(r.revision||0)+1});budget--;}
++  const hasBacklog=deferred.fresh+deferred.continuing+deferred.retry>0||entries.some(e=>{const r=this.state.files[e.key];return r?.captureId&&!r.captureComplete&&!r.error&&!r.excluded&&!r.accountWithheld;});
++  return {partial,hasBacklog,replayed,files:Object.keys(this.state.files).length,protocol:1,sent,deferred,backedOff,scanned:scan.scanned,discovered:scan.discovered,scanMode:scan.mode,scanMs:scan.scanMs,uploadMs:Math.max(0,performance.now()-uploadStarted),io};
+  }
+ }
+diff --git a/apps/commonplace/server/cloud-sync.mjs b/apps/commonplace/server/cloud-sync.mjs
+index 978b01e..fe14183 100644
+--- a/apps/commonplace/server/cloud-sync.mjs
++++ b/apps/commonplace/server/cloud-sync.mjs
+@@ -26,7 +26,10 @@ export class CloudSync {
+     }
+     return new CloudSync(app,state,options);
+   }
+-  constructor(app,state,{discover,now=Date.now,budget=40,prepareHistory=prepareConductorHistory}={}) {this.prepareHistory=prepareHistory;this.app=app;this.state=state;this.discover=discover||(()=>discoverHistoryRoots({includeCodex:true,sources:app.state?.sources,onUnavailable:()=>{this.discoveryPartial=true;}}));this.now=now;this.budget=budget;this.running=false;this.canonical=new CanonicalSync(app,{now,budget});}
++  constructor(app,state,{discover,now=Date.now,budget,prepareHistory=prepareConductorHistory,scanIntervalMs=30000,watchRoots=true,maxDurationMs=2000}={}) {this.prepareHistory=prepareHistory;this.app=app;this.state=state;this.discover=discover||(()=>discoverHistoryRoots({includeCodex:true,sources:app.state?.sources,onUnavailable:()=>{this.discoveryPartial=true;}}));this.now=now;this.budget=budget??40;this.running=false;this.canonical=new CanonicalSync(app,{now,budget:budget??Infinity,scanIntervalMs,watchRoots,maxDurationMs});this.nextDelayMs=5000;this.failures=0;}
++  start(){if(this.started)return;this.started=true;const pump=async()=>{try{await this.tick();}finally{if(this.started){this.timer=setTimeout(()=>void pump(),Math.max(0,this.nextDelayMs));this.timer.unref?.();}}};void pump();}
++  close(){this.started=false;this.closed=true;clearTimeout(this.timer);this.canonical.close();}
++
+   async save() {
+     const file=path.join(this.app.dir,'cloud-sync.json'),temp=file+'.tmp';
+     await writeFile(temp,JSON.stringify(this.state),{mode:0o600});await rename(temp,file);
+@@ -40,7 +43,11 @@ export class CloudSync {
+     delete this.state.pending;await this.save();
+   }
+   async tick() {
+-    if(this.running || !this.app.accountClient?.view().connected)return;
++    if(this.closed)return;
++    if(this.running){this.nextDelayMs=250;return;}
++    const continuing=this.nextDelayMs===0;this.nextDelayMs=5000;
++    if(!this.app.accountClient?.view().connected)return;
++    if(this.state.retryAt>this.now()){this.nextDelayMs=Math.min(300000,this.state.retryAt-this.now());return;}
+     this.running=true;
+     let reports=false,phase='scanning';
+     const report=async state=>{if(reports)try{await this.app.accountClient.request('/account/api/cloud/collector-progress',{state,files:Object.keys(this.canonical.state?.files||this.state.files).length});}catch{/* Status transport must not interrupt durable collection. */}};
+@@ -58,13 +65,15 @@ export class CloudSync {
+       let budget=this.budget,partial=false;
+       if(this.state.pending){await this.flush();budget--;}
+       const consume=()=>{if(budget--<=0)throw Object.assign(Error('More sources remain.'),{pending:true});};
+-      this.discoveryPartial=false;
+-      const roots=await this.discover();partial ||= this.discoveryPartial;
+-      const conductor=await this.prepareHistory({dir:this.app.dir,owner});
+-      roots.push(...conductor.roots);partial ||= conductor.coverage.partial;
+-      this.state.coverage={conductor:conductor.coverage,transcriptRoots:roots.length,discoveryPartial:this.discoveryPartial};
++      const discoveryStart=performance.now(),discoveryKey=JSON.stringify([owner,this.app.state?.sources]);
++      if(status.contextProtocol!==1||!continuing||!this.prepared||this.prepared.key!==discoveryKey||this.now()-this.prepared.at>=5000){
++        this.discoveryPartial=false;const roots=await this.discover(),conductor=await this.prepareHistory({dir:this.app.dir,owner});
++        roots.push(...conductor.roots);this.prepared={key:discoveryKey,at:this.now(),roots,conductor,partial:this.discoveryPartial};
++      }
++      const {roots,conductor}=this.prepared;this.discoveryPartial=this.prepared.partial;partial ||= this.discoveryPartial||conductor.coverage.partial;
++      this.state.coverage={conductor:conductor.coverage,transcriptRoots:roots.length,discoveryPartial:this.discoveryPartial,prepareMs:performance.now()-discoveryStart};
+       if(status.contextProtocol===1&&!status.contextAtomicCaptures){this.state.error='Update the relay to enable complete capture publication.';phase='error';return;}
+-      if(status.contextProtocol===1){const result=await this.canonical.tick(owner,roots,{uploadEncoding:status.contextUploadEncoding});this.state.coverage.canonical=result;this.state.lastSyncedAt=this.now();this.state.error=result.partial||partial?'Collection is continuing; see source coverage for missing or partial chats.':null;phase=result.partial||partial?'partial':'current';return;}
++      if(status.contextProtocol===1){const result=await this.canonical.tick(owner,roots,{uploadEncoding:status.contextUploadEncoding});this.state.coverage.canonical=result;this.failures=0;delete this.state.retryAt;this.nextDelayMs=result.hasBacklog&&(result.replayed||Object.values(result.sent).some(n=>n>0))?0:5000;this.state.lastSyncedAt=this.now();this.state.error=result.partial||partial?'Collection is continuing; see source coverage for missing or partial chats.':null;phase=result.partial||partial?'partial':'current';return;}
+       for(const root of roots) {
+         const files=[],rootId=hash(root.path),seen=new Set();
+         const walk=async dir=>{for(const e of await readdir(dir,{withFileTypes:true})) {
+@@ -120,8 +129,12 @@ export class CloudSync {
+           delete this.state.files[key];await this.save();
+         }
+       }
+-      this.state.lastSyncedAt=this.now();this.state.error=partial?'Some history files are unavailable; accessible chats are synced.':null;phase=partial?'partial':'current';
+-    } catch(error) {phase=error.pending?'partial':'error';this.state.error=error.pending?'Initial sync is continuing.':'Sync interrupted; it will retry automatically.';}
++      this.failures=0;delete this.state.retryAt;this.state.lastSyncedAt=this.now();this.state.error=partial?'Some history files are unavailable; accessible chats are synced.':null;phase=partial?'partial':'current';
++    } catch(error) {phase=error.pending?'partial':'error';
++      const seconds=Number(error.retryAfter),delay=error.status===429?(Number.isFinite(seconds)&&seconds>0?Math.min(300000,Math.ceil(seconds*1000)):60000):Math.min(30000,1000*2**Math.min(this.failures++,5));
++      if(!error.pending){this.state.retryAt=this.now()+delay;this.nextDelayMs=delay;}
++      this.state.error=error.pending?'Initial sync is continuing.':error.status===429?'The server requested a pause; uploads will resume automatically.':'Sync interrupted; it will retry automatically.';
++    }
+     finally {await report(phase);try{await this.save();}catch{this.state.error='Could not save sync progress; it will retry automatically.';}finally{this.running=false;}}
+   }
+ }
+diff --git a/apps/commonplace/server/history-scan.mjs b/apps/commonplace/server/history-scan.mjs
+new file mode 100644
+index 0000000..0743340
+--- /dev/null
++++ b/apps/commonplace/server/history-scan.mjs
+@@ -0,0 +1,52 @@
++import {watch} from 'node:fs';
++import {readdir,lstat,realpath} from 'node:fs/promises';
++import {createHash} from 'node:crypto';
++import path from 'node:path';
++import {canonicalHistoryRoot} from './history-roots.mjs';
++const hash=value=>createHash('sha256').update(value).digest('hex');
++// A disposable in-memory index: restarts rebuild it, while upload revisions and
++// cursors remain durable. Watch hints accelerate discovery; periodic full scans
++// recover dropped events. Cached paths never authorize a file read.
++export class HistoryScan {
++ constructor({now=Date.now,intervalMs=30000,maxScan=20000,watchRoots=true}={}){Object.assign(this,{now,intervalMs,maxScan,watchRoots});this.watchers=[];this.dirty=new Map();this.key=null;this.snapshot=null;this.closed=false;}
++ close(){this.closed=true;for(const w of this.watchers)w.close();this.watchers=[];this.snapshot=null;}
++ async reset(key,roots){
++  for(const w of this.watchers)w.close();this.watchers=[];this.snapshot=null;this.dirty.clear();this.key=key;
++  if(!this.watchRoots||this.closed)return;
++  for(const root of roots)try{
++   await canonicalHistoryRoot(root.path);
++   const w=watch(root.path,{recursive:true,persistent:false},(_,name)=>{
++    if(!name){this.snapshot=null;return;}
++    const file=path.resolve(root.path,String(name)),relative=path.relative(root.path,file);
++    if(relative.startsWith('..')||path.isAbsolute(relative)||relative.split(path.sep).some(n=>n.startsWith('.')||n==='node_modules'))return;
++    if(!/\.(jsonl|json)$/i.test(file)||this.dirty.size>=1000){this.snapshot=null;return;}
++    this.dirty.set(root.path+'\0'+file,{root,file});
++   });w.on('error',()=>{this.snapshot=null;w.close();});this.watchers.push(w);
++  }catch{/* Periodic scan reports unavailable roots and recovers unsupported watches. */}
++ }
++ async entry(root,file,canonicalRoot){
++  const relative=path.relative(canonicalRoot,await realpath(file));if(relative.startsWith('..')||path.isAbsolute(relative))return null;
++  const stat=await lstat(file);if(!stat.isFile()||stat.isSymbolicLink())return null;
++  return {root,file,canonicalRoot,relative,key:hash(root.path+':'+relative),id:root.path+'\0'+file,mtime:stat.mtimeMs,version:stat.size+':'+stat.mtimeMs};
++ }
++ async scan(owner,roots,cursors){
++  const start=performance.now(),key=JSON.stringify([owner,roots]);if(key!==this.key)await this.reset(key,roots);
++  if(this.snapshot&&this.now()-this.snapshot.at<this.intervalMs){
++   const snapshot=this.snapshot,dirty=[...this.dirty.values()];this.dirty.clear();let incomplete=false;
++   for(const {root,file} of dirty)try{const canonicalRoot=await canonicalHistoryRoot(root.path),entry=await this.entry(root,file,canonicalRoot);if(entry)snapshot.entries.set(entry.id,entry);else{snapshot.entries.delete(root.path+'\0'+file);incomplete=true;}}catch{snapshot.entries.delete(root.path+'\0'+file);incomplete=true;}
++   if(incomplete)this.snapshot=null;
++   const entries=[...snapshot.entries.values()];return {entries,seen:new Set(entries.map(e=>e.key)),incomplete,partial:incomplete,scanned:dirty.length,discovered:entries.length,mode:dirty.length?'incremental':'cached',scanMs:performance.now()-start};
++  }
++  // Clear hints before walking: events arriving during the walk remain queued.
++  this.dirty.clear();let incomplete=false;const candidates=[],entries=[];
++  for(const root of roots){
++   const walk=async dir=>{for(const e of await readdir(dir,{withFileTypes:true})){if(e.isSymbolicLink()||e.name.startsWith('.')||e.name==='node_modules')continue;const file=path.join(dir,e.name);if(e.isDirectory())await walk(file);else if(e.isFile()&&/\.(jsonl|json)$/i.test(e.name))candidates.push({root,file,canonicalRoot,id:root.path+'\0'+file});}};
++   let canonicalRoot;try{canonicalRoot=await canonicalHistoryRoot(root.path);await walk(root.path);}catch{incomplete=true;}
++  }
++  candidates.sort((a,b)=>a.id<b.id?-1:1);let list=candidates;
++  if(candidates.length>this.maxScan){const at=cursors.scan?candidates.findIndex(e=>e.id>cursors.scan):0,rotated=at>0?[...candidates.slice(at),...candidates.slice(0,at)]:candidates;list=rotated.slice(0,this.maxScan);cursors.scan=list.at(-1)?.id;incomplete=true;}else delete cursors.scan;
++  for(const {root,file,canonicalRoot} of list)try{const entry=await this.entry(root,file,canonicalRoot);if(entry)entries.push(entry);}catch{incomplete=true;}
++  if(!incomplete&&!this.closed)this.snapshot={at:this.now(),entries:new Map(entries.map(e=>[e.id,e]))};
++  return {entries,seen:new Set(entries.map(e=>e.key)),incomplete,partial:incomplete,scanned:list.length,discovered:candidates.length,mode:'full',scanMs:performance.now()-start};
++ }
++}
+diff --git a/apps/commonplace/server/local-client.mjs b/apps/commonplace/server/local-client.mjs
+index 2ecba44..250761d 100644
+--- a/apps/commonplace/server/local-client.mjs
++++ b/apps/commonplace/server/local-client.mjs
+@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
+ import { spawn } from 'node:child_process';
+ import { setTimeout as delay } from 'node:timers/promises';
+ 
+-export const RUNTIME_REVISION = 69;
++export const RUNTIME_REVISION = 70;
+ 
+ export function createLocalClient({
+   dir = process.env.COMMONPLACE_DATA_DIR ||
+diff --git a/apps/commonplace/server/setup-status.mjs b/apps/commonplace/server/setup-status.mjs
+index 1378650..752d16a 100644
+--- a/apps/commonplace/server/setup-status.mjs
++++ b/apps/commonplace/server/setup-status.mjs
+@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
+ import path from 'node:path';
+ import {acquireProcessLock} from './process-lock.mjs';
+ 
+-export const PLUGIN_VERSION='0.4.36';
++export const PLUGIN_VERSION='0.4.37';
+ export const setupActions={
+   link_account:'Link another verified Google account in an isolated profile, preserving existing accounts.',
+   use_account:'Choose the account for this personal native chat.',
+diff --git a/apps/commonplace/server/start.mjs b/apps/commonplace/server/start.mjs
+index 23a3024..6815f54 100644
+--- a/apps/commonplace/server/start.mjs
++++ b/apps/commonplace/server/start.mjs
+@@ -34,11 +34,11 @@ await mkdir(dir, { recursive: true, mode: 0o700 });
+ const lock = path.join(dir, 'daemon.lock');
+ if(!await acquireProcessLock(lock)){console.error('Commonplace is already running for this data folder.');process.exit(1);}
+ 
+-let app, vite, timer, captureTimer, receiverTimer, cloudTimer, loginTimer, mirrorTimer, resourceTimer;
++let app, vite, timer, captureTimer, receiverTimer, loginTimer, mirrorTimer, resourceTimer;
+ const servers = [];
+ async function shutdown() {
+   clearInterval(timer);
+-  clearInterval(cloudTimer);
++  app?.cloudSync?.close();
+   clearInterval(mirrorTimer);
+   clearInterval(resourceTimer);
+   await app?.mcpResourceIngestion?.close();
+@@ -209,8 +209,7 @@ try {
+   );
+   void app.cloudBrowserLogin.tick();
+   loginTimer=setInterval(()=>void app.cloudBrowserLogin.tick(),5000);
+-  void app.cloudSync.tick();
+-  cloudTimer=setInterval(()=>void app.cloudSync.tick(),5000);
++  app.cloudSync.start();
+   // The local context folder follows the published archive; it keeps running
+   // in the background companion so files stay current while Claude is closed.
+   setTimeout(()=>void app.contextMirror.tick(),3000);
+diff --git a/scripts/benchmark-chat-upload.mjs b/scripts/benchmark-chat-upload.mjs
+index ae0c2e0..d5d63c5 100644
+--- a/scripts/benchmark-chat-upload.mjs
++++ b/scripts/benchmark-chat-upload.mjs
+@@ -33,7 +33,7 @@ try{
+   if(input.state==='current')completed.add(input.conversation.id);
+   return {id:input.sourceKey};
+  }}};
+- const sync=new CanonicalSync(app,{now:()=>now});
++ const sync=new CanonicalSync(app,{now:()=>now,budget:6});
+  const io=async()=>Object.fromEntries((await readFile('/proc/self/io','utf8')).trim().split('\n').map(l=>{const [k,v]=l.split(':');return [k,Number(v.trim())];}));
+  const before=await io(),start=performance.now();let windowReadBytes=0;
+  while(completed.size<201&&ticks<1000){const count=uploads;const result=await sync.tick('synthetic-owner',[{path:root,name:'Claude chats',kind:'claude'}],{uploadEncoding:encoding});assert.ok(uploads-count<=6);windowReadBytes+=result.io?.readBytes||0;ticks++;now=base+ticks*5000;}
+diff --git a/scripts/benchmark-continuous-sync.mjs b/scripts/benchmark-continuous-sync.mjs
+new file mode 100644
+index 0000000..4c4636a
+--- /dev/null
++++ b/scripts/benchmark-continuous-sync.mjs
+@@ -0,0 +1,27 @@
++// Reproduce a large directory with one active backlog. The 6,721 complete-file
++// checkpoints are seeded; only the 6,000-message backlog is transmitted/verified.
++// Filesystem work is real. The upload endpoint is an immediate mock, not a
++// production or Mac speed claim. Run baseline and candidate sequentially.
++import {mkdtemp,mkdir,writeFile,lstat,readFile,rm} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {pathToFileURL} from 'node:url';
++import {createHash} from 'node:crypto';
++import assert from 'node:assert/strict';
++const collector=path.resolve(process.argv[2]||'apps/commonplace/server/canonical-sync.mjs'),{CanonicalSync}=await import(pathToFileURL(collector));
++const dir=await mkdtemp(path.join(tmpdir(),'sync-index-bench-')),root=path.join(dir,'chats');await mkdir(root);
++const hash=s=>createHash('sha256').update(s).digest('hex'),owner='b'.repeat(24),rows=n=>Array.from({length:n},(_,i)=>JSON.stringify({sessionId:'backlog',uuid:'m'+i,type:'user',message:{role:'user',content:'Visible synthetic turn '+i}})+'\n').join('');
++try{
++ const files={},now=Date.now();
++ for(let i=0;i<6721;i++){
++  const name='complete-'+i+'.jsonl',file=path.join(root,name);await writeFile(file,'');const stat=await lstat(file);
++  files[hash(root+':'+name)]={captureId:'seeded-complete',captureComplete:true,version:stat.size+':'+stat.mtimeMs,revision:1,lastReported:now};
++ }
++ await writeFile(path.join(root,'backlog.jsonl'),rows(6000));await writeFile(path.join(dir,'canonical-sync.json'),JSON.stringify({owner,format:3,files}));
++ let uploads=0,complete=false;const received=new Set(),passes=[];
++ const sync=new CanonicalSync({dir,accountClient:{request:async(_,input)=>{assert.ok(Buffer.byteLength(JSON.stringify(input))<=64000);uploads++;for(const m of input.messages){assert.equal(m.text,'Visible synthetic turn '+Number(m.id.split(':')[0].slice(1)));received.add(m.id);}complete=input.state==='current';return {id:input.sourceKey};}}},{now:()=>now,scanIntervalMs:30000,watchRoots:false});
++ const started=performance.now();
++ while(!complete&&passes.length<100){const before=uploads,t=performance.now(),r=await sync.tick(owner,[{path:root,name:'Claude chats',kind:'claude'}]);passes.push({uploads:uploads-before,scanned:r.scanned,scanMode:r.scanMode||'full',elapsedMs:Math.round(performance.now()-t),scanMs:r.scanMs??null});}
++ const elapsedMs=Math.round(performance.now()-started);sync.close?.();assert.equal(complete,true);assert.equal(received.size,6000);
++ console.log(JSON.stringify({collectorSha256:hash(await readFile(collector)),files:6722,seededCompleteFiles:6721,backlogMessages:6000,receivedMessages:received.size,uploads,passes,elapsedMs,totalFileChecks:passes.reduce((n,p)=>n+p.scanned,0),network:'Immediate mocked responses; no transport latency, server rate limit or remote acceptance simulated.',limits:'Synthetic filesystem and seeded complete-file metadata. Not a live Mac throughput measurement.'},null,2));
++}finally{await rm(dir,{recursive:true,force:true});}
+diff --git a/scripts/build-plugin.py b/scripts/build-plugin.py
+index eb4766b..e3e7e15 100644
+--- a/scripts/build-plugin.py
++++ b/scripts/build-plugin.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Build candidate 0.4.36 from checksum-pinned 0.3.0, preserving all bundled runtimes, hooks, assets and licenses outside the explicit overlay."""
++"""Build candidate 0.4.37 from checksum-pinned 0.3.0, preserving all bundled runtimes, hooks, assets and licenses outside the explicit overlay."""
+ import argparse
+ import hashlib
+ import json
+@@ -11,13 +11,13 @@ import zipfile
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+ BASE_VERSION = "0.3.0"
+-VERSION = "0.4.36"
++VERSION = "0.4.37"
+ BASE_SHA256 = "146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968"
+ BASE_URL = "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.3.0/meet-proxy-0.3.0.zip"
+ OVERLAY_FILES = {
+     "server/" + name: "apps/commonplace/server/" + name for name in (
+         "personal-space.mjs", "space-resources.mjs", "workspace-chat.mjs", "account-profiles.mjs", "account-profile-tools.mjs", "owner.mjs", "account-inbox.mjs", "mailbox-client.mjs", "agent-history.mjs", "person-inbox.mjs", "inbox-envelope.mjs", "plugin.mjs", "plugin-surface.mjs", "local-client.mjs",
+-        "start.mjs", "canonical-sync.mjs", "cloud-sync.mjs", "cloud-background.mjs", "cloud-browser-login.mjs",
++        "start.mjs", "history-scan.mjs", "canonical-sync.mjs", "cloud-sync.mjs", "cloud-background.mjs", "cloud-browser-login.mjs",
+         "history-roots.mjs", "conductor-history.mjs", "ingest.mjs", "native-hook.mjs", "setup-status.mjs",
+         "account-client.mjs", "account-errors.mjs", "agent-auth-client.mjs", "connect-account.mjs", "conductor-session-inbox.mjs",
+         "chat-pairing.mjs", "chat-capture.mjs", "native-session.mjs", "codex-host-context.mjs", "codex-config.mjs", "configure-codex.mjs", "conductor-receiver.mjs",
+@@ -91,9 +91,9 @@ def overrides(baseline, alias="meet-proxy"):
+         assert metadata["version"] == BASE_VERSION and metadata["name"] == "meet-proxy"
+         metadata.update(name=alias, version=VERSION)
+         changes[name] = (json.dumps(metadata, indent=2) + "\n").encode()
+-    assert b"PLUGIN_VERSION='0.4.36'" in changes["server/setup-status.mjs"]
++    assert b"PLUGIN_VERSION='0.4.37'" in changes["server/setup-status.mjs"]
+     assert b"BACKGROUND_VERSION=PLUGIN_VERSION" in changes["server/cloud-background.mjs"]
+-    assert b"RUNTIME_REVISION = 69;" in changes["server/local-client.mjs"]
++    assert b"RUNTIME_REVISION = 70;" in changes["server/local-client.mjs"]
+     readme = baseline.read("README.md").decode().replace("0.3.0", VERSION)
+     section = """## Your personal agent network
+ 
+diff --git a/tests/cloud-continuous-sync.test.mjs b/tests/cloud-continuous-sync.test.mjs
+new file mode 100644
+index 0000000..03bc6ea
+--- /dev/null
++++ b/tests/cloud-continuous-sync.test.mjs
+@@ -0,0 +1,62 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {mkdtemp,mkdir,writeFile,readFile,rm,symlink} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import {setTimeout as delay} from 'node:timers/promises';
++import path from 'node:path';
++import {CanonicalSync} from '../apps/commonplace/server/canonical-sync.mjs';
++import {CloudSync} from '../apps/commonplace/server/cloud-sync.mjs';
++import {HistoryScan} from '../apps/commonplace/server/history-scan.mjs';
++const owner='a'.repeat(24),row=(i,text='Visible turn '+i)=>JSON.stringify({sessionId:'synthetic-session',uuid:'m'+i,type:'user',message:{role:'user',content:text}})+'\n';
++async function fixture(t){const dir=await mkdtemp(path.join(tmpdir(),'continuous-sync-')),root=path.join(dir,'chats');await mkdir(root);t.after(()=>rm(dir,{recursive:true,force:true}));return {dir,root,roots:[{path:root,name:'Claude chats',kind:'claude'}]};}
++
++test('catch-up sends more than six chunks, keeps payload bounds and skips unchanged file scans',async t=>{
++ const {dir,root,roots}=await fixture(t);await writeFile(path.join(root,'large.jsonl'),Array.from({length:1500},(_,i)=>row(i)).join(''));
++ const received=[],app={dir,accountClient:{request:async(route,input)=>{assert.ok(Buffer.byteLength(JSON.stringify(input))<=64000);received.push(input);return {id:input.sourceKey};}}};
++ const sync=new CanonicalSync(app,{budget:10,scanIntervalMs:30000,maxDurationMs:10000});t.after(()=>sync.close());
++ const first=await sync.tick(owner,roots);assert.equal(received.length,10);assert.equal(first.hasBacklog,true);assert.equal(first.scanned,1);
++ const second=await sync.tick(owner,roots);assert.equal(second.scanMode,'cached');assert.equal(second.scanned,0);assert.equal(second.hasBacklog,false);assert.equal(received.at(-1).state,'current');
++ assert.equal(received.flatMap(r=>r.messages).length,1500);assert.equal(new Set(received.flatMap(r=>r.messages.map(m=>m.id))).size,1500);
++ assert.ok(received.slice(0,-1).every(r=>r.state==='backfilling'));assert.equal(new Set(received.map(r=>r.captureId)).size,1);
++});
++
++test('file index uses native change events and periodic fallback; incomplete discovery never asserts deletion',async t=>{
++ const {root,roots}=await fixture(t);let now=1000;const file=path.join(root,'one.jsonl');await writeFile(file,row(1));
++ const scanner=new HistoryScan({now:()=>now,intervalMs:30000}),cursors={};t.after(()=>scanner.close());
++ assert.equal((await scanner.scan(owner,roots,cursors)).scanned,1);assert.equal((await scanner.scan(owner,roots,cursors)).scanned,0);
++ await writeFile(file,row(1)+row(2));for(let i=0;i<100&&!scanner.dirty.size;i++)await delay(10);assert.ok(scanner.dirty.size,'real filesystem watcher observed edit');
++ const changed=await scanner.scan(owner,roots,cursors);assert.equal(changed.mode,'incremental');assert.equal(changed.scanned,1);
++ await writeFile(path.join(root,'new.jsonl'),row(3));scanner.dirty.clear();now+=31000;assert.equal((await scanner.scan(owner,roots,cursors)).discovered,2,'periodic scan recovers a missed watcher event');
++ await rm(file);for(let i=0;i<100&&!scanner.dirty.size;i++)await delay(10);const missing=await scanner.scan(owner,roots,cursors);assert.equal(missing.incomplete,true);assert.equal(missing.partial,true);
++});
++
++test('cached discovery cannot follow a file replaced with a foreign symlink',async t=>{
++ const {dir,root,roots}=await fixture(t),file=path.join(root,'one.jsonl'),foreign=path.join(dir,'private.jsonl');await writeFile(file,Array.from({length:300},(_,i)=>row(i)).join(''));await writeFile(foreign,row(0,'NEVER UPLOAD'));
++ const uploads=[],sync=new CanonicalSync({dir,accountClient:{request:async(_,body)=>{uploads.push(body);return {id:body.sourceKey};}}},{budget:1,scanIntervalMs:30000});t.after(()=>sync.close());
++ await sync.tick(owner,roots);await rm(file);await symlink(foreign,file);await sync.tick(owner,roots);assert.equal(uploads.length,1);assert.doesNotMatch(JSON.stringify(uploads),/NEVER UPLOAD/);
++});
++
++test('server throttling suspends the pump across restart and retries the exact durable chunk',async t=>{
++ const {dir,root,roots}=await fixture(t);await writeFile(path.join(root,'one.jsonl'),Array.from({length:300},(_,i)=>row(i)).join(''));
++ let now=1000,limited=true,calls=0,discoveries=0;const uploads=[];
++ const app={dir,accountClient:{state:{session:{humanAccount:{id:owner}}},view:()=>({connected:true}),request:async(route,body)=>{calls++;if(route.endsWith('/status'))return {syncEnabled:true,contextProtocol:1,contextAtomicCaptures:true};assert.ok(route.endsWith('/context-ingest'));uploads.push(body);if(limited)throw Object.assign(Error('slow down'),{status:429,retryAfter:7});return {id:body.sourceKey};}}};
++ const options={now:()=>now,budget:1,watchRoots:false,discover:async()=>{discoveries++;return [...roots];},prepareHistory:async()=>({roots:[],coverage:{partial:false}})};
++ let sync=await CloudSync.open(app,options);await sync.tick();assert.equal(sync.nextDelayMs,7000);const pending=JSON.parse(await readFile(path.join(dir,'canonical-sync.json'),'utf8')).pending.input;assert.deepEqual(pending,uploads[0]);
++ const before=calls;await sync.tick();assert.equal(calls,before);sync.close();sync=await CloudSync.open(app,options);t.after(()=>sync.close());await sync.tick();assert.equal(calls,before,'persisted backoff survives restart');
++ now+=7000;limited=false;await sync.tick();assert.deepEqual(uploads[1],uploads[0]);await sync.tick();assert.ok(uploads.length>2);assert.equal(discoveries,2,'continuation reuses prepared roots');
++});
++
++test('cooperative deadlines leave a resumable backlog and the pump continues without a five-second pause',async t=>{
++ const {dir,root,roots}=await fixture(t);await writeFile(path.join(root,'one.jsonl'),Array.from({length:1500},(_,i)=>row(i)).join(''));
++ let sent=0;const collector=new CanonicalSync({dir,accountClient:{request:async(_,body)=>{sent++;await delay(12);return {id:body.sourceKey};}}},{maxDurationMs:5});t.after(()=>collector.close());
++ const first=await collector.tick(owner,roots);assert.equal(sent,1);assert.equal(first.hasBacklog,true);
++ const sync=new CloudSync({dir},{version:1,files:{}},{watchRoots:false});let turns=0;sync.tick=async()=>{turns++;sync.nextDelayMs=0;if(turns===3)sync.close();};t.after(()=>sync.close());sync.start();
++ for(let i=0;i<50&&turns<3;i++)await delay(10);assert.equal(turns,3);await delay(20);assert.equal(turns,3,'close prevents rescheduling');
++});
++
++
++test('a disconnected or already-running collector yields instead of spinning the catch-up loop',async t=>{
++ const {dir}=await fixture(t),sync=new CloudSync({dir,accountClient:{view:()=>({connected:false})}},{version:1,files:{}},{watchRoots:false});t.after(()=>sync.close());
++ sync.nextDelayMs=0;await sync.tick();assert.equal(sync.nextDelayMs,5000);
++ sync.running=true;sync.nextDelayMs=0;await sync.tick();assert.equal(sync.nextDelayMs,250);
++});
+diff --git a/tests/cloud-sync.test.mjs b/tests/cloud-sync.test.mjs
+index 1b3e9a5..d1895b6 100644
+--- a/tests/cloud-sync.test.mjs
++++ b/tests/cloud-sync.test.mjs
+@@ -10,7 +10,7 @@ async function fixture(t,{budget=40}={}) {
+   const dir=await mkdtemp(path.join(tmpdir(),'work-sync-')),root=path.join(dir,'chats');await mkdir(root);
+   t.after(()=>rm(dir,{recursive:true,force:true}));
+   const sources=new Map(),uploads=[],deletes=[];
+-  let enabled=true,drop=false;
++  let enabled=true,drop=false,now=Date.now();
+   const client={state:{session:{humanAccount:{id:'owner'}}},view:()=>({connected:true}),request:async(route,input)=>{
+     if(route.endsWith('/status'))return {syncEnabled:enabled};
+     if(route.endsWith('/upload')) {
+@@ -25,8 +25,8 @@ async function fixture(t,{budget=40}={}) {
+     if(route.endsWith('/delete-source')){deletes.push(input.key);sources.delete(input.key);return {};}
+     throw Error(route);
+   }};
+-  const app={dir,accountClient:client},options={discover:async()=>[{name:'Chats',path:root}],budget,prepareHistory:async()=>({roots:[],coverage:{available:false,conversations:0,partial:false}})};
+-  return {dir,root,app,options,sources,uploads,deletes,open:()=>CloudSync.open(app,options),enable:value=>enabled=value,dropNext:()=>drop=true};
++  const app={dir,accountClient:client},options={now:()=>now,discover:async()=>[{name:'Chats',path:root}],budget,prepareHistory:async()=>({roots:[],coverage:{available:false,conversations:0,partial:false}})};
++  return {dir,root,app,options,sources,uploads,deletes,advance:()=>now+=1000,open:()=>CloudSync.open(app,options),enable:value=>enabled=value,dropNext:()=>drop=true};
+ }
+ const line=(text,role='user')=>JSON.stringify({type:role,message:{role,content:[{type:'text',text}]}})+'\n';
+ 
+@@ -48,7 +48,7 @@ test('history roots under a symlinked ancestor collect only their own visible fi
+ test('work sync recovers lost acknowledgement before changed content after restart',async t=>{
+   const f=await fixture(t);const file=path.join(f.root,'chat.jsonl');await writeFile(file,line('First version'));
+   f.dropNext();let sync=await f.open();await sync.tick();assert.ok(sync.state.pending);assert.equal(sync.running,false);
+-  await writeFile(file,line('Second, updated version'));sync=await f.open();await sync.tick();
++  await writeFile(file,line('Second, updated version'));f.advance();sync=await f.open();await sync.tick();
+   assert.deepEqual(f.uploads[0],f.uploads[1]);assert.equal(f.uploads[2].revision,2);
+   assert.match([...f.sources.values()][0].text,/Second, updated version/);
+   assert.equal(sync.state.pending,undefined);assert.equal(sync.status().error,null);
+@@ -93,7 +93,7 @@ test('Codex visible transcript sync excludes reasoning channels, tool destinatio
+ });
+ test('privacy format upgrades reparse unchanged files and supersede an old pending revision',async t=>{
+   const f=await fixture(t);await writeFile(path.join(f.root,'chat.jsonl'),line('Visible'));f.dropNext();let sync=await f.open();await sync.tick();
+-  const pending=sync.state.pending;assert.ok(pending);delete sync.state.formatRevision;pending.input.text='OLD_PRIVATE_TEXT';pending.hash='old-private-digest';await sync.save();
++  const pending=sync.state.pending;assert.ok(pending);delete sync.state.formatRevision;pending.input.text='OLD_PRIVATE_TEXT';pending.hash='old-private-digest';await sync.save();f.advance();
+   sync=await f.open();await sync.tick();assert.equal(f.uploads.at(-1).revision,pending.input.revision+1);assert.doesNotMatch(JSON.stringify(f.uploads),/OLD_PRIVATE_TEXT/);assert.equal(sync.state.pending,undefined);
+ });
+ 
+diff --git a/tests/context-setup-cross-host.test.mjs b/tests/context-setup-cross-host.test.mjs
+index e80b0b5..296b732 100644
+--- a/tests/context-setup-cross-host.test.mjs
++++ b/tests/context-setup-cross-host.test.mjs
+@@ -42,7 +42,7 @@ test('native collection updates one library read by three native and two indepen
+   await writeFile(file,rows.map(row=>JSON.stringify(row)).join('\n')+'\n');
+  };
+  for(const name of ['claude','codex','conductor'])await write(name,1);
+- const app={dir,accountClient:native[0].client},options={discover:async()=>roots.slice(0,2),prepareHistory:async()=>({roots:[roots[2]],coverage:{partial:false}})};
++ let clockOffset=0;const app={dir,accountClient:native[0].client},options={now:()=>Date.now()+clockOffset,discover:async()=>roots.slice(0,2),prepareHistory:async()=>({roots:[roots[2]],coverage:{partial:false}})};
+  let sync=await CloudSync.open(app,options);await sync.tick();assert.equal(sync.state.error,null);
+  const readAll=async()=>Promise.all(readers.map(async reader=>{
+   const found=await reader.call('archive_search',{query:'crosshostanchor'});assert.equal(found.results.length,3,reader.label);
+@@ -59,7 +59,7 @@ test('native collection updates one library read by three native and two indepen
+  const request=app.accountClient.request.bind(app.accountClient);let fail=true;
+  app.accountClient.request=async(route,input)=>{if(fail&&route.endsWith('/context-ingest'))throw Object.assign(Error('synthetic offline'),{status:503});return request(route,input);};
+  await write('codex',2);await sync.tick();assert.ok(sync.state.error);for(const r of await readAll()){assert.ok(r.value.includes(text('codex',1)));assert.ok(!r.value.includes(text('codex',2)));}
+- fail=false;sync=await CloudSync.open(app,options);await sync.tick();assert.equal(sync.state.error,null);for(const r of await readAll())assert.ok(r.value.includes(text('codex',2)));
++ fail=false;clockOffset+=1100;sync.close();sync=await CloudSync.open(app,options);await sync.tick();assert.equal(sync.state.error,null);for(const r of await readAll())assert.ok(r.value.includes(text('codex',2)));
+  const u=new UnifiedContext(f.service),stream=u.coverage(owner.id).conversations.find(c=>c.title==='claude');assert.ok(stream);
+  u.configure(owner.id,{id:stream.id,excluded:true});
+  for(const reader of readers){const found=await reader.call('archive_search',{query:'crosshostanchor'});assert.equal(found.results.length,2);}
+diff --git a/tests/packaging.test.mjs b/tests/packaging.test.mjs
+index 27bef98..30326d0 100644
+--- a/tests/packaging.test.mjs
++++ b/tests/packaging.test.mjs
+@@ -12,14 +12,14 @@ const run=(cmd,args)=>exec(cmd,args,{cwd:root,timeout:240000,maxBuffer:1024*1024
+ test('stable cloud plugin preserves baseline assets, dependencies and executable modes', {timeout:300000},async t=>{
+   const scratch=await mkdtemp(path.join(tmpdir(),'cloud-package-'));t.after(()=>rm(scratch,{recursive:true,force:true}));
+   const baseline=process.env.COMMONPLACE_TEST_BASELINE||path.resolve('artifacts/.cache/meet-proxy-0.3.0.zip');
+-  let output=path.resolve(process.env.COMMONPLACE_TEST_PACKAGE_DIR||'artifacts/public-0.4.36');
+-  if(!existsSync(output+'/meet-proxy-0.4.36.zip')){output=path.join(scratch,'build');await run('python3',['scripts/build-plugin.py','--baseline',baseline,'--output',output]);}
++  let output=path.resolve(process.env.COMMONPLACE_TEST_PACKAGE_DIR||'artifacts/public-0.4.37');
++  if(!existsSync(output+'/meet-proxy-0.4.37.zip')){output=path.join(scratch,'build');await run('python3',['scripts/build-plugin.py','--baseline',baseline,'--output',output]);}
+   const bad=path.join(scratch,'bad.zip');await writeFile(bad,'wrong');
+   await assert.rejects(run('python3',['scripts/build-plugin.py','--baseline',bad,'--output',path.join(scratch,'bad')]),/SHA-256 mismatch/);
+   await run('python3',['-c',`
+ import zipfile,json,hashlib,pathlib,shutil,re,posixpath,sys
+ baseline,output,root,extracted=sys.argv[1:]
+-expected={'server/'+n for n in ('personal-space.mjs','space-resources.mjs','workspace-chat.mjs','owner.mjs','account-profiles.mjs','account-profile-tools.mjs','account-inbox.mjs','mailbox-client.mjs','agent-history.mjs','person-inbox.mjs','inbox-envelope.mjs','plugin.mjs','plugin-surface.mjs','local-client.mjs','start.mjs','canonical-sync.mjs','cloud-sync.mjs','cloud-background.mjs','cloud-browser-login.mjs','history-roots.mjs','conductor-history.mjs','ingest.mjs','native-hook.mjs','setup-status.mjs','account-client.mjs','account-errors.mjs','agent-auth-client.mjs','connect-account.mjs','conductor-session-inbox.mjs','chat-pairing.mjs','chat-capture.mjs','native-session.mjs','codex-host-context.mjs','codex-config.mjs','configure-codex.mjs','conductor-receiver.mjs','contact-delivery.mjs','mcp-resource-ingestion.mjs','mcp-resource-tools.mjs','mcp-resource-transport.mjs','mcp-resource-transport.LICENSE.txt','context-mirror.mjs','context-index.mjs','context-search.mjs','mcp-adapter.mjs','mcp-adapter.LICENSE.txt','mcp.mjs','desktop-receiver.mjs','workspace-session.mjs')}
++expected={'server/'+n for n in ('history-scan.mjs','personal-space.mjs','space-resources.mjs','workspace-chat.mjs','owner.mjs','account-profiles.mjs','account-profile-tools.mjs','account-inbox.mjs','mailbox-client.mjs','agent-history.mjs','person-inbox.mjs','inbox-envelope.mjs','plugin.mjs','plugin-surface.mjs','local-client.mjs','start.mjs','canonical-sync.mjs','cloud-sync.mjs','cloud-background.mjs','cloud-browser-login.mjs','history-roots.mjs','conductor-history.mjs','ingest.mjs','native-hook.mjs','setup-status.mjs','account-client.mjs','account-errors.mjs','agent-auth-client.mjs','connect-account.mjs','conductor-session-inbox.mjs','chat-pairing.mjs','chat-capture.mjs','native-session.mjs','codex-host-context.mjs','codex-config.mjs','configure-codex.mjs','conductor-receiver.mjs','contact-delivery.mjs','mcp-resource-ingestion.mjs','mcp-resource-tools.mjs','mcp-resource-transport.mjs','mcp-resource-transport.LICENSE.txt','context-mirror.mjs','context-index.mjs','context-search.mjs','mcp-adapter.mjs','mcp-adapter.LICENSE.txt','mcp.mjs','desktop-receiver.mjs','workspace-session.mjs')}
+ expected|={'skills/'+n+'/SKILL.md' for n in ('setup','add','join','delegate','meet-proxy','context')}
+ expected|={'docs/PRODUCTION-VERIFICATION.md','docs/UNIFIED-CONTEXT.md','docs/SETUP.md','docs/PERSONAL-AGENTS.md'}
+ expected|={'.claude-plugin/plugin.json','.codex-plugin/plugin.json','README.md','.mcp.json','runtime/posix.exe','runtime/Windows_NT.exe'}
+@@ -30,7 +30,7 @@ def digest(stream):
+ with open(baseline,'rb') as f:assert digest(f)=='146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968'
+ with zipfile.ZipFile(baseline) as old:
+  for alias in ('meet-proxy','commonplace'):
+-  candidate=pathlib.Path(output)/(alias+'-0.4.36.zip')
++  candidate=pathlib.Path(output)/(alias+'-0.4.37.zip')
+   report=json.loads(candidate.with_name(candidate.stem+'-build.json').read_text())
+   with candidate.open('rb') as f:assert digest(f)==report['sha256']
+   with zipfile.ZipFile(candidate) as new:
+@@ -40,7 +40,7 @@ with zipfile.ZipFile(baseline) as old:
+    assert new.read('runtime/Windows_NT.exe')==old.read('runtime/node.exe')
+    for name in added_launchers:assert new.getinfo(name).external_attr>>16&0o111,name
+    assert list(json.loads(new.read('.mcp.json'))['mcpServers'])==[alias]
+-   assert set(new.namelist())==set(old.namelist())|added_launchers|{'server/personal-space.mjs','server/space-resources.mjs','server/account-profiles.mjs','server/account-profile-tools.mjs','server/contact-delivery.mjs','server/mcp-resource-ingestion.mjs','server/mcp-resource-tools.mjs','server/mcp-resource-transport.mjs','server/mcp-resource-transport.LICENSE.txt','server/account-errors.mjs','docs/PRODUCTION-VERIFICATION.md','docs/UNIFIED-CONTEXT.md','server/canonical-sync.mjs','docs/PERSONAL-AGENTS.md','server/agent-history.mjs','server/conductor-history.mjs','server/cloud-sync.mjs','server/cloud-background.mjs','server/cloud-browser-login.mjs','server/setup-status.mjs','server/conductor-session-inbox.mjs','server/codex-host-context.mjs','server/codex-config.mjs','server/configure-codex.mjs','server/conductor-receiver.mjs','server/context-mirror.mjs','server/context-index.mjs','server/context-search.mjs','server/mcp-adapter.mjs','server/mcp-adapter.LICENSE.txt','skills/setup/SKILL.md','skills/context/SKILL.md','docs/SETUP.md'}
++   assert set(new.namelist())==set(old.namelist())|added_launchers|{'server/history-scan.mjs','server/personal-space.mjs','server/space-resources.mjs','server/account-profiles.mjs','server/account-profile-tools.mjs','server/contact-delivery.mjs','server/mcp-resource-ingestion.mjs','server/mcp-resource-tools.mjs','server/mcp-resource-transport.mjs','server/mcp-resource-transport.LICENSE.txt','server/account-errors.mjs','docs/PRODUCTION-VERIFICATION.md','docs/UNIFIED-CONTEXT.md','server/canonical-sync.mjs','docs/PERSONAL-AGENTS.md','server/agent-history.mjs','server/conductor-history.mjs','server/cloud-sync.mjs','server/cloud-background.mjs','server/cloud-browser-login.mjs','server/setup-status.mjs','server/conductor-session-inbox.mjs','server/codex-host-context.mjs','server/codex-config.mjs','server/configure-codex.mjs','server/conductor-receiver.mjs','server/context-mirror.mjs','server/context-index.mjs','server/context-search.mjs','server/mcp-adapter.mjs','server/mcp-adapter.LICENSE.txt','skills/setup/SKILL.md','skills/context/SKILL.md','docs/SETUP.md'}
+    assert set(report['overlay'])==expected
+    for item in new.infolist():
+     name=item.filename
+@@ -54,7 +54,7 @@ with zipfile.ZipFile(baseline) as old:
+       dep=posixpath.normpath(posixpath.join(posixpath.dirname(name),rel[1]))
+       assert dep in new.namelist(),name+' missing '+dep
+    for name in ('.claude-plugin/plugin.json','.codex-plugin/plugin.json'):
+-    metadata=json.loads(new.read(name));assert metadata['name']==alias and metadata['version']=='0.4.36'
++    metadata=json.loads(new.read(name));assert metadata['name']==alias and metadata['version']=='0.4.37'
+    if alias=='meet-proxy':
+     for item in new.infolist():
+      target=pathlib.Path(extracted)/item.filename;target.parent.mkdir(parents=True,exist_ok=True)
+@@ -64,11 +64,11 @@ with zipfile.ZipFile(baseline) as old:
+   const checked=await run(process.execPath,['--input-type=module','-e',`
+ import assert from 'node:assert/strict';import {pathToFileURL} from 'node:url';
+ const root=process.argv[1];const {pluginResponse}=await import(pathToFileURL(root+'/server/plugin-surface.mjs'));const {accountInboxMcp}=await import(pathToFileURL(root+'/server/account-inbox.mjs'));
+-const init=pluginResponse({method:'initialize'},{result:{}});assert.equal(init.result.serverInfo.version,'0.4.36');
++const init=pluginResponse({method:'initialize'},{result:{}});assert.equal(init.result.serverInfo.version,'0.4.37');
+ const r={jsonrpc:'2.0',id:1,method:'tools/list'};const tools=pluginResponse(r,await accountInboxMcp({},r)).result.tools.map(t=>t.name);
+ for(const name of ['invite_agent_connection','preview_agent_connection','accept_agent_connection','read_agent_connection','list_agent_connections','sever_agent_connection','cloud_agent_status','connect_cloud_agent','run_cloud_task','read_cloud_task','cancel_cloud_task','configure_cloud_sync','send_agent_message','list_my_agent_conversations','read_agent_context','publish_agent_context','search_my_chats','read_my_chat','configure_my_chat_history','setup_status','add_person_to_chat','search_shared_context','read_shared_context','context_sync_status','configure_context_source','read_project_context'])assert.ok(tools.includes(name),name);
+-const {RUNTIME_REVISION}=await import(pathToFileURL(root+'/server/local-client.mjs'));assert.equal(RUNTIME_REVISION,69);
+-const {BACKGROUND_VERSION}=await import(pathToFileURL(root+'/server/cloud-background.mjs'));assert.equal(BACKGROUND_VERSION,'0.4.36');
++const {RUNTIME_REVISION}=await import(pathToFileURL(root+'/server/local-client.mjs'));assert.equal(RUNTIME_REVISION,70);
++const {BACKGROUND_VERSION}=await import(pathToFileURL(root+'/server/cloud-background.mjs'));assert.equal(BACKGROUND_VERSION,'0.4.37');
+ // setup_status is added by the stdio surface, even while an older companion is busy.
+ const surfaced=pluginResponse(r,{result:{tools:[]}}).result.tools.find(t=>t.name==='setup_status');
+ for(const name of ['invite_agent_connection','accept_agent_connection','sever_agent_connection'])assert.ok(surfaced.inputSchema.properties.blockedTool.enum.includes(name));

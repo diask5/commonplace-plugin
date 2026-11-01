@@ -1,0 +1,114 @@
+{
+  "date": "2026-11-01",
+  "patch": 61,
+  "state": "Locally packaged and verified native 0.4.37/runtime70; not published, installed, activated or deployed. Includes the prior locally packaged Spaces event candidate.",
+  "native": {
+    "version": "0.4.37",
+    "runtimeRevision": 70,
+    "artifacts": [
+      {
+        "version": "0.4.37",
+        "alias": "meet-proxy",
+        "archive": "meet-proxy-0.4.37.zip",
+        "sha256": "c98d4de81e6d076d78da142bbcca626cecf720d192bd5a4c82c0fcaff64cf525",
+        "bytes": 230172712
+      },
+      {
+        "version": "0.4.37",
+        "alias": "commonplace",
+        "archive": "commonplace-0.4.37.zip",
+        "sha256": "19bbdbbb39f881b7aae047e1139d1996d77ffcb59a3ce166455e5d00da7fe953",
+        "bytes": 230172713
+      }
+    ],
+    "published": false,
+    "installed": false,
+    "active": false
+  },
+  "server": {
+    "changedByThisPatch": false,
+    "productionSettingsChanged": false,
+    "syncLimitPerMinute": 120,
+    "liveBaseline": "20261031-setup-activation",
+    "spacesEventDependency": "Patch 60 server with migration 0046 remains locally packaged, not live."
+  },
+  "checks": {
+    "core": {
+      "passed": 685,
+      "failed": 0,
+      "log": "implementation/continuous-chat-sync/core-final.log"
+    },
+    "focusedRecoveryAndCrossHost": {
+      "passed": 19,
+      "failed": 0
+    },
+    "extractedNative": {
+      "passed": 17,
+      "failed": 0,
+      "server": "Unchanged extracted patch-60 candidate",
+      "dependencies": "Reuses the existing source dependency installation"
+    },
+    "bothAliasPackaging": {
+      "passed": 1,
+      "failed": 0
+    },
+    "replay": {
+      "patches": 61,
+      "changedFiles": 242,
+      "mismatches": [],
+      "matched": true
+    }
+  },
+  "benchmark": {
+    "files": 6722,
+    "seededCompleteFiles": 6721,
+    "backlogMessages": 6000,
+    "receivedMessages": 6000,
+    "uploadsBoth": 60,
+    "baseline": {
+      "passes": 10,
+      "discoveryFileChecks": 67220,
+      "collectorMs": 6561
+    },
+    "candidate": {
+      "passes": 1,
+      "discoveryFileChecks": 6722,
+      "collectorMs": 2290
+    },
+    "discoveryChecksReductionPercent": 90.0,
+    "collectorSpeedRatio": 2.87,
+    "timingScope": "Sequential synthetic local filesystem/serialization runs with an immediate mocked upload endpoint; no network, server limiter, Mac or production speed measurement."
+  },
+  "changes": [
+    "Remove six-per-pass clamp from current-protocol collector; two-second cooperative slices immediately continue productive backlog.",
+    "Incremental filesystem index with native watch hints and a 30-second full reconciliation; always revalidate selected paths.",
+    "Reuse Conductor preparation for at most five seconds during immediate catch-up; ordinary and legacy checks refresh it.",
+    "Persist server backpressure across restart and replay the exact pending chunk first.",
+    "Report preparation, scan and upload phase metrics in collector coverage."
+  ],
+  "preserved": [
+    "One ordered durable in-flight payload per collector; no parallel upload race.",
+    "64,000-byte decoded request bound and 100-message batches.",
+    "Account pinning, native chat assignment lock, exclusions, opt-out and atomic complete captures.",
+    "Visible user/assistant text only.",
+    "Server rate limits, classifier model/prompt/threshold and host permissions unchanged."
+  ],
+  "hostBlock": {
+    "tool": "mcp__conductor__RunLocalCommand",
+    "reason": "Local execution is not enabled for this session",
+    "retried": false,
+    "bypassed": false
+  },
+  "retainedFailures": [
+    "Initial retry tests did not advance to the new persisted retry time; test clocks corrected without dropping recovery assertions.",
+    "A legacy Conductor test exposed preparation being cached outside immediate catch-up; ordinary/legacy checks now refresh.",
+    "The first native package check caught source changes made after build start; final packages rebuilt and verified.",
+    "An extraction harness initially compared preserved baseline files to all current source files; corrected to compare overlays to source and preserved bytes to the pinned baseline, as the packaging test already does."
+  ],
+  "limits": [
+    "Locally packaged only; the other work machine and its active installed version were not inspected.",
+    "No claim of production throughput or universal web-only chat collection.",
+    "The current server limit still bounds sustained transfer and is honored with backoff.",
+    "Large-library benchmark seeds complete checkpoints; it does not upload all historical content from 6722 chats."
+  ]
+}

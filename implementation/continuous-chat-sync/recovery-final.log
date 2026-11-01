@@ -1,0 +1,29 @@
+✔ catch-up sends more than six chunks, keeps payload bounds and skips unchanged file scans (176.46768ms)
+✔ file index uses native change events and periodic fallback; incomplete discovery never asserts deletion (7.046071ms)
+✔ cached discovery cannot follow a file replaced with a foreign symlink (10.821963ms)
+✔ server throttling suspends the pump across restart and retries the exact durable chunk (31.019206ms)
+✔ cooperative deadlines leave a resumable backlog and the pump continues without a five-second pause (55.536045ms)
+✔ a disconnected or already-running collector yields instead of spinning the catch-up loop (6.787204ms)
+✔ current Conductor Codex envelopes retain visible answers while excluding hidden and tool messages (2.519946ms)
+✔ Conductor capture reads only visible conversation text and uploads it through normal resumable sync (63.53677ms)
+✔ incomplete or evicted Conductor caches do not replace complete captured chats or delete uploaded context (14.575016ms)
+✔ Conductor staging is account-scoped and absent databases do not claim successful capture (16.591247ms)
+✔ cloud-native sync stages every API page atomically, retains provenance and uploads through the existing pipeline (62.54559ms)
+✔ each native capture requires enabled sync and a current personal scope before publishing (12.461627ms)
+✔ cloud capture checkpoints host cursors in bounded pages and resumes without scanning old history (21.664496ms)
+✔ Conductor uses explicit native message IDs without interpreting literal user content (0.503336ms)
+✔ mac Conductor backfill finishes while new messages keep arriving (269.443146ms)
+✔ cloud Conductor backfill finishes while new messages keep arriving (233.815755ms)
+✔ editing earlier Conductor messages still replaces the source and starts a new capture (152.939564ms)
+2026-11-01T00:22:05.709Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ native collection updates one library read by three native and two independent OAuth clients (6732.969281ms)
+ℹ Five protocol clients read initial content, edits and recovered uploads; exclusions propagated to all five and another account read nothing. Native and Google identities are synthetic.
+✔ sync presentation distinguishes saved context from current collection (0.680051ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8050.400894

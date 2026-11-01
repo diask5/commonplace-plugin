@@ -1,0 +1,101 @@
+✔ history roots under a symlinked ancestor collect only their own visible files (37.185056ms)
+✖ work sync recovers lost acknowledgement before changed content after restart (9.410717ms)
+✔ work sync only uploads visible messages, respects opt-in, and deletes removed sources (12.28483ms)
+✔ bounded sync resumes chunk progress and skips oversized JSON without starving later chats (16.345544ms)
+✔ an inaccessible history root does not delete previously uploaded chats (4.649301ms)
+✔ Codex discovery restricts uploads to transcript folders, never account credentials (2.64238ms)
+✔ Codex visible transcript sync excludes reasoning channels, tool destinations and hidden records (5.630109ms)
+✖ privacy format upgrades reparse unchanged files and supersede an old pending revision (5.160718ms)
+✔ automatic discovery includes enabled owner-selected transcript roots without collecting arbitrary folders (3.831032ms)
+2026-11-01T00:18:32.855Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ bounded collection visits mixed-case paths instead of starving a new chat (784.553387ms)
+✔ replicas converge, edits beat stale copies, conflicts remain attributed and exclusions erase every replica (612.25555ms)
+✔ explicit tombstones survive late replicas and foreign account data never appears (522.383932ms)
+✔ canonical document reads observe current replicas and exclusions without building an index (764.190973ms)
+✔ library removes fully deleted streams, ignores stale replicas and shows newer restored content (582.963454ms)
+✔ canonical collector accepts an aliased root ancestor without following escaped files (553.820839ms)
+✔ collector retries exact persisted batches after a lost acknowledgement, catches append and scans child agents (573.644213ms)
+✔ native MCP and the cloud archive expose the same canonical text; old copies cannot bypass exclusion (1399.054912ms)
+✔ known Conductor/native aliases merge streams without crossing account or exclusion boundaries (551.573834ms)
+✔ collector handles long Unicode messages and durable mid-file progress, edits and deletion (486.096481ms)
+✔ native history exclusion removes canonical text and revoked devices lose their projected evidence (535.307723ms)
+✔ library presents canonical conversations once and deletion removes them from every query (433.322812ms)
+✔ lost checkpoints recover through device-scoped metadata and resume collection (557.241581ms)
+✔ native history restore requires fresh epochs and exclusions prevent first-upload retention (546.580248ms)
+✔ fallback positions remain source-local and rescanned children never enter the parent stream (464.940088ms)
+✔ malformed sources do not stop other chats and an account change cannot receive an old collection batch (512.424503ms)
+✔ incomplete captures preserve the previous complete source until atomic publication (439.180535ms)
+✔ replacement captures discard unfinished edits and stage deletions until completion (494.511493ms)
+✔ exclusion erases staged text and a stale epoch cannot publish it after restoration (422.976649ms)
+✔ native long-message edits remain complete during bounded collection and resume after restart (540.170275ms)
+✔ revoking a device clears its staged capture and rejects its cached authenticated identity (475.874659ms)
+✔ a failed replacement scan preserves a legacy source until the new capture commits (472.334873ms)
+✔ a collector recovers a completed partial line without publishing its earlier incomplete prefix (576.112477ms)
+✔ automatic JSON backfill survives restarts and publishes every message together (798.831541ms)
+✔ metadata before visible text keeps the real identity and groups projects across providers (476.112295ms)
+✔ upgrading the collector repairs incomplete old JSON captures without losing revision checkpoints (610.662876ms)
+✔ automatic collection status includes canonical-only history and hides excluded or revoked sources (475.638809ms)
+✔ negotiated gzip saves transfer bytes and preserves Unicode and the complete object (16.223129ms)
+✔ compressed uploads enforce the original 64000-byte decompressed limit and reject malformed data (17.59825ms)
+2026-11-01T00:18:32.896Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ signed Agent Auth accepts compressed context with unchanged replay, scope, opt-in and exclusion checks (873.720779ms)
+✔ a lost compressed acknowledgement persists plaintext input and can replay on an older relay (23.323567ms)
+✔ CloudSync negotiates each tick and removes compression when the server no longer advertises it (14.341585ms)
+✔ windowed parser stops early and preserves split UTF-8 records and byte cursors (16.59976ms)
+✔ larger batches keep escaped Unicode and deletion envelopes below the wire limit (155.267064ms)
+✔ turning sync off while gzip is decoding prevents the pending write (402.476399ms)
+✔ Claude API request blobs never become synced user turns (4.210446ms)
+✔ nonconversation envelopes cannot impersonate user or assistant text (0.456565ms)
+✔ visible Claude, Codex and generic messages retain text and omit reasoning (0.412908ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 45
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16866.538937
+
+✖ failing tests:
+
+test at tests/cloud-sync.test.mjs:48:1
+✖ work sync recovers lost acknowledgement before changed content after restart (9.410717ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + {
+  +   capturedAt: 1793492311665,
+  +   key: 'a46d56d6b64f5a2ae8a043541e0a93e8849cb1aa4bee84a4807a4c727769d888:0',
+  +   revision: 1,
+  +   text: 'User: First version\n\n',
+  +   title: 'Chats: chat · 1'
+  + }
+  - undefined
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/cloud-sync.test.mjs:52:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { key: 'a46d56d6b64f5a2ae8a043541e0a93e8849cb1aa4bee84a4807a4c727769d888:0', title: 'Chats: chat · 1', text: 'User: First version\n\n', revision: 1, capturedAt: 1793492311665 },
+    expected: undefined,
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests/cloud-sync.test.mjs:94:1
+✖ privacy format upgrades reparse unchanged files and supersede an old pending revision (5.160718ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/cloud-sync.test.mjs:97:48)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
