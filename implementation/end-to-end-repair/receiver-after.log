@@ -1,0 +1,41 @@
+✔ a stale empty lock recovers; a live PID and a newly created empty lock remain protected (11.732987ms)
+✔ host failure never produces an accepted receipt; ambiguous sends stop for reconciliation (1.769881ms)
+✔ known non-submission can retry; successful transport records acceptance after submission (0.425102ms)
+✔ a delayed claim cannot submit after its remaining host lease becomes too short (0.587709ms)
+✔ a personal scope change during claim or dispatch cannot submit to the host (0.457556ms)
+✔ a lost dispatch receipt releases the claim without submitting to the host (0.458339ms)
+✔ an unrecoverable dispatch receipt failure never falls through to a host send (0.373789ms)
+✔ mailbox failures identify claim without changing delivery semantics (0.41094ms)
+✔ mailbox failures identify dispatch_receipt without changing delivery semantics (0.274955ms)
+✔ mailbox failures identify host_submit without changing delivery semantics (3.627474ms)
+✔ mailbox failures identify accept_receipt without changing delivery semantics (0.196403ms)
+✔ messages from the same human remain quoted agent content without private workspace claims (0.462249ms)
+✔ malformed native reply calls explain the correction before any account or mailbox request (1.266352ms)
+✔ Claude socket loss before submission retries; a timeout after submission stays uncertain (111.230984ms)
+✔ Codex pipe preflight failures retry and a reconciled mailbox can dispatch after an ambiguous send (5.442713ms)
+✔ Codex daemon loss before queueing retries and mailbox reconciliation survives local uncertainty (1.008693ms)
+✔ linked chat delivery reads authenticated content and acknowledges only after host acceptance (5.019355ms)
+✔ host outage and ambiguous receipt leave the message retryable with the same delivery key (1.451436ms)
+✔ lost receipt flush is retried after restart without submitting the message twice (0.951244ms)
+✔ pagination reaches the pending message without replaying history (0.618316ms)
+✔ a revoked delegation audit can arrive in the selected receiver without granting reply permission (1.007455ms)
+✔ changed route, mismatched workspace, outgoing messages and scope changes cannot dispatch (1.479955ms)
+✔ group requests preserve authenticated target intent and reject changed routing metadata (1.531245ms)
+✔ restart recovers saved receipts; receiver holds exact native identity and reports its real lifecycle (40.56206ms)
+✔ a stalled history capture cannot block linked-chat delivery or receiver health (16.437828ms)
+✔ upgrade gracefully retires the exact legacy receiver and retains delivery receipts (51.707422ms)
+✔ upgrade refuses another profile, changed native binding, or changed process lock (148.872652ms)
+✔ upgrade cannot replace a receiver that has not relinquished its lock (93.588419ms)
+✔ current and newer receivers are retained without a downgrade (0.46237ms)
+✔ stale presence never claims a working automatic receiver (3.219154ms)
+✔ a hookless Conductor receiver publishes its private startup observation automatically (10.636386ms)
+✔ a slow successful local mailbox RPC survives the former twelve-second timeout (12565.147288ms)
+✔ mailbox failure does not suppress linked delivery or startup capture and exposes only safe phase metadata (17.339899ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13119.588323

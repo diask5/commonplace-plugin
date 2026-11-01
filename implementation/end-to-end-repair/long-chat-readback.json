@@ -1,0 +1,21 @@
+{
+  "capture": {
+    "initialIndex": 94,
+    "completedIndex": 1553,
+    "revision": 30,
+    "offset": 1057386,
+    "complete": true
+  },
+  "read": {
+    "documentId": "unified-0b78fa91cba0eb7d8bff18eb",
+    "revision": 216,
+    "offset": 673900,
+    "limit": 1000,
+    "marker": "The Conductor receiver is now reporting ready.",
+    "markerRead": true,
+    "citation": "unified_b9b5b17e7494e26012133605",
+    "totalCharacters": 768090,
+    "entireDocumentRead": false
+  },
+  "coverage": "Completed current capture of this existing chat only; not all accounts or web-only histories."
+}

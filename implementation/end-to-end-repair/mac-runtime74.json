@@ -1,0 +1,16 @@
+{
+  "state": "activated",
+  "forcedSignals": false,
+  "hostPermissionsChanged": false,
+  "previous": {
+    "syncEnabled": true,
+    "mirrorEnabled": true
+  },
+  "initialRevision": 66,
+  "activeRevision": 74,
+  "backgroundVersion": "0.4.41",
+  "configure_context_folderRestored": true,
+  "configure_cloud_syncRestored": true,
+  "settingsRestored": true,
+  "accountAndPermissionsPreserved": true
+}

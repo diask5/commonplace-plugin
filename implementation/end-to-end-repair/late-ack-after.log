@@ -1,0 +1,39 @@
+✔ a stale empty lock recovers; a live PID and a newly created empty lock remain protected (15.107138ms)
+✔ host failure never produces an accepted receipt; ambiguous sends stop for reconciliation (2.002906ms)
+✔ known non-submission can retry; successful transport records acceptance after submission (0.443693ms)
+✔ a delayed claim cannot submit after its remaining host lease becomes too short (0.82101ms)
+✔ a personal scope change during claim or dispatch cannot submit to the host (0.657591ms)
+✔ a lost dispatch receipt releases the claim without submitting to the host (0.417145ms)
+✔ an unrecoverable dispatch receipt failure never falls through to a host send (0.948005ms)
+✔ mailbox failures identify claim without changing delivery semantics (0.701352ms)
+✔ mailbox failures identify dispatch_receipt without changing delivery semantics (0.301158ms)
+✔ mailbox failures identify host_submit without changing delivery semantics (1.188179ms)
+✔ mailbox failures identify accept_receipt without changing delivery semantics (0.221427ms)
+✔ messages from the same human remain quoted agent content without private workspace claims (0.529015ms)
+✔ malformed native reply calls explain the correction before any account or mailbox request (1.510621ms)
+✔ Claude socket loss before submission retries; a timeout after submission stays uncertain (115.29786ms)
+✔ Codex pipe preflight failures retry and a reconciled mailbox can dispatch after an ambiguous send (9.193747ms)
+✔ Codex daemon loss before queueing retries and mailbox reconciliation survives local uncertainty (1.42976ms)
+2026-11-01T02:12:25.444Z WARN [Better Auth]: Rate limiting could not determine a client IP and is falling back to a single shared per-path bucket. Ensure your runtime forwards a trusted client IP header, then set `advanced.ipAddress.ipAddressHeaders` or `advanced.ipAddress.trustedProxies` so the address can be resolved.
+✔ a busy installation can still check its identity and start Google linking while ordinary API requests are throttled (5369.170832ms)
+✔ two installations share a human account while their native agents retain distinct stable addresses (1056.626753ms)
+✔ queued work and retry identity survive restart; a reused nonce cannot change recipient or payload (597.50124ms)
+✔ permissions renew independently of history; expiry and revocation block queued dispatch and reads (678.024131ms)
+✔ an interrupted non-idempotent host send is reconciled rather than blindly replayed (1118.718952ms)
+✔ confirmed idempotent host acceptance survives lease expiry without overriding a replacement claim or uncertainty (1722.418648ms)
+✔ a lost committed dispatch receipt recovers through signed HTTP before any host submission (1412.848715ms)
+{"event":"meet_proxy_agent_auth_failure","category":"reported-status","reportedStatus":500}
+✔ revoking a receiving installation blocks delivery even with cached native identity (1186.682897ms)
+✔ an explicit rebind preserves the address and history, and fences the old chat (1095.434034ms)
+✔ installation linking is single-use and binds all signed native agents from that installation (650.730527ms)
+✔ authority is checked again immediately before a claimed message is submitted to the host (1112.718549ms)
+✔ message and pending delivery commit together, including failure between the two inserts (840.668475ms)
+✔ linking Google preserves pre-existing legacy account indexes and private threads (1618.156229ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20039.34875

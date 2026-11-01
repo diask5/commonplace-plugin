@@ -1,0 +1,220 @@
+{
+  "name": "Targeted Work questions, native delivery and context mirror recovery; 0.4.41/runtime74",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch",
+    "deployment-source-modes.patch",
+    "visible-transcript-envelopes.patch",
+    "native-message-excerpts.patch",
+    "p0-excerpts-candidate.patch",
+    "private-native-titles.patch",
+    "space-request-diagnostics.patch",
+    "bounded-classification.patch",
+    "question-discovery.patch",
+    "sharing-stress.patch",
+    "cross-host-context-sync.patch",
+    "bounded-sync-catchup.patch",
+    "classifier-reliability.patch",
+    "imported-context-excerpts.patch",
+    "invite-cta.patch",
+    "setup-preflight-recovery.patch",
+    "current-space-invite.patch",
+    "multiple-accounts.patch",
+    "faster-chat-sync.patch",
+    "personal-space-events.patch",
+    "continuous-chat-sync.patch",
+    "oob-activation.patch",
+    "upload-fairness.patch",
+    "staged-collection.patch"
+  ],
+  "patch": "work-sync-recovery.patch",
+  "sha256": "0405af25790f94c70d1119fb44ce2f169fe027a88c8b6a746c8edd85eb1ab084",
+  "state": "Published native0.4.41/runtime74; installed and active on Mac/cloud. Server20261101-work-sync-recovery live. Live Mac mirror timeout retained; Work/native roundtrip pending.",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/groups.mjs",
+      "beforeSha256": "21738d8b0dfce4714a02f77650bf00a779922c44009e73c85f16d5261cf387bd",
+      "sha256": "6be2d8aba233d6d31371feb616ec847b71204d90f481cc2f37bcb17128c1cc79"
+    },
+    {
+      "path": "apps/commonplace-account/server/mailboxes.mjs",
+      "beforeSha256": "c2a6ec68dbca9d8c2664add7c16b467f45a15f52a38e09293fb555b13243ebf4",
+      "sha256": "143b5123f9d5386b0acc741bc88c326edcaf760ad35e8876348f39b811dbfd05"
+    },
+    {
+      "path": "apps/commonplace-account/server/person-inbox.mjs",
+      "beforeSha256": "ac1eed80eeca9e31c5940077f09c37fd64594b24d58fa149aa7d6d1568e99ec9",
+      "sha256": "5b610d9f0a4e8868508bf2761d70eecf09767da2df848a379ad505b5ad3c438d"
+    },
+    {
+      "path": "apps/commonplace-account/server/workspace-protocol.mjs",
+      "beforeSha256": "b31a876578aecba6260b650a5edb31736d34ebe3a56273ca59091d9104f1a6ad",
+      "sha256": "78140211b74f765b76e1e1460b37953f086f90b2056a8d98483144eb7d52e237"
+    },
+    {
+      "path": "apps/commonplace-account/server/workspaces.mjs",
+      "beforeSha256": "e31c5949ad49581c591bc356d1fa0ebc3773389e5dede1a8f348c556335b5ac8",
+      "sha256": "16d4d329815590109d00c9d2a3b113d13787ab770b32fda7f6682310dd37656f"
+    },
+    {
+      "path": "apps/commonplace-account/tests/groups.test.mjs",
+      "beforeSha256": "d359cf5249a2761f28b88583b27ef5335e8489feb334464aea40a620cd66efb8",
+      "sha256": "1d1d208d05e941a71a5145268a2bce037327423604cd8f28ba6189e55689b78f"
+    },
+    {
+      "path": "apps/commonplace/server/account-inbox.mjs",
+      "beforeSha256": "893510fc70c629f5f73bdd527f8881f030c47616120abc1907dec7391bdfa703",
+      "sha256": "728c1648aaf71ff9762497f4dcd721236db5f3f58be696b538ddeeb277ceddf3"
+    },
+    {
+      "path": "apps/commonplace/server/codex-host-context.mjs",
+      "beforeSha256": "3618187857e86aca9247f1fbdcad8611d79873181929b9c0cf9c3a678f4215a6",
+      "sha256": "0e60766191d90821f8b58233e822a13bf20a35c572eb30373f762a2ac02c7ce6"
+    },
+    {
+      "path": "apps/commonplace/server/conductor-receiver.mjs",
+      "beforeSha256": "63d8e0c41bfea8b2a70a5ba6bd5305fde551e3642cd1c2e01632dd685ba146c5",
+      "sha256": "62711037a0824937f681e6fa8a93a78b642db36105d22c1988f3b599fef3520e"
+    },
+    {
+      "path": "apps/commonplace/server/conductor-session-inbox.mjs",
+      "beforeSha256": "df5966b9c1e5c313fbfaa692a7166770795b3403f5b9b3fa1a58c8acb50d939d",
+      "sha256": "671057cbfca12f0905d4e3c0f76e8b548780811d58bff440ec2843a056f3d7db"
+    },
+    {
+      "path": "apps/commonplace/server/context-mirror.mjs",
+      "beforeSha256": "921a5aac5d176e407f72c380b5f2b2cc9b89d65b951313ddfeb4c25c5abfd957",
+      "sha256": "bca50e21a09cff4dbc8bd8955068852f4d54d39c736532e3bc4a06fc9a359c56"
+    },
+    {
+      "path": "apps/commonplace/server/inbox-envelope.mjs",
+      "beforeSha256": "e8a1cf76fe76e1583e824cf73200a7c32b9fd82c91b7643d093a400ad33d6aa1",
+      "sha256": "2c655a5f7f3c0557abc314347dd8cf030e64910e3a504bf8952185ac3d72e9ed"
+    },
+    {
+      "path": "apps/commonplace/server/local-client.mjs",
+      "beforeSha256": "75c0c86b76e692517949bc72aeebba60488d1ee87f99206df469d7d49be17ac6",
+      "sha256": "b2570ffb525c1f2892a89d444bfba84b93f15e2a4457a03bf6a4025d2f26d675"
+    },
+    {
+      "path": "apps/commonplace/server/mailbox-client.mjs",
+      "beforeSha256": "15dfdf993d7d3d5a64fad49149899663e76524a021c8de949c495f5e8ce4545a",
+      "sha256": "b91040584801ce139eeff1cc2ccd80a0b838948542767531b38a568f411b645d"
+    },
+    {
+      "path": "apps/commonplace/server/native-hook.mjs",
+      "beforeSha256": "77079a35dbca861b425e8631a8a136818d33bd0cead02db9b51323e4247f228a",
+      "sha256": "22ce0fc3f814064f8c23b3dedec1f850f6f5696316b39f56b4dd91ef81101055"
+    },
+    {
+      "path": "apps/commonplace/server/native-session.mjs",
+      "beforeSha256": "90720fca1a24b036c7b2a9b7f8af587f7289b9e7a8120fb45d07a7fd75c69b33",
+      "sha256": "ac6367e0a3f1a18c818801ae41595014e314fe1026d35a8b8736f2954d52881f"
+    },
+    {
+      "path": "apps/commonplace/server/person-inbox.mjs",
+      "beforeSha256": "f6d1106353fb1b1c7e37c4b1cace6e562575136991c623838529ec43c9e3d232",
+      "sha256": "1356f22979fb6d319c87b244584932d5ef777a014101708e480d673acee844ab"
+    },
+    {
+      "path": "apps/commonplace/server/plugin.mjs",
+      "beforeSha256": "9f7662de93e06da89259c7a02f484743bd82b6233aef825194271cdc293006c3",
+      "sha256": "5ef60feee3d8bee19324f87bb5846522c74f586e544f3f48a6e9fe3030f67139"
+    },
+    {
+      "path": "apps/commonplace/server/setup-status.mjs",
+      "beforeSha256": "a94d6fef660b01f2a6a9c00ca03e3cb5ff5efc91dcec73994e97b4ec548fe4b0",
+      "sha256": "eb567f49dff11abbb95db7e5754c93b071127bceb22a33fd3b1309285c939bee"
+    },
+    {
+      "path": "apps/commonplace/tests/person-inbox.test.mjs",
+      "beforeSha256": "2f62deac346161b71cd93d982a81c36654f17cbea04367290209e0de2be01af0",
+      "sha256": "1a5e2e60bb9bc824ab5af07525d4dd45cc291086959e29c5817cf1d1ca0d258f"
+    },
+    {
+      "path": "scripts/build-plugin.py",
+      "beforeSha256": "1804be51b8ab4435eecbcef121126cd5f9184ee056aaa3001cf408f5b456c478",
+      "sha256": "d0b489ebf9f5e309e1a539d3f6fca864a68dc6d24efe24f519c7783e5c1d3c30"
+    },
+    {
+      "path": "tests/codex-host-context.test.mjs",
+      "beforeSha256": "bd378af9cbc3e4dde4cadd29f7e9f619d7a96219dbf3beb8c9c1658e98a1c420",
+      "sha256": "dbe65f17edbcb755a1802dfd49f05d7865bcb0f25f0e71ae2733f0fb71f632d6"
+    },
+    {
+      "path": "tests/context-mirror.test.mjs",
+      "beforeSha256": "f0390f388e09caf5c91b7630afb0205d2dc16cc00a48fac0f25571e7aed4f62e",
+      "sha256": "116f74a924900932b726c81c15d2f5a4c5b1a3a8a8283eb110d47c87fbba6380"
+    },
+    {
+      "path": "tests/mailbox-adapter.test.mjs",
+      "beforeSha256": "fb744c05e3e88a9cb2706fb15a981865104ad28420ad2bfa4769d4dad2a0bc0a",
+      "sha256": "2b382fb7af130da4aff3f06c05e17711ab25f980c0b40d062fe1f63010c74438"
+    },
+    {
+      "path": "tests/mailbox-conductor-receiver.test.mjs",
+      "beforeSha256": "2ff6a7776dfe06a6ee77737885eac6bb34a6f5545f4d461ba10c55e9af93783e",
+      "sha256": "695c512b468ed2833d99ef41af41b74e3c0316429d14a69f370eb974116ecb6a"
+    },
+    {
+      "path": "tests/mailbox-conductor.test.mjs",
+      "beforeSha256": "baeb8d714b3223f8badc44a32cd326cd23c9476b583ef294fdacd5289d20f606",
+      "sha256": "13313b3cc2d929a4a0586c5bc49e2ed29b9d75340a834d8bcc69b472b4a6ac83"
+    },
+    {
+      "path": "tests/mailbox-http.test.mjs",
+      "beforeSha256": "ee15f7fe78993b2f735fe7eafed74b75ae3bd0f64c804515b24a7a539ea2e3d8",
+      "sha256": "bc82f60f29da38ae4fd5ab8e8be5a7a872662d729bac0cd7ddc74dd9f1bd974d"
+    },
+    {
+      "path": "tests/mcp-conductor-naming.test.mjs",
+      "beforeSha256": null,
+      "sha256": "9f09693304cd07785c7b52901071939780dbb28336dccdfcc54008d32283844d"
+    },
+    {
+      "path": "tests/packaging.test.mjs",
+      "beforeSha256": "1c21c24e007461ddd19f15aba696df4c7792e66048a8121ecb0529a94b9e2a37",
+      "sha256": "79c47974e834a1da06a414f56c6a10b0ea5cdad1147f9a7bd96e03c8ef2b5789"
+    }
+  ]
+}

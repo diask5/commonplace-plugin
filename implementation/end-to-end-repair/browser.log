@@ -1,0 +1,47 @@
+✔ current context product journey: rules, invite, two-sided exchange, expiry and exit (51238.562418ms)
+▶ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline
+  ✔ one-tap app chooser is accessible from phone to desktop (10633.494479ms)
+  ✔ open app is primary, auto collection is disclosed, and unrelated connected chats/uploads never complete setup (4041.827851ms)
+  ✔ slow host setup stays explicit and does not invent installation progress (341.582492ms)
+  ✔ all app surfaces carry server/account and recover the same handoff when reopened (8924.531887ms)
+  ✔ registration confirms plugin and MCP together; no manual receiver picker and no false content success (2433.779672ms)
+  ✔ empty and interrupted collection are honest; incoming context becomes ready without a refresh click (7477.232077ms)
+  ✔ a delayed confirmation from another app cannot complete the selected setup (553.805941ms)
+  ✔ live setup accessible at 320px (1134.391718ms)
+  ✔ live setup accessible at 390px (1188.511728ms)
+  ✔ live setup accessible at 768px (1009.103365ms)
+  ✔ live setup accessible at 1440px (1127.984349ms)
+  ✔ live setup accessible at 1920px (1304.491443ms)
+  ✔ polling failure visibly reconnects and recovers, offline collectors never claim all sources are current (4070.424468ms)
+  ✔ saved context never masks a paused or interrupted collector (266.24057ms)
+  ✔ expired handoff renews without a second Google ceremony (445.423253ms)
+  ✔ changed browser account clears the old setup token and progress (213.467082ms)
+✔ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline (49357.731953ms)
+✔ a newly signed-in account goes straight to desktop setup with collection already included (1650.65193ms)
+✔ account changes before app launch automatically invalidate every prepared app link (4091.800321ms)
+✔ preparing a setup has visible progress and a failed preparation can retry (2396.230015ms)
+▶ fresh-chat activation keeps the unclaimed handoff and never fabricates installation or collection
+  ✔ each app offers a short activation request with the same account, space and token (2206.442506ms)
+  ✔ copy, app launch and reopening preserve the request without reporting success (5807.626886ms)
+  ✔ clipboard refusal leaves the activation request selected for manual copying (372.582224ms)
+  ✔ only the selected real claim binds the chat; another chat cannot reuse the handoff (182.010119ms)
+  ✔ a disconnected claimed request cannot offer another activation chat (148.080142ms)
+  ✔ expired requests stop activation; renewal retains browser sign-in with a fresh install request (1895.429554ms)
+  ✔ account changes clear the activation prompt and prepared app links (2114.948562ms)
+✔ fresh-chat activation keeps the unclaimed handoff and never fabricates installation or collection (14892.863457ms)
+✔ circles create, keep posts inside their boards, preserve retries, route independently, and work on mobile (14507.876644ms)
+▶ seamless setup: copy is primary, host steps are explicit, progress is installation-specific and MCP is the default route
+  ✔ choosing an app launches directly; no extra settings or filesystem grant is requested (5248.86137ms)
+  ✔ after selection Copy setup prompt is primary above live progress with explicit host steps (5051.059447ms)
+  ✔ registration recedes the copy action; scanning shows actual file counts only from this installation (7827.423645ms)
+  ✔ partial collection reports received vs searchable and last updated; ready never claims more than indexed (9586.289534ms)
+  ✔ local folder is optional in copy and no setting or grant is added (21.354705ms)
+✔ seamless setup: copy is primary, host steps are explicit, progress is installation-specific and MCP is the default route (31408.674664ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 74021.779023

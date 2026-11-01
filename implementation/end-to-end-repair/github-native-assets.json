@@ -1,0 +1,37 @@
+{
+  "tag": "meet-proxy-v0.4.41",
+  "releaseId": 430312473,
+  "target": "80a502ca96ca809fbce4a0046828de086ebb337e",
+  "verifiedAssets": [
+    {
+      "name": "commonplace-0.4.41-build.json",
+      "size": 8453,
+      "digest": "sha256:1d16141375881d3d9225c523c35828dca35f13f4c036ae89761597f8dbacad28"
+    },
+    {
+      "name": "commonplace-0.4.41.sha256",
+      "size": 89,
+      "digest": "sha256:6f1270a779104a4ab09142b0d0e202c820b3045b817607096ef922d77f070f61"
+    },
+    {
+      "name": "commonplace-0.4.41.zip",
+      "size": 230180349,
+      "digest": "sha256:c294088c51a89ce9698c4f359dccd1c4a577e3f2f19e291e1d44aee1013dddfa"
+    },
+    {
+      "name": "meet-proxy-0.4.41-build.json",
+      "size": 8451,
+      "digest": "sha256:06149239a4d02296744e2e30c1bc9646237179d4dbb415c9946fb4b0a4e9411b"
+    },
+    {
+      "name": "meet-proxy-0.4.41.sha256",
+      "size": 88,
+      "digest": "sha256:38f526d81dba0ce63c813cb6c56aa49179fde9808a8abfa668db0f3fe78585b3"
+    },
+    {
+      "name": "meet-proxy-0.4.41.zip",
+      "size": 230180349,
+      "digest": "sha256:b834bccdf9d9127ee51e376478ed1669d575cc54c7227b57d6324734276d7162"
+    }
+  ]
+}

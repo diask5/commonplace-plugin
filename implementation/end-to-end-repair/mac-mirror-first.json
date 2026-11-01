@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-01T02:27:42.566Z",
+  "runtimeRevision": 74,
+  "syncEnabled": true,
+  "mirror": {
+    "enabled": true,
+    "ready": false,
+    "running": true,
+    "documents": 0,
+    "revision": null,
+    "phase": "manifest"
+  },
+  "signedDiagnostic": {
+    "identityMs": 10016,
+    "identityConnected": true,
+    "manifestMs": 30011,
+    "manifestFailureCode": "MEET_PROXY_TIMEOUT"
+  }
+}

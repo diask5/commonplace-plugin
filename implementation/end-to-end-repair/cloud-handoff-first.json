@@ -1,0 +1,6 @@
+{
+  "state": "failed",
+  "forcedSignals": false,
+  "error": "Supported tool failed: context_folder_status",
+  "accountPreserved": true
+}

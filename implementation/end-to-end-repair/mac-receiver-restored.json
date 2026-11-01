@@ -1,0 +1,10 @@
+{
+  "state": "activated",
+  "forcedSignals": false,
+  "previous": {
+    "enabled": true,
+    "provider": "claude"
+  },
+  "activeRevision": 74,
+  "settingsRestored": true
+}
