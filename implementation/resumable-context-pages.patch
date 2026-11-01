@@ -1,0 +1,607 @@
+diff --git a/apps/commonplace-account/server/archive-mirror.mjs b/apps/commonplace-account/server/archive-mirror.mjs
+index 288a772..8084917 100644
+--- a/apps/commonplace-account/server/archive-mirror.mjs
++++ b/apps/commonplace-account/server/archive-mirror.mjs
+@@ -1,5 +1,5 @@
+ import {createHash} from 'node:crypto';
+-import {archiveSections} from './archive-source.mjs';
++import {archiveSections,withArchiveSectionSelection} from './archive-source.mjs';
+ import {contextIndexText,contextLayout} from './archive-index.mjs';
+ import {WorkspaceNetwork} from './workspace-network.mjs';
+ import {WorkProblem} from './work.mjs';
+@@ -75,6 +75,7 @@ export function readMirrorSource(db,owner,method,input,{now=Date.now(),manifest}
+   if(!Number.isSafeInteger(offset)||offset<0)throw invalid('Invalid file offset.');
+   return {path:request.path,offset};
+  });
++ return withArchiveSectionSelection(db,owner,requests.filter(r=>r.path!=='INDEX.md').map(r=>r.path.slice(10,-4)),selection=>{
+  let budget=RESPONSE_BUDGET,lastPath,lastText,observedAt=db.prepare('SELECT updated_at FROM cp_cloud_archive_state WHERE owner=?').get(owner)?.updated_at??0;const files=[];
+  for(const request of requests){
+   let text;
+@@ -83,7 +84,7 @@ export function readMirrorSource(db,owner,method,input,{now=Date.now(),manifest}
+    if(!manifest||manifest.owner!==owner||manifest.revision!==revision||manifest.expiresAt&&manifest.expiresAt<=now)manifest=sourceMirrorManifest(db,owner,{now});
+    text=contextIndexText(manifest);
+   }else{
+-   const selected=archiveSections(db,owner,{now,documentId:request.path.slice(10,-4)});
++   const selected=archiveSections(db,owner,{now,documentId:request.path.slice(10,-4),selection});
+    if(budget<=0){const first=selected.next();selected.return();if(first.done)throw invalid('Unknown context file.');}
+    else{const rows=boundedRows(selected);if(!rows.length)throw invalid('Unknown context file.');observedAt=rows.reduce((at,r)=>Math.max(at,r.section.synced_at||0),observedAt);text=bodyOf(rows);}
+   }
+@@ -95,4 +96,5 @@ export function readMirrorSource(db,owner,method,input,{now=Date.now(),manifest}
+   files.push({...request,text:slice,nextOffset:request.offset+slice.length<text.length?request.offset+slice.length:null,totalCharacters:text.length,digest:hash(text)});
+  }
+  return {value:{revision,asOf:manifest?.createdAt??observedAt,files},revision,expiresAt:new WorkspaceNetwork(db,{now:()=>now}).expiresAt(owner)};
++ });
+ }
+diff --git a/apps/commonplace-account/server/archive-source.mjs b/apps/commonplace-account/server/archive-source.mjs
+index 34dc063..251245f 100644
+--- a/apps/commonplace-account/server/archive-source.mjs
++++ b/apps/commonplace-account/server/archive-source.mjs
+@@ -8,17 +8,45 @@ import {patchLiveIndex} from './live-archive-index.mjs';
+ 
+ const hash=value=>createHash('sha256').update(value).digest('hex');
+ export const archiveDocumentId=/^(?:native|chatgpt|work|unified|thread|context)-[a-f0-9]{24}$/;
++const selections=new WeakMap();
++const nativeIdentity=metadata=>{
++  const key=metadata.source_key.match(/^([a-f0-9]{64}):(\d+)$/),base=key?key[1]:metadata.source_key;
++  return {key,id:'native-'+hash(metadata.device+':'+base).slice(0,24)};
++};
++const legacyMetadata=(db,owner,columns)=>db.prepare('SELECT '+columns+' FROM cp_cloud_sources s WHERE owner=? AND '+legacyVisibleSql+' ORDER BY device,source_key').iterate(owner);
++// A synchronous, request-scoped selection shares one lazy metadata scan. Only
++// requested IDs retain metadata; bodies are still fetched as sections are read.
++// The opaque handle cannot be reused after the callback or by another owner/db.
++export function withArchiveSectionSelection(db,owner,documentIds,read){
++  if(typeof owner!=='string'||!/^[a-f0-9]{24}$/.test(owner)||!Array.isArray(documentIds)||documentIds.length>32||documentIds.some(id=>typeof id!=='string'||!archiveDocumentId.test(id)))throw Error('Invalid archive selection.');
++  const selection={},state={db,owner,rows:new Map(documentIds.map(id=>[id,[]])),iterator:null,done:false,active:true};
++  selections.set(selection,state);
++  try{return read(selection);}finally{state.active=false;selections.delete(selection);state.iterator?.return();}
++}
++function* selectedMetadata(state,documentId){
++  const rows=state.rows.get(documentId);let index=0;
++  while(true){
++    if(!state.active)throw Error('Invalid archive selection.');
++    if(index<rows.length){yield rows[index++];continue;}
++    if(state.done)return;
++    state.iterator??=legacyMetadata(state.db,state.owner,'s.id,s.source_key,s.device,s.title');
++    const next=state.iterator.next();
++    if(next.done){state.done=true;return;}
++    state.rows.get(nativeIdentity(next.value).id)?.push(next.value);
++  }
++}
+ 
+ // One authoritative projection for file materialization and bounded live reads.
+ // A selected read never waits for unrelated filesystem/index reconciliation.
+ // Call inside a read transaction so metadata, authority and bytes agree.
+-export function* archiveSections(db,owner,{now=Date.now(),documentId}={}){
++export function* archiveSections(db,owner,{now=Date.now(),documentId,selection}={}){
+   if(documentId!==undefined&&!archiveDocumentId.test(documentId))throw Error('Conversation is not in this account archive.');
++  const selected=selection===undefined?null:selections.get(selection);
++  if(selection!==undefined&&(!selected||selected.db!==db||selected.owner!==owner||!selected.rows.has(documentId)))throw Error('Invalid archive selection.');
+   if(!documentId||documentId.startsWith('native-')){
+     const columns=documentId?'s.id,s.source_key,s.device,s.title':'s.*';
+-    for(const metadata of db.prepare('SELECT '+columns+' FROM cp_cloud_sources s WHERE owner=? AND '+legacyVisibleSql+' ORDER BY device,source_key').iterate(owner)){
+-      const key=metadata.source_key.match(/^([a-f0-9]{64}):(\d+)$/),base=key?key[1]:metadata.source_key;
+-      const id='native-'+hash(metadata.device+':'+base).slice(0,24);
++    for(const metadata of selected?selectedMetadata(selected,documentId):legacyMetadata(db,owner,columns)){
++      const {key,id}=nativeIdentity(metadata);
+       if(documentId&&documentId!==id)continue;
+       const s=documentId?db.prepare('SELECT * FROM cp_cloud_sources WHERE owner=? AND id=?').get(owner,metadata.id):metadata;
+       yield {doc:{id,kind:s.title.startsWith('Codex chats:')||s.title.startsWith('Archived Codex chats:')||s.title.startsWith('Conductor Codex chats:')?'codex':'claude',title:s.title.replace(/ · \d+$/,''),device:s.device},section:s,position:key?Number(key[2]):0};
+diff --git a/apps/commonplace/server/context-mirror.mjs b/apps/commonplace/server/context-mirror.mjs
+index 49682b0..cec6c79 100644
+--- a/apps/commonplace/server/context-mirror.mjs
++++ b/apps/commonplace/server/context-mirror.mjs
+@@ -11,6 +11,10 @@ const problem=(code,flags={})=>Object.assign(Error(code),{mirrorCode:code,...fla
+ const changed=()=>problem('revision-changed',{changed:true});
+ const diagnosticCodes=new Set(['revision-changed','cancelled','owner-changed','updating','invalid-manifest','manifest-no-progress','manifest-incomplete','invalid-cache','incomplete-files','unexpected-file','file-offset','invalid-file','files-no-progress','file-integrity']);
+ const BATCH=24;
++const MAX_DOCUMENT_BYTES=64_000_000;
++// Prefixes can end between surrogate halves. Hash their exact UTF-16 code
++// units and serialize as JSON; a plain UTF-8 file would replace a lone half.
++const prefixHash=text=>hash(Buffer.from(text,'utf16le'));
+ export const searchCommandFor=()=>`"${process.execPath}" --no-warnings=ExperimentalWarning "${path.resolve(path.dirname(fileURLToPath(import.meta.url)),'context-search.mjs')}"`;
+ 
+ // The local context folder is a read-only replica of the account's published
+@@ -59,7 +63,7 @@ export class ContextMirror {
+   async tick(){
+     if(this.running||this.app.runtimeDraining||!this.state.enabled||!this.app.accountClient?.view().connected)return;
+     this.running=true;
+-    this.state.diagnostics={phase:'identity',revision:null,requests:0,completed:0,reused:0,code:null};
++    this.state.diagnostics={phase:'identity',revision:null,requests:0,completed:0,reused:0,resumed:0,code:null};
+     let fence;
+     try{
+       const client=this.app.accountClient;
+@@ -115,6 +119,25 @@ export class ContextMirror {
+   async verified(file,d){
+     try{const stat=await lstat(file);return stat.isFile()&&!stat.isSymbolicLink()&&hash(await readFile(file))===d.digest;}catch(error){if(error.code==='ENOENT')return false;throw error;}
+   }
++  async partial(cache,d,owner){
++    const file=path.join(cache,this.cacheName(d)+'.partial.json');let saved;
++    try{
++      const stat=await lstat(file);
++      // JSON needs at most six bytes per code unit, plus bounded metadata.
++      if(stat.isFile()&&!stat.isSymbolicLink()&&stat.size<=6*d.characters+1024){
++        const value=JSON.parse(await readFile(file,'utf8'));
++        if(value?.version===1&&value.owner===owner&&value.path===d.path&&value.digest===d.digest&&value.characters===d.characters&&typeof value.text==='string'&&Number.isSafeInteger(value.offset)&&value.offset>0&&value.offset<d.characters&&value.offset===value.text.length&&Buffer.byteLength(value.text)<=MAX_DOCUMENT_BYTES&&value.prefixDigest===prefixHash(value.text))saved={text:value.text,offset:value.offset};
++      }
++    }catch(error){if(error.code==='ENOENT')return null;if(!(error instanceof SyntaxError))throw error;}
++    if(!saved)await rm(file,{recursive:true,force:true});
++    return saved;
++  }
++  async savePartial(cache,part,fence){
++    this.checkLocal(fence);
++    const d=part.doc,file=path.join(cache,this.cacheName(d)+'.partial.json'),temp=file+'.tmp';
++    const value={version:1,owner:fence.owner,path:d.path,digest:d.digest,characters:d.characters,offset:part.offset,prefixDigest:prefixHash(part.text),text:part.text};
++    try{await writeFile(temp,JSON.stringify(value),{mode:0o600});this.checkLocal(fence);await rename(temp,file);}finally{await rm(temp,{force:true});}
++  }
+   async publish(owner,head,fence){
+     this.checkLocal(fence);this.checkManifest(head);
+     const client=fence.client,revision=head.revision,documents=[];
+@@ -133,7 +156,7 @@ export class ContextMirror {
+     if(documents.length!==head.total)throw problem('manifest-incomplete');
+     const seen=new Set();
+     for(const d of documents){
+-      if(!d||typeof d.path!=='string'||!documentPath.test(d.path)||d.path!=='documents/'+d.id+'.txt'||typeof d.digest!=='string'||!/^[a-f0-9]{64}$/.test(d.digest)||!Number.isSafeInteger(d.characters)||d.characters<0||seen.has(d.path))throw problem('invalid-manifest');
++      if(!d||typeof d.path!=='string'||!documentPath.test(d.path)||d.path!=='documents/'+d.id+'.txt'||typeof d.digest!=='string'||!/^[a-f0-9]{64}$/.test(d.digest)||!Number.isSafeInteger(d.characters)||d.characters<0||d.characters>MAX_DOCUMENT_BYTES||seen.has(d.path))throw problem('invalid-manifest');
+       seen.add(d.path);
+     }
+     this.checkLocal(fence);this.state.diagnostics.phase='reuse';
+@@ -144,7 +167,7 @@ export class ContextMirror {
+     const cache=path.join(this.directory,'.cache-'+hash(owner).slice(0,24));
+     await mkdir(cache,{recursive:true,mode:0o700});
+     if((await lstat(cache)).isSymbolicLink())throw problem('invalid-cache');
+-    const allowed=new Set(documents.map(d=>this.cacheName(d)));
++    const allowed=new Set(documents.flatMap(d=>[this.cacheName(d),this.cacheName(d)+'.partial.json']));
+     for(const entry of await readdir(cache))if(!allowed.has(entry))await rm(path.join(cache,entry),{recursive:true,force:true});
+     const prior=await this.prior(),name='r'+revision+'-'+randomBytes(8).toString('hex'),staging=path.join(this.directory,'.building-'+name);
+     await rm(staging,{recursive:true,force:true});
+@@ -166,8 +189,13 @@ export class ContextMirror {
+       }
+       let downloaded=0;
+       for(let i=0;i<pending.length;i+=BATCH){
+-        const batch=pending.slice(i,i+BATCH),parts=new Map(batch.map(d=>[d.path,{doc:d,text:'',offset:0,done:false}]));
+-        let requests=batch.map(d=>({path:d.path,offset:0}));
++        const batch=pending.slice(i,i+BATCH),parts=new Map();
++        for(const d of batch){
++          this.checkLocal(fence);const saved=await this.partial(cache,d,owner);this.checkLocal(fence);
++          parts.set(d.path,{doc:d,text:saved?.text??'',offset:saved?.offset??0,done:false});
++          if(saved)this.state.diagnostics.resumed++;
++        }
++        let requests=batch.map(d=>({path:d.path,offset:parts.get(d.path).offset}));
+         while(requests.length){
+           this.checkLocal(fence);this.state.diagnostics.phase='files';this.state.diagnostics.requests++;
+           const response=await client.request('/account/api/cloud/archive-files',{revision,paths:requests});
+@@ -180,17 +208,22 @@ export class ContextMirror {
+             if(file.offset!==part.offset)throw problem('file-offset');
+             if(file.deferred){next.push({path:file.path,offset:part.offset});continue;}
+             if(typeof file.text!=='string'||file.totalCharacters!==part.doc.characters||file.digest!==part.doc.digest)throw problem('invalid-file');
++            if(file.text.length>part.doc.characters-part.offset)throw problem('invalid-file');
+             part.text+=file.text;part.offset+=file.text.length;
+-            if(part.offset>part.doc.characters)throw problem('invalid-file');
++            if(Buffer.byteLength(part.text)>MAX_DOCUMENT_BYTES)throw problem('invalid-file');
+             if(file.nextOffset===null){
+-              if(part.offset!==part.doc.characters||hash(part.text)!==part.doc.digest)throw problem('file-integrity');
++              // Discard a bad prefix too, even if its local checksum matched:
++              // only the complete authoritative digest can validate the text.
++              const partial=path.join(cache,this.cacheName(part.doc)+'.partial.json');
++              if(part.offset!==part.doc.characters||hash(part.text)!==part.doc.digest){await rm(partial,{force:true});throw problem('file-integrity');}
+               this.state.diagnostics.phase='cache';this.checkLocal(fence);
+-              const saved=path.join(cache,this.cacheName(part.doc)),partial=saved+'.tmp';
+-              await writeFile(partial,part.text,{mode:0o600});this.checkLocal(fence);await rename(partial,saved);
++              const saved=path.join(cache,this.cacheName(part.doc)),temp=saved+'.tmp';
++              await writeFile(temp,part.text,{mode:0o600});this.checkLocal(fence);await rename(temp,saved);await rm(partial,{force:true});
+               await writeFile(path.join(staging,part.doc.path),part.text,{mode:0o444});
+               part.done=true;part.text='';downloaded++;this.state.diagnostics.completed++;progressed=true;
+             }else{
+               if(!file.text.length||file.nextOffset!==part.offset||part.offset>=part.doc.characters)throw problem('files-no-progress');
++              this.state.diagnostics.phase='cache';await this.savePartial(cache,part,fence);
+               next.push({path:file.path,offset:part.offset});progressed=true;
+             }
+           }
+diff --git a/apps/commonplace/server/local-client.mjs b/apps/commonplace/server/local-client.mjs
+index c140116..33d5252 100644
+--- a/apps/commonplace/server/local-client.mjs
++++ b/apps/commonplace/server/local-client.mjs
+@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
+ import { spawn } from 'node:child_process';
+ import { setTimeout as delay } from 'node:timers/promises';
+ 
+-export const RUNTIME_REVISION = 75;
++export const RUNTIME_REVISION = 76;
+ 
+ export function createLocalClient({
+   dir = process.env.COMMONPLACE_DATA_DIR ||
+diff --git a/apps/commonplace/server/setup-status.mjs b/apps/commonplace/server/setup-status.mjs
+index add12fd..8147d6d 100644
+--- a/apps/commonplace/server/setup-status.mjs
++++ b/apps/commonplace/server/setup-status.mjs
+@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
+ import path from 'node:path';
+ import {acquireProcessLock} from './process-lock.mjs';
+ 
+-export const PLUGIN_VERSION='0.4.42';
++export const PLUGIN_VERSION='0.4.43';
+ export const setupActions={
+   link_account:'Link another verified Google account in an isolated profile, preserving existing accounts.',
+   use_account:'Choose the account for this personal native chat.',
+diff --git a/scripts/build-plugin.py b/scripts/build-plugin.py
+index a3a6c68..4ae9cf9 100644
+--- a/scripts/build-plugin.py
++++ b/scripts/build-plugin.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Build candidate 0.4.42 from checksum-pinned 0.3.0, preserving all bundled runtimes, hooks, assets and licenses outside the explicit overlay."""
++"""Build candidate 0.4.43 from checksum-pinned 0.3.0, preserving all bundled runtimes, hooks, assets and licenses outside the explicit overlay."""
+ import argparse
+ import hashlib
+ import json
+@@ -11,7 +11,7 @@ import zipfile
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+ BASE_VERSION = "0.3.0"
+-VERSION = "0.4.42"
++VERSION = "0.4.43"
+ BASE_SHA256 = "146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968"
+ BASE_URL = "https://github.com/diask5/commonplace-plugin/releases/download/meet-proxy-v0.3.0/meet-proxy-0.3.0.zip"
+ OVERLAY_FILES = {
+@@ -91,9 +91,9 @@ def overrides(baseline, alias="meet-proxy"):
+         assert metadata["version"] == BASE_VERSION and metadata["name"] == "meet-proxy"
+         metadata.update(name=alias, version=VERSION)
+         changes[name] = (json.dumps(metadata, indent=2) + "\n").encode()
+-    assert b"PLUGIN_VERSION='0.4.42'" in changes["server/setup-status.mjs"]
++    assert b"PLUGIN_VERSION='0.4.43'" in changes["server/setup-status.mjs"]
+     assert b"BACKGROUND_VERSION=PLUGIN_VERSION" in changes["server/cloud-background.mjs"]
+-    assert b"RUNTIME_REVISION = 75;" in changes["server/local-client.mjs"]
++    assert b"RUNTIME_REVISION = 76;" in changes["server/local-client.mjs"]
+     readme = baseline.read("README.md").decode().replace("0.3.0", VERSION)
+     section = """## Your personal agent network
+ 
+diff --git a/tests/cloud-archive-selected-metadata.test.mjs b/tests/cloud-archive-selected-metadata.test.mjs
+new file mode 100644
+index 0000000..9cfc51f
+--- /dev/null
++++ b/tests/cloud-archive-selected-metadata.test.mjs
+@@ -0,0 +1,144 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {createHash,randomBytes} from 'node:crypto';
++import {mkdtemp,rm} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import path from 'node:path';
++import {openDatabase} from '../apps/commonplace-account/server/sqlite.mjs';
++import {AccountService} from '../apps/commonplace-account/server/service.mjs';
++import {CloudWork} from '../apps/commonplace-account/server/cloud-work.mjs';
++import {archiveSections,withArchiveSectionSelection} from '../apps/commonplace-account/server/archive-source.mjs';
++import {readMirrorSource} from '../apps/commonplace-account/server/archive-mirror.mjs';
++import {UnifiedContext,legacyVisibleSql} from '../apps/commonplace-account/server/unified-context.mjs';
++import {DatabaseSync} from 'node:sqlite';
++const hash=s=>createHash('sha256').update(s).digest('hex'),uid=()=>randomBytes(12).toString('hex');
++
++async function fixture(t){
++ const dir=await mkdtemp(path.join(tmpdir(),'selected-metadata-')),db=openDatabase(path.join(dir,'db.sqlite'),{migrations:path.resolve('apps/commonplace-account/drizzle')});
++ t.after(async()=>{db.close();await rm(dir,{recursive:true,force:true});});
++ const service=new AccountService(db,'https://relay.example'),owner=(await service.profile({userId:'owner',email:'owner@example.test'})).id,other=(await service.profile({userId:'other',email:'other@example.test'})).id;
++ const work=new CloudWork(service),device=uid();work.run('INSERT INTO cp_devices(id,owner,client,name,scope,created_at) VALUES(?,?,?,?,?,?)',device,owner,'test','Synthetic','commonplace',1000);
++ const document=key=>'native-'+hash(device+':'+key).slice(0,24),native=(key,body,revision=1)=>work.upload(owner,{id:device},{key,text:body,title:'Codex chats: Synthetic',revision,capturedAt:1000});
++ return {dir,db,service,work,device,owner,other,document,native};
++}
++function observed(f,allowed){
++ const stats={scans:0,rows:0,bodies:0,closed:0},db={prepare(sql){
++  assert.equal(f.db.sqlite.isTransaction,true,'metadata and selected bodies share the caller read transaction');
++  const stmt=f.db.sqlite.prepare(sql);
++  if(sql.includes('FROM cp_cloud_sources s')){
++   assert.ok(sql.startsWith('SELECT s.id,s.source_key,s.device,s.title FROM '),'metadata scan never selects body');
++   assert.ok(sql.includes('WHERE owner=? AND '+legacyVisibleSql+' ORDER BY device,source_key'),'preserve the exact owner/legacy visibility/order predicate');
++   return {iterate:function*(...args){stats.scans++;try{for(const row of stmt.iterate(...args)){stats.rows++;yield row;}}finally{stats.closed++;}}};
++  }
++  if(sql==='SELECT * FROM cp_cloud_sources WHERE owner=? AND id=?')return {get(...args){stats.bodies++;assert.equal(args[0],f.owner);if(allowed)assert.ok(allowed.has(args[1]),'no unrelated body read');return stmt.get(...args);}};
++  return stmt;
++ }};
++ return {db,stats};
++}
++function inRead(f,fn){f.db.sqlite.exec('BEGIN');try{return fn();}finally{f.db.sqlite.exec('ROLLBACK');}}
++
++test('24 selected files share one metadata scan at 684 documents/13694 sections/39438987 characters',async t=>{
++ const f=await fixture(t),documents=684,sections=13694,characters=39438987,paths=[],expected=new Map(),allowed=new Set();let section=0;
++ const insert=f.db.sqlite.prepare('INSERT INTO cp_cloud_sources(id,owner,device,source_key,revision,title,body,digest,captured_at,synced_at) VALUES(?,?,?,?,1,?,?,?,?,?)');
++ f.db.sqlite.exec('BEGIN');
++ try{
++  for(let d=0;d<documents;d++){
++   const key=hash('scale-'+d),parts=[];
++   for(let i=0;i<20+(d<14?1:0);i++){
++    const length=Math.floor(characters/sections)+(section<characters%sections?1:0),body=('Synthetic '+d+':'+i+' 界😀 ').padEnd(length,'x'),id=hash(key+':'+i).slice(0,24);
++    insert.run(id,f.owner,f.device,key+':'+i,'Codex chats: Synthetic',body,hash(body),1000,2000);section++;
++    if(d<24){parts.push(body);allowed.add(id);}
++   }
++   if(d<24){const p='documents/'+f.document(key)+'.txt';paths.push(p);expected.set(p,parts.join(''));}
++  }
++  f.db.sqlite.exec('COMMIT');
++ }catch(error){f.db.sqlite.exec('ROLLBACK');throw error;}
++ assert.equal(section,sections);
++ const {db,stats}=observed(f,allowed),before=process.memoryUsage().rss,start=performance.now();
++ const result=inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{paths}));
++ t.diagnostic(JSON.stringify({synthetic:true,documents,sections,characters,requested:paths.length,elapsedMs:performance.now()-start,rssBefore:before,rssAfter:process.memoryUsage().rss,...stats}));
++ for(const file of result.value.files){assert.equal(file.text,expected.get(file.path));assert.equal(file.digest,hash(file.text));assert.equal(file.totalCharacters,file.text.length);assert.equal(file.nextOffset,null);}
++ assert.equal(stats.scans,1,'one metadata scan for the whole request, not one per selected file');
++ assert.equal(stats.rows,sections);assert.equal(stats.bodies,allowed.size);assert.equal(stats.closed,1);
++});
++
++test('selected bytes match the original archive projection for interleaved keys, numeric positions and repeated paths',async t=>{
++ const f=await fixture(t),key=hash('ordered');
++ for(const i of [11,2,0,1])f.native(key+':'+i,'Chunk '+i+' 界😀\n');
++ f.native(key+':1:interleaved','Interleaved');f.native('unrelated','UNRELATED');
++ const p='documents/'+f.document(key)+'.txt',q='documents/'+f.document(key+':1:interleaved')+'.txt',{db,stats}=observed(f);
++ const expected=inRead(f,()=>[...archiveSections(f.db.sqlite,f.owner,{documentId:f.document(key)})].sort((a,b)=>a.position-b.position||a.section.id.localeCompare(b.section.id)).map(r=>r.section.body.toWellFormed()).join(''));
++ const result=inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{paths:[p,q,{path:p,offset:3}]}));
++ assert.equal(result.value.files[0].text,expected);assert.equal(result.value.files[2].text,expected.slice(3));assert.equal(result.value.files[2].digest,hash(expected));
++ assert.equal(result.value.files[1].text,'Interleaved');assert.equal(stats.scans,1);assert.equal(stats.rows,6);
++});
++
++test('response budget defers known paths, checks unknown paths and reads no deferred remainder bodies',async t=>{
++ const f=await fixture(t),key=hash('large');
++ for(let i=0;i<60;i++)f.native(key+':'+i,'x'.repeat(40000));
++ const deferred=f.native('deferred','Deferred body'),p='documents/'+f.document(key)+'.txt',q='documents/'+f.document('deferred')+'.txt',unknown='documents/native-'+uid()+'.txt';
++ let reads=0;const {db,stats}=observed(f),prepare=db.prepare;
++ db.prepare=sql=>{const stmt=prepare(sql);if(sql!=='SELECT * FROM cp_cloud_sources WHERE owner=? AND id=?')return stmt;return {get(...args){if(args[1]===deferred.id)reads++;return stmt.get(...args);}};};
++ const result=inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{paths:[p,{path:p,offset:1000000},q]}));
++ assert.equal(result.value.files[0].text.length,1000000);assert.equal(result.value.files[1].text.length,1000000);assert.deepEqual(result.value.files[2],{path:q,offset:0,deferred:true});assert.equal(reads,1,'existence check loads only the first deferred section');assert.equal(stats.scans,1);
++ assert.throws(()=>inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{paths:[p,{path:p,offset:1000000},unknown]})),e=>e.status===400&&/Unknown context file/.test(e.message));
++ for(const paths of [[],Array(33).fill(q),['../secret']])assert.throws(()=>inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{paths})),e=>e.status===400);
++ assert.equal(stats.scans,2,'invalid input is rejected before any metadata lookup');
++});
++
++test('opaque selections reject foreign owners/databases, unselected IDs, forged and expired handles',async t=>{
++ const f=await fixture(t);f.native('first','Selected');f.native('second','Other');
++ const id=f.document('first'),otherId=f.document('second'),{db,stats}=observed(f);let expired;
++ inRead(f,()=>withArchiveSectionSelection(db,f.owner,[id],selection=>{
++  expired=selection;assert.deepEqual(Object.keys(selection),[],'no source metadata in the handle');
++  for(const [database,owner,documentId,token] of [[db,f.other,id,selection],[f.db.sqlite,f.owner,id,selection],[db,f.owner,otherId,selection],[db,f.owner,id,{}]])assert.throws(()=>[...archiveSections(database,owner,{documentId,selection:token})],/Invalid archive selection/);
++  assert.equal(stats.scans,0,'invalid handles cannot query metadata or bodies');
++  assert.equal([...archiveSections(db,f.owner,{documentId:id,selection})].length,1);
++ }));
++ assert.throws(()=>[...archiveSections(db,f.owner,{documentId:id,selection:expired})],/Invalid archive selection/);
++ assert.equal(stats.scans,1);assert.equal(stats.closed,1);
++ for(const ids of [Array(33).fill(id),['bad'],[null]])assert.throws(()=>withArchiveSectionSelection(db,f.owner,ids,()=>{}),/Invalid archive selection/);
++});
++
++test('selection metadata is fresh per request and exclusion never resurrects the legacy replica',async t=>{
++ const f=await fixture(t),key=hash('exclude');f.native(key+':0','PRIVATE OLD');f.native(key+':1','PRIVATE TAIL');f.native(key+'suffix','Boundary source');
++ const p='documents/'+f.document(key)+'.txt',q='documents/'+f.document(key+'suffix')+'.txt',{db,stats}=observed(f);
++ const first=inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{paths:[p,q]}));assert.equal(first.value.files[0].text,'PRIVATE OLDPRIVATE TAIL');
++ const unified=new UnifiedContext(f.service),stream=unified.ingest(f.owner,f.work.get('SELECT * FROM cp_devices WHERE id=?',f.device),{conversation:{provider:'codex',id:'canonical',title:'Canonical'},sourceKey:key,revision:1,capturedAt:1000,messages:[{id:'m',role:'user',text:'Current',position:0,timestamp:1000}]});
++ unified.configure(f.owner,{id:stream.id,excluded:true});
++ const bodies=stats.bodies;
++ assert.throws(()=>inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{paths:[p]})),e=>e.status===400&&/Unknown context file/.test(e.message));assert.equal(stats.bodies,bodies,'excluded legacy sections are never loaded');
++ assert.equal(inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{paths:[q]})).value.files[0].text,'Boundary source','legacy source-key delimiter semantics are unchanged');
++ assert.throws(()=>inRead(f,()=>readMirrorSource(db,f.other,'archive-files',{paths:[q]})),e=>e.status===400&&/Unknown context file/.test(e.message));
++ assert.equal(stats.scans,4,'every request evaluates current visibility, including foreign owners');
++ const scans=stats.scans,restarted=inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{revision:first.revision,paths:[p,q]}));
++ assert.equal(restarted.value.restart,true);assert.equal(stats.scans,scans);assert.doesNotMatch(JSON.stringify(restarted),/PRIVATE/);
++});
++
++test('metadata and lazily selected bodies stay in one WAL read snapshot while another connection writes',async t=>{
++ const f=await fixture(t),a=f.native('a','Before A'),b=f.native('b','Before B'),paths=['a','b'].map(key=>'documents/'+f.document(key)+'.txt');
++ const writer=new DatabaseSync(path.join(f.dir,'db.sqlite'));t.after(()=>writer.close());
++ const {db,stats}=observed(f),prepare=db.prepare;let written=false;
++ db.prepare=sql=>{
++  const stmt=prepare(sql);if(sql!=='SELECT * FROM cp_cloud_sources WHERE owner=? AND id=?')return stmt;
++  return {get(...args){if(!written){written=true;writer.prepare('UPDATE cp_cloud_sources SET body=?,revision=revision+1 WHERE id=?').run('After B',b.id);}return stmt.get(...args);}};
++ };
++ const before=inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{paths}));
++ assert.deepEqual(before.value.files.map(file=>file.text),['Before A','Before B']);assert.equal(stats.scans,1);assert.equal(stats.bodies,2);
++ const stale=inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{revision:before.revision,paths}));assert.equal(stale.value.restart,true);assert.equal(stale.value.files,undefined);
++ const after=inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{paths}));assert.deepEqual(after.value.files.map(file=>file.text),['Before A','After B']);assert.equal(stats.scans,2);assert.equal(a.id.length,24);
++});
++
++test('partial selections and body-read errors close their one metadata cursor without retaining a reusable handle',async t=>{
++ const f=await fixture(t);f.native('first','First');f.native('second','Second');
++ const id=f.document('first'),{db,stats}=observed(f);let expired,suspended;
++ inRead(f,()=>withArchiveSectionSelection(db,f.owner,[id],selection=>{
++  expired=selection;suspended=archiveSections(db,f.owner,{documentId:id,selection});assert.equal(suspended.next().value.section.body,'First');
++ }));
++ assert.equal(stats.closed,1);assert.throws(()=>[...archiveSections(db,f.owner,{documentId:id,selection:expired})],/Invalid archive selection/);
++ assert.throws(()=>suspended.next(),/Invalid archive selection/,'suspended iterators cannot read after request scope ends');assert.equal(stats.bodies,1);
++ const prepare=db.prepare;db.prepare=sql=>sql==='SELECT * FROM cp_cloud_sources WHERE owner=? AND id=?'?{get(){throw Error('Injected body-read failure');}}:prepare(sql);
++ assert.throws(()=>inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{paths:['documents/'+id+'.txt']})),/Injected body-read failure/);assert.equal(stats.closed,2);
++ db.prepare=prepare;
++ assert.equal(inRead(f,()=>readMirrorSource(db,f.owner,'archive-files',{paths:['documents/'+id+'.txt']})).value.files[0].text,'First');assert.equal(stats.scans,3);assert.equal(stats.closed,3);
++});
+diff --git a/tests/context-mirror.test.mjs b/tests/context-mirror.test.mjs
+index 40a4927..9ff4eea 100644
+--- a/tests/context-mirror.test.mjs
++++ b/tests/context-mirror.test.mjs
+@@ -455,3 +455,147 @@ test('file pagination stops on deferred-only, empty, missing, duplicate and inva
+   await assert.rejects(realpath(h.mirror.current),{code:'ENOENT'});
+  });
+ });
++
++async function interruptedPartial(t,text,{fileSlice=8}={}){
++ const h=await mirrorHarness(t,[['Partial synthetic',text]],{fileSlice}),request=h.client.request;let calls=0;
++ h.client.request=async(endpoint,input)=>{
++  if(endpoint.endsWith('/archive-files')&&++calls===2){h.revision++;return {changed:true,restart:true,revision:h.revision};}
++  return request(endpoint,input);
++ };
++ await h.mirror.tick();assert.equal(h.mirror.status().ready,false);
++ h.client.request=request;h.calls.length=0;
++ const cache=(await readdir(h.mirror.directory)).find(n=>n.startsWith('.cache-'));
++ return Object.assign(h,{request,partial:path.join(h.mirror.directory,cache,h.mirror.cacheName(h.documents[0])+'.partial.json')});
++}
++
++test('partial pages resume across unrelated revisions and reopen until a seven-page document completes',async t=>{
++ const text='part '.repeat(1_268_609)+'xx';assert.equal(text.length,6_343_047);
++ const h=await mirrorHarness(t,[['Large synthetic',text]]),request=h.client.request;let accepted=0;
++ for(let attempt=0;attempt<7;attempt++){
++  let pages=0;const offsets=[];
++  h.client.request=async(endpoint,input)=>{
++   if(endpoint.endsWith('/archive-files')){
++    offsets.push(input.paths[0].offset);
++    if(pages++===1){h.revision++;return {changed:true,restart:true,revision:h.revision};}
++    const value=await request(endpoint,input);accepted+=value.files[0].text.length;return value;
++   }
++   return request(endpoint,input);
++  };
++  h.mirror=await ContextMirror.open(h.app,{searchCommand:'context-search'});
++  await h.mirror.tick();
++  assert.deepEqual(offsets,attempt<6?[attempt*1_000_000,(attempt+1)*1_000_000]:[6_000_000]);
++  if(attempt<6){assert.equal(h.mirror.status().ready,false);assert.equal(h.mirror.status().diagnostics.code,'revision-changed');await assert.rejects(realpath(h.mirror.current),{code:'ENOENT'});}
++ }
++ assert.equal(h.mirror.status().ready,true);assert.equal(accepted,text.length,'each accepted character transfers once');
++ assert.equal(await readFile(path.join(h.mirror.current,h.documents[0].path),'utf8'),text);
++ assert.equal((await readdir(h.mirror.directory)).some(n=>n.startsWith('.cache-')),false);
++});
++
++test('partial JSON preserves a split UTF-16 surrogate across reopen',async t=>{
++ const text='abc😀def😀ghi',h=await interruptedPartial(t,text,{fileSlice:4});
++ const partial=JSON.parse(await readFile(h.partial,'utf8'));
++ assert.equal(partial.text,text.slice(0,4));assert.equal(partial.text.charCodeAt(3),0xd83d);
++ assert.equal((await stat(h.partial)).mode&0o777,0o600);
++ h.mirror=await ContextMirror.open(h.app,{searchCommand:'context-search'});await h.mirror.tick();
++ const calls=h.calls.filter(c=>c.endpoint.endsWith('/archive-files'));assert.equal(calls[0].input.paths[0].offset,4);
++ assert.equal(h.mirror.status().ready,true);assert.equal(await readFile(path.join(h.mirror.current,h.documents[0].path),'utf8'),text);
++});
++
++test('partial reuse requires the current manifest path, digest and character count',async t=>{
++ for(const scenario of ['path','digest','characters','excluded'])await t.test(scenario,async t=>{
++  const h=await interruptedPartial(t,'synthetic '.repeat(5)),doc=h.documents[0];
++  assert.equal(JSON.parse(await readFile(h.partial,'utf8')).offset,8);
++  if(scenario==='path'){h.documents=[];h.set('Other synthetic',h.texts.get(doc.path));}
++  if(scenario==='digest')h.set('Partial synthetic','replacement '.repeat(5));
++  if(scenario==='characters')h.documents[0]={...doc,characters:doc.characters+1};
++  if(scenario==='excluded')h.documents=[];
++  h.revision++;await h.mirror.tick();
++  if(scenario==='characters')assert.equal(JSON.parse(await readFile(h.partial,'utf8')).characters,doc.characters+1,'the old prefix is replaced, never resumed');
++  else await assert.rejects(lstat(h.partial),{code:'ENOENT'});
++  const files=h.calls.filter(c=>c.endpoint.endsWith('/archive-files'));
++  if(scenario==='excluded'){assert.equal(files.length,0);assert.equal((await manifestOf(h.mirror.current)).documents.length,0);}
++  else{assert.equal(files[0].input.paths[0].offset,0);if(scenario!=='characters')assert.equal(h.mirror.status().ready,true);else assert.equal(h.mirror.status().ready,false);}
++ });
++});
++
++test('partial cache corruption restarts from zero and never traps subsequent retries',async t=>{
++ for(const scenario of ['json','checksum','offset','oversize','self-consistent'])await t.test(scenario,async t=>{
++  const h=await interruptedPartial(t,'synthetic '.repeat(5));
++  const saved=JSON.parse(await readFile(h.partial,'utf8'));
++  if(scenario==='json')await writeFile(h.partial,'{');
++  if(scenario==='oversize')await writeFile(h.partial,' '.repeat(10_000));
++  if(scenario==='checksum'||scenario==='self-consistent'){
++   saved.text='x'.repeat(saved.text.length);
++   if(scenario==='self-consistent')saved.prefixDigest=checksum(Buffer.from(saved.text,'utf16le'));
++   await writeFile(h.partial,JSON.stringify(saved));
++  }
++  if(scenario==='offset'){saved.offset++;await writeFile(h.partial,JSON.stringify(saved));}
++  h.mirror=await ContextMirror.open(h.app,{searchCommand:'context-search'});await h.mirror.tick();
++  const first=h.calls.find(c=>c.endpoint.endsWith('/archive-files')).input.paths[0].offset;
++  if(scenario==='self-consistent'){
++   assert.equal(first,8);assert.equal(h.mirror.status().diagnostics.code,'file-integrity');await assert.rejects(lstat(h.partial),{code:'ENOENT'});
++   h.calls.length=0;await h.mirror.tick();assert.equal(h.calls.find(c=>c.endpoint.endsWith('/archive-files')).input.paths[0].offset,0);
++  }else assert.equal(first,0);
++  assert.equal(h.mirror.status().ready,true);assert.equal(await readFile(path.join(h.mirror.current,h.documents[0].path),'utf8'),h.texts.get(h.documents[0].path));
++ });
++});
++
++test('partial data clears on disable or owner change even for identical authorized bytes',async t=>{
++ for(const scenario of ['disable','owner'])await t.test(scenario,async t=>{
++  const h=await interruptedPartial(t,'synthetic '.repeat(5));await lstat(h.partial);
++  if(scenario==='disable'){await h.mirror.configure({enabled:false});await assert.rejects(lstat(h.mirror.directory),{code:'ENOENT'});await h.mirror.configure({enabled:true});}
++  else{h.owner='b'.repeat(24);h.client.state.session.humanAccount={id:h.owner};}
++  await h.mirror.tick();assert.equal(h.mirror.status().ready,true);
++  assert.equal(h.calls.find(c=>c.endpoint.endsWith('/archive-files')).input.paths[0].offset,0);await assert.rejects(lstat(h.partial),{code:'ENOENT'});
++ });
++});
++
++test('partial atomic checkpoints ignore unfinished writes and retain the previous prefix on failure',async t=>{
++ const h=await interruptedPartial(t,'synthetic '.repeat(5)),saved=JSON.parse(await readFile(h.partial,'utf8'));
++ const unfinished={...saved,text:h.texts.get(h.documents[0].path).slice(0,16),offset:16};unfinished.prefixDigest=checksum(Buffer.from(unfinished.text,'utf16le'));
++ await writeFile(h.partial+'.tmp',JSON.stringify(unfinished),{mode:0o600});
++ const save=h.mirror.savePartial.bind(h.mirror);let writes=0;
++ t.mock.method(h.mirror,'savePartial',async(...args)=>{
++  if(++writes===2)throw Object.assign(Error('synthetic local write failure'),{code:'EACCES'});
++  return save(...args);
++ });
++ await h.mirror.tick();assert.equal(h.mirror.status().ready,false);assert.equal(h.mirror.status().diagnostics.code,'EACCES');
++ assert.equal(h.calls.find(c=>c.endpoint.endsWith('/archive-files')).input.paths[0].offset,8,'unfinished temporary prefix is ignored');
++ assert.equal(JSON.parse(await readFile(h.partial,'utf8')).offset,16,'the last successful checkpoint survives');
++ await assert.rejects(lstat(h.partial+'.tmp'),{code:'ENOENT'});
++ h.calls.length=0;h.mirror=await ContextMirror.open(h.app,{searchCommand:'context-search'});await h.mirror.tick();
++ assert.equal(h.calls.find(c=>c.endpoint.endsWith('/archive-files')).input.paths[0].offset,16);assert.equal(h.mirror.status().ready,true);
++});
++
++test('partial saving still honors a concurrent disable without recreating derived data',async t=>{
++ const h=await mirrorHarness(t,[['Partial synthetic','synthetic '.repeat(5)]],{fileSlice:8}),save=h.mirror.savePartial.bind(h.mirror);let writes=0;
++ t.mock.method(h.mirror,'savePartial',async(...args)=>{
++  if(++writes===2)await h.mirror.configure({enabled:false});
++  return save(...args);
++ });
++ await h.mirror.tick();assert.equal(h.mirror.status().enabled,false);assert.equal(h.mirror.status().ready,false);assert.equal(h.mirror.status().diagnostics.code,'cancelled');
++ await assert.rejects(lstat(h.mirror.directory),{code:'ENOENT'});
++});
++
++test('partial resume still requires the final projection and expiry fences',async t=>{
++ for(const scenario of ['projection','expiry'])await t.test(scenario,async t=>{
++  const h=await interruptedPartial(t,'synthetic '.repeat(5));let fenced=false;
++  h.client.request=async(endpoint,input)=>{
++   const value=await h.request(endpoint,input);
++   if(endpoint.endsWith('/archive-manifest')){
++    value.projection=checksum(scenario==='projection'&&input.revision!==undefined?'changed projection':'original projection');
++    if(scenario==='expiry')value.expiresAt=Date.now()-1;
++    if(input.revision!==undefined)fenced=true;
++   }
++   return value;
++  };
++  await h.mirror.tick();assert.equal(h.calls.find(c=>c.endpoint.endsWith('/archive-files')).input.paths[0].offset,8);
++  assert.equal(fenced,true);assert.equal(h.mirror.status().ready,false);assert.equal(h.mirror.status().diagnostics.code,'revision-changed');
++  await assert.rejects(realpath(h.mirror.current),{code:'ENOENT'});
++ });
++});
++
++test('partial transfers reject manifest sizes beyond the server document limit before downloading',async t=>{
++ const h=await mirrorHarness(t,[['Oversize synthetic','tiny']]);h.documents[0].characters=64_000_001;
++ await h.mirror.tick();assert.equal(h.mirror.status().ready,false);assert.equal(h.mirror.status().diagnostics.code,'invalid-manifest');assert.deepEqual(h.downloads(),[]);
++});
+diff --git a/tests/packaging.test.mjs b/tests/packaging.test.mjs
+index 0014658..af1f0ea 100644
+--- a/tests/packaging.test.mjs
++++ b/tests/packaging.test.mjs
+@@ -12,8 +12,8 @@ const run=(cmd,args)=>exec(cmd,args,{cwd:root,timeout:240000,maxBuffer:1024*1024
+ test('stable cloud plugin preserves baseline assets, dependencies and executable modes', {timeout:300000},async t=>{
+   const scratch=await mkdtemp(path.join(tmpdir(),'cloud-package-'));t.after(()=>rm(scratch,{recursive:true,force:true}));
+   const baseline=process.env.COMMONPLACE_TEST_BASELINE||path.resolve('artifacts/.cache/meet-proxy-0.3.0.zip');
+-  let output=path.resolve(process.env.COMMONPLACE_TEST_PACKAGE_DIR||'artifacts/public-0.4.42');
+-  if(!existsSync(output+'/meet-proxy-0.4.42.zip')){output=path.join(scratch,'build');await run('python3',['scripts/build-plugin.py','--baseline',baseline,'--output',output]);}
++  let output=path.resolve(process.env.COMMONPLACE_TEST_PACKAGE_DIR||'artifacts/public-0.4.43');
++  if(!existsSync(output+'/meet-proxy-0.4.43.zip')){output=path.join(scratch,'build');await run('python3',['scripts/build-plugin.py','--baseline',baseline,'--output',output]);}
+   const bad=path.join(scratch,'bad.zip');await writeFile(bad,'wrong');
+   await assert.rejects(run('python3',['scripts/build-plugin.py','--baseline',bad,'--output',path.join(scratch,'bad')]),/SHA-256 mismatch/);
+   await run('python3',['-c',`
+@@ -30,7 +30,7 @@ def digest(stream):
+ with open(baseline,'rb') as f:assert digest(f)=='146b41e4bf755f5e9cea51f455c83337dfc0357c06b351502977759918979968'
+ with zipfile.ZipFile(baseline) as old:
+  for alias in ('meet-proxy','commonplace'):
+-  candidate=pathlib.Path(output)/(alias+'-0.4.42.zip')
++  candidate=pathlib.Path(output)/(alias+'-0.4.43.zip')
+   report=json.loads(candidate.with_name(candidate.stem+'-build.json').read_text())
+   with candidate.open('rb') as f:assert digest(f)==report['sha256']
+   with zipfile.ZipFile(candidate) as new:
+@@ -54,7 +54,7 @@ with zipfile.ZipFile(baseline) as old:
+       dep=posixpath.normpath(posixpath.join(posixpath.dirname(name),rel[1]))
+       assert dep in new.namelist(),name+' missing '+dep
+    for name in ('.claude-plugin/plugin.json','.codex-plugin/plugin.json'):
+-    metadata=json.loads(new.read(name));assert metadata['name']==alias and metadata['version']=='0.4.42'
++    metadata=json.loads(new.read(name));assert metadata['name']==alias and metadata['version']=='0.4.43'
+    if alias=='meet-proxy':
+     for item in new.infolist():
+      target=pathlib.Path(extracted)/item.filename;target.parent.mkdir(parents=True,exist_ok=True)
+@@ -64,11 +64,11 @@ with zipfile.ZipFile(baseline) as old:
+   const checked=await run(process.execPath,['--input-type=module','-e',`
+ import assert from 'node:assert/strict';import {pathToFileURL} from 'node:url';
+ const root=process.argv[1];const {pluginResponse}=await import(pathToFileURL(root+'/server/plugin-surface.mjs'));const {accountInboxMcp}=await import(pathToFileURL(root+'/server/account-inbox.mjs'));
+-const init=pluginResponse({method:'initialize'},{result:{}});assert.equal(init.result.serverInfo.version,'0.4.42');
++const init=pluginResponse({method:'initialize'},{result:{}});assert.equal(init.result.serverInfo.version,'0.4.43');
+ const r={jsonrpc:'2.0',id:1,method:'tools/list'};const tools=pluginResponse(r,await accountInboxMcp({},r)).result.tools.map(t=>t.name);
+ for(const name of ['invite_agent_connection','preview_agent_connection','accept_agent_connection','read_agent_connection','list_agent_connections','sever_agent_connection','cloud_agent_status','connect_cloud_agent','run_cloud_task','read_cloud_task','cancel_cloud_task','configure_cloud_sync','send_agent_message','list_my_agent_conversations','read_agent_context','publish_agent_context','search_my_chats','read_my_chat','configure_my_chat_history','setup_status','add_person_to_chat','search_shared_context','read_shared_context','context_sync_status','configure_context_source','read_project_context'])assert.ok(tools.includes(name),name);
+-const {RUNTIME_REVISION}=await import(pathToFileURL(root+'/server/local-client.mjs'));assert.equal(RUNTIME_REVISION,75);
+-const {BACKGROUND_VERSION}=await import(pathToFileURL(root+'/server/cloud-background.mjs'));assert.equal(BACKGROUND_VERSION,'0.4.42');
++const {RUNTIME_REVISION}=await import(pathToFileURL(root+'/server/local-client.mjs'));assert.equal(RUNTIME_REVISION,76);
++const {BACKGROUND_VERSION}=await import(pathToFileURL(root+'/server/cloud-background.mjs'));assert.equal(BACKGROUND_VERSION,'0.4.43');
+ // setup_status is added by the stdio surface, even while an older companion is busy.
+ const surfaced=pluginResponse(r,{result:{tools:[]}}).result.tools.find(t=>t.name==='setup_status');
+ for(const name of ['invite_agent_connection','accept_agent_connection','sever_agent_connection'])assert.ok(surfaced.inputSchema.properties.blockedTool.enum.includes(name));

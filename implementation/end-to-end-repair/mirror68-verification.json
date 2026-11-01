@@ -1,0 +1,194 @@
+{
+  "patch": 68,
+  "state": "frozen source and focused tests; parent owns full core, packaging, independent review and deployment",
+  "frozenAt": "2026-11-01T03:19:17.874955+00:00",
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/archive-source.mjs",
+      "sha256": "d4ef5f2f549482caf1816c81ea804ce1cf2779af4c3e1700e75deb098f948512",
+      "before68Sha256": "bf780c6e8bd40398d7d97817449cccc26d049ffd4b54e895741e737d97308535"
+    },
+    {
+      "path": "apps/commonplace-account/server/archive-mirror.mjs",
+      "sha256": "0d4bccb0f358edc679eb083cd267ee55a455e1f9a8f81dbff12fcff8e3df143f",
+      "before68Sha256": "951f9c6c251bbf4bf91ef4c500a33465acc562c6a21d65ce04bb99a9949d3c0e"
+    },
+    {
+      "path": "tests/cloud-archive-selected-metadata.test.mjs",
+      "sha256": "d5804405ad8e0c27bc5c82e261d144e7992a3cc58017f5c9068e4d0a344b22ec",
+      "before68Sha256": null
+    }
+  ],
+  "logs": {
+    "initial": {
+      "path": "mirror68-selected-before.log",
+      "tests": 3,
+      "pass": 0,
+      "fail": 3,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "scale": {
+        "synthetic": true,
+        "documents": 684,
+        "sections": 13694,
+        "characters": 39438987,
+        "requested": 24,
+        "elapsedMs": 3566.724401,
+        "rssBefore": 129228800,
+        "rssAfter": 157728768,
+        "scans": 24,
+        "rows": 328656,
+        "bodies": 494,
+        "closed": 24
+      }
+    },
+    "correctedScale": {
+      "path": "mirror68-selected-before-corrected.log",
+      "tests": 3,
+      "pass": 0,
+      "fail": 3,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "scale": {
+        "synthetic": true,
+        "documents": 684,
+        "sections": 13694,
+        "characters": 39438987,
+        "requested": 24,
+        "elapsedMs": 3758.378197,
+        "rssBefore": 128856064,
+        "rssAfter": 157233152,
+        "scans": 24,
+        "rows": 328656,
+        "bodies": 494,
+        "closed": 24
+      }
+    },
+    "cleanBefore": {
+      "path": "mirror68-before-final-regressions.log",
+      "tests": 3,
+      "pass": 0,
+      "fail": 3,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "scale": {
+        "synthetic": true,
+        "documents": 684,
+        "sections": 13694,
+        "characters": 39438987,
+        "requested": 24,
+        "elapsedMs": 3241.6403950000004,
+        "rssBefore": 130822144,
+        "rssAfter": 158703616,
+        "scans": 24,
+        "rows": 328656,
+        "bodies": 494,
+        "closed": 24
+      }
+    },
+    "initialAfter": {
+      "path": "mirror68-selected-after.log",
+      "tests": 3,
+      "pass": 2,
+      "fail": 1,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "scale": {
+        "synthetic": true,
+        "documents": 684,
+        "sections": 13694,
+        "characters": 39438987,
+        "requested": 24,
+        "elapsedMs": 204.81586600000037,
+        "rssBefore": 129781760,
+        "rssAfter": 134717440,
+        "scans": 1,
+        "rows": 13694,
+        "bodies": 494,
+        "closed": 1
+      }
+    },
+    "focused": {
+      "path": "mirror68-focused-tests.log",
+      "tests": 31,
+      "pass": 31,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "scale": {
+        "synthetic": true,
+        "documents": 684,
+        "sections": 13694,
+        "characters": 39438987,
+        "requested": 24,
+        "elapsedMs": 200.57283999999981,
+        "rssBefore": 129695744,
+        "rssAfter": 134631424,
+        "scans": 1,
+        "rows": 13694,
+        "bodies": 494,
+        "closed": 1
+      }
+    },
+    "relevant": {
+      "path": "mirror68-relevant-tests.log",
+      "tests": 93,
+      "pass": 93,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "scale": {
+        "synthetic": true,
+        "documents": 684,
+        "sections": 13694,
+        "characters": 39438987,
+        "requested": 24,
+        "elapsedMs": 279.7240469999997,
+        "rssBefore": 129511424,
+        "rssAfter": 134914048,
+        "scans": 1,
+        "rows": 13694,
+        "bodies": 494,
+        "closed": 1
+      }
+    }
+  },
+  "checks": {
+    "snapshotDiffWhitespace": "passed",
+    "focusedIncludedInRelevant": true,
+    "npmTestIncludesDedicatedSuite": "tests/cloud-*.test.mjs"
+  },
+  "retainedFailures": [
+    "Initial and corrected initial logs retain the budget fixture Invalid text failure (first 700000 and then 60000 characters exceeded the 45000 upload limit); final fixture uses 40000-character chunks.",
+    "Clean before replay uses exact before68 module bodies with only relative import URLs rewritten into a temporary evidence directory; runs the three final baseline-compatible regressions. All three fail on repeated scan assertions.",
+    "Baseline byte equivalence assertions pass before scan-count assertions fail."
+  ],
+  "behavior": [
+    "One lazy legacy metadata scan per archive-files request, retaining metadata only for requested IDs (maximum 32 paths).",
+    "Selected bodies are fetched lazily inside the caller read transaction, with no body or metadata cache across requests.",
+    "Opaque request selection is owner/database/ID bound and invalidated on callback exit, including suspended iterators.",
+    "Exact legacyVisibleSql, owner predicate, source-key ID derivation and ordering preserved.",
+    "Existing section consumers use their original behavior unless a private selection is supplied.",
+    "Unknown/deferred paths, budgets, early 64MB document limit and final coordinator revision/expiry fences remain unchanged."
+  ],
+  "coverage": [
+    "Synthetic 684 documents /13694 sections /39438987 characters with 24 selected files and exact bytes/digests.",
+    "Interleaved legacy keys, numeric positions, repeated offsets, response budget and unknown deferred paths.",
+    "Foreign owners/databases, forged/expired/suspended handles, fresh per-request exclusions and source-key delimiter semantics.",
+    "One WAL read snapshot across concurrent writer changes, cursor cleanup on success/partial read/body failure.",
+    "Existing source mirror, expiry/revocation/owner/generation and postworker authority regression suites."
+  ],
+  "caveats": [
+    "Synthetic timing is local, not a production measurement.",
+    "Requests including INDEX.md retain existing full manifest projection behavior.",
+    "No schema, client schema, native, shared-context, classifier, permissions or production changes."
+  ],
+  "noLiveOperations": true,
+  "noCommitOrDeployment": true
+}

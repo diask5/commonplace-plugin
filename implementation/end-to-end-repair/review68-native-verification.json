@@ -1,0 +1,38 @@
+{
+  "startedAt": "2026-11-01T03:18:12.847473+00:00",
+  "completedAt": "2026-11-01T03:18:30.155166+00:00",
+  "baseline": "replay67-verified",
+  "command": [
+    "node",
+    "--test",
+    "tests/context-mirror.test.mjs"
+  ],
+  "exitCode": 0,
+  "totals": {
+    "tests": 55,
+    "pass": 55,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "expectedSha256": {
+    "apps/commonplace/server/context-mirror.mjs": "d7e9f3ba9b9637d50653889fa7d10b2c564595c84585a826cc92f40d0344d32f",
+    "tests/context-mirror.test.mjs": "74bef541b8ff8da4302c99dc283983cb113c05e51f04440f343e11f14c7d8d99"
+  },
+  "beforeSha256": {
+    "apps/commonplace/server/context-mirror.mjs": "d7e9f3ba9b9637d50653889fa7d10b2c564595c84585a826cc92f40d0344d32f",
+    "tests/context-mirror.test.mjs": "74bef541b8ff8da4302c99dc283983cb113c05e51f04440f343e11f14c7d8d99"
+  },
+  "afterSha256": {
+    "apps/commonplace/server/context-mirror.mjs": "d7e9f3ba9b9637d50653889fa7d10b2c564595c84585a826cc92f40d0344d32f",
+    "tests/context-mirror.test.mjs": "74bef541b8ff8da4302c99dc283983cb113c05e51f04440f343e11f14c7d8d99"
+  },
+  "changedDuringRun": [],
+  "scope": {
+    "sourceEdits": false,
+    "productionCalls": false,
+    "meetProxyCalls": false,
+    "fixtures": "Disposable synthetic fixtures only",
+    "rawContentStored": false
+  }
+}
