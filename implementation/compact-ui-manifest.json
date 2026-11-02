@@ -1,0 +1,126 @@
+{
+  "name": "AgentMake-inspired compact UI; server-only patch72",
+  "base": "5479e529c85dda95b4ab6107fe3c7db7af569d13",
+  "applyAfter": [
+    "mcp-adoption-0.4.19-rc.3.patch",
+    "agent-launch-and-server-check.patch",
+    "spec-alignment.patch",
+    "product-flow-design.patch",
+    "production-readiness.patch",
+    "context-product-ui.patch",
+    "automatic-context-ingestion.patch",
+    "prompt-based-sharing.patch",
+    "sharing-rules-design.patch",
+    "sharing-desktop-layout.patch",
+    "sharing-interactions.patch",
+    "shared-spaces.patch",
+    "message-first-spaces.patch",
+    "live-context-setup.patch",
+    "seamless-plugin-setup.patch",
+    "copy-setup-prompt.patch",
+    "context-mvp-completion.patch",
+    "sharing-walkthrough.patch",
+    "zero-to-knowledge.patch",
+    "archive-read-performance.patch",
+    "native-discovery.patch",
+    "archive-revision-fence.patch",
+    "context-completion.patch",
+    "p0-native-readiness.patch",
+    "seamless-context.patch",
+    "deployment-startup-readiness.patch",
+    "context-timeout-recovery.patch",
+    "server-io-recovery.patch",
+    "public-assets-delivery.patch",
+    "context-read-performance.patch",
+    "registration-recovery.patch",
+    "live-index-reuse.patch",
+    "demand-archives.patch",
+    "current-read.patch",
+    "read-page-guidance.patch",
+    "transport-diagnostics.patch",
+    "cloud-closeout-runtime.patch",
+    "scope-preserving-space-routing.patch",
+    "remote-retrieval-guidance.patch",
+    "remote-archive-errors.patch",
+    "p0-ready-candidate.patch",
+    "deployment-source-modes.patch",
+    "visible-transcript-envelopes.patch",
+    "native-message-excerpts.patch",
+    "p0-excerpts-candidate.patch",
+    "private-native-titles.patch",
+    "space-request-diagnostics.patch",
+    "bounded-classification.patch",
+    "question-discovery.patch",
+    "sharing-stress.patch",
+    "cross-host-context-sync.patch",
+    "bounded-sync-catchup.patch",
+    "classifier-reliability.patch",
+    "imported-context-excerpts.patch",
+    "invite-cta.patch",
+    "setup-preflight-recovery.patch",
+    "current-space-invite.patch",
+    "multiple-accounts.patch",
+    "faster-chat-sync.patch",
+    "personal-space-events.patch",
+    "continuous-chat-sync.patch",
+    "oob-activation.patch",
+    "upload-fairness.patch",
+    "staged-collection.patch",
+    "work-sync-recovery.patch",
+    "live-context-recovery.patch",
+    "background-throughput.patch",
+    "resumable-context-pages.patch",
+    "receiver-readiness-reporting.patch",
+    "context-status-performance.patch",
+    "archive-visibility-performance.patch"
+  ],
+  "patch": "compact-ui.patch",
+  "sha256": "fc97530fac738bfdcd3121b2173902da613a193bf566b6526ace2346605a0da9",
+  "state": "Packaged and browser preview; not deployed. Native 0.4.44/runtime77 unchanged.",
+  "reference": {
+    "repo": "https://github.com/diask5/agentMake",
+    "commit": "2a900202e799cc60658f848d418696168a6f9eea"
+  },
+  "files": [
+    {
+      "path": "apps/commonplace-account/server/context-assets/agent-setup.mjs",
+      "beforeSha256": "e536f1faf1b90cc81f89d6f0661426a795edf351d955d1fdc2bd4ca46a4e112a",
+      "sha256": "4e7330654303a3c1770ad66142442bbdbda2477c86035e08018fcf80268147d9"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-style.mjs",
+      "beforeSha256": "b93aa766cf6727127ec9868446024908414980553e7fb140b1991b7a3fb33655",
+      "sha256": "1cb308e84dd30d94b8622c3158c26bf84a9407ac1bb23fc7d978e916215a607a"
+    },
+    {
+      "path": "apps/commonplace-account/server/context-product-ui.mjs",
+      "beforeSha256": "c36ec266f757b656c1a263209447c6f843171d52da0389326f32ab1c0c7680b5",
+      "sha256": "d177c81cf51deef1d76575f4de695703c1a02b38ac0139b3c628b1ffec0e6185"
+    },
+    {
+      "path": "apps/commonplace-account/server/product-flow-ui.mjs",
+      "beforeSha256": "fc0f240cf4d2acb8bfd76f98f3696c2ca14c8945d97c2d4013a8c56eb64c2a06",
+      "sha256": "f820ed0fb53cb9d8b4fdfc79f361f3c6b9b93f4d239ce25d1067410534f216d9"
+    },
+    {
+      "path": "apps/commonplace-account/server/ui-system.mjs",
+      "beforeSha256": "7aeb93f8a891735f9c4d4199e2aea3a4500a9937942fb225565ef9f0c11b862c",
+      "sha256": "67362780ba35bfc6768b898723d836205a3f3520006034577a2b4c6dd63d4f03"
+    },
+    {
+      "path": "tests/context-setup-browser.test.mjs",
+      "beforeSha256": "ce4a0a1f3eb66d0f6c7ad6f813395ece82067a01cc72637c9d6ffd59b1553dbd",
+      "sha256": "b039f2470d7af31c14ab0effba1101df6a5156227e8e4f78e37958a9a9cc139e"
+    },
+    {
+      "path": "tests/context-spaces-browser.test.mjs",
+      "beforeSha256": "a91f01b992e6a4945f844eb7d0cf118fe406a92af6f39c7b2c3a648859e166a6",
+      "sha256": "e6447a284a384e4fcfaef78bdf5670f8a8d2084ba93574d1dac731efe69eb30a"
+    },
+    {
+      "path": "tests/ui-browser.test.mjs",
+      "beforeSha256": "10a70aff9175f1e3635817429e07d8be4394b76f544ea268921b1409b42e94e7",
+      "sha256": "bf2792729610c3d9d0b5a37f1d10d887b421309aa76d161f8df4731d0f0dff40"
+    }
+  ]
+}

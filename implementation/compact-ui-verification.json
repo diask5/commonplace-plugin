@@ -1,0 +1,143 @@
+{
+  "date": "2026-11-02",
+  "state": "packaged-and-previewed-not-deployed",
+  "patch": 72,
+  "reference": {
+    "repo": "https://github.com/diask5/agentMake",
+    "commit": "2a900202e799cc60658f848d418696168a6f9eea",
+    "checkoutModified": false
+  },
+  "native": "0.4.44/runtime77 unchanged",
+  "targetServer": "20261102-compact-ui",
+  "lastVerifiedProductionServer": "20261101-context-throughput",
+  "preview": {
+    "url": "https://kyle-cloud-w3.conductor.show/preview/sample",
+    "port": 43319,
+    "scope": "Disposable sample account using actual UI and HTTP handlers; Conductor-authenticated preview, not production."
+  },
+  "implementation": {
+    "changedSourceFiles": 8,
+    "runtimeFiles": 166,
+    "unchangedMigrations": 47,
+    "changedRuntimeFilesSince71": [
+      "dist/standalone/account-runtime/context-assets/agent-setup.mjs",
+      "dist/standalone/account-runtime/context-product-style.mjs",
+      "dist/standalone/account-runtime/context-product-ui.mjs",
+      "dist/standalone/account-runtime/product-flow-ui.mjs",
+      "dist/standalone/account-runtime/ui-system.mjs",
+      "dist/standalone/account-runtime/context-assets/ui.css"
+    ],
+    "behavior": "Presentation plus secondary setup prompt correction to already-published 0.4.44. Authentication, sharing rules, scopes, expiry, collection and revocation unchanged."
+  },
+  "tests": {
+    "uiBrowser": {
+      "passed": 110,
+      "failed": 0,
+      "skipped": 0,
+      "log": "implementation/compact-ui/logs/ui-final.log",
+      "widths": [
+        320,
+        390,
+        768,
+        1024,
+        1440,
+        1920
+      ]
+    },
+    "runtimeAssets": {
+      "passed": 5,
+      "failed": 0
+    },
+    "extractedHttpOAuthMcp": {
+      "passed": true,
+      "checks": 12,
+      "migrations": 47,
+      "dependencies": "Symlink to unchanged source installation; not independent dependency packaging. This qualification overrides the generic smoke script scope string.",
+      "googleOrNativeHostExercised": false
+    },
+    "replay": {
+      "patches": 72,
+      "changedFiles": 268,
+      "mismatches": [],
+      "matched": true
+    },
+    "earlierFailures": {
+      "retained": true,
+      "initialBrowser": {
+        "tests": 104,
+        "passed": 95,
+        "failedIncludingParents": 9
+      },
+      "causesCorrected": [
+        "Setup close/completion controls below existing 44px target at five widths",
+        "Reduced-motion selectors referred to removed decorative SVGs",
+        "Legacy font assertion required removed Manrope font",
+        "Secondary setup prompt hardcoded older 0.4.31 release"
+      ],
+      "correctedFocusedRuns": [
+        {
+          "passed": 28,
+          "failed": 0
+        },
+        {
+          "passed": 23,
+          "failed": 0
+        }
+      ]
+    }
+  },
+  "runtimeBundleSha256": "ee9935249b4055f76c2fe8d4ba0fe8d3b300f901c7fbd6b398fa944be6d9061a",
+  "evidenceSha256": {
+    "implementation/compact-ui.patch": "fc97530fac738bfdcd3121b2173902da613a193bf566b6526ace2346605a0da9",
+    "implementation/compact-ui-manifest.json": "62ee29b9888c34a1ad67e1d3714fbd08f3efe65451c7310efa562962fc686251",
+    "docs/COMPACT-UI.md": "db2602037ab675994bc0640fe22f3a225335f08b40a7a99fdd6b0d4fd2588940",
+    "implementation/compact-ui/bundle-check.json": "14dc5bea3f29216634131b696719cc6ffa22e3f06458ef6a4cee1d93752b9ea1",
+    "implementation/compact-ui/logs/assets-tests.log": "fc009d8b77c61e56804b9c0008aa8fc16a881b36cb78a2f95c2a829f6060c413",
+    "implementation/compact-ui/logs/browser-tests.log": "701da8145fd2aadcaf449570d18141876e5f1a1a930ee52381ea6153607396e7",
+    "implementation/compact-ui/logs/extracted-smoke.log": "50830b3962eda7b20e133b11f3ec350ce4fdf4a6738e6b9b57764563a408e799",
+    "implementation/compact-ui/logs/secondary-pages-tests.log": "9c6eaf89dd83dd2f1b940eae0eeeceb5b90a7e8ac562158bb4f01d6ae9d63a85",
+    "implementation/compact-ui/logs/setup-tests-final.log": "3e3aa2716fad5b8a29f54d427c9e3792552f238ab5f6cd64469d8dd1f91645a9",
+    "implementation/compact-ui/logs/spaces-legacy-tests-corrected.log": "e20924183a162bad76e08d1066b91fc9bc7066d73d72fc0a2e7f122446f7feae",
+    "implementation/compact-ui/logs/ui-final.log": "2b9e0f75097d76731bb54a95a6c6a0d5b91a928224ad18bd6e0251d01c8fead3",
+    "implementation/compact-ui/replay72.json": "ede4cbf31ee2f79f598989cf550dcc838e0ace882888f348222cd0b733705ff8",
+    "implementation/compact-ui/runtime-update-manifest.json": "13927d1976b48b5c9c7a7f70af4c0ac8e74adefe8c08586122b165f1234a1805",
+    "implementation/compact-ui/screenshots/before-rules.png": "e6b696591c99b7559d0cb3bb71dc9a568f1ff38f16435a5c23008c4a33979888",
+    "implementation/compact-ui/screenshots/before-setup.png": "4968f85fa1a185c779ca64d13bbbc095b4616e64a4113f39d2a928ecb2a67ad4",
+    "implementation/compact-ui/screenshots/context.png": "9ef3a34a41962c6cbd609d7444bb2776aad3af61c3844de4698e8c52b4c408af",
+    "implementation/compact-ui/screenshots/invite.png": "d71d87157ded87740a31a760584750e0813e8efd85121524d650ca15deeeb949",
+    "implementation/compact-ui/screenshots/mobile-messages.png": "daa644226ad3596d97e162958be69f0d288f7b873cd584c844a06182d6e55662",
+    "implementation/compact-ui/screenshots/mobile-setup.png": "e3cbc0758ada8edbd49e2cd065c73d9cfc0436634652a16fe8b9e376da70c272",
+    "implementation/compact-ui/screenshots/mobile-spaces.png": "428aaa7c5e71f01ba8958f40b13ef434729501581485dae9f4a365df66b3f6e7",
+    "implementation/compact-ui/screenshots/profile.png": "71175104984434d9f56c5297b89e100d8f1d9cb5b53f6c0ae65693833715bbd7",
+    "implementation/compact-ui/screenshots/rules.png": "5315a398c98543a09f22870f9c1968c4e6e801312a83f80f45631d29cf40c446",
+    "implementation/compact-ui/screenshots/setup.png": "1d60a1319b1d8508b046252e8d29881e4d770a3f4d39676541273bbe17aa5bb0",
+    "implementation/compact-ui/screenshots/spaces.png": "75734deb0e2f3039454ab2ae5657f422bc0a89adc311e8fc0a1b0537b15efdaa"
+  },
+  "deployment": {
+    "attempted": false,
+    "productionCallsThisTask": false,
+    "macCallsThisTask": false,
+    "priorBlocker": {
+      "tool": "mcp__conductor__RunLocalCommand",
+      "reason": "No authorized Mac is bound to this chat. Send a message from the Mac you want to use.",
+      "retriedOrBypassed": false
+    }
+  },
+  "limits": [
+    "Browser fixtures and extracted local HTTP checks are not live Google or native-host acceptance.",
+    "Patch 71 is included as an undeployed dependency.",
+    "No capacity upgrade or live latency claim.",
+    "Existing all-P0 readiness limits remain open."
+  ],
+  "checks": {
+    "evidenceHashesVerified": 24,
+    "sourceHashesVerified": 8,
+    "exactReplayRecheckedFiles": 268,
+    "localDocumentationLinksVerified": 13,
+    "referenceCheckoutClean": true,
+    "sourceWhitespaceCheck": "pass",
+    "documentationWhitespaceCheck": "pass; portable patch context whitespace and original test log whitespace preserved",
+    "previewLocalHttp": 303,
+    "previewEdgeUnauthenticatedHttp": 401
+  }
+}

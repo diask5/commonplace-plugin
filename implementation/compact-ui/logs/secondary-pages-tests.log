@@ -1,0 +1,30 @@
+✔ agents home, one-click existing-agent accept, live audit and either-side sever work on mobile (2838.769419ms)
+✔ an invitation code opens safely before sign-in and returns to one-action acceptance (1236.908026ms)
+✔ spec design walkthrough is accessible at desktop, tablet and phone sizes, with one-click acceptance (19650.757824ms)
+✔ secondary navigation stays one disclosure away and custom invite boundaries persist (1692.847508ms)
+✖ Claude and Codex attachment stays clear and accessible at phone, tablet and desktop sizes (889.049431ms)
+✔ expired invites, read errors, closed history and refresh failures have accessible recovery (14421.127131ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 37200.845145
+
+✖ failing tests:
+
+test at tests/product-flow-browser.test.mjs:48:1
+✖ Claude and Codex attachment stays clear and accessible at phone, tablet and desktop sizes (889.049431ms)
+  AssertionError [ERR_ASSERTION]: Setup must reference the current packaged version
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/product-flow-browser.test.mjs:57:79)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

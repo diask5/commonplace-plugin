@@ -1,0 +1,245 @@
+▶ context product: real retrieval, privacy-preserving selection, apps, responsive pages and recovery
+  ✔ home is Spaces with messages first and Context reads real archive text (469.93214ms)
+  ✔ search matches body text and filters by source (473.918162ms)
+  ✔ Add context opens one app setup sheet with no sync settings or intermediate screen (132.027076ms)
+  ✔ newly ingested context appears in the open library without a manual reload (4343.216862ms)
+  ✔ a live archive refresh never combines old and new pages of a document (478.317512ms)
+  ✔ sharing is one sheet with exact selection, default expiry and an honest invite preview (619.066922ms)
+  ✔ account profile shows the signed-in person, private context and account settings (143.929578ms)
+  ✔ conversation board reads actual pair and mailbox histories and updates while open (10227.645701ms)
+  ✔ desktop channel navigation preserves reading and switches the visible conversation (338.293969ms)
+  ✔ sharing starts with the selected connection and preserves exact document choices through search and review (1084.199146ms)
+  ✔ picker recovers failure and ignores a delayed search after changing its recipient (1027.472539ms)
+  ✔ responsive context/shared/settings and setup at 320 (8884.929496ms)
+  ✔ responsive context/shared/settings and setup at 390 (8230.209959ms)
+  ✔ responsive context/shared/settings and setup at 768 (8605.575545ms)
+  ✔ responsive context/shared/settings and setup at 1440 (9210.117207ms)
+  ✔ older message pages fill a live burst gap in order and read errors can retry (833.977093ms)
+  ✔ phone reader returns to the list (423.435529ms)
+  ✔ failed reads can retry without claiming completion (205.520476ms)
+  ✔ empty account and sign-out clear prior context and delayed conversation reads (883.070993ms)
+  ✔ sample entry opens the populated account after sign-out (416.658377ms)
+  ✔ reset sample recovers a previously persisted empty preview account (477.365707ms)
+  ✔ signed-in conversations are usable while context is still loading (174.038019ms)
+  ✔ initial service failure has working retry (281.009622ms)
+✔ context product: real retrieval, privacy-preserving selection, apps, responsive pages and recovery (58635.263795ms)
+✔ current context product journey: rules, invite, two-sided exchange, expiry and exit (30682.630218ms)
+▶ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline
+  ✔ one-tap app chooser is accessible from phone to desktop (3464.384183ms)
+  ✔ open app is primary, auto collection is disclosed, and unrelated connected chats/uploads never complete setup (1665.144523ms)
+  ✔ slow host setup stays explicit and does not invent installation progress (217.157658ms)
+  ✔ all app surfaces carry server/account and recover the same handoff when reopened (8532.417191ms)
+  ✔ registration confirms plugin and MCP together; no manual receiver picker and no false content success (2508.119053ms)
+  ✔ empty and interrupted collection are honest; incoming context becomes ready without a refresh click (7502.039677ms)
+  ✔ a delayed confirmation from another app cannot complete the selected setup (863.011537ms)
+  ✖ live setup accessible at 320px (705.063787ms)
+  ✖ live setup accessible at 390px (794.465885ms)
+  ✖ live setup accessible at 768px (646.812551ms)
+  ✖ live setup accessible at 1440px (635.546094ms)
+  ✖ live setup accessible at 1920px (658.47094ms)
+  ✔ polling failure visibly reconnects and recovers, offline collectors never claim all sources are current (3545.75274ms)
+  ✔ saved context never masks a paused or interrupted collector (472.810643ms)
+  ✔ expired handoff renews without a second Google ceremony (695.062391ms)
+  ✔ changed browser account clears the old setup token and progress (378.014421ms)
+✖ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline (34042.906666ms)
+✔ a newly signed-in account goes straight to desktop setup with collection already included (887.661057ms)
+✔ account changes before app launch automatically invalidate every prepared app link (3205.743066ms)
+✔ preparing a setup has visible progress and a failed preparation can retry (768.567632ms)
+▶ fresh-chat activation keeps the unclaimed handoff and never fabricates installation or collection
+  ✔ each app offers a short activation request with the same account, space and token (546.173115ms)
+  ✔ copy, app launch and reopening preserve the request without reporting success (2305.999555ms)
+  ✔ clipboard refusal leaves the activation request selected for manual copying (56.150568ms)
+  ✔ only the selected real claim binds the chat; another chat cannot reuse the handoff (85.057308ms)
+  ✔ a disconnected claimed request cannot offer another activation chat (95.222122ms)
+  ✔ expired requests stop activation; renewal retains browser sign-in with a fresh install request (332.866743ms)
+  ✔ account changes clear the activation prompt and prepared app links (2356.468039ms)
+✔ fresh-chat activation keeps the unclaimed handoff and never fabricates installation or collection (6438.739809ms)
+▶ Spaces: real groups, messages, explicit file sharing, per-owner rules and responsive controls
+  ✔ one space combines sharing and messages under a two-link navigation (54.230862ms)
+  ✔ rules persist per owner and per space with sharing explicitly off (494.854287ms)
+  ✔ create a project with multiple connected people using real group membership (428.187882ms)
+  ✔ message retries reuse their nonce after a lost response and never duplicate a post (291.597307ms)
+  ✔ review and explicitly share a file; retries, member reads and foreign-space refusal work (660.714596ms)
+  ✔ outsiders cannot list, read or upload files and removal stops member access (22.19374ms)
+  ✔ file endpoints require authentication and same-origin requests (3.466517ms)
+  ✔ MCP setup names the exact shared space without granting private archive access (162.270746ms)
+  ✔ shared context, messages and access work at 320px without overflow or accessibility violations (3226.765709ms)
+  ✔ shared context, messages and access work at 390px without overflow or accessibility violations (3147.042403ms)
+  ✔ shared context, messages and access work at 768px without overflow or accessibility violations (2949.192872ms)
+  ✔ shared context, messages and access work at 1024px without overflow or accessibility violations (3460.699694ms)
+  ✔ shared context, messages and access work at 1440px without overflow or accessibility violations (3522.004887ms)
+  ✔ shared context, messages and access work at 1920px without overflow or accessibility violations (3358.337978ms)
+  ✔ create and file-review dialogs remain usable at phone and desktop widths (4570.698789ms)
+  ✖ reduced motion is respected and owner reset clears private rule fields (15052.899355ms)
+✖ Spaces: real groups, messages, explicit file sharing, per-owner rules and responsive controls (42191.247238ms)
+✔ existing setup offers compatible OAuth retrieval and private native source import without disturbing native setup (11210.293543ms)
+▶ seamless setup: copy is primary, host steps are explicit, progress is installation-specific and MCP is the default route
+  ✔ choosing an app launches directly; no extra settings or filesystem grant is requested (1707.914241ms)
+  ✔ after selection Copy setup prompt is primary above live progress with explicit host steps (2006.748605ms)
+  ✔ registration recedes the copy action; scanning shows actual file counts only from this installation (5577.926618ms)
+  ✔ partial collection reports received vs searchable and last updated; ready never claims more than indexed (4724.984196ms)
+  ✔ local folder is optional in copy and no setting or grant is added (11.511264ms)
+✔ seamless setup: copy is primary, host steps are explicit, progress is installation-specific and MCP is the default route (14818.612337ms)
+▶ space invite joins a new person after sign-in without granting their personal context
+  ✔ only owner issues links; stable retries, expiry and revocation preserve membership (3.394096ms)
+  ✔ public preview survives Google sign-in and opens exactly the invited group (1038.726603ms)
+  ✔ removed members cannot use an old reusable link to undo removal (1.926132ms)
+  ✔ owner can create, copy and revoke actual links from Members (275.472329ms)
+  ✔ invalid links are unavailable; temporary failures have a retry (207.907784ms)
+✔ space invite joins a new person after sign-in without granting their personal context (2138.918558ms)
+▶ top-bar Invite works from any page with explicit account and space scope
+  ✔ visible from My context; opening never creates an invitation or opts into sharing (154.038827ms)
+  ✔ lost responses retry the same new space and link without duplicates (834.743003ms)
+  ✔ existing-space invitation uses only the explicitly selected owner space (242.451873ms)
+  ✔ loading failure offers a retry without creating anything (261.410331ms)
+  ✔ desktop and phone controls have no overflow or accessibility violations (2196.601708ms)
+  ✔ expired browser sign-in clears invitation state and hides the CTA (207.563911ms)
+✔ top-bar Invite works from any page with explicit account and space scope (4613.640764ms)
+▶ Invite keeps the visible space selected and explains member-only access without creating another space
+  ✔ owner space is preselected from its header and its invitation targets exactly that space (590.199787ms)
+  ✔ navigating to a member space replaces the earlier target and shows the actual restriction (2302.772399ms)
+  ✔ a new space remains an explicit choice and unrelated pages do not reuse a hidden selected space (410.085902ms)
+✔ Invite keeps the visible space selected and explains member-only access without creating another space (3852.79516ms)
+✔ mission overview pages real work, excludes messages and private peer tasks, and removes revoked shared work (1864.090589ms)
+✖ rendered work/context flows preserve account, task and import contracts on desktop and mobile (746.256021ms)
+✔ all app views share navigation, retain drafts and import selection, and support history and deep links (2510.135077ms)
+✔ library clears old account data and ignores a delayed reader after session expiry (1061.277079ms)
+✔ background status cannot undo a sync choice while saving or after a delayed response (1036.236246ms)
+✔ Account menu signs out, clears old work, and signs into another account on desktop and mobile (3363.041338ms)
+✔ shared UI routes deliver components under existing CSP and preserve unrelated routes (254.907416ms)
+✔ picker metadata disambiguates duplicate labels without changing stable identifiers or owner scope (126.364069ms)
+✔ Firebase helper shares the design system and links back to the configured app origin (0.55543ms)
+✔ legacy authorization and teammate consent retain scoped forms and escaped content (143.245415ms)
+ℹ tests 104
+ℹ suites 0
+ℹ pass 95
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 115160.389449
+
+✖ failing tests:
+
+test at tests/context-setup-browser.test.mjs:57:53
+✖ live setup accessible at 320px (705.063787ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok((await page.locator('#'+id).boundingBox()).height>=44)
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-browser.test.mjs:58:495)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-browser.test.mjs:57:45)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/context-setup-browser.test.mjs:57:53
+✖ live setup accessible at 390px (794.465885ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok((await page.locator('#'+id).boundingBox()).height>=44)
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-browser.test.mjs:58:495)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-browser.test.mjs:57:45)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/context-setup-browser.test.mjs:57:53
+✖ live setup accessible at 768px (646.812551ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok((await page.locator('#'+id).boundingBox()).height>=44)
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-browser.test.mjs:58:495)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-browser.test.mjs:57:45)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/context-setup-browser.test.mjs:57:53
+✖ live setup accessible at 1440px (635.546094ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok((await page.locator('#'+id).boundingBox()).height>=44)
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-browser.test.mjs:58:495)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-browser.test.mjs:57:45)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/context-setup-browser.test.mjs:57:53
+✖ live setup accessible at 1920px (658.47094ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok((await page.locator('#'+id).boundingBox()).height>=44)
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-browser.test.mjs:58:495)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-setup-browser.test.mjs:57:45)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests/context-spaces-browser.test.mjs:75:10
+✖ reduced motion is respected and owner reset clears private rule fields (15052.899355ms)
+  locator.evaluate: Timeout 15000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('.space-art-path')[22m
+  
+      at TestContext.<anonymous> (/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-spaces-browser.test.mjs:76:241)
+      at async TestContext.<anonymous> (/home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/context-spaces-browser.test.mjs:75:2) {
+    name: 'TimeoutError'
+  }
+
+test at tests/ui-browser.test.mjs:40:1
+✖ rendered work/context flows preserve account, task and import contracts on desktop and mobile (746.256021ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///home/vercel-sandbox/commonplace-plugin/.context/commonplace-source/tests/ui-browser.test.mjs:47:56)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

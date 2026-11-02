@@ -1,0 +1,32 @@
+▶ Spaces: real groups, messages, explicit file sharing, per-owner rules and responsive controls
+  ✔ one space combines sharing and messages under a two-link navigation (117.25972ms)
+  ✔ rules persist per owner and per space with sharing explicitly off (559.919797ms)
+  ✔ create a project with multiple connected people using real group membership (460.883909ms)
+  ✔ message retries reuse their nonce after a lost response and never duplicate a post (262.826408ms)
+  ✔ review and explicitly share a file; retries, member reads and foreign-space refusal work (692.113404ms)
+  ✔ outsiders cannot list, read or upload files and removal stops member access (32.886009ms)
+  ✔ file endpoints require authentication and same-origin requests (3.127951ms)
+  ✔ MCP setup names the exact shared space without granting private archive access (151.534791ms)
+  ✔ shared context, messages and access work at 320px without overflow or accessibility violations (3243.464817ms)
+  ✔ shared context, messages and access work at 390px without overflow or accessibility violations (3280.531981ms)
+  ✔ shared context, messages and access work at 768px without overflow or accessibility violations (3654.06118ms)
+  ✔ shared context, messages and access work at 1024px without overflow or accessibility violations (3527.368952ms)
+  ✔ shared context, messages and access work at 1440px without overflow or accessibility violations (3280.720162ms)
+  ✔ shared context, messages and access work at 1920px without overflow or accessibility violations (3410.859351ms)
+  ✔ create and file-review dialogs remain usable at phone and desktop widths (4022.16474ms)
+  ✔ reduced motion is respected and owner reset clears private rule fields (152.979529ms)
+✔ Spaces: real groups, messages, explicit file sharing, per-owner rules and responsive controls (27851.798752ms)
+✔ mission overview pages real work, excludes messages and private peer tasks, and removes revoked shared work (2238.670307ms)
+✔ rendered work/context flows preserve account, task and import contracts on desktop and mobile (7622.668525ms)
+✔ all app views share navigation, retain drafts and import selection, and support history and deep links (2515.201851ms)
+✔ library clears old account data and ignores a delayed reader after session expiry (1077.267522ms)
+✔ background status cannot undo a sync choice while saving or after a delayed response (972.423907ms)
+✔ Account menu signs out, clears old work, and signs into another account on desktop and mobile (3286.651066ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 28370.456857

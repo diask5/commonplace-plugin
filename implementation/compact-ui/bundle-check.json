@@ -1,0 +1,13 @@
+{
+  "filesVerified": 166,
+  "changedSincePatch71": [
+    "dist/standalone/account-runtime/context-assets/agent-setup.mjs",
+    "dist/standalone/account-runtime/context-product-style.mjs",
+    "dist/standalone/account-runtime/context-product-ui.mjs",
+    "dist/standalone/account-runtime/product-flow-ui.mjs",
+    "dist/standalone/account-runtime/ui-system.mjs",
+    "dist/standalone/account-runtime/context-assets/ui.css"
+  ],
+  "unchangedMigrations": 47,
+  "dependencies": "Symlink to unchanged source installation; not independent dependency packaging"
+}

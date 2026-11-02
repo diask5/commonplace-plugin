@@ -1,0 +1,38 @@
+▶ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline
+  ✔ one-tap app chooser is accessible from phone to desktop (3482.747958ms)
+  ✔ open app is primary, auto collection is disclosed, and unrelated connected chats/uploads never complete setup (1942.986482ms)
+  ✔ slow host setup stays explicit and does not invent installation progress (248.842364ms)
+  ✔ all app surfaces carry server/account and recover the same handoff when reopened (8529.121684ms)
+  ✔ registration confirms plugin and MCP together; no manual receiver picker and no false content success (2554.351842ms)
+  ✔ empty and interrupted collection are honest; incoming context becomes ready without a refresh click (7478.981685ms)
+  ✔ a delayed confirmation from another app cannot complete the selected setup (748.374187ms)
+  ✔ live setup accessible at 320px (635.449958ms)
+  ✔ live setup accessible at 390px (604.708173ms)
+  ✔ live setup accessible at 768px (746.311455ms)
+  ✔ live setup accessible at 1440px (701.698898ms)
+  ✔ live setup accessible at 1920px (665.896728ms)
+  ✔ polling failure visibly reconnects and recovers, offline collectors never claim all sources are current (3724.966538ms)
+  ✔ saved context never masks a paused or interrupted collector (779.959807ms)
+  ✔ expired handoff renews without a second Google ceremony (726.764018ms)
+  ✔ changed browser account clears the old setup token and progress (299.323175ms)
+✔ live desktop setup: automatic private collection, exact handoff receipts, recovery and responsive timeline (34668.568526ms)
+✔ a newly signed-in account goes straight to desktop setup with collection already included (973.9406ms)
+✔ account changes before app launch automatically invalidate every prepared app link (3299.579133ms)
+✔ preparing a setup has visible progress and a failed preparation can retry (817.13197ms)
+▶ fresh-chat activation keeps the unclaimed handoff and never fabricates installation or collection
+  ✔ each app offers a short activation request with the same account, space and token (502.46381ms)
+  ✔ copy, app launch and reopening preserve the request without reporting success (2255.856792ms)
+  ✔ clipboard refusal leaves the activation request selected for manual copying (73.685308ms)
+  ✔ only the selected real claim binds the chat; another chat cannot reuse the handoff (82.560558ms)
+  ✔ a disconnected claimed request cannot offer another activation chat (87.92939ms)
+  ✔ expired requests stop activation; renewal retains browser sign-in with a fresh install request (336.152522ms)
+  ✔ account changes clear the activation prompt and prepared app links (2421.69948ms)
+✔ fresh-chat activation keeps the unclaimed handoff and never fabricates installation or collection (6828.586473ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 47090.755138

@@ -1,5 +1,7 @@
 # MCP adoption source delivery
 
+Current implementation candidate: [compact UI, patch 72](../docs/COMPACT-UI.md), packaged and previewed but not deployed. Apply `compact-ui-manifest.json` in order to reproduce all 268 changed files. Native 0.4.44/runtime77 is unchanged; last verified production is server patch 70. The release records below are historical; see [current sync closeout](../docs/SYNC-CLOSEOUT.md) for live evidence.
+
 **Current published, installed and active native release: 0.4.28 / runtime61.**
 Server `20261026-current-read` is live. Apply the 34 patches listed in
 `current-read-manifest.json` order (`applyAfter`, then `patch`) to reproduce its
@@ -12,7 +14,7 @@ full ordered chain. Installation and production activation remain distinct from
 packaging. The sections below preserve historical milestones and their original
 release states; they do not override this current release record.
 
-The latest web UI update is [the guided sharing walkthrough](../docs/SHARING-WALKTHROUGH.md).
+An earlier web UI update is [the guided sharing walkthrough](../docs/SHARING-WALKTHROUGH.md).
 Its [verification record](sharing-walkthrough-verification.json) distinguishes
 browser fixtures from live deployment checks.
 

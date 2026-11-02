@@ -1,0 +1,329 @@
+{
+  "bundle": "runtime-update.json",
+  "sha256": "ee9935249b4055f76c2fe8d4ba0fe8d3b300f901c7fbd6b398fa944be6d9061a",
+  "files": {
+    "dist/standalone/account-runtime/agent-auth.mjs": "8668ac7219be7a71cac9c578850c59fc40dc0e71eddd5269c2ed07633de96f30",
+    "dist/standalone/account-runtime/agent-board.mjs": "62886519529d23d3b1e9a57618115a4efb3777e7d4853a48b3a598f0d9af88d5",
+    "dist/standalone/account-runtime/agent-connections-ui.mjs": "e1d785dfbd732b124c994b353a4646599b94fca4c782d3cd84fe3efd8c2c1ba8",
+    "dist/standalone/account-runtime/agent-connections.mjs": "1640d7439d8a04f347108944ab7583456b91b945274fdba849f9716b8e447c6e",
+    "dist/standalone/account-runtime/agent-history.mjs": "4bcd7c88436f7126add76ca092b7efc539fc0f05a52f7549388018b02e7bdc92",
+    "dist/standalone/account-runtime/agent-setup-ui.mjs": "14ccca13e2b94de9842c280842d1d240795b8a3692656d020d6d491ad995dd35",
+    "dist/standalone/account-runtime/agent-setup.mjs": "31a4c10967d82d0f194d479f05b2676209912af645c4e2dc346b854ffcb7654a",
+    "dist/standalone/account-runtime/archive-builder.mjs": "edeee0fb2a92098261e8d43de35b8a1fdcae162e514f203744cf23dd12975c04",
+    "dist/standalone/account-runtime/archive-index.mjs": "fccb352bc2d82ea41b260d5c4fe38355529fa0b79851e37f52806eba83a120c1",
+    "dist/standalone/account-runtime/archive-mirror.mjs": "0d4bccb0f358edc679eb083cd267ee55a455e1f9a8f81dbff12fcff8e3df143f",
+    "dist/standalone/account-runtime/archive-source.mjs": "f6c6450212822f4b4e312ed2e1014751a69a57004bc05e2c1a79e244046fc779",
+    "dist/standalone/account-runtime/archive-tools.mjs": "3d5c234c9b4fcb84ccc91ecf34085bbc5f757a81158278c3e09047be16e17ba0",
+    "dist/standalone/account-runtime/backup.mjs": "2ab3a6e85ffb2d5bab6c38ec09a0ff0d889a867a5ae50f689ea0aba1e1dae79e",
+    "dist/standalone/account-runtime/browser-auth.mjs": "5ae9a1e4d6fe79f7bf7c03836ae28276f89a7342d3b004beafba473a9997bea1",
+    "dist/standalone/account-runtime/browser-login.mjs": "dcea3e756e5de3719a737674da83d80cf8f440c2c6be51c7a1423055a06dd277",
+    "dist/standalone/account-runtime/chat-delivery.mjs": "54a8a794b40008958853386fd5218b0c69f79ef7ee109e0208956ed57922fae4",
+    "dist/standalone/account-runtime/chat-links.mjs": "6870f94dc853e6748607f8f52c0f4f9c62bdfa290797be11fc7961313db5a941",
+    "dist/standalone/account-runtime/chat-setup.mjs": "d64bd8397d1eccc3ee68125b1f9b18babed55c390bc71c380fa1514b1dbef95a",
+    "dist/standalone/account-runtime/chat-wait.mjs": "fbc8ae066079d3ab4b41338cfc37739e792be7d571ba6b91bffdb4a7a58d5a67",
+    "dist/standalone/account-runtime/cloud-archive.mjs": "487155b608b7bf0bce8bf8f573cdb9294a9035d8d3794501118b6e7feaee0d02",
+    "dist/standalone/account-runtime/cloud-http.mjs": "b613d364790404dd266bc812ca561df61f95dc902e29471e06bded9f03db2049",
+    "dist/standalone/account-runtime/cloud-network-tools.mjs": "976bb14758a078897b85e1c65d1206049f641d92d49a164918da136331a7e2ce",
+    "dist/standalone/account-runtime/cloud-network.mjs": "a5f7e5b458170c8976fa425b871a9986e6a6dec89e5e22a9e84a89b5fba8bac3",
+    "dist/standalone/account-runtime/cloud-work.mjs": "cf335017d19445b2fcd959d6d99952d90743e19342f4a1348d3e963489aeb4be",
+    "dist/standalone/account-runtime/cloud-worker.mjs": "b4c8b5807808961029192099bda7fbc65633d9a16b9e20b16087157383b0ed1b",
+    "dist/standalone/account-runtime/connection-browser.mjs": "b87b52a04eb23f5e979ef537e27a251fdffd3642640b100fb6150afa95e6b94c",
+    "dist/standalone/account-runtime/connection-entry.mjs": "9a5c5f2c822add0a0a4d9a4c3d812c7fb04eb3344d2cea4ba11821a659c73b64",
+    "dist/standalone/account-runtime/context-assets/activity.mjs": "abbcf74dc467c5722efe6b6a173a44df600f8ac47e9f7b2e6d6dd49a1f94fb11",
+    "dist/standalone/account-runtime/context-assets/agent-connections.mjs": "cb0d159a3a6689bcf043b14bb58efbbaa973a23587dc9153b20503b16844941c",
+    "dist/standalone/account-runtime/context-assets/agent-setup.mjs": "4e7330654303a3c1770ad66142442bbdbda2477c86035e08018fcf80268147d9",
+    "dist/standalone/account-runtime/context-assets/chatgpt-format.mjs": "e49538bd5f24f4885eec3e392f09484554c7cf2025c8537ba09bd9ce186ad6a0",
+    "dist/standalone/account-runtime/context-assets/context-conversations.mjs": "2b60fa3228755854c4effa48ea8430268c9ca429e4cfdb907744bde2f4fca078",
+    "dist/standalone/account-runtime/context-assets/context-coverage.mjs": "34a53385cb2634c4fb3d767aeaf1062dafc6e4bcd44cc84fdb701fd297c6e07b",
+    "dist/standalone/account-runtime/context-assets/context-native-setup.mjs": "ca3bc7bd45c1e6301e66bef072333aeb767040757d546e3be63628fea623bce1",
+    "dist/standalone/account-runtime/context-assets/context-product.mjs": "eed686c7d7ed69a2cf7869f27436632d8c05fec5ef2cf8a377cc3cd393ff715f",
+    "dist/standalone/account-runtime/context-assets/context-search.mjs": "5caf48ed67f7d17bda715994d92b744093a98465a96d61dae4f306cc6405f0d5",
+    "dist/standalone/account-runtime/context-assets/context-setup-request.mjs": "e7cf41c953595866fc4fd67c7427c926ea22658c0a4fbf7a3a06dc80b196aac3",
+    "dist/standalone/account-runtime/context-assets/context-space-files.mjs": "d1e0875d4dcc5ccf3f77aa94d9c903d06fe607e9f45626943e4e9d90a2dc10f5",
+    "dist/standalone/account-runtime/context-assets/context-space-invitations.mjs": "6c364f764670372fbc1993b889f7dca1b3786036db88c0374a2f563b8e0afb5b",
+    "dist/standalone/account-runtime/context-assets/context-space-rules.mjs": "3473b7ea42dda2ad8fbefce00ec9aea6b309bb13e8e9a546092394a098039ade",
+    "dist/standalone/account-runtime/context-assets/context-spaces.mjs": "c7f1ce39e23a882143315e324f790242668c55c5f9e03c1d314e0949f3341fbd",
+    "dist/standalone/account-runtime/context-assets/context.css": "99f116e0c7212ce79d3ac2f048b934a4ff1e412f4436ac65287500b8eec4490b",
+    "dist/standalone/account-runtime/context-assets/context.html": "c7d635309c7c55b1ec903d950bc4a976c5fa906e2be4e2bcea8fa4077a2ac2df",
+    "dist/standalone/account-runtime/context-assets/context.mjs": "3edef940424cb646fbdcb8080650b4e29345ce2d8f3bb471615cb9dff35070a0",
+    "dist/standalone/account-runtime/context-assets/export-file.mjs": "52c48be5d2fb31396daf0cbf98d23840f3a808ed083b921cca36d36edd8d54cb",
+    "dist/standalone/account-runtime/context-assets/fflate-LICENSE.txt": "805f6cb28bb8b6d3a0badd83c93bccd9671fa01a3b4b92b7042b0743325ac243",
+    "dist/standalone/account-runtime/context-assets/fflate.mjs": "8cc1f687e0159e977addb6b85e274dbd11e622cf151f4fcb7b85d49622ea43e7",
+    "dist/standalone/account-runtime/context-assets/groups.mjs": "6cb17305665bb57d758ba664e9413da73cdebafdee23fac5e03a09be1c089d7a",
+    "dist/standalone/account-runtime/context-assets/import-worker.mjs": "129818f04c4e74c5c87ec1cadf2ebf722eba507d97e1bc689b12588ca7008276",
+    "dist/standalone/account-runtime/context-assets/invitations.mjs": "8de6ca18154858f6b05a137cdc64570135a6cb311f759e65f8d13115f49ba602",
+    "dist/standalone/account-runtime/context-assets/manrope-LICENSE.txt": "d826ab6583b12c26807d8716a545bdbbb672df04f48608a364ba9efdbe501c30",
+    "dist/standalone/account-runtime/context-assets/manrope-latin.woff2": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972",
+    "dist/standalone/account-runtime/context-assets/mcp-resource-source-setup.mjs": "c1822b335c202b2fa98fa4546d92474771c2926552b86d4823529e2e4f76d52a",
+    "dist/standalone/account-runtime/context-assets/personal-assistant-setup.mjs": "3646b5c1294ab6327d1ca48d5d4aa76c3abacb2b952df7967bdaf62f08e0aea7",
+    "dist/standalone/account-runtime/context-assets/shared-chats.mjs": "a88f61432b9cf3ccfe54b513ea993938a616ecb6e2cff2932521ffcfb98a3054",
+    "dist/standalone/account-runtime/context-assets/social.mjs": "23af95ada977c9f0e9c2037bd2224489b31afc4cb5fb9afcb66caf54d6a6f862",
+    "dist/standalone/account-runtime/context-assets/ui.mjs": "128781007dc31a0d04a852c059d1093d83a74ddc897fe2e2b04475a14fefd76e",
+    "dist/standalone/account-runtime/context-assets/work-agent.mjs": "447b65c5f83495271ee55000ca46e2476fd184dee5f167db48c08e392cf5efc7",
+    "dist/standalone/account-runtime/context-http.mjs": "7433687dff05e4ab5962b5f959afc73c619fc70491c061239104e1d0615eebf0",
+    "dist/standalone/account-runtime/context-product-style.mjs": "1cb308e84dd30d94b8622c3158c26bf84a9407ac1bb23fc7d978e916215a607a",
+    "dist/standalone/account-runtime/context-product-ui.mjs": "d177c81cf51deef1d76575f4de695703c1a02b38ac0139b3c628b1ffec0e6185",
+    "dist/standalone/account-runtime/context-setup.mjs": "88e6857823e913e294ad21263ab9db5b0af104562bad1f40b2148bd254ab7ec4",
+    "dist/standalone/account-runtime/context-store.mjs": "c356ec0a995918b8ad3d433a829871cbdb640bc4d68a7d9a923bc1086f3c6024",
+    "dist/standalone/account-runtime/context-ui.mjs": "a6c216ea23ba09bf219ce6748f74abce53ed4bb5bb699d5a08962f9c023b51df",
+    "dist/standalone/account-runtime/decisions-scheduler.mjs": "fa14a1ca0464d93e615619b93d5f40f58e89781a67bfcf8ae960a34efd4ad78b",
+    "dist/standalone/account-runtime/delegations.mjs": "aa6701e0f2c34596e6e141653d90d8ee1d25151bd14739b8ecc1507e3efe457d",
+    "dist/standalone/account-runtime/disclosure.mjs": "7f9987af9da00a22b49513f5a36a5616b423e78c2dad625d6a6005d0a61b03a8",
+    "dist/standalone/account-runtime/groups-ui.mjs": "402497486bbc665db83234ee5de8571097dbb4e3601741b04920c72776d8dbf5",
+    "dist/standalone/account-runtime/groups.mjs": "6be2d8aba233d6d31371feb616ec847b71204d90f481cc2f37bcb17128c1cc79",
+    "dist/standalone/account-runtime/invitation-ui.mjs": "f987aceeae52a348a88569e6bca5c97b27360588fc4934809969c2d22a968462",
+    "dist/standalone/account-runtime/live-archive-index.mjs": "bdc483c1e08400fa448f43aea4e95fe53fb338712fc2fc76c52438cbf9f9afbe",
+    "dist/standalone/account-runtime/mailboxes.mjs": "663fa3451207e10e255fb6aadd01d7e1c8698853f40f1e066f363d0ed1cdd500",
+    "dist/standalone/account-runtime/mcp-adapter.LICENSE.txt": "54879c5274805e5ecbcc9375be8c635624d33fce41fb6723bd86b536455a8038",
+    "dist/standalone/account-runtime/mcp-adapter.mjs": "55f59aaf2dc26ccfc09a9ab5ab76b709d578896f577d7168f5774511cca260c3",
+    "dist/standalone/account-runtime/missions.mjs": "051300bb630e5bc416c741db5dbfeee59813362cece5a2008b551bd06e14f82a",
+    "dist/standalone/account-runtime/native-context.mjs": "c673774e8bc3c0bc7cfc93b56a3c67a29420cb24404beec3d2e3ced33c5149aa",
+    "dist/standalone/account-runtime/people-discovery.mjs": "cc338d545a745fe78048c81539838859b8a04082686def5faa06cf0e94246703",
+    "dist/standalone/account-runtime/people-invitations.mjs": "ee71045cf73dd12ebb5e5591fc3bcdfac4d6e77d85563c4802826f13b70f2a43",
+    "dist/standalone/account-runtime/perplexity-decisions.mjs": "73e0662f3866df8725f7d10eeb0f40f62360303460230f11fe3e0bd8b7d90660",
+    "dist/standalone/account-runtime/person-inbox.mjs": "4cf38fbd7745fc7848dbda7a7a08f9e64bef47b70fc667f7dc46f16b31fc9744",
+    "dist/standalone/account-runtime/personal-space.mjs": "2a14c95b1e2c3501b2ccb52c5a693a04e20cf511ed904409b88ecbd4d68e827a",
+    "dist/standalone/account-runtime/policy-context-mcp.mjs": "a8cde3bdd5a8e85a4dc5821bf71d81bc48469a80b43d5d833ce9683a54998d6e",
+    "dist/standalone/account-runtime/policy-context.mjs": "265061efdc440da470cb4e5f4ad4a62ffba49f2b79696562883428a341758793",
+    "dist/standalone/account-runtime/product-flow-ui.mjs": "f820ed0fb53cb9d8b4fdfc79f361f3c6b9b93f4d239ce25d1067410534f216d9",
+    "dist/standalone/account-runtime/proxy-tools.mjs": "0781bc6e22cb77002f490d704bbb298cb9d530e5c2c78d4474bfbde1aa487aa7",
+    "dist/standalone/account-runtime/remote-chat.mjs": "d63a79a49485fd5a4723abb4107ab9aa4b5682628f32ace591e437f539a1d765",
+    "dist/standalone/account-runtime/remote-mcp.mjs": "9592edcfec3840238cc004f613f57f92c936822f3aecec13b4540f4b21ddb2cd",
+    "dist/standalone/account-runtime/runtime.mjs": "95e0952b0a77c56f35f33c2c06393b090d4c8dc51b9592a6eb6e95f00245e10e",
+    "dist/standalone/account-runtime/service.mjs": "b4f3022efa1d7ed21ec28dbbc8c07b9f177bd321449238ef61aa6f1db875503a",
+    "dist/standalone/account-runtime/session-invitations.mjs": "ce72a0e27882e0453fc0daa81e06a58476b3106c5171b9227b94321a53dbe73c",
+    "dist/standalone/account-runtime/shared-chats.mjs": "6d15ebebe0f0cb3f41793c58b58d7c99efbb93d46038a9977af0f07112e271d0",
+    "dist/standalone/account-runtime/shared-context.mjs": "941650ef11931b6ef941718673aace7ad21bb1912175d5747941d72c80b01cda",
+    "dist/standalone/account-runtime/social-agents.mjs": "37e148e6b86dcabaacc2e7a71669649da74770c5958522ecb8c105b6b1a9e7a5",
+    "dist/standalone/account-runtime/social-http.mjs": "091fd151ffb920a397d0669397821ec1efcd8743e923cc380717f4b871cb3165",
+    "dist/standalone/account-runtime/social-ui.mjs": "2204fab1035831543f0f19875dccb7ed817e2527a210c9d3ef09ff6d140b518e",
+    "dist/standalone/account-runtime/space-context.mjs": "72c22adb78443978c54ec138896646df956ec3b3ee6c9ed5c53b6abe9dd747fb",
+    "dist/standalone/account-runtime/space-events.mjs": "a4473b84dc578a2b9d66d83ef4b1e49092e47806f115ca0322b699f4db70c300",
+    "dist/standalone/account-runtime/space-invitations.mjs": "76f303c9a6ab37ec7998236a0dcc002174c3273d136dfd3aca961afff8d4957e",
+    "dist/standalone/account-runtime/space-management.mjs": "da27521069acbe78a0668e972a2c3a6180d6606fc23e8dba9478f26b189824e6",
+    "dist/standalone/account-runtime/space-resources.mjs": "aa9ef56fac7b056dc1e136c6cb0c60e6bf356a3a89cbfbd431d951ddc0f9c722",
+    "dist/standalone/account-runtime/space-subscriptions.mjs": "d07eeff0d9956fc15b3a322a6f10242a4ecfe2ba56f492cfe505007cce71b62b",
+    "dist/standalone/account-runtime/sqlite.mjs": "67ef9a1134dd591c7ed1800dcc0871642e7bbae9780c77e7731e578fbc480e46",
+    "dist/standalone/account-runtime/ssh-workspace.mjs": "1590fc2680d3af596f92a28bbef3b6b64d611f831d8668b8ff0fcc0fd5b20540",
+    "dist/standalone/account-runtime/subscription-runner.mjs": "a5dd3205c4f99929a2049bf65203b6d0c0de5cd8d20e537a7ddf08c45b4bacc7",
+    "dist/standalone/account-runtime/ui-pages.mjs": "4297852bf5874b0162acbf13cc54d8407de621cae13f5c2e5d788a8a9ea727e7",
+    "dist/standalone/account-runtime/ui-system.mjs": "67362780ba35bfc6768b898723d836205a3f3520006034577a2b4c6dd63d4f03",
+    "dist/standalone/account-runtime/unified-context.mjs": "4625e5f58f941ce48f551ffe852464f437a1eaf4cd91685dea7a1bd40a677c07",
+    "dist/standalone/account-runtime/wiki.mjs": "20aa42d84f63da92f83c0dab7f131fd998512415ecb3cc470dbe7ba965fc3854",
+    "dist/standalone/account-runtime/work.mjs": "735206b527bc3f8b3b98f85101976ea558840a2e29457b5db91d3e5018cbe98d",
+    "dist/standalone/account-runtime/workspace-activity.mjs": "2bd49af1b5606e15ae9607340a81cb35b8e9556632a15cf0bafe874dc4e7923e",
+    "dist/standalone/account-runtime/workspace-history.mjs": "a456e419ef0c9052d5821e90ad5b64472089e7a156516c0dac2002241f26f6c1",
+    "dist/standalone/account-runtime/workspace-network.mjs": "1004b5b71cd32f893d2fe37600791b7e964d56fd8f7fa94803656c8f72305de9",
+    "dist/standalone/account-runtime/workspace-people.mjs": "5263fd93cded02f5ca4922da1bf0c7abd185c785d55ee17bdf346b67b85afc56",
+    "dist/standalone/account-runtime/workspace-protocol.mjs": "78140211b74f765b76e1e1460b37953f086f90b2056a8d98483144eb7d52e237",
+    "dist/standalone/account-runtime/workspace-proxy.mjs": "b0c7c2f4a5b28d8d748cf7d45a345448257fc251ce8acd8751bbd778300c2236",
+    "dist/standalone/account-runtime/workspace-tasks.mjs": "1c63393a6cb269bdc32f8adaa03116ff94bedb66bd13a0f0291ba5fef6867f7b",
+    "dist/standalone/account-runtime/workspace-tools.mjs": "1c93b622d68c88ceaf9509460bed381646ab38a61f9cf19f52282788b0b0d958",
+    "dist/standalone/account-runtime/workspaces.mjs": "16d4d329815590109d00c9d2a3b113d13787ab770b32fda7f6682310dd37656f",
+    "drizzle/0000_colorful_diamondback.sql": "70a75dc614210a225353a264413f6fd4a91e4fdbd153f0c2dd947b17beb07858",
+    "drizzle/0001_numerous_wrecker.sql": "3143df1e03bc51b510535eb511bb7da091cad6c139b481d4692f708bd2b3449c",
+    "drizzle/0002_legal_lady_deathstrike.sql": "7f43242bb799c7c175dd9cad02d0e50b72f9cb34efda1de27290ede44b6655b1",
+    "drizzle/0003_overconfident_mac_gargan.sql": "76644e69f87b89411fe43f5c31ecefc51d1ca9554bac2163690244dfb429e31a",
+    "drizzle/0004_wise_mandarin.sql": "5cc23a87f1be85a712620c6aa99da0c2e7ef28c509a53c96bad44892f2b6dfc1",
+    "drizzle/0005_thin_toro.sql": "d1f94e34c4efb5a31e607a6c0a1b61f3746884a628054dbeeff613e450e266bd",
+    "drizzle/0006_left_lifeguard.sql": "e7d27f1fbb384be8d4b028b36f4fda87d3927040858e5e5012e16d18d1f95b34",
+    "drizzle/0007_medical_vivisector.sql": "9ab66ec1ac1d8243affb6302159b6e2b0a6b75cbebcdcef0df73f908120238d3",
+    "drizzle/0008_tidy_lenny_balinger.sql": "64d7c344705293ef700ff11d8987de3f1a3a20c02427ded4136c6fff8bb816c2",
+    "drizzle/0009_nervous_deathstrike.sql": "bb33a68803835cdca444fb43e5f814abcb14212e87880ea3f5de26979870df0f",
+    "drizzle/0010_unknown_the_renegades.sql": "0d15edbb1573d7f1e6fdf570b760bf1826e783608307f0e2ff4493f87e3da436",
+    "drizzle/0011_fearless_blazing_skull.sql": "19298cb44f9d1dbad2008dd36cbc0e872fdee644c114b0d785687bef14519ed8",
+    "drizzle/0012_classy_meltdown.sql": "fca0ac740507c77be8839f8f5ae4a142f27ca96acc751ab074758d082728c61c",
+    "drizzle/0013_kind_gorilla_man.sql": "cdd40a80543860ebd57a3def1d32f93bb2bc6f7883044e009cc7422d693f232c",
+    "drizzle/0014_elite_guardsmen.sql": "926cb6f54b18fb068a413d447364c03eec61e4dc2d22d5c6395922a41bc8d81d",
+    "drizzle/0015_last_ultimatum.sql": "ef3c9206160a64af22d71ba8f0c9dfead44303ebf735e330f0c071fefa23692a",
+    "drizzle/0016_absurd_lizard.sql": "ff8181b2ed90793af1b79b833ad7eff90fc71927634ce4cef8a8f8cd706e587d",
+    "drizzle/0017_agent_auth.sql": "d19d061855eae8ef56a9a183bf83b8c6466afa2d6b1c5fbc1942593ab9b43c5d",
+    "drizzle/0018_person_inbox.sql": "6451d4146eca38e1a545fb55e7673eac2cbc965485f76d10edb4f63f93aa05ab",
+    "drizzle/0019_desktop_inbox_handoff.sql": "658d4844e3b9a43a1e12ab60b7eacd80bad28380e261576ebb6ab12c9a94e42c",
+    "drizzle/0020_cloud_conversation.sql": "37b8573e70ee0f5155958d89b023f07a4f631adebe1af285e3249ba33b3c3be8",
+    "drizzle/0021_inbox_starts.sql": "defc23653d2404f2bf0eec37ddae4127ba59a35015eb086a30ed5b38ccea7c9e",
+    "drizzle/0022_chat_followups.sql": "99369bc0b9f253b5e8a1e24345da66f79566f7894e028fbae05bbbf3ddbf08b1",
+    "drizzle/0023_session_invitations.sql": "503c3ff584d8b606f7d0b23df99ffd2efc659f23490ddfa18d4669738d40984a",
+    "drizzle/0024_delegations.sql": "c3051a73fe88440b63b64341f81f4a3caa364c414125340e6ce04596f68c58c9",
+    "drizzle/0025_agent_mailboxes.sql": "3db80f1cdfe694778ad84f54c4b94ec412c37b877d032394aa193c90576ea835",
+    "drizzle/0026_cloud_work.sql": "5f762323e8978e73f3d6477464ff4d5d36a18cc27c3092a04aa0a8cf785fc1ad",
+    "drizzle/0027_browser_subscription_login.sql": "db69e52598956da668c4e5ad251d6ddfb12c55f816361d833d9b42c792845936",
+    "drizzle/0028_chatgpt_context.sql": "2caafda564d76ae5e9023a3262995f70cbb9bb8a879ab444ed317112af20015a",
+    "drizzle/0029_retire_browser_context.sql": "d6bc72922475a2682a185fc1c6ecd3c4f75f9634aa6ce8e35a4a4dcb0dfdc16f",
+    "drizzle/0030_cloud_archive.sql": "d7582b73ea7473aab09685af9736821eb9e32020feb5a73969a4490a762d13e2",
+    "drizzle/0031_people_discovery.sql": "937e566b2c1177a0fa4047c77b2fed59325ac0d3e149c233ea85860666772454",
+    "drizzle/0032_people_invitations.sql": "5cae44bc55402bace7efb11ab56576acdf33d9a35d714bfae886f133c673008f",
+    "drizzle/0033_chat_setup_grants.sql": "c6a72cd0674d0cd18300063476762afedf4e8752f967250a432653ee24febaee",
+    "drizzle/0034_shared_chat_authors.sql": "3eea3533ab7019e5a0a0be8c5e56f91e9e8bfa13b4d48633430db60f56ee3a12",
+    "drizzle/0035_groups.sql": "441080e5a663dde0dad7441a5b9382992fbf8da37de540cd10a638c992aa5acc",
+    "drizzle/0036_chat_delivery_receipts.sql": "271c2531902fe5628d796e0b45857042af9f5e5c1a27aa80a83d1ecc499d40f2",
+    "drizzle/0037_agent_history.sql": "b8e5edf506d7e76074630602ebd32b00b6fcbe8b9c978a47a3b0d1a9997b54b9",
+    "drizzle/0038_agent_context.sql": "e118ebfe3001ede570ca6af8c94a3019edc07bd8fe2905d62e9ed200c509ffb5",
+    "drizzle/0039_cloud_workspace.sql": "fd076804296a9a935e577fe3b39741f63d5ec5e65280bbe7f3e2cc80645c354f",
+    "drizzle/0040_unified_context.sql": "7da45388ff4e15cb1e2d50bc8265e851ace77ffd8706ab3baabf873ff9fd808a",
+    "drizzle/0041_atomic_context_captures.sql": "fd9c3ce6460514632e0d86a10b99e49e3063879e60f891d733da38b2a8bd3d55",
+    "drizzle/0042_context_folder.sql": "0dde993bbb66ef0ae02d6f929197fc7ace269c743b5e6f7f7668b32b3ebaa6ca",
+    "drizzle/0043_cloud_task_inputs.sql": "e60af1a60b05d45d1e7645a7fbc0db60b66be3bce4e4e31ff4649cce33cdb1f6",
+    "drizzle/0044_agent_pair_connections.sql": "4fbd92828801255d950a90f3f02573c9e77a2f10c4e9b3c5553266342c3c4d9d",
+    "drizzle/0045_context_read_indexes.sql": "dd4f49989252db0cd6bb6d905660fe47838719baaac6d8252cfa0c1a2354c009",
+    "drizzle/0046_personal_space.sql": "46d1fe71fc41c8429d16e80e7277d33a0433b995131151fd922352b733ba441c",
+    "dist/standalone/account-runtime/context-assets/ui.css": "7d2a99432250c9650177a0f93248fb4cf917429b6e17ab60f5da78c863b87327"
+  },
+  "publicAssets": {
+    "activity.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/activity.mjs",
+      "contentType": "text/javascript",
+      "sha256": "abbcf74dc467c5722efe6b6a173a44df600f8ac47e9f7b2e6d6dd49a1f94fb11"
+    },
+    "agent-connections.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/agent-connections.mjs",
+      "contentType": "text/javascript",
+      "sha256": "cb0d159a3a6689bcf043b14bb58efbbaa973a23587dc9153b20503b16844941c"
+    },
+    "agent-setup.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/agent-setup.mjs",
+      "contentType": "text/javascript",
+      "sha256": "4e7330654303a3c1770ad66142442bbdbda2477c86035e08018fcf80268147d9"
+    },
+    "chatgpt-format.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/chatgpt-format.mjs",
+      "contentType": "text/javascript",
+      "sha256": "e49538bd5f24f4885eec3e392f09484554c7cf2025c8537ba09bd9ce186ad6a0"
+    },
+    "context-conversations.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/context-conversations.mjs",
+      "contentType": "text/javascript",
+      "sha256": "2b60fa3228755854c4effa48ea8430268c9ca429e4cfdb907744bde2f4fca078"
+    },
+    "context-coverage.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/context-coverage.mjs",
+      "contentType": "text/javascript",
+      "sha256": "34a53385cb2634c4fb3d767aeaf1062dafc6e4bcd44cc84fdb701fd297c6e07b"
+    },
+    "context-native-setup.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/context-native-setup.mjs",
+      "contentType": "text/javascript",
+      "sha256": "ca3bc7bd45c1e6301e66bef072333aeb767040757d546e3be63628fea623bce1"
+    },
+    "context-product.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/context-product.mjs",
+      "contentType": "text/javascript",
+      "sha256": "eed686c7d7ed69a2cf7869f27436632d8c05fec5ef2cf8a377cc3cd393ff715f"
+    },
+    "context-search.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/context-search.mjs",
+      "contentType": "text/javascript",
+      "sha256": "5caf48ed67f7d17bda715994d92b744093a98465a96d61dae4f306cc6405f0d5"
+    },
+    "context-setup-request.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/context-setup-request.mjs",
+      "contentType": "text/javascript",
+      "sha256": "e7cf41c953595866fc4fd67c7427c926ea22658c0a4fbf7a3a06dc80b196aac3"
+    },
+    "context-space-files.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/context-space-files.mjs",
+      "contentType": "text/javascript",
+      "sha256": "d1e0875d4dcc5ccf3f77aa94d9c903d06fe607e9f45626943e4e9d90a2dc10f5"
+    },
+    "context-space-invitations.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/context-space-invitations.mjs",
+      "contentType": "text/javascript",
+      "sha256": "6c364f764670372fbc1993b889f7dca1b3786036db88c0374a2f563b8e0afb5b"
+    },
+    "context-space-rules.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/context-space-rules.mjs",
+      "contentType": "text/javascript",
+      "sha256": "3473b7ea42dda2ad8fbefce00ec9aea6b309bb13e8e9a546092394a098039ade"
+    },
+    "context-spaces.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/context-spaces.mjs",
+      "contentType": "text/javascript",
+      "sha256": "c7f1ce39e23a882143315e324f790242668c55c5f9e03c1d314e0949f3341fbd"
+    },
+    "context.css": {
+      "path": "dist/standalone/account-runtime/context-assets/context.css",
+      "contentType": "text/css",
+      "sha256": "99f116e0c7212ce79d3ac2f048b934a4ff1e412f4436ac65287500b8eec4490b"
+    },
+    "context.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/context.mjs",
+      "contentType": "text/javascript",
+      "sha256": "3edef940424cb646fbdcb8080650b4e29345ce2d8f3bb471615cb9dff35070a0"
+    },
+    "export-file.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/export-file.mjs",
+      "contentType": "text/javascript",
+      "sha256": "52c48be5d2fb31396daf0cbf98d23840f3a808ed083b921cca36d36edd8d54cb"
+    },
+    "fflate-LICENSE.txt": {
+      "path": "dist/standalone/account-runtime/context-assets/fflate-LICENSE.txt",
+      "contentType": "text/plain",
+      "sha256": "805f6cb28bb8b6d3a0badd83c93bccd9671fa01a3b4b92b7042b0743325ac243"
+    },
+    "fflate.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/fflate.mjs",
+      "contentType": "text/javascript",
+      "sha256": "8cc1f687e0159e977addb6b85e274dbd11e622cf151f4fcb7b85d49622ea43e7"
+    },
+    "groups.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/groups.mjs",
+      "contentType": "text/javascript",
+      "sha256": "6cb17305665bb57d758ba664e9413da73cdebafdee23fac5e03a09be1c089d7a"
+    },
+    "import-worker.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/import-worker.mjs",
+      "contentType": "text/javascript",
+      "sha256": "129818f04c4e74c5c87ec1cadf2ebf722eba507d97e1bc689b12588ca7008276"
+    },
+    "invitations.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/invitations.mjs",
+      "contentType": "text/javascript",
+      "sha256": "8de6ca18154858f6b05a137cdc64570135a6cb311f759e65f8d13115f49ba602"
+    },
+    "manrope-LICENSE.txt": {
+      "path": "dist/standalone/account-runtime/context-assets/manrope-LICENSE.txt",
+      "contentType": "text/plain",
+      "sha256": "d826ab6583b12c26807d8716a545bdbbb672df04f48608a364ba9efdbe501c30"
+    },
+    "manrope-latin.woff2": {
+      "path": "dist/standalone/account-runtime/context-assets/manrope-latin.woff2",
+      "contentType": "font/woff2",
+      "sha256": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972"
+    },
+    "mcp-resource-source-setup.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/mcp-resource-source-setup.mjs",
+      "contentType": "text/javascript",
+      "sha256": "c1822b335c202b2fa98fa4546d92474771c2926552b86d4823529e2e4f76d52a"
+    },
+    "personal-assistant-setup.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/personal-assistant-setup.mjs",
+      "contentType": "text/javascript",
+      "sha256": "3646b5c1294ab6327d1ca48d5d4aa76c3abacb2b952df7967bdaf62f08e0aea7"
+    },
+    "shared-chats.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/shared-chats.mjs",
+      "contentType": "text/javascript",
+      "sha256": "a88f61432b9cf3ccfe54b513ea993938a616ecb6e2cff2932521ffcfb98a3054"
+    },
+    "social.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/social.mjs",
+      "contentType": "text/javascript",
+      "sha256": "23af95ada977c9f0e9c2037bd2224489b31afc4cb5fb9afcb66caf54d6a6f862"
+    },
+    "ui.css": {
+      "path": "dist/standalone/account-runtime/context-assets/ui.css",
+      "contentType": "text/css",
+      "sha256": "7d2a99432250c9650177a0f93248fb4cf917429b6e17ab60f5da78c863b87327"
+    },
+    "ui.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/ui.mjs",
+      "contentType": "text/javascript",
+      "sha256": "128781007dc31a0d04a852c059d1093d83a74ddc897fe2e2b04475a14fefd76e"
+    },
+    "work-agent.mjs": {
+      "path": "dist/standalone/account-runtime/context-assets/work-agent.mjs",
+      "contentType": "text/javascript",
+      "sha256": "447b65c5f83495271ee55000ca46e2476fd184dee5f167db48c08e392cf5efc7"
+    }
+  }
+}
